@@ -1,27 +1,31 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHashHistory } from "vue-router"
+import defaultLayout from "@/layouts/default.vue"
+import wideLayout from "@/layouts/wide.vue"
+import homeView from "@/views/HomeView.vue"
+import linksView from "@/views/LinksView.vue"
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE_URL),
+  history: createWebHashHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
       path: "/",
-      component: () => import("@/layouts/default.vue"),
+      component: defaultLayout,
       children: [
         {
           path: "",
           name: "home",
-          component: () => import("@/views/HomeView.vue")
+          component: homeView
         }
       ]
     },
     {
       path: "/links",
-      component: () => import("@/layouts/wide.vue"),
+      component: wideLayout,
       children: [
         {
           path: "",
           name: "links",
-          component: () => import("@/views/LinksView.vue")
+          component: linksView
         }
       ]
     }

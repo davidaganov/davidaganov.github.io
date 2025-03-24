@@ -13,7 +13,7 @@ import BaseBlob from "@/components/BaseBlob.vue"
         <h1 class="title">{{ $t("header.name") }}</h1>
         <p class="description">{{ $t("header.description") }}</p>
         <UIButton
-          href="/links?mode=professional"
+          href="/#/links?mode=professional"
           class="btn"
         >
           {{ $t("header.contact") }}
