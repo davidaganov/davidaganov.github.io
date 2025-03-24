@@ -1,0 +1,65 @@
+//---- Base
+@use "./variables.scss";
+@use "./fonts.scss";
+@use "./reset.scss";
+@use "./theme.scss";
+
+html,
+body {
+  height: 100%;
+  font-family: var(--main-font);
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  font-size: 62.5%;
+  @media (min-width: 576px) {
+    @supports (scrollbar-width: thin) {
+      scrollbar-color: var(--color-accent) var(--color-black);
+      scrollbar-width: thin;
+    }
+    @supports not (scrollbar-width: thin) {
+      ::-webkit-scrollbar {
+        width: 7px;
+      }
+      ::-webkit-scrollbar-track {
+        background-color: var(--color-black);
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: var(--color-accent);
+        box-shadow:
+          0 -100vh 0 100vh #835ea7,
+          0 0 15px 5px var(--color-black);
+      }
+    }
+  }
+}
+
+*::selection {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+#app {
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.is-open::before {
+  transform: rotate(45deg) !important;
+}
+
+.no-scroll {
+  @media (max-width: 768px) {
+    overflow: hidden;
+  }
+}
+
+section {
+  counter-increment: section-counter;
+}

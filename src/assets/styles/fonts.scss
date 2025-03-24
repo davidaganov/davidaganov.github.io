@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "Barcade-Brawl";
+  src:
+    local("Barcade-Brawl"),
+    url("/fonts/Barcade-Brawl.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "ua-brand";
+  src:
+    local("ua-brand-Bold"),
+    url("/fonts/ua-brand-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "ua-brand";
+  src:
+    local("ua-brand"),
+    url("/fonts/ua-brand.ttf") format("truetype");
+  font-weight: 400;
+}
