@@ -1,11 +1,11 @@
-import { createRouter, createWebHashHistory } from "vue-router"
+import { createRouter, createWebHistory } from "vue-router"
 import defaultLayout from "@/layouts/default.vue"
 import wideLayout from "@/layouts/wide.vue"
 import homeView from "@/views/HomeView.vue"
 import linksView from "@/views/LinksView.vue"
 
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.VITE_BASE_URL),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     {
       path: "/",
@@ -28,6 +28,10 @@ const router = createRouter({
           component: linksView
         }
       ]
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: "/"
     }
   ],
   scrollBehavior(to) {
