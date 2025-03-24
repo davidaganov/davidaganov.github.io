@@ -5,14 +5,15 @@
     "name": "David Aganov",
     "email": "davidaganov21@gmail.com"
   },
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": false,
   "type": "module",
   "repository": "https://github.com/davidaganov/davidaganov.github.io",
   "keywords": [
     "vue",
     "typescript",
-    "sass"
+    "scss",
+    "i18n"
   ],
   "scripts": {
     "dev": "vite",
