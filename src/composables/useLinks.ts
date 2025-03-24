@@ -49,7 +49,7 @@ export const useLinks = () => {
       },
       {
         name: t("links.personal.telegramChannel"),
-        url: "https://t.me/davidaganov",
+        url: "https://t.me/vueshn",
         icon: "mdi-send",
         customStyle: "transform: rotate(-30deg); margin: 0 0 8px 8px;"
       },
