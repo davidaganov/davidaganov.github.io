@@ -13,6 +13,17 @@ const router = createRouter({
           component: () => import("@/views/HomeView.vue")
         }
       ]
+    },
+    {
+      path: "/links",
+      component: () => import("@/layouts/wide.vue"),
+      children: [
+        {
+          path: "",
+          name: "links",
+          component: () => import("@/views/LinksView.vue")
+        }
+      ]
     }
   ],
   scrollBehavior(to) {

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import UITitle from "@/components/UITitle.vue"
-import UIButton from "@/components/UIButton.vue"
-
-const date = new Date().toLocaleDateString("ru-RU").split(".").reverse().join("-")
+import BaseDownloadCV from "@/components/BaseDownloadCV.vue"
 </script>
 
 <template>
@@ -10,7 +8,7 @@ const date = new Date().toLocaleDateString("ru-RU").split(".").reverse().join("-
     class="about"
     id="about"
   >
-    <div class="inner">
+    <div class="container">
       <UITitle
         :link="'#about'"
         :title="$t('about.title')"
@@ -25,15 +23,11 @@ const date = new Date().toLocaleDateString("ru-RU").split(".").reverse().join("-
             width="350"
             height="350"
           />
-          <p v-html="$t('resume.about')" />
-          <UIButton
-            class="btn"
-            rel="noreferrer"
-            :href="`/CV_DavidAganov.pdf?v=${date}`"
-            :download="`CV_DavidAganov_${date}.pdf`"
-          >
-            {{ $t("about.download") }}
-          </UIButton>
+          <p v-html="$t('about.description')" />
+
+          <div class="btn-wrapper">
+            <BaseDownloadCV class="btn" />
+          </div>
         </div>
         <div class="right">
           <img
@@ -93,11 +87,15 @@ const date = new Date().toLocaleDateString("ru-RU").split(".").reverse().join("-
   }
 }
 
-.btn {
+.btn-wrapper {
   margin-top: 40px;
+
+  @media (min-width: 576px) {
+    display: flex;
+  }
+
   @media (max-width: 575px) {
     width: 100%;
-    text-align: center;
   }
 }
 

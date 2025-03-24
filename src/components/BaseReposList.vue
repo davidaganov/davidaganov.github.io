@@ -1,24 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from "vue"
 import BaseCardRepo from "@/components/BaseCardRepo.vue"
+import type { Repo } from "@/interfaces"
 
-interface ReposProps {
-  id: number
-  name: string
-  description: string
-  html_url: string
-  topics: string[]
-  homepage: string
-}
-
-interface Props {
-  repos?: ReposProps[]
-}
-
-const props = defineProps<Props>()
+const props = defineProps<{
+  repos?: Repo[]
+}>()
 
 const selectTag = ref("")
-const sortRepos = ref<ReposProps[]>([])
+const sortRepos = ref<Repo[]>([])
 
 const getUniqueTags = () => {
   if (!props.repos) return []

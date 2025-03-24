@@ -1,15 +1,16 @@
 <script setup lang="ts">
-interface ButtonProps {
-  href?: string
-  class?: string
-  disabled?: boolean
-}
-
-const props = withDefaults(defineProps<ButtonProps>(), {
-  href: undefined,
-  class: "",
-  disabled: false
-})
+const props = withDefaults(
+  defineProps<{
+    href?: string
+    class?: string
+    disabled?: boolean
+  }>(),
+  {
+    href: undefined,
+    class: "",
+    disabled: false
+  }
+)
 </script>
 
 <template>

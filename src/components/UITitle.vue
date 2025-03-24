@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router"
+import { DIRECTION } from "@/enums/directionEnum"
 
-interface TitleProps {
-  title: string
-  className?: string
-  link: string
-  direction?: "ltr" | "rtl"
-}
-
-const props = withDefaults(defineProps<TitleProps>(), {
-  direction: "ltr",
-  className: ""
-})
+const props = withDefaults(
+  defineProps<{
+    title: string
+    className?: string
+    link: string
+    direction?: DIRECTION
+  }>(),
+  {
+    direction: DIRECTION.LTR,
+    className: ""
+  }
+)
 
 const copyLink = async () => {
   try {
@@ -27,7 +29,7 @@ const copyLink = async () => {
     :class="[
       'title',
       props.className,
-      { rtl: props.direction === 'rtl', ltr: props.direction === 'ltr' }
+      { rtl: props.direction === DIRECTION.RTL, ltr: props.direction === DIRECTION.LTR }
     ]"
     @click="copyLink"
   >

@@ -4,6 +4,9 @@
 @use "./reset.scss";
 @use "./theme.scss";
 
+//---- Material Design Icons
+@import "@mdi/font/css/materialdesignicons.min.css";
+
 html,
 body {
   height: 100%;

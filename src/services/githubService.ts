@@ -1,26 +1,13 @@
 import { useHttp } from "../composables/useHttp"
-
-interface Topics {
-  topics?: string[]
-  ignoreTopics?: string[]
-}
-
-interface GithubRepo {
-  id: number
-  name: string
-  description: string
-  html_url: string
-  topics: string[]
-  homepage: string
-}
+import type { Repo, Topics } from "@/interfaces"
 
 export function useGithubService() {
   const { loading, request, error, clearError } = useHttp()
 
-  const _apiBase = "https://api.github.com/users/davidaganov"
+  const apiBase = "https://api.github.com/users/davidaganov"
 
   const getRepos = async ({ topics, ignoreTopics }: Topics) => {
-    const res = await request(`${_apiBase}/repos`)
+    const res = await request(`${apiBase}/repos`)
     return _transformProjects({ items: res, topics, ignoreTopics })
   }
 
@@ -29,7 +16,7 @@ export function useGithubService() {
     topics,
     ignoreTopics
   }: {
-    items: GithubRepo[]
+    items: Repo[]
     topics?: string[]
     ignoreTopics?: string[]
   }) => {

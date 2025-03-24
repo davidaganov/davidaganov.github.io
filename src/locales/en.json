@@ -1,96 +1,8 @@
 {
-  "resume": {
-    "titles": {
-      "jobs": "Work Experience",
-      "about": "About me",
-      "skills": "Skills",
-      "languages": "Languages",
-      "social": "Contacts"
-    },
-    "header": {
-      "name": "David Aganov",
-      "job": "Frontend Developer (Vue / Nuxt)",
-      "phone": "+998331576723",
-      "email": "davidaganov21@gmail.com",
-      "website": "aganov.dev",
-      "location": "Uzbekistan, Tashkent"
-    },
-    "jobs": [
-      {
-        "id": 1,
-        "title": "Frontend Developer",
-        "companyName": "Freelance",
-        "location": "Worldwide",
-        "startAt": "2023-11-01",
-        "current": "Present time",
-        "description": "Worked with several major clients on an hourly basis, both independently and as part of teams",
-        "list": [
-          "Developed a freelance platform on Nuxt 3 with user chat and payment integration",
-          "Developed a service for teachers on Vue 3 with Zoom API integration for calls",
-          "Created numerous websites using Gulp/EJS"
-        ]
-      },
-      {
-        "id": 2,
-        "title": "Frontend Developer",
-        "companyName": "Softlex",
-        "companyUrl": "https://www.linkedin.com/company/llc-softlex/mycompany/",
-        "location": "Novorossiysk",
-        "startAt": "2023-07-17",
-        "endAt": "2023-11-01",
-        "list": [],
-        "projects": [
-          {
-            "id": 1,
-            "title": "WAQF Project",
-            "tech": ["next", "typescript", "html", "scss"],
-            "description": "WAQF - Crowdfunding platform",
-            "duties": [
-              "Migration of the project from React to Next.js",
-              "Implementation of new functionality"
-            ]
-          },
-          {
-            "id": 2,
-            "title": "JetUnity Project",
-            "tech": ["nuxt 2", "pug", "styl", "scss"],
-            "description": "JetUnity - Private aviation organization",
-            "duties": ["Migration to modern technologies", "Implementation of new functionality"]
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "title": "Frontend Developer",
-        "companyName": "SAB Games",
-        "companyUrl": "https://www.linkedin.com/company/sabgames/mycompany/",
-        "location": "Tashkent",
-        "startAt": "2021-05-17",
-        "endAt": "2023-05-01",
-        "list": [
-          "Developed large-scale websites using Nuxt 2 and TypeScript",
-          "Worked closely with design and development teams"
-        ]
-      }
-    ],
-    "about": "I have 3 years of experience in frontend development, with expertise in both freelancing and office environments. This experience allows me to quickly establish rapport with different clients and teams. I always strive to understand the client's needs and achieve high-quality results. I am committed to building long-term and mutually beneficial relationships.",
-    "languages": [
-      {
-        "id": 1,
-        "name": "Russian",
-        "scoreLabel": "Native"
-      },
-      {
-        "id": 2,
-        "name": "English",
-        "scoreLabel": "A2"
-      }
-    ]
-  },
   "header": {
     "name": "David Aganov",
     "subtitle": "Hello, my name is",
-    "description": "I’m frontend developer. I like to learn new technologies and try new things in every possible way.",
+    "description": "I'm frontend developer. I like to learn new technologies and try new things in every possible way.",
     "contact": "Contact me"
   },
   "navbar": {
@@ -102,6 +14,7 @@
   },
   "about": {
     "title": "About me",
+    "description": "I have 3 years of experience in frontend development, with expertise in both freelancing and office environments. This experience allows me to quickly establish rapport with different clients and teams. I always strive to understand the client's needs and achieve high-quality results. I am committed to building long-term and mutually beneficial relationships.",
     "download": "Download CV",
     "loading": "Loading...",
     "photoShow": "Show photo in CV",
@@ -162,9 +75,19 @@
     "github": "Go to Github profile",
     "linkedin": "Go to Linkedin profile"
   },
-
-  "year_singular": "year",
-  "year_many": "years",
-  "month_singular": "month",
-  "month_many": "months"
+  "links": {
+    "title": "Links",
+    "personal": {
+      "telegram": "Telegram",
+      "telegramChannel": "Telegram Channel"
+    },
+    "professional": {
+      "telegram": "Telegram",
+      "email": "Email"
+    },
+    "modes": {
+      "professional": "Job",
+      "personal": "Personal"
+    }
+  }
 }

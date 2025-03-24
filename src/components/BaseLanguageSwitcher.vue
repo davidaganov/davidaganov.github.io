@@ -1,23 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from "vue"
 import { useI18n } from "vue-i18n"
+import type { Language } from "@/interfaces"
 
 import en from "@/locales/en.json"
 import ru from "@/locales/ru.json"
 
-interface Props {
+const props = defineProps<{
   close?: () => void
-}
-
-interface Language {
-  lang: string
-  aria: string
-}
-
-const props = defineProps<Props>()
+}>()
 const { t, locale, setLocaleMessage } = useI18n()
 
-// Убедимся, что сообщения для каждой локали загружены
 setLocaleMessage("en", en)
 setLocaleMessage("ru", ru)
 
@@ -29,12 +22,6 @@ const languagesList: Language[] = [
 const htmlAttrChange = (lang: string) => {
   document.documentElement.setAttribute("lang", lang)
 }
-
-onMounted(() => {
-  // При монтировании компонента устанавливаем язык из localStorage или по умолчанию
-  const savedLocale = localStorage.getItem("locale") || "en"
-  changeLanguage(savedLocale)
-})
 
 const changeLanguage = (lang: string) => {
   // Сохраняем выбранный язык в localStorage
@@ -50,6 +37,11 @@ const closeNavbar = (e: KeyboardEvent, index: number) => {
     props.close?.()
   }
 }
+
+onMounted(() => {
+  const savedLocale = localStorage.getItem("locale") || "en"
+  changeLanguage(savedLocale)
+})
 </script>
 
 <template>

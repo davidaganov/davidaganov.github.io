@@ -8,7 +8,7 @@ import BaseSocial from "@/components/BaseSocial.vue"
     id="footer"
     role="contentinfo"
   >
-    <div class="inner">
+    <div class="container">
       <a
         href="https://github.com/davidaganov/davidaganov.github.io"
         class="author inline-link inline-link--white"
@@ -38,7 +38,7 @@ import BaseSocial from "@/components/BaseSocial.vue"
   padding-bottom: 30px;
 }
 
-.inner {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;

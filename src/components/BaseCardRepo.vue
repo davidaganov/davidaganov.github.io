@@ -1,21 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue"
+import type { Repo } from "@/interfaces"
 
-interface CardProps {
-  id: number
-  name: string
-  description: string
-  html_url: string
-  topics: string[]
-  homepage: string
-}
-
-interface Props {
-  card: CardProps
+const props = defineProps<{
+  card: Repo
   class?: string
-}
-
-const props = defineProps<Props>()
+}>()
 
 const clearName = computed(() => props.card.name.replace(/[.\-/\\\s]/g, " "))
 </script>

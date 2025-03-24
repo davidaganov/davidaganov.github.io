@@ -3,21 +3,9 @@ import { ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import { RouterLink } from "vue-router"
 import BaseLanguageSwitcher from "@/components/BaseLanguageSwitcher.vue"
+import type { NavLink } from "@/interfaces"
 
-interface NavLink {
-  title: {
-    en: string
-    ru: string
-  }
-  link: string
-  last?: boolean
-}
-
-interface Props {
-  list: NavLink[]
-}
-
-defineProps<Props>()
+defineProps<{ list: NavLink[] }>()
 
 const { locale } = useI18n()
 
@@ -52,7 +40,7 @@ watch(opened, (newValue) => {
 
 <template>
   <div class="navbar">
-    <div class="inner">
+    <div class="container">
       <button
         class="burger"
         type="button"
@@ -60,21 +48,7 @@ watch(opened, (newValue) => {
         :aria-expanded="opened"
         @click="openMenu"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
-          view-box="0 0 32 32"
-          fill="none"
-          stroke="currentColor"
-        >
-          <title>Burger menu</title>
-          <path
-            d="M5 8h22M5 16h22M27 24H5"
-            stroke-width="3"
-            stroke-linecap="round"
-          />
-        </svg>
+        <i class="mdi mdi-menu" />
       </button>
 
       <nav
@@ -90,21 +64,7 @@ watch(opened, (newValue) => {
           @click="() => (opened = false)"
           @keydown="handleCloseKeydown"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            view-box="0 0 32 32"
-            fill="none"
-            stroke="currentColor"
-          >
-            <title>Close menu</title>
-            <path
-              d="M7 24L25 8M25 24L7 8"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-          </svg>
+          <i class="mdi mdi-close" />
         </button>
 
         <ul class="menu">
@@ -130,7 +90,6 @@ watch(opened, (newValue) => {
       <button
         class="backdrop"
         type="button"
-        aria-hidden="true"
         tabindex="-1"
         :class="{ opened }"
         @click="() => (opened = false)"
@@ -203,7 +162,7 @@ watch(opened, (newValue) => {
   }
 }
 
-.inner {
+.container {
   position: relative;
 }
 
@@ -229,6 +188,10 @@ watch(opened, (newValue) => {
       color: var(--color-accent);
       box-shadow: 0 0 0 2px var(--color-accent);
     }
+
+    .mdi {
+      font-size: 32px;
+    }
   }
 }
 
@@ -250,6 +213,10 @@ watch(opened, (newValue) => {
     &:focus-visible {
       background-color: var(--color-white);
       color: var(--color-black);
+    }
+
+    .mdi {
+      font-size: 24px;
     }
   }
 }

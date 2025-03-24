@@ -5,20 +5,12 @@ import { useGithubService } from "@/services/githubService"
 import UITitle from "@/components/UITitle.vue"
 import UIButton from "@/components/UIButton.vue"
 import BaseReposList from "@/components/BaseReposList.vue"
-
-interface ReposProps {
-  id: number
-  name: string
-  description: string
-  html_url: string
-  topics: string[]
-  homepage: string
-}
+import type { Repo } from "@/interfaces"
 
 const { error, getRepos } = useGithubService()
 const { t } = useI18n()
 
-const reposList = ref<ReposProps[]>([])
+const reposList = ref<Repo[]>([])
 const reposLoading = ref(false)
 
 const onRequest = async () => {
@@ -37,7 +29,7 @@ onMounted(() => {
     class="work"
     id="repositories"
   >
-    <div class="inner">
+    <div class="container">
       <UITitle
         link="#repositories"
         :title="t('repositories.title')"

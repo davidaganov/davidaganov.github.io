@@ -2,18 +2,8 @@
 import { onMounted, ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import UITitle from "@/components/UITitle.vue"
-
-interface SkillItem {
-  id: number
-  title: string
-  tags: string[]
-}
-
-interface SkillCategory {
-  id: number
-  title: string
-  list: SkillItem[]
-}
+import { DIRECTION } from "@/enums/directionEnum"
+import type { SkillCategory } from "@/interfaces"
 
 const { t, locale } = useI18n()
 
@@ -41,13 +31,13 @@ const toggleCategory = (id: string) => {
 const getIconSrc = (title: string) => {
   switch (title) {
     case "HTML":
-      return "/images/icons/html.svg"
+      return "mdi-language-html5"
     case "CSS":
-      return "/images/icons/css.svg"
+      return "mdi-language-css3"
     case "JavaScript":
-      return "/images/icons/js.svg"
+      return "mdi-language-javascript"
     default:
-      return "/images/icons/other.svg"
+      return "mdi-dots-horizontal-circle"
   }
 }
 
@@ -65,11 +55,11 @@ onMounted(() => {
     class="skills"
     id="skills"
   >
-    <div class="inner">
+    <div class="container">
       <UITitle
         link="#skills"
         :title="t('skills.title')"
-        direction="rtl"
+        :direction="DIRECTION.RTL"
       />
 
       <div
@@ -93,11 +83,7 @@ onMounted(() => {
           >
             <h3>
               {{ category.title }}
-              <img
-                :src="getIconSrc(category.title)"
-                alt=""
-                aria-hidden="true"
-              />
+              <i :class="['mdi', getIconSrc(category.title)]" />
             </h3>
           </span>
 
@@ -222,10 +208,10 @@ onMounted(() => {
         font: bold 20px var(--main-font);
       }
     }
-    img {
+    .mdi {
       margin-left: 25px;
-      width: 40px;
-      height: 40px;
+      font-size: 32px;
+      color: var(--color-accent);
     }
   }
 }
