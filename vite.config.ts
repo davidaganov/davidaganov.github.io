@@ -6,10 +6,20 @@ import vueDevTools from "vite-plugin-vue-devtools"
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.VITE_BASE_URL,
   plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url))
+    }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          locales: ["./src/locales/en.json", "./src/locales/ru.json"]
+        }
+      }
     }
   }
 })
