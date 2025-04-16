@@ -1,13 +1,14 @@
-import { onMounted, ref, watch } from "vue"
-import { useI18n } from "vue-i18n"
-import { useRoute } from "vue-router"
+import { onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { useLinksService } from "@/services/linksService"
 import { LINKS_MODE } from "@/enums/linksModeEnum"
 import type { Link } from "@/interfaces"
-import router from "@/router"
 
 export const useLinks = () => {
-  const { locale, t } = useI18n()
   const route = useRoute()
+  const router = useRouter()
+
+  const { getLinks } = useLinksService()
 
   const mode = ref<LINKS_MODE>(LINKS_MODE.PROFESSIONAL)
   const links = ref<Link[]>()
@@ -15,60 +16,17 @@ export const useLinks = () => {
   const linksProfessional = ref<Link[]>([])
   const linksPersonal = ref<Link[]>([])
 
-  const updateLinks = () => {
-    linksProfessional.value = [
-      {
-        name: "GitHub",
-        url: "https://github.com/davidaganov",
-        icon: "mdi-github"
-      },
-      {
-        name: "LinkedIn",
-        url: "https://www.linkedin.com/in/david-aganov/",
-        icon: "mdi-linkedin"
-      },
-      {
-        name: t("links.professional.email"),
-        url: "mailto:davidaganov21@gmail.com",
-        icon: "mdi-email"
-      },
-      {
-        name: t("links.professional.telegram"),
-        url: "https://t.me/davidaganov",
-        icon: "mdi-send",
-        customStyle: "transform: rotate(-30deg); margin: 0 0 8px 8px;"
-      }
-    ]
+  const updateLinks = async () => {
+    try {
+      const linksData = await getLinks()
 
-    linksPersonal.value = [
-      {
-        name: t("links.personal.telegram"),
-        url: "https://t.me/davidaganov",
-        icon: "mdi-send",
-        customStyle: "transform: rotate(-30deg); margin: 0 0 8px 8px;"
-      },
-      {
-        name: t("links.personal.telegramChannel"),
-        url: "https://t.me/vueshn",
-        icon: "mdi-send",
-        customStyle: "transform: rotate(-30deg); margin: 0 0 8px 8px;"
-      },
-      {
-        name: "Habr",
-        url: "https://habr.com/ru/users/davidaganov/",
-        icon: "mdi-newspaper-variant"
-      },
-      {
-        name: "CodePen",
-        url: "https://codepen.io/davidaganov",
-        icon: "mdi-code-array"
-      },
-      {
-        name: "Steam",
-        url: "https://steamcommunity.com/id/davidaganov/",
-        icon: "mdi-steam"
-      }
-    ]
+      linksProfessional.value = linksData?.professional || []
+      linksPersonal.value = linksData?.personal || []
+
+      links.value = getLinkSets(mode.value)
+    } catch (error) {
+      console.error("Error loading links:", error)
+    }
   }
 
   const getLinkSets = (mode: LINKS_MODE) => {
@@ -107,11 +65,6 @@ export const useLinks = () => {
     }
   }
 
-  watch(locale, () => {
-    updateLinks()
-    links.value = getLinkSets(mode.value)
-  })
-
   onMounted(() => {
     initLinks()
   })
@@ -119,6 +72,7 @@ export const useLinks = () => {
   return {
     mode,
     links,
-    toggleMode
+    toggleMode,
+    updateLinks
   }
 }

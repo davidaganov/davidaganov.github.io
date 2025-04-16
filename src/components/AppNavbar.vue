@@ -139,7 +139,7 @@ watch(opened, (newValue) => {
       transition:
         right 0.4s,
         visibility 0.4s;
-      z-index: 2;
+      z-index: 10;
 
       &:not(.opened) {
         visibility: hidden;
@@ -247,6 +247,7 @@ watch(opened, (newValue) => {
     flex-direction: row-reverse;
     justify-content: flex-start;
     align-items: center;
+    padding-left: 60px;
   }
 
   span {
@@ -258,9 +259,9 @@ watch(opened, (newValue) => {
 
     @media (max-width: 768px) {
       display: block;
-      width: 60px;
+      width: 40px;
       height: 3px;
-      margin-left: 20px;
+      margin-left: 10px;
       background-color: var(--color-accent);
       font-size: 1px;
     }

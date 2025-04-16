@@ -23,7 +23,7 @@
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && echo 'aganov.dev' > ./dist/CNAME && gh-pages -d dist"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",

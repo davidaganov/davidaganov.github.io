@@ -1,10 +1,35 @@
 <script setup lang="ts">
+import { computed, watch } from "vue"
+import { useI18n } from "vue-i18n"
 import { useLinks } from "@/composables/useLinks"
 import BaseBlob from "@/components/BaseBlob.vue"
 import BaseDownloadCV from "@/components/BaseDownloadCV.vue"
 import { LINKS_MODE } from "@/enums/linksModeEnum"
+import type { Link, LinkName } from "@/interfaces"
 
-const { mode, links, toggleMode } = useLinks()
+const { locale } = useI18n()
+const { mode, links, toggleMode, updateLinks } = useLinks()
+
+const getLocalizedName = (name: string | LinkName) => {
+  if (typeof name === "string") {
+    return name
+  }
+
+  return name[locale.value as keyof typeof name] || name.en
+}
+
+const localizedLinks = computed(() => {
+  if (!links.value) return []
+
+  return links.value.map((link: Link) => ({
+    ...link,
+    localizedName: getLocalizedName(link.name)
+  }))
+})
+
+watch(locale, () => {
+  updateLinks()
+})
 </script>
 
 <template>
@@ -51,8 +76,8 @@ const { mode, links, toggleMode } = useLinks()
         <ul class="links-grid">
           <li
             class="link-card"
-            :key="link.name"
-            v-for="link in links"
+            :key="index"
+            v-for="(link, index) in localizedLinks"
           >
             <a
               class="link-card__inner"
@@ -67,7 +92,8 @@ const { mode, links, toggleMode } = useLinks()
                   :style="link.customStyle"
                 />
               </span>
-              {{ link.name }}
+
+              {{ link.localizedName }}
             </a>
           </li>
         </ul>
