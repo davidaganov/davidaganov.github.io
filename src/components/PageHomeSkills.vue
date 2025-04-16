@@ -1,24 +1,33 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue"
+import { computed, ref, watch } from "vue"
 import { useI18n } from "vue-i18n"
 import UITitle from "@/components/UITitle.vue"
 import { DIRECTION } from "@/enums/directionEnum"
-import type { SkillCategory } from "@/interfaces"
+import { useSkills } from "@/composables/useSkills"
+import type { SkillCategory, SkillTitle, SkillItem } from "@/interfaces"
 
 const { t, locale } = useI18n()
+const { skills, loading, updateSkills } = useSkills()
 
 const openCategories = ref<string[]>([])
-const skillsList = ref<SkillCategory[]>([])
 
-const loadLocaleData = async () => {
-  try {
-    const localeData = await import(`@/locales/${locale.value}.json`)
-    skillsList.value = localeData.default.skills.data as SkillCategory[]
-  } catch (error) {
-    console.error(`Failed to load locale data for ${locale.value}:`, error)
-    skillsList.value = []
-  }
+const getLocalizedTitle = (title: string | SkillTitle) => {
+  if (typeof title === "string") return title
+  return title[locale.value as keyof typeof title] || title.en
 }
+
+const localizedSkills = computed(() => {
+  if (!skills.value) return []
+
+  return skills.value.map((category: SkillCategory) => ({
+    ...category,
+    localizedTitle: getLocalizedTitle(category.title),
+    list: category.list.map((skill: SkillItem) => ({
+      ...skill,
+      localizedTitle: getLocalizedTitle(skill.title)
+    }))
+  }))
+})
 
 const toggleCategory = (id: string) => {
   if (openCategories.value.includes(id)) {
@@ -28,25 +37,8 @@ const toggleCategory = (id: string) => {
   }
 }
 
-const getIconSrc = (title: string) => {
-  switch (title) {
-    case "HTML":
-      return "mdi-language-html5"
-    case "CSS":
-      return "mdi-language-css3"
-    case "JavaScript":
-      return "mdi-language-javascript"
-    default:
-      return "mdi-dots-horizontal-circle"
-  }
-}
-
 watch(locale, () => {
-  loadLocaleData()
-})
-
-onMounted(() => {
-  loadLocaleData()
+  updateSkills()
 })
 </script>
 
@@ -63,11 +55,11 @@ onMounted(() => {
       />
 
       <div
-        v-if="skillsList.length"
+        v-if="localizedSkills.length && !loading"
         class="accordion"
       >
         <div
-          v-for="category in skillsList"
+          v-for="category in localizedSkills"
           :key="category.id"
           class="item"
           v-show="category.list?.length > 0"
@@ -82,8 +74,8 @@ onMounted(() => {
             :aria-expanded="openCategories.includes(String(category.id))"
           >
             <h3>
-              {{ category.title }}
-              <i :class="['mdi', getIconSrc(category.title)]" />
+              {{ category.localizedTitle }}
+              <i :class="['mdi', category.icon]" />
             </h3>
           </span>
 
@@ -101,7 +93,7 @@ onMounted(() => {
                   :key="skill.id"
                   class="content"
                 >
-                  <p class="title">{{ skill.title }}</p>
+                  <p class="title">{{ skill.localizedTitle }}</p>
                   <ul class="listNested">
                     <li
                       v-for="tag in skill.tags"
@@ -117,6 +109,12 @@ onMounted(() => {
           </transition>
         </div>
       </div>
+      <p
+        v-else-if="loading"
+        class="empty"
+      >
+        Loading...
+      </p>
       <p
         v-else
         class="empty"

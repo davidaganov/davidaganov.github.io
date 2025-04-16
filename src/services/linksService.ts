@@ -10,15 +10,15 @@ export function useLinksService() {
     try {
       const gistData = await request(gistUrl)
 
-      const linksRawUrl = gistData.files.links.raw_url
-      const linksData = await request(linksRawUrl)
+      const linksContent = gistData.files.links.content
+      const linksData = JSON.parse(linksContent)
 
       return {
         professional: linksData.professional || [],
         personal: linksData.personal || []
       }
     } catch (e) {
-      console.error("Не удалось загрузить ссылки", e)
+      console.error("Failed to load links", e)
     }
   }
 

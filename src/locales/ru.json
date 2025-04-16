@@ -21,44 +21,7 @@
     "photoHide": "Скрыть фото в резюме"
   },
   "skills": {
-    "title": "Мои навыки",
-    "data": [
-      {
-        "id": 1,
-        "title": "JavaScript",
-        "list": [
-          { "id": 1, "title": "Фреймворки", "tags": ["Nuxt 2 / 3", "Vue 2 / 3", "React"] },
-          { "id": 2, "title": "Библиотеки", "tags": ["Storybook", "Jest", "GSAP", "i18n"] },
-          { "id": 3, "title": "Другое", "tags": ["Websocket", "JavaScript", "TypeScript"] }
-        ]
-      },
-      {
-        "id": 2,
-        "title": "HTML",
-        "list": [
-          { "id": 1, "title": "Шаблонизаторы", "tags": ["PUG", "EJS"] },
-          { "id": 2, "title": "Другое", "tags": ["HTML"] }
-        ]
-      },
-      {
-        "id": 3,
-        "title": "CSS",
-        "list": [
-          { "id": 1, "title": "Препроцессоры", "tags": ["SCSS/SASS", "Less", "STYL"] },
-          { "id": 2, "title": "Фреймворки", "tags": ["Tailwind"] },
-          { "id": 3, "title": "Другое", "tags": ["CSS"] }
-        ]
-      },
-      {
-        "id": 4,
-        "title": "Разное",
-        "list": [
-          { "id": 1, "title": "CMS", "tags": ["Wordpress"] },
-          { "id": 2, "title": "Дизайн", "tags": ["Figma", "Adobe Photoshop"] },
-          { "id": 3, "title": "OС", "tags": ["Windows", "Mac OS"] }
-        ]
-      }
-    ]
+    "title": "Мои навыки"
   },
   "repositories": {
     "title": "Репозитории",

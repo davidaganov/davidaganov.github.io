@@ -21,44 +21,7 @@
     "photoHide": "Hide photo in CV"
   },
   "skills": {
-    "title": "My Skills",
-    "data": [
-      {
-        "id": 1,
-        "title": "JavaScript",
-        "list": [
-          { "id": 1, "title": "Frameworks", "tags": ["Nuxt 2 / 3", "Vue 2 / 3", "React"] },
-          { "id": 2, "title": "Library", "tags": ["Storybook", "Jest", "GSAP", "i18n"] },
-          { "id": 3, "title": "Other", "tags": ["Websocket", "JavaScript", "TypeScript"] }
-        ]
-      },
-      {
-        "id": 2,
-        "title": "HTML",
-        "list": [
-          { "id": 1, "title": "Template Engine", "tags": ["PUG", "EJS"] },
-          { "id": 2, "title": "Other", "tags": ["HTML"] }
-        ]
-      },
-      {
-        "id": 3,
-        "title": "CSS",
-        "list": [
-          { "id": 1, "title": "Preprocessors", "tags": ["SCSS/SASS", "Less", "STYL"] },
-          { "id": 2, "title": "Frameworks", "tags": ["Tailwind"] },
-          { "id": 3, "title": "Other", "tags": ["CSS"] }
-        ]
-      },
-      {
-        "id": 4,
-        "title": "Other",
-        "list": [
-          { "id": 1, "title": "CMS", "tags": ["Wordpress"] },
-          { "id": 2, "title": "Design", "tags": ["Figma", "Adobe Photoshop"] },
-          { "id": 3, "title": "OS", "tags": ["Windows", "Mac OS"] }
-        ]
-      }
-    ]
+    "title": "My Skills"
   },
   "repositories": {
     "title": "Repositories",
