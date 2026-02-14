@@ -1,0 +1,7 @@
+@import "@/assets/css/fonts/inter.css";
+@import "@/assets/css/lib/tailwind.css";
+@import "@nuxt/ui";
+
+button {
+  cursor: pointer;
+}

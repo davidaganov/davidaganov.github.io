@@ -1,0 +1,16 @@
+{
+  "extends": "./.nuxt/tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"],
+      "@app": ["./app"],
+      "@app/*": ["./app/*"],
+      "@base": ["./layers/base/app"],
+      "@base/*": ["./layers/base/app/*"],
+      "@ui": ["./layers/ui/app"],
+      "@ui/*": ["./layers/ui/app/*"],
+      "@api": ["./layers/api/app"],
+      "@api/*": ["./layers/api/app/*"]
+    }
+  }
+}

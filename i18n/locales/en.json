@@ -1,0 +1,48 @@
+{
+  "common": {
+    "retry": "Retry"
+  },
+  "home": {
+    "badge": "Available for hire",
+    "title": "David Aganov",
+    "description": "Frontend Developer — 5 years of commercial experience.",
+    "getStarted": "Get Started",
+    "commandPalette": "Ctrl+K",
+    "links": {
+      "title": "Connect with me",
+      "tabs": {
+        "professional": "Work",
+        "personal": "Life"
+      },
+      "cta": "Documentation",
+      "scrollDown": "Scroll down",
+      "ctaDescription": "Go to the user guide",
+      "empty": {
+        "title": "Links are temporarily unavailable",
+        "description": "No links were loaded, but you can still open the documentation.",
+        "cta": "Open documentation"
+      }
+    }
+  },
+  "commandPalette": {
+    "title": "Command palette",
+    "description": "Search and navigate using keyboard commands",
+    "placeholder": "Search docs...",
+    "empty": "Start typing to search...",
+    "navigate": "to navigate",
+    "select": "to select"
+  },
+  "footer": {
+    "sections": {
+      "docs": "Docs"
+    },
+    "links": {
+      "gettingStarted": "Getting started",
+      "about": "About",
+      "projects": "Projects",
+      "contacts": "Contacts",
+      "repository": "GitHub Repository"
+    },
+    "repositoryHint": "The source code of this portfolio."
+  }
+}
