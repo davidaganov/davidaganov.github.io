@@ -41,12 +41,6 @@ const docLinks = computed(() => [
             </NuxtLink>
           </nav>
         </div>
-
-        <div>
-          <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">
-            {{ $t("footer.sections.project") }}
-          </div>
-        </div>
       </div>
     </div>
 
