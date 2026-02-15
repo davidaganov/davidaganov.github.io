@@ -7,9 +7,9 @@
     "title": "David Aganov",
     "description": "Frontend Developer — 5 years of commercial experience.",
     "getStarted": "Get Started",
-    "commandPalette": "Ctrl+K",
+    "disableBackgroundAnimation": "No animation",
     "links": {
-      "title": "Connect with me",
+      "title": "Contacts",
       "tabs": {
         "professional": "Work",
         "personal": "Life"

@@ -23,10 +23,10 @@ const projects = [
 </script>
 
 <template>
-  <div class="min-h-dvh bg-background-deep text-gray-300 selection:bg-primary-500/30">
+  <div class="bg-background-deep selection:bg-primary-500/30 min-h-dvh text-gray-300">
     <!-- Header (Glass) -->
     <header
-      class="sticky top-0 z-50 border-b border-white/5 bg-background-deep/80 backdrop-blur-xl"
+      class="bg-background-deep/80 sticky top-0 z-50 border-b border-white/5 backdrop-blur-xl"
     >
       <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 lg:px-8">
         <NuxtLink
@@ -43,7 +43,7 @@ const projects = [
 
         <!-- Search Trigger -->
         <button
-          class="flex items-center gap-2 rounded-lg border border-white/5 bg-white/5 px-3 py-1.5 text-xs text-muted transition-colors hover:border-white/10 hover:bg-white/10"
+          class="text-muted flex items-center gap-2 rounded-lg border border-white/5 bg-white/5 px-3 py-1.5 text-xs transition-colors hover:border-white/10 hover:bg-white/10"
         >
           <UIcon
             name="i-lucide-search"
@@ -69,7 +69,7 @@ const projects = [
         <!-- Sidebar (Left) -->
         <aside class="hidden w-64 shrink-0 border-r border-white/5 lg:block">
           <div
-            class="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 pr-4 scrollbar-thin scrollbar-thumb-white/10"
+            class="scrollbar-thin scrollbar-thumb-white/10 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 pr-4"
           >
             <!-- Main Nav -->
             <nav class="space-y-1">
@@ -97,7 +97,7 @@ const projects = [
             <!-- Projects Section -->
             <div class="mt-8">
               <button
-                class="flex w-full items-center justify-between px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted transition-colors hover:text-white"
+                class="text-muted flex w-full items-center justify-between px-3 py-2 text-xs font-semibold tracking-wider uppercase transition-colors hover:text-white"
                 @click="isProjectsOpen = !isProjectsOpen"
               >
                 <span>Projects</span>
@@ -118,7 +118,7 @@ const projects = [
                 <NuxtLink
                   v-for="project in projects"
                   :to="localePath(project.to)"
-                  class="group flex items-center gap-3 rounded-lg border-l border-transparent px-3 py-2 text-sm text-muted transition-all hover:border-primary-500/50 hover:bg-white/5 hover:text-white"
+                  class="group text-muted hover:border-primary-500/50 flex items-center gap-3 rounded-lg border-l border-transparent px-3 py-2 text-sm transition-all hover:bg-white/5 hover:text-white"
                   :class="route.path.startsWith(project.to) ? 'bg-white/5 text-white' : ''"
                   :key="project.to"
                 >
@@ -133,7 +133,7 @@ const projects = [
 
             <!-- Links (Bottom) -->
             <div class="mt-12 border-t border-white/5 pt-6">
-              <div class="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-muted">
+              <div class="text-muted mb-3 px-3 text-xs font-semibold tracking-wider uppercase">
                 Connect
               </div>
               <div class="space-y-1">
@@ -141,7 +141,7 @@ const projects = [
                   v-for="link in SOCIAL_LINKS"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-white/5 hover:text-white"
+                  class="group text-muted flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-white/5 hover:text-white"
                   :href="link.href"
                   :key="link.href"
                 >
@@ -164,7 +164,7 @@ const projects = [
           >
             <!-- Top gradient line -->
             <div
-              class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary-500/20 to-transparent"
+              class="via-primary-500/20 absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent"
             />
 
             <slot />

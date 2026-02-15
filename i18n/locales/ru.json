@@ -7,9 +7,9 @@
     "title": "Давид Аганов",
     "description": "Фронтенд-разработчик — 5 лет коммерческого опыта.",
     "getStarted": "Начать",
-    "commandPalette": "Ctrl+K",
+    "disableBackgroundAnimation": "Без анимации",
     "links": {
-      "title": "Связаться со мной",
+      "title": "Контакты",
       "tabs": {
         "professional": "Работа",
         "personal": "Жизнь"

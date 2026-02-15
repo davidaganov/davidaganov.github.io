@@ -11,7 +11,7 @@ const localePath = useLocalePath()
     >
       <UIcon
         name="i-lucide-inbox"
-        class="h-8 w-8 text-gray-400"
+        class="size-8 text-gray-400"
       />
     </div>
 

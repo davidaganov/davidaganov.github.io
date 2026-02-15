@@ -16,7 +16,7 @@ defineShortcuts({
 </script>
 
 <template>
-  <div class="relative min-h-dvh w-full overflow-hidden bg-background-deep text-white">
+  <div class="bg-background-deep relative min-h-dvh w-full overflow-hidden text-white">
     <slot />
     <AppFooter />
     <UiCommandPalette />

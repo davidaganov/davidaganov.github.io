@@ -82,7 +82,7 @@ onUnmounted(() => {
   >
     <!-- Background Pill -->
     <div
-      class="bg-white/10 left-0 absolute transition-all top-1 h-[calc(100%-8px)] rounded-[18px] will-change-transform"
+      class="absolute top-1 left-0 h-[calc(100%-8px)] rounded-[18px] bg-white/10 transition-all will-change-transform"
       :style="pillStyle"
     />
 

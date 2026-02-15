@@ -7,43 +7,20 @@ interface LocalizedLink extends Link {
   isCta: boolean
 }
 
-const props = withDefaults(
-  defineProps<{
-    link: LocalizedLink
-    animated?: boolean
-    index?: number
-    motionInitial?: Record<string, string | number>
-    motionEnter?: (index: number) => Record<string, unknown>
-  }>(),
-  {
-    animated: false,
-    index: 0,
-    motionEnter: () => () => ({ opacity: 1, y: 0, filter: "blur(0px)" }),
-    motionInitial: () => ({
-      opacity: 0,
-      y: 14,
-      filter: "blur(6px)"
-    })
-  }
-)
-
-const enterState = computed(() =>
-  props.animated ? props.motionEnter?.(props.index) : props.motionInitial
-)
+const props = defineProps<{
+  link: LocalizedLink
+}>()
 </script>
 
 <template>
   <a
-    v-motion
     target="_blank"
     rel="noopener noreferrer"
-    class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(184,126,239,0.12)]"
-    :initial="props.motionInitial"
-    :enter="enterState"
-    :href="props.link.url"
+    class="link-card group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-md transition-[background-color,border-color,box-shadow] duration-300 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(184,126,239,0.12)]"
     :class="{
       'border-primary-500/30 bg-primary-500/5 hover:border-primary-500/50': props.link.isCta
     }"
+    :href="props.link.url"
   >
     <div class="flex items-center gap-3">
       <div
@@ -74,13 +51,13 @@ const enterState = computed(() =>
 
     <div
       v-if="props.link.isCta"
-      class="pointer-events-none absolute inset-0 bg-primary-500/5 opacity-100 transition-opacity duration-300"
+      class="bg-primary-500/5 pointer-events-none absolute inset-0 opacity-100 transition-opacity duration-300"
     />
 
     <div
       class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
     >
-      <div class="absolute -right-20 -top-20 size-40 rounded-full bg-primary-500/10 blur-2xl" />
+      <div class="bg-primary-500/10 absolute -top-20 -right-20 size-40 rounded-full blur-2xl" />
       <div class="absolute -bottom-20 -left-20 size-40 rounded-full bg-purple-500/10 blur-2xl" />
     </div>
   </a>

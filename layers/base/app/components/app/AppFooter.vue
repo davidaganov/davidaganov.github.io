@@ -17,17 +17,17 @@ const docLinks = computed(() => [
 <template>
   <footer class="w-full">
     <div class="relative">
-      <div class="absolute mx-auto flex justify-center left-0 right-0 -translate-y-1/2 z-1">
+      <div class="absolute right-0 left-0 z-1 mx-auto flex -translate-y-1/2 justify-center">
         <UiLogo />
       </div>
 
       <UiDivider />
     </div>
 
-    <div class="mx-auto w-full max-w-6xl relative px-6 py-16">
-      <div class="flex gap-16 flex-col md:flex-row">
+    <div class="relative mx-auto w-full max-w-6xl px-6 py-16">
+      <div class="flex flex-col gap-16 md:flex-row">
         <div>
-          <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+          <div class="text-xs font-semibold tracking-wider text-gray-400 uppercase">
             {{ $t("footer.sections.docs") }}
           </div>
           <nav class="mt-4 space-y-2">
@@ -48,7 +48,7 @@ const docLinks = computed(() => [
       <UiDivider />
     </div>
 
-    <div class="mx-auto w-full max-w-6xl relative px-6 my-6">
+    <div class="relative mx-auto my-6 w-full max-w-6xl px-6">
       <div
         class="flex flex-col gap-2 text-xs text-gray-500 sm:flex-row sm:items-center sm:justify-between"
       >

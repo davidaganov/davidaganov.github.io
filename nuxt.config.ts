@@ -32,6 +32,10 @@ export default defineNuxtConfig({
     enabled: false
   },
 
+  devServer: {
+    host: "0.0.0.0"
+  },
+
   css: ["@/assets/css/main.css"],
 
   app: {

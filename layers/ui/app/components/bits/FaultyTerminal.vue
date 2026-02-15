@@ -293,6 +293,20 @@ const handleMouseMove = (e: MouseEvent) => {
 }
 
 let cleanup: (() => void) | null = null
+let updateLoop: ((t: number) => void) | null = null
+
+const stopLoop = () => {
+  if (rafRef.value) {
+    cancelAnimationFrame(rafRef.value)
+    rafRef.value = 0
+  }
+}
+
+const startLoop = () => {
+  if (!programRef.value || !rendererRef.value || rafRef.value) return
+  rafRef.value = requestAnimationFrame((t) => updateLoop?.(t))
+}
+
 const setup = () => {
   const ctn = containerRef.value
   if (!ctn) return
@@ -353,8 +367,9 @@ const setup = () => {
   resizeObserver.observe(ctn)
   resize()
 
-  const update = (t: number) => {
-    rafRef.value = requestAnimationFrame(update)
+  updateLoop = (t: number) => {
+    if (!programRef.value || !rendererRef.value) return
+    if (!props.pause) rafRef.value = requestAnimationFrame((nextT) => updateLoop?.(nextT))
 
     if (props.pageLoadAnimation && loadAnimationStartRef.value === 0) {
       loadAnimationStartRef.value = t
@@ -389,19 +404,20 @@ const setup = () => {
 
     renderer.render({ scene: mesh })
   }
-  rafRef.value = requestAnimationFrame(update)
+  if (!props.pause) rafRef.value = requestAnimationFrame((t) => updateLoop?.(t))
   ctn.appendChild(gl.canvas)
 
   if (props.mouseReact) ctn.addEventListener("mousemove", handleMouseMove)
 
   cleanup = () => {
-    cancelAnimationFrame(rafRef.value)
+    stopLoop()
     resizeObserver.disconnect()
     if (props.mouseReact) ctn.removeEventListener("mousemove", handleMouseMove)
     if (gl.canvas.parentElement === ctn) ctn.removeChild(gl.canvas)
     gl.getExtension("WEBGL_lose_context")?.loseContext()
     loadAnimationStartRef.value = 0
     timeOffsetRef.value = Math.random() * 100
+    updateLoop = null
   }
 }
 
@@ -420,23 +436,24 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => props,
-  () => {
-    if (cleanup) {
-      cleanup()
-      cleanup = null
+  () => props.pause,
+  (paused) => {
+    if (!cleanup) return
+    if (paused) {
+      stopLoop()
+      return
     }
-    setup()
-  },
-  { deep: true }
+
+    startLoop()
+  }
 )
 </script>
 
 <template>
   <div
-    :class="['w-full h-full relative overflow-hidden', className]"
+    v-bind="$attrs"
+    :class="['relative h-full w-full overflow-hidden', className]"
     :style="style"
     ref="containerRef"
-    v-bind="$attrs"
   />
 </template>

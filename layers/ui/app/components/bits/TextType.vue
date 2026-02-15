@@ -21,6 +21,7 @@ const props = withDefaults(
     variableSpeed?: { min: number; max: number }
     startOnVisible?: boolean
     reverseMode?: boolean
+    disabled?: boolean
     onSentenceComplete?: (sentence: string, index: number) => void
   }>(),
   {
@@ -41,6 +42,7 @@ const props = withDefaults(
     startOnVisible: false,
     reverseMode: false,
     onSentenceComplete: undefined,
+    disabled: false,
     textColors: () => []
   }
 )
@@ -51,6 +53,7 @@ const isDeleting = ref(false)
 const currentTextIndex = ref(0)
 const isVisible = ref(!props.startOnVisible)
 const isTypingComplete = ref(false)
+
 const containerRef = useTemplateRef("containerRef")
 
 const textArray = computed(() => (Array.isArray(props.text) ? props.text : [props.text]))
@@ -160,27 +163,32 @@ onBeforeUnmount(() => {
   <component
     v-bind="$attrs"
     :is="as"
-    :class="`inline-block whitespace-pre-wrap tracking-tight ${className}`"
+    :class="`inline-block tracking-tight whitespace-pre-wrap ${className}`"
     ref="containerRef"
   >
-    <span
-      class="inline"
-      :style="{ color: getCurrentTextColor() }"
-    >
-      {{ displayedText }}
-    </span>
-    <span
-      v-if="showCursor && !(hideCursorAfterComplete && isTypingComplete)"
-      :class="`ml-1 inline-block opacity-100 animate-blink ${
-        hideCursorWhileTyping &&
-        (currentCharIndex < (textArray[currentTextIndex]?.length || 0) || isDeleting)
-          ? 'hidden'
-          : ''
-      } ${cursorClassName}`"
-      ref="cursorRef"
-    >
-      {{ cursorCharacter }}
-    </span>
+    <template v-if="disabled">
+      <span :class="`inline ${className}`">{{ Array.isArray(text) ? text[0] : text }}</span>
+    </template>
+    <template v-else>
+      <span
+        class="inline"
+        :style="{ color: getCurrentTextColor() }"
+      >
+        {{ displayedText }}
+      </span>
+      <span
+        v-if="showCursor && !(hideCursorAfterComplete && isTypingComplete)"
+        :class="`animate-blink ml-1 inline-block opacity-100 ${
+          hideCursorWhileTyping &&
+          (currentCharIndex < (textArray[currentTextIndex]?.length || 0) || isDeleting)
+            ? 'hidden'
+            : ''
+        } ${cursorClassName}`"
+        ref="cursorRef"
+      >
+        {{ cursorCharacter }}
+      </span>
+    </template>
   </component>
 </template>
 

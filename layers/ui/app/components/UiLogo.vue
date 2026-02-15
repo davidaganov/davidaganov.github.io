@@ -11,7 +11,7 @@ const localePath = useLocalePath()
       :to="localePath(ROUTE_PATH.HOME)"
     >
       <span
-        class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 border border-white/10"
+        class="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5"
       >
         <span class="text-primary-400">A</span>
       </span>

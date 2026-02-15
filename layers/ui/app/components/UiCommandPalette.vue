@@ -32,9 +32,9 @@ const { isOpen } = useCommandPalette()
             />
             <UInput
               type="text"
-              :placeholder="$t('commandPalette.placeholder')"
               variant="none"
               class="flex-1"
+              :placeholder="$t('commandPalette.placeholder')"
               :ui="{
                 base: 'bg-transparent text-white placeholder:text-gray-500 focus:outline-none'
               }"
@@ -45,7 +45,7 @@ const { isOpen } = useCommandPalette()
           </div>
 
           <!-- Content Area -->
-          <div class="min-h-[200px] flex items-center justify-center p-4">
+          <div class="flex min-h-[200px] items-center justify-center p-4">
             <div class="flex h-full flex-col items-center justify-center gap-2 text-gray-500">
               <UIcon
                 name="i-lucide-command"
