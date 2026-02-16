@@ -32,13 +32,42 @@
     "navigate": "для навигации",
     "select": "для выбора"
   },
+  "layout": {
+    "search": "Поиск...",
+    "sidebar": {
+      "nav": {
+        "gettingStarted": "Обзор",
+        "experience": "Опыт",
+        "stack": "Стек"
+      },
+      "sections": {
+        "projects": "Проекты",
+        "connect": "Связаться"
+      }
+    },
+    "projectsPage": {
+      "title": "Проекты",
+      "empty": "Пока нет проектов."
+    },
+    "projectPage": {
+      "onThisPage": "На этой странице",
+      "github": "GitHub",
+      "npm": "NPM",
+      "star": "Поставить звезду",
+      "version": "Вер.",
+      "downloads": "Скачиваний",
+      "lastCommit": "Последний коммит"
+    }
+  },
   "footer": {
     "sections": {
-      "docs": "Разделы"
+      "docs": "Разделы",
+      "social": "Контакты",
+      "projects": "Проекты"
     },
     "links": {
-      "gettingStarted": "Начать",
-      "about": "Обо мне",
+      "overview": "Обзор",
+      "experience": "Опыт",
       "projects": "Проекты",
       "contacts": "Контакты",
       "repository": "Репозиторий на GitHub"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SOCIAL_LINKS } from "@base/constants/config"
 import { ROUTE_PATH } from "@base/types/enums/route.enum"
 import UiDivider from "@ui/components/UiDivider.vue"
 import UiLogo from "@ui/components/UiLogo.vue"
@@ -7,10 +8,12 @@ const localePath = useLocalePath()
 const { t } = useI18n()
 
 const year = computed(() => new Date().getFullYear())
+const { projects } = useTopProjects(3)
 
 const docLinks = computed(() => [
-  { label: t("footer.links.gettingStarted"), to: ROUTE_PATH.GETTING_STARTED },
-  { label: t("footer.links.about"), to: ROUTE_PATH.ABOUT }
+  { label: t("footer.links.overview"), to: ROUTE_PATH.GETTING_STARTED },
+  { label: t("footer.links.experience"), to: ROUTE_PATH.EXPERIENCE },
+  { label: t("footer.links.projects"), to: ROUTE_PATH.PROJECTS }
 ])
 </script>
 
@@ -18,37 +21,91 @@ const docLinks = computed(() => [
   <footer class="w-full">
     <div class="relative">
       <div class="absolute right-0 left-0 z-1 mx-auto flex -translate-y-1/2 justify-center">
-        <UiLogo />
+        <UiLogo :short="true" />
       </div>
 
       <UiDivider />
     </div>
 
-    <div class="relative mx-auto w-full max-w-6xl px-6 py-16">
-      <div class="flex flex-col gap-16 md:flex-row">
+    <nav class="relative container py-10">
+      <div class="flex flex-row flex-wrap gap-12 md:max-w-1/2 md:justify-between md:gap-20">
         <div>
-          <div class="text-xs font-semibold tracking-wider text-gray-400 uppercase">
+          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
+            {{ $t("footer.sections.social") }}
+          </h3>
+          <ul class="mt-4 flex flex-col gap-3">
+            <li
+              v-for="item in SOCIAL_LINKS"
+              :key="item.label"
+            >
+              <a
+                class="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+                :href="item.href"
+              >
+                <UIcon
+                  class="size-4"
+                  :name="item.icon"
+                />
+                <span>{{ item.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
             {{ $t("footer.sections.docs") }}
-          </div>
-          <nav class="mt-4 space-y-2">
-            <NuxtLink
+          </h3>
+          <ul class="mt-4 flex flex-col gap-3">
+            <li
               v-for="item in docLinks"
-              class="block text-sm text-gray-400 transition-colors hover:text-white"
-              :to="localePath(item.to)"
               :key="item.to"
             >
-              {{ item.label }}
-            </NuxtLink>
-          </nav>
+              <NuxtLink
+                class="block text-sm text-gray-400 transition-colors hover:text-white"
+                :to="localePath(item.to)"
+              >
+                {{ item.label }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="projects.length">
+          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
+            {{ $t("footer.sections.projects") }}
+          </h3>
+          <ul class="mt-4 flex flex-col gap-3">
+            <li
+              v-for="item in projects"
+              :key="item.to"
+            >
+              <NuxtLink
+                class="group flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+                :to="localePath(item.to)"
+              >
+                <span>{{ item.title }}</span>
+                <span class="inline-flex items-center gap-1 text-xs text-gray-500">
+                  <UIcon
+                    name="i-lucide-star"
+                    class="size-3"
+                  />
+                  {{ item.stars }}
+                </span>
+              </NuxtLink>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
+    </nav>
 
     <div class="relative">
       <UiDivider />
     </div>
 
-    <div class="relative mx-auto my-6 w-full max-w-6xl px-6">
+    <div class="relative container my-6">
       <div
         class="flex flex-col gap-2 text-xs text-gray-500 sm:flex-row sm:items-center sm:justify-between"
       >

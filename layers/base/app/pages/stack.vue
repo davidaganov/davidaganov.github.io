@@ -2,7 +2,7 @@
 import AppRightSidebar from "@base/components/app/AppRightSidebar.vue"
 import { ROUTE_PATH } from "@base/types/enums"
 
-const { data: page } = await usePageContent(ROUTE_PATH.GETTING_STARTED)
+const { data: page } = await usePageContent(ROUTE_PATH.STACK)
 </script>
 
 <template>

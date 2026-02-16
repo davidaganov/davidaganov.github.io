@@ -5,4 +5,9 @@
   body {
     @apply bg-background-deep font-sans text-white antialiased;
   }
+
+  /* Remove border from links that contain images (like badges) */
+  a:has(img) {
+    @apply border-none;
+  }
 }

@@ -1,5 +1,6 @@
-import type { LinksGistContent } from "@/types/links"
-import { request } from "../request"
+import { request } from "@api/services/request"
+import { routes } from "@api/services/requests/links/routes"
+import type { LinksGistContent } from "@api/types/links"
 
 type GithubGistResponse = {
   files: Record<
@@ -19,7 +20,7 @@ const normalizeLinks = (value: unknown): LinksGistContent => {
   }
 }
 
-export const getLinks = async (): Promise<LinksGistContent> => {
+export async function getLinks(): Promise<LinksGistContent> {
   const config = useRuntimeConfig()
   const gistId = String(config.public.linksGistId)
   const filename = String(config.public.linksGistFilename)
@@ -32,8 +33,7 @@ export const getLinks = async (): Promise<LinksGistContent> => {
     headers.Authorization = `Bearer ${config.githubToken}`
   }
 
-  const gistUrl = `https://api.github.com/gists/${gistId}`
-  const gistData = await request.get<GithubGistResponse>(gistUrl, { headers })
+  const gistData = await request.get<GithubGistResponse>(routes.gist(gistId), { headers })
   const content = gistData.files?.[filename]?.content
 
   if (!content) {

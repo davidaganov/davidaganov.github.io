@@ -4,7 +4,6 @@ export enum ROUTE_PATH {
   ABOUT = "/about",
   CONTACTS = "/contacts",
   PROJECTS = "/projects",
-  OVERVIEW = "/docs/overview",
   EXPERIENCE = "/experience",
   STACK = "/stack"
 }

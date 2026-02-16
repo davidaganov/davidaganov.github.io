@@ -76,7 +76,7 @@ onUnmounted(() => {
     class="relative w-full py-20"
     id="links-section"
   >
-    <div class="mx-auto w-full max-w-6xl px-6">
+    <div class="container">
       <div class="mb-8 flex items-end justify-between gap-6">
         <div class="flex w-full items-center justify-between gap-4 sm:justify-start sm:text-3xl">
           <h2 class="text-2xl font-semibold tracking-tight text-white">

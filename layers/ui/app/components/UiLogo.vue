@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { ROUTE_PATH } from "@base/types/enums/route.enum"
 
+const props = withDefaults(
+  defineProps<{
+    short?: boolean
+  }>(),
+  {
+    short: false
+  }
+)
+
 const localePath = useLocalePath()
 </script>
 
@@ -11,9 +20,15 @@ const localePath = useLocalePath()
       :to="localePath(ROUTE_PATH.HOME)"
     >
       <span
-        class="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5"
+        class="text-primary-400 flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/5"
       >
-        <span class="text-primary-400">A</span>
+        A
+      </span>
+      <span
+        v-if="!props.short"
+        class="text-lg font-semibold"
+      >
+        David Aganov
       </span>
     </NuxtLink>
   </div>

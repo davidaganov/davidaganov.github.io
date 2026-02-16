@@ -5,9 +5,8 @@ description: Projects and case studies.
 
 # Projects
 
-Projects list will be here.
+## Polyglot Keeper
 
-Planned:
+AI-powered i18n sync tool: translates missing keys and keeps locale structures consistent.
 
-- project cards
-- case study pages
+[Open project page](/projects/polyglot-keeper)

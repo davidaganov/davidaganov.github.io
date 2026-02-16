@@ -32,13 +32,36 @@
     "navigate": "to navigate",
     "select": "to select"
   },
+  "layout": {
+    "search": "Search...",
+    "sidebar": {
+      "nav": {
+        "gettingStarted": "Getting Started",
+        "experience": "Experience",
+        "stack": "Stack"
+      },
+      "sections": {
+        "projects": "Projects",
+        "connect": "Connect"
+      }
+    },
+    "projectPage": {
+      "onThisPage": "On this page",
+      "github": "GitHub",
+      "npm": "NPM",
+      "star": "Star on GitHub",
+      "lastCommit": "Last Commit"
+    }
+  },
   "footer": {
     "sections": {
-      "docs": "Docs"
+      "docs": "Docs",
+      "social": "Contacts",
+      "projects": "Projects"
     },
     "links": {
-      "gettingStarted": "Getting started",
-      "about": "About",
+      "overview": "Overview",
+      "experience": "Experience",
       "projects": "Projects",
       "contacts": "Contacts",
       "repository": "GitHub Repository"

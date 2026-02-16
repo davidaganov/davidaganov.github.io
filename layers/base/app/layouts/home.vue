@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppFooter from "@base/components/app/AppFooter.vue"
-import UiCommandPalette from "@ui/components/UiCommandPalette.vue"
 
 const { toggle, close } = useCommandPalette()
 
@@ -16,9 +15,8 @@ defineShortcuts({
 </script>
 
 <template>
-  <div class="bg-background-deep relative min-h-dvh w-full overflow-hidden text-white">
+  <div>
     <slot />
     <AppFooter />
-    <UiCommandPalette />
   </div>
 </template>

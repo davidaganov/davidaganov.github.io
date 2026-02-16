@@ -13,6 +13,13 @@ export default defineNuxtConfig({
     "@api": fileURLToPath(new URL("./layers/api/app", import.meta.url))
   },
 
+  content: {
+    _localDatabase: {
+      type: "sqlite",
+      filename: ".data/content/contents.sqlite"
+    }
+  },
+
   i18n: {
     locales: [
       { code: "ru", iso: "ru-RU", file: "ru.json" },

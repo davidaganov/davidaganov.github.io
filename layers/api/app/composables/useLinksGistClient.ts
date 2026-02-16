@@ -1,3 +1,4 @@
+import { ApiClient } from "@api/services/client"
 import type { LinksGistContent } from "@/types/links"
 
 export const useLinksGistClient = () => {
@@ -5,13 +6,11 @@ export const useLinksGistClient = () => {
   const error = ref<unknown>(null)
   const pending = ref(true)
 
-  const { links: linksApi } = useApiClient()
-
   const refresh = async () => {
     try {
       pending.value = true
       error.value = null
-      links.value = await linksApi.getLinks()
+      links.value = await ApiClient.links.getLinks()
     } catch (e) {
       error.value = e
       links.value = { professional: [], personal: [] }
