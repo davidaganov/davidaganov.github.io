@@ -46,16 +46,22 @@
         "connect": "Connect"
       }
     },
+    "projectsPage": {
+      "title": "Projects",
+      "empty": "No projects yet."
+    },
+    "articlesPage": {
+      "title": "Articles",
+      "empty": "No articles yet."
+    },
     "projectPage": {
       "onThisPage": "On this page",
       "github": "GitHub",
       "npm": "NPM",
       "star": "Star on GitHub",
+      "version": "Ver.",
+      "downloads": "Downloads",
       "lastCommit": "Last Commit"
-    },
-    "articlesPage": {
-      "title": "Articles",
-      "empty": "No articles yet."
     }
   },
   "footer": {
