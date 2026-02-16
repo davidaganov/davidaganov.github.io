@@ -25,7 +25,7 @@ const nav = computed(() => [
 
 const collection = computed(() => `content_${locale.value}` as keyof Collections)
 
-const { data: projectPages } = await useAsyncData(
+const { data: projectPages } = useAsyncData(
   () => `content:${collection.value}:projects:index`,
   async () => {
     return await queryCollection(collection.value)

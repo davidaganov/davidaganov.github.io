@@ -11,12 +11,10 @@ export interface ProjectWithStars {
 
 export function useTopProjects(limit = 3) {
   const { locale } = useI18n()
-  const projects = ref<ProjectWithStars[]>([])
-  const loading = ref(false)
 
-  const fetchProjects = async () => {
-    loading.value = true
-    try {
+  const { data: projects, pending: loading } = useAsyncData(
+    () => `top-projects:${locale.value}`,
+    async () => {
       const collection = `content_${locale.value}` as keyof Collections
       const allProjects = await queryCollection(collection)
         .where("path", "LIKE", "/projects/%")
@@ -38,20 +36,16 @@ export function useTopProjects(limit = 3) {
           })
       )
 
-      projects.value = withStars.sort((a, b) => b.stars - a.stars).slice(0, limit)
-    } finally {
-      loading.value = false
+      return withStars.sort((a, b) => b.stars - a.stars).slice(0, limit)
+    },
+    {
+      watch: [locale],
+      default: () => []
     }
-  }
-
-  watch(
-    () => locale.value,
-    () => fetchProjects(),
-    { immediate: true }
   )
 
   return {
-    projects: readonly(projects),
-    loading: readonly(loading)
+    projects,
+    loading
   }
 }
