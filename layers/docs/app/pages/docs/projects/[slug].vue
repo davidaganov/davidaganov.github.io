@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content"
-import AppRightSidebar from "@base/components/app/AppRightSidebar.vue"
+import AppRightSidebar from "@docs/components/app/AppRightSidebar.vue"
 
 const route = useRoute()
 

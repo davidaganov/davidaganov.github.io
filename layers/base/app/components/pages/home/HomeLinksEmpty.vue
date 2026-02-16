@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ROUTE_PATH } from "@base/types/enums"
+
 const localePath = useLocalePath()
 </script>
 
@@ -29,7 +31,7 @@ const localePath = useLocalePath()
         variant="soft"
         color="primary"
         icon="i-lucide-book-open"
-        :to="localePath('/getting-started')"
+        :to="localePath(ROUTE_PATH.GETTING_STARTED)"
         :label="$t('home.links.empty.cta')"
       />
     </div>

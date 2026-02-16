@@ -28,7 +28,7 @@ const { isOpen } = useCommandPalette()
           <div class="flex items-center gap-3 border-b border-white/10 px-4 py-3">
             <UIcon
               name="i-lucide-search"
-              class="h-5 w-5 text-gray-400"
+              class="size-5 text-gray-400"
             />
             <UInput
               type="text"
@@ -49,7 +49,7 @@ const { isOpen } = useCommandPalette()
             <div class="flex h-full flex-col items-center justify-center gap-2 text-gray-500">
               <UIcon
                 name="i-lucide-command"
-                class="h-8 w-8"
+                class="size-8"
               />
               <p class="text-sm">
                 {{ $t("commandPalette.empty") }}

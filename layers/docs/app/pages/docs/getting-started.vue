@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import AppRightSidebar from "@base/components/app/AppRightSidebar.vue"
+import AppRightSidebar from "@docs/components/app/AppRightSidebar.vue"
 import { ROUTE_PATH } from "@base/types/enums"
 
-const { data: page } = await usePageContent(ROUTE_PATH.EXPERIENCE)
+const { data: page } = await usePageContent(ROUTE_PATH.GETTING_STARTED)
 </script>
 
 <template>

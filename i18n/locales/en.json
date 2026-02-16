@@ -41,6 +41,7 @@
         "stack": "Stack"
       },
       "sections": {
+        "articles": "Articles",
         "projects": "Projects",
         "connect": "Connect"
       }
@@ -51,6 +52,10 @@
       "npm": "NPM",
       "star": "Star on GitHub",
       "lastCommit": "Last Commit"
+    },
+    "articlesPage": {
+      "title": "Articles",
+      "empty": "No articles yet."
     }
   },
   "footer": {

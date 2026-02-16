@@ -5,8 +5,8 @@ import UiSearchTrigger from "@ui/components/UiSearchTrigger.vue"
 </script>
 
 <template>
-  <header>
-    <div class="container flex h-14 items-center justify-between">
+  <header class="sticky top-0 z-50 w-full border-b border-white/5 bg-(--ui-bg)/75 backdrop-blur-md">
+    <div class="container flex h-18 items-center justify-between">
       <UiLogo />
       <UiSearchTrigger />
 

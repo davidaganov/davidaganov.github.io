@@ -34,7 +34,7 @@ const refinedSrc = computed(() => {
 <template>
   <img
     :src="refinedSrc"
-    :alt="alt"
+    :alt="alt || ''"
     :width="width"
     :height="height"
     class="my-0 inline-block h-auto max-w-full rounded-md align-middle"

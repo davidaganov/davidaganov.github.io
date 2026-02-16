@@ -1,5 +1,5 @@
-import { ApiClient } from "@api/services/client"
 import type { Collections } from "@nuxt/content"
+import { ApiClient } from "@api/services/client"
 
 interface ProjectStats {
   npm?: {

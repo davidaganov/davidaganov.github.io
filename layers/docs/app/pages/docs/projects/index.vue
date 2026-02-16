@@ -29,8 +29,8 @@ const { data: projects } = await useAsyncData(
     <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       <NuxtLink
         v-for="project in projects || []"
-        :to="localePath(String(project.path))"
         class="group rounded-xl border border-white/5 bg-white/3 p-5 transition-colors hover:border-white/10 hover:bg-white/5"
+        :to="localePath(String(project.path))"
         :key="String(project.path)"
       >
         <div class="flex items-start gap-3">

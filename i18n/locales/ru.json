@@ -41,6 +41,7 @@
         "stack": "Стек"
       },
       "sections": {
+        "articles": "Статьи",
         "projects": "Проекты",
         "connect": "Связаться"
       }
@@ -48,6 +49,10 @@
     "projectsPage": {
       "title": "Проекты",
       "empty": "Пока нет проектов."
+    },
+    "articlesPage": {
+      "title": "Статьи",
+      "empty": "Пока нет статей."
     },
     "projectPage": {
       "onThisPage": "На этой странице",

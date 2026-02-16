@@ -47,8 +47,8 @@ const scrollToLinks = () => {
           }"
         />
         <UIcon
-          :name="animationEnabled ? 'i-lucide-zap' : 'i-lucide-zap-off'"
           class="size-4 text-white/70"
+          :name="animationEnabled ? 'i-lucide-zap' : 'i-lucide-zap-off'"
         />
       </div>
       <USelect

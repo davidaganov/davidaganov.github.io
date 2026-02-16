@@ -5,6 +5,8 @@
       "@/*": ["./*"],
       "@app": ["./app"],
       "@app/*": ["./app/*"],
+      "@docs": ["./layers/docs/app"],
+      "@docs/*": ["./layers/docs/app/*"],
       "@base": ["./layers/base/app"],
       "@base/*": ["./layers/base/app/*"],
       "@ui": ["./layers/ui/app"],

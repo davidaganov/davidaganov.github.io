@@ -4,12 +4,13 @@ import { fileURLToPath } from "node:url"
 export default defineNuxtConfig({
   modules: ["@nuxt/ui", "@nuxtjs/i18n", "@nuxt/content", "@pinia/nuxt", "@vueuse/motion/nuxt"],
 
-  extends: ["./layers/ui", "./layers/api", "./layers/base"],
+  extends: ["./layers/ui", "./layers/api", "./layers/docs", "./layers/base"],
 
   alias: {
     "@app": fileURLToPath(new URL("./app", import.meta.url)),
     "@ui": fileURLToPath(new URL("./layers/ui/app", import.meta.url)),
     "@base": fileURLToPath(new URL("./layers/base/app", import.meta.url)),
+    "@docs": fileURLToPath(new URL("./layers/docs/app", import.meta.url)),
     "@api": fileURLToPath(new URL("./layers/api/app", import.meta.url))
   },
 

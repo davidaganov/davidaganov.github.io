@@ -1,5 +1,6 @@
-import { ApiClient } from "@api/services/client"
 import type { Collections } from "@nuxt/content"
+import { ApiClient } from "@api/services/client"
+import { ROUTE_PATH } from "@base/types/enums"
 
 export interface ProjectWithStars {
   title: string
@@ -17,7 +18,7 @@ export function useTopProjects(limit = 3) {
     async () => {
       const collection = `content_${locale.value}` as keyof Collections
       const allProjects = await queryCollection(collection)
-        .where("path", "LIKE", "/projects/%")
+        .where("path", "LIKE", "%/projects/%")
         .all()
 
       const withStars = await Promise.all(
@@ -29,7 +30,7 @@ export function useTopProjects(limit = 3) {
             return {
               title: String(p.title || ""),
               description: String(p.description || ""),
-              to: `/projects/${p.path.split("/").pop() || ""}`,
+              to: `${ROUTE_PATH.PROJECTS}/${p.path.split("/").pop() || ""}`,
               githubRepo,
               stars
             }
