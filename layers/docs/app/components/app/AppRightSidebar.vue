@@ -3,7 +3,7 @@ import AppRightSidebarArticleMeta from "@docs/components/app/AppRightSidebarArti
 import AppRightSidebarProjectMeta from "@docs/components/app/AppRightSidebarProjectMeta.vue"
 import AppRightSidebarToc from "@docs/components/app/AppRightSidebarToc.vue"
 
-defineProps<{
+const props = defineProps<{
   page: unknown
 }>()
 </script>
@@ -13,9 +13,9 @@ defineProps<{
     <Teleport to="#app-right-sidebar-root">
       <aside class="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 lg:pb-14">
         <div class="space-y-6">
-          <AppRightSidebarToc :page="page" />
-          <AppRightSidebarProjectMeta :page="page" />
-          <AppRightSidebarArticleMeta :page="page" />
+          <AppRightSidebarToc :page="props.page" />
+          <AppRightSidebarProjectMeta :page="props.page" />
+          <AppRightSidebarArticleMeta :page="props.page" />
         </div>
       </aside>
     </Teleport>

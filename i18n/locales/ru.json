@@ -37,7 +37,6 @@
     "sidebar": {
       "nav": {
         "gettingStarted": "Обзор",
-        "experience": "Опыт",
         "stack": "Стек"
       },
       "sections": {
@@ -72,8 +71,8 @@
     },
     "links": {
       "overview": "Обзор",
-      "experience": "Опыт",
       "projects": "Проекты",
+      "articles": "Статьи",
       "contacts": "Контакты",
       "repository": "Репозиторий на GitHub"
     },

@@ -1,5 +1,7 @@
 import { LOCALE } from "@base/types/enums"
 
+export const GITHUB_REPO = "davidaganov/davidaganov.github.io"
+
 export const AVAILABLE_LOCALES = [
   { label: "RU", value: LOCALE.RU },
   { label: "EN", value: LOCALE.EN }

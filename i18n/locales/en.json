@@ -72,8 +72,8 @@
     },
     "links": {
       "overview": "Overview",
-      "experience": "Experience",
       "projects": "Projects",
+      "articles": "Articles",
       "contacts": "Contacts",
       "repository": "GitHub Repository"
     },

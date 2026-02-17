@@ -6,6 +6,12 @@
 .cache
 dist
 
+# AI
+.agent
+.agents
+.cursor
+.windsurf
+
 # Node dependencies
 node_modules
 

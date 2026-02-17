@@ -12,8 +12,8 @@ const { projects } = useTopProjects(3)
 
 const docLinks = computed(() => [
   { label: t("footer.links.overview"), to: ROUTE_PATH.GETTING_STARTED },
-  { label: t("footer.links.experience"), to: ROUTE_PATH.EXPERIENCE },
-  { label: t("footer.links.projects"), to: ROUTE_PATH.PROJECTS }
+  { label: t("footer.links.projects"), to: ROUTE_PATH.PROJECTS },
+  { label: t("footer.links.articles"), to: ROUTE_PATH.ARTICLES }
 ])
 </script>
 
