@@ -3,7 +3,7 @@ import HomeLinkCard from "@base/components/pages/home/HomeLinkCard.vue"
 import HomeLinksEmpty from "@base/components/pages/home/HomeLinksEmpty.vue"
 import { ROUTE_PATH, VIEW_MODE } from "@base/types/enums"
 import type { Link } from "@base/types/links"
-import UiTabs from "@ui/components/bits/UiTabs.vue"
+import UiTabs from "@ui/components/UiTabs.vue"
 
 const { t } = useI18n()
 const localePath = useLocalePath()

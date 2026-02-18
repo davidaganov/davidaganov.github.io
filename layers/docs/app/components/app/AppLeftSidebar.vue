@@ -8,7 +8,7 @@ import { SIDEBAR_ITEMS } from "@docs/config/sidebar"
 
 <template>
   <aside
-    class="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto border-r border-white/5 lg:block"
+    class="sticky top-18 h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto border-r border-white/5"
   >
     <div class="py-8 pr-4">
       <nav class="space-y-1">

@@ -3,6 +3,13 @@ export interface GitHubRepoData {
   pushed_at: string
 }
 
+export interface GitHubUserData {
+  public_repos: number
+  public_gists: number
+  followers: number
+  following: number
+}
+
 export interface GitHubLanguages {
   [language: string]: number
 }

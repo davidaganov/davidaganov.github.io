@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import HomeHeroSection from "@base/components/pages/home/HomeHeroSection.vue"
-import HomeLinksSection from "@base/components/pages/home/HomeLinksSection.vue"
+import HomePage from "@base/components/pages/home/HomePage.vue"
 
 definePageMeta({
   layout: "home"
@@ -8,8 +7,5 @@ definePageMeta({
 </script>
 
 <template>
-  <div>
-    <HomeHeroSection />
-    <HomeLinksSection />
-  </div>
+  <HomePage />
 </template>

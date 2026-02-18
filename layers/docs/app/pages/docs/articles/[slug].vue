@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content"
 import AppRightSidebar from "@docs/components/app/AppRightSidebar.vue"
+import { TYPE_PAGE } from "@docs/types/enums"
+import { ROUTE_PATH } from "@base/types/enums"
 
+const localePath = useLocalePath()
 const route = useRoute()
 
 const { locale } = useI18n()
@@ -27,8 +30,17 @@ const { data: page } = await useAsyncData(
 
 <template>
   <div v-if="page">
+    <NuxtLink
+      class="text-primary mb-1.5 block text-sm font-semibold"
+      :to="localePath(ROUTE_PATH.ARTICLES)"
+    >
+      {{ $t("layout.sidebar.sections.articles") }}
+    </NuxtLink>
     <ContentRenderer :value="page" />
-    <AppRightSidebar :page="page" />
+    <AppRightSidebar
+      :page="page"
+      :type="TYPE_PAGE.ARTICLE"
+    />
   </div>
 
   <div v-else>

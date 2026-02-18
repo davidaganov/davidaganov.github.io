@@ -118,7 +118,7 @@ const scrollToLinks = () => {
         as="h1"
         class="mb-6 bg-linear-to-r from-white to-white/60 bg-clip-text pb-2 text-4xl font-bold tracking-tight text-transparent sm:text-7xl lg:text-8xl"
         cursor-class-name="text-white"
-        :text="$t('home.title')"
+        :text="$t('common.name')"
         :typing-speed="100"
         :show-cursor="true"
         :loop="false"

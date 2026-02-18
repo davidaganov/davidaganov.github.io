@@ -50,6 +50,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       label: link.label,
       href: link.href,
       icon: link.icon,
+      translate: false,
       target: "_blank"
     }))
   }

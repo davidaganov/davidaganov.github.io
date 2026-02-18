@@ -20,13 +20,13 @@ const localePath = useLocalePath()
       :to="localePath(ROUTE_PATH.HOME)"
     >
       <span
-        class="text-primary-400 flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/5"
+        class="text-primary-400 flex size-6 items-center justify-center rounded-md border border-white/10 bg-white/5 text-center text-sm sm:size-8 sm:rounded-lg sm:text-base"
       >
         A
       </span>
       <span
         v-if="!props.short"
-        class="text-lg font-semibold"
+        class="text-base font-semibold sm:text-lg"
       >
         David Aganov
       </span>

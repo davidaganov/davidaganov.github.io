@@ -1,10 +1,10 @@
 {
   "common": {
-    "retry": "Повторить"
+    "retry": "Повторить",
+    "name": "Давид Аганов"
   },
   "home": {
     "badge": "Доступен для найма",
-    "title": "Давид Аганов",
     "description": "Фронтенд-разработчик — 5 лет коммерческого опыта.",
     "getStarted": "Начать",
     "disableBackgroundAnimation": "Без анимации",
@@ -47,11 +47,37 @@
     },
     "projectsPage": {
       "title": "Проекты",
-      "empty": "Пока нет проектов."
+      "empty": "Пока нет проектов.",
+      "filters": {
+        "noTags": "Теги отсутствуют"
+      }
     },
     "articlesPage": {
       "title": "Статьи",
-      "empty": "Пока нет статей."
+      "empty": "Пока нет статей.",
+      "sections": {
+        "habr": "Мои статьи на Habr",
+        "site": "Заметки на сайте"
+      },
+      "filters": {
+        "all": "Все",
+        "habr": "Habr",
+        "site": "Сайт",
+        "sortNewest": "Сначала новые",
+        "sortOldest": "Сначала старые",
+        "noTags": "Теги отсутствуют"
+      },
+      "habr": "Habr"
+    },
+    "habrProfile": {
+      "onHabr": "На Habr:",
+      "onSite": "На сайте:",
+      "myProfile": "Мой профиль"
+    },
+    "githubProfile": {
+      "repositories": "Репозитории",
+      "followers": "Подписчики",
+      "myProfile": "Мой профиль"
     },
     "projectPage": {
       "onThisPage": "На этой странице",

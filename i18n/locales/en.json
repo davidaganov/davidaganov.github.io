@@ -1,10 +1,10 @@
 {
   "common": {
-    "retry": "Retry"
+    "retry": "Retry",
+    "name": "David Aganov"
   },
   "home": {
     "badge": "Available for hire",
-    "title": "David Aganov",
     "description": "Frontend Developer — 5 years of commercial experience.",
     "getStarted": "Get Started",
     "disableBackgroundAnimation": "No animation",
@@ -37,7 +37,6 @@
     "sidebar": {
       "nav": {
         "gettingStarted": "Getting Started",
-        "experience": "Experience",
         "stack": "Stack"
       },
       "sections": {
@@ -48,11 +47,37 @@
     },
     "projectsPage": {
       "title": "Projects",
-      "empty": "No projects yet."
+      "empty": "No projects yet.",
+      "filters": {
+        "noTags": "No tags"
+      }
     },
     "articlesPage": {
       "title": "Articles",
-      "empty": "No articles yet."
+      "empty": "No articles yet.",
+      "sections": {
+        "habr": "My articles on Habr",
+        "site": "Notes on site"
+      },
+      "filters": {
+        "all": "All",
+        "habr": "Habr",
+        "site": "Site",
+        "sortNewest": "Newest first",
+        "sortOldest": "Oldest first",
+        "noTags": "No tags"
+      },
+      "habr": "Habr"
+    },
+    "habrProfile": {
+      "onHabr": "On Habr:",
+      "onSite": "On site:",
+      "myProfile": "My profile"
+    },
+    "githubProfile": {
+      "repositories": "Repositories",
+      "followers": "Followers",
+      "myProfile": "My profile"
     },
     "projectPage": {
       "onThisPage": "On this page",

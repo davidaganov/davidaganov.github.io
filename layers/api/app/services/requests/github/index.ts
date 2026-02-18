@@ -1,6 +1,6 @@
 import { request } from "@api/services/request"
 import { routes } from "@api/services/requests/github/routes"
-import type { GitHubLanguages, GitHubRepoData } from "@api/types/github"
+import type { GitHubLanguages, GitHubRepoData, GitHubUserData } from "@api/types/github"
 
 export async function getRepo(repo: string): Promise<GitHubRepoData | null> {
   try {
@@ -21,4 +21,12 @@ export async function getLanguages(repo: string): Promise<GitHubLanguages | null
 export async function getStars(repo: string): Promise<number> {
   const data = await getRepo(repo)
   return data?.stargazers_count || 0
+}
+
+export async function getUser(username: string): Promise<GitHubUserData | null> {
+  try {
+    return await request.get<GitHubUserData>(routes.user(username))
+  } catch {
+    return null
+  }
 }

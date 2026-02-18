@@ -6,6 +6,12 @@ npmPackage: polyglot-keeper
 npmUrl: https://www.npmjs.com/package/polyglot-keeper
 githubRepo: davidaganov/polyglot-keeper
 githubUrl: https://github.com/davidaganov/polyglot-keeper
+publishedAt: 2025-12-15
+tags:
+  - CLI
+  - i18n
+  - AI
+  - Node.js
 ---
 
 # Polyglot Keeper

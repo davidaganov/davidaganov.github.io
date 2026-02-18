@@ -6,6 +6,10 @@ npmPackage: polyglot-keeper
 npmUrl: https://www.npmjs.com/package/polyglot-keeper
 githubRepo: davidaganov/polyglot-keeper
 githubUrl: https://github.com/davidaganov/polyglot-keeper
+publishedAt: 2026-02-09
+tags:
+  - i18n
+  - AI
 ---
 
 # Polyglot Keeper
@@ -41,7 +45,7 @@ npx polyglot-keeper init
 npx polyglot-keeper sync
 ```
 
-## Конфигурация
+### Конфигурация
 
 ```json
 {
