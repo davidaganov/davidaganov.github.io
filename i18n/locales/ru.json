@@ -95,6 +95,13 @@
       "lastCommit": "Последний коммит"
     }
   },
+  "cookieBanner": {
+    "ariaLabel": "Уведомление об использовании файлов cookie",
+    "title": "Файлы cookie",
+    "description": "Собираются данные о посещениях для аналитики.",
+    "accept": "Принять",
+    "decline": "Отклонить"
+  },
   "footer": {
     "sections": {
       "docs": "Разделы",

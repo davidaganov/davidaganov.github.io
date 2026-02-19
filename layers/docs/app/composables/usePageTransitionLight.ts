@@ -1,7 +1,7 @@
 import { ref, watch } from "vue"
 import { useRoute } from "vue-router"
 
-export function usePageTransitionLight() {
+export const usePageTransitionLight = () => {
   const route = useRoute()
   const light = ref(0.3)
 

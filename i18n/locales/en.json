@@ -95,6 +95,13 @@
       "lastCommit": "Last Commit"
     }
   },
+  "cookieBanner": {
+    "ariaLabel": "Cookie consent notice",
+    "title": "Cookie notice",
+    "description": "Visit data is collected for analytics.",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
   "footer": {
     "sections": {
       "docs": "Docs",

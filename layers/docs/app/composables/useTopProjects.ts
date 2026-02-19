@@ -2,6 +2,8 @@ import type { Collections } from "@nuxt/content"
 import { ApiClient } from "@api/services/client"
 import { ROUTE_PATH } from "@base/types/enums"
 
+const LIMIT = 3
+
 export interface ProjectWithStars {
   title: string
   description: string
@@ -10,7 +12,7 @@ export interface ProjectWithStars {
   stars: number
 }
 
-export function useTopProjects(limit = 3) {
+export const useTopProjects = (limit = LIMIT) => {
   const { locale } = useI18n()
 
   const { data: projects, pending: loading } = useAsyncData(

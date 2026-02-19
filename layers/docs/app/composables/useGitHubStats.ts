@@ -1,15 +1,9 @@
 import { ApiClient } from "@api/services/client"
+import type { GitHubUserData } from "@api/types/github"
 import { USERNAME } from "@base/constants/config"
 
-interface GitHubUser {
-  public_repos: number
-  public_gists: number
-  followers: number
-  following: number
-}
-
-export function useGitHubStats() {
-  const user = ref<GitHubUser | null>(null)
+export const useGitHubStats = () => {
+  const user = ref<GitHubUserData | null>(null)
   const loading = ref(false)
   const error = ref<Error | null>(null)
 

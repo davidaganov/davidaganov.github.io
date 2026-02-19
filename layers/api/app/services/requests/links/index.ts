@@ -20,7 +20,7 @@ const normalizeLinks = (value: unknown): LinksGistContent => {
   }
 }
 
-export async function getLinks(): Promise<LinksGistContent> {
+export const getLinks = async (): Promise<LinksGistContent> => {
   const config = useRuntimeConfig()
   const gistId = String(config.public.linksGistId)
   const filename = String(config.public.linksGistFilename)

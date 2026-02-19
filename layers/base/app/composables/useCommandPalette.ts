@@ -4,7 +4,7 @@ const isOpen = ref(false)
 const query = ref("")
 const selectedIndex = ref(0)
 
-export function useCommandPalette() {
+export const useCommandPalette = () => {
   const setOpen = (value: boolean) => {
     isOpen.value = value
   }

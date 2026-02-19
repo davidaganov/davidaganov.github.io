@@ -33,7 +33,7 @@ const githubColors: Record<string, string> = {
   Dart: "#00B4AB"
 }
 
-export function useProjectStats(page: Ref<unknown | Collections[keyof Collections] | null>) {
+export const useProjectStats = (page: Ref<unknown | Collections[keyof Collections] | null>) => {
   const meta = computed(() => {
     const p = (page.value || {}) as { meta?: Record<string, unknown> }
     return {
