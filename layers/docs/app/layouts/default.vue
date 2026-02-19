@@ -6,6 +6,7 @@ import AppFooter from "@base/components/app/AppFooter.vue"
 import AppHeader from "@base/components/app/AppHeader.vue"
 
 const { toggle, close } = useCommandPalette()
+const { light } = usePageTransitionLight()
 
 defineShortcuts({
   meta_k: () => {
@@ -24,7 +25,7 @@ defineShortcuts({
 <template>
   <div>
     <AppHeader />
-    <BaseLight :light="0.3" />
+    <BaseLight :light="light" />
 
     <div class="container">
       <div class="flex">

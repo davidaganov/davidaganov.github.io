@@ -13,7 +13,7 @@ const props = withDefaults(
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    class="text-primary pointer-events-none absolute top-18 -z-10 w-full shrink-0 transition-opacity"
+    class="text-primary pointer-events-none absolute top-18 -z-10 w-full shrink-0 transition-opacity duration-500 ease-in-out"
     viewBox="0 0 1440 181"
     :style="{ opacity: props.light }"
   >

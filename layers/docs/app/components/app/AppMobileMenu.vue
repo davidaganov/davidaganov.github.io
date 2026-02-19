@@ -49,7 +49,7 @@ watch(
           icon="i-lucide-x"
           @click="handleClose"
         />
-        <nav class="flex-1 space-y-1 p-4">
+        <nav class="max-w-[calc(100%-30px)] flex-1 space-y-1 p-4">
           <template
             v-for="(item, index) in SIDEBAR_ITEMS"
             :key="index"

@@ -29,8 +29,14 @@
     "description": "Search and navigate using keyboard commands",
     "placeholder": "Search docs...",
     "empty": "Start typing to search...",
+    "noResults": "Nothing found",
     "navigate": "to navigate",
-    "select": "to select"
+    "select": "to select",
+    "categories": {
+      "docs": "Docs",
+      "articles": "Articles",
+      "projects": "Projects"
+    }
   },
   "layout": {
     "search": "Search...",
