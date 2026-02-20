@@ -14,7 +14,7 @@ const props = withDefaults(
     showSourceTabs?: boolean
   }>(),
   {
-    titleKey: "layout.articlesPage.title",
+    titleKey: "nav.articles",
     showSourceTabs: true
   }
 )
@@ -29,9 +29,9 @@ const emit = defineEmits<{
 const { t } = useI18n()
 
 const sourceFilterTabs = computed(() => [
-  { value: SOURCE_FILTER.ALL, label: t("layout.articlesPage.filters.all") },
-  { value: SOURCE_FILTER.HABR, label: t("layout.articlesPage.filters.habr") },
-  { value: SOURCE_FILTER.SITE, label: t("layout.articlesPage.filters.site") }
+  { value: SOURCE_FILTER.ALL, label: t("common.all") },
+  { value: SOURCE_FILTER.HABR, label: t("nav.habr") },
+  { value: SOURCE_FILTER.SITE, label: t("nav.site") }
 ])
 
 const sourceFilterModel = computed({
@@ -100,7 +100,7 @@ const handleReset = () => {
         v-else
         class="text-muted text-sm"
       >
-        {{ $t("layout.articlesPage.filters.noTags") }}
+        {{ $t("common.noTags") }}
       </p>
 
       <UButton

@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { DOCS_SECTIONS } from "@docs/config/sections"
-import { getFirstPathForSection } from "@docs/utils/sections"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import FaultyTerminal from "@ui/components/bits/FaultyTerminal.vue"
 import Squares from "@ui/components/bits/Squares.vue"
 import TextType from "@ui/components/bits/TextType.vue"
-
-const localePath = useLocalePath()
 
 const { toggle } = useCommandPalette()
 
@@ -17,8 +13,7 @@ const animationEnabled = useCookie<boolean>("animation_enabled", {
 })
 
 const noiseAmp = computed(() => 0.3 + Math.random() * 0.3)
-const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
-const aboutEntryPath = computed(() => getFirstPathForSection(aboutSection.value))
+const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
 
 const scrollToLinks = () => {
   const element = document.getElementById("links-section")
@@ -36,8 +31,8 @@ const scrollToLinks = () => {
         <USwitch
           v-model="animationEnabled"
           size="sm"
-          :aria-label="$t('home.disableBackgroundAnimation')"
-          :title="$t('home.disableBackgroundAnimation')"
+          :aria-label="$t('home.disableAnimation')"
+          :title="$t('home.disableAnimation')"
           :ui="{
             base: 'bg-white/10 border border-white/20',
             thumb: 'bg-white'
@@ -136,7 +131,7 @@ const scrollToLinks = () => {
       <div class="mt-10 flex gap-4">
         <NuxtLink
           class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/10 px-8 py-3 font-medium text-white backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(184,126,239,0.3)]"
-          :to="localePath(aboutEntryPath)"
+          :to="aboutEntryPath"
         >
           <span class="mr-2">{{ $t("home.getStarted") }}</span>
           <UIcon
@@ -170,7 +165,7 @@ const scrollToLinks = () => {
         @click="scrollToLinks"
       >
         <span class="text-[10px] font-medium tracking-[0.28em] uppercase opacity-60">
-          {{ $t("home.links.scrollDown") }}
+          {{ $t("home.scrollDown") }}
         </span>
         <UIcon
           name="i-lucide-chevron-down"

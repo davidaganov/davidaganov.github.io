@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { DOCS_SECTIONS } from "@docs/config/sections"
 import { getFirstPathForSection, getSectionById, getSectionIdByPath } from "@docs/utils/sections"
+import AppMobileMenu from "@base/components/app/AppMobileMenu.vue"
 import UiGitHubStars from "@ui/components/UiGitHubStars.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiLogo from "@ui/components/UiLogo.vue"

@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import { DOCS_SECTIONS } from "@docs/config/sections"
-import { getFirstPathForSection } from "@docs/utils/sections"
-
-const localePath = useLocalePath()
-
-const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
-const aboutEntryPath = computed(() => getFirstPathForSection(aboutSection.value))
+const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
 </script>
 
 <template>
@@ -23,10 +17,10 @@ const aboutEntryPath = computed(() => getFirstPathForSection(aboutSection.value)
 
     <div class="space-y-2">
       <h3 class="text-lg font-medium text-white">
-        {{ $t("home.links.empty.title") }}
+        {{ $t("home.emptyTitle") }}
       </h3>
       <p class="max-w-md text-sm text-gray-400">
-        {{ $t("home.links.empty.description") }}
+        {{ $t("home.emptyDesc") }}
       </p>
     </div>
 
@@ -35,8 +29,8 @@ const aboutEntryPath = computed(() => getFirstPathForSection(aboutSection.value)
         variant="soft"
         color="primary"
         icon="i-lucide-book-open"
-        :to="localePath(aboutEntryPath)"
-        :label="$t('home.links.empty.cta')"
+        :to="aboutEntryPath"
+        :label="$t('home.emptyCta')"
       />
     </div>
   </div>

@@ -88,7 +88,7 @@ const tagClass = (tag: string) =>
               class="size-3.5"
               name="i-simple-icons-habr"
             />
-            <span>{{ $t("layout.articlesPage.habr") }}</span>
+            <span>{{ $t("nav.habr") }}</span>
           </div>
 
           <div

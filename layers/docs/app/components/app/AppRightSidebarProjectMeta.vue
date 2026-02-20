@@ -28,7 +28,7 @@ const githubStars = computed(() => {
   return stats.value.github?.stars !== undefined
     ? {
         text: stats.value.github.stars,
-        icon: "i-lucide-star",
+        icon: "i-heroicons-star-20-solid",
         color: "#a78bfa"
       }
     : undefined
@@ -48,7 +48,7 @@ const githubStars = computed(() => {
         trailing-icon="i-lucide-arrow-up-right"
         external
         class="col-span-7"
-        :label="$t('layout.projectPage.github')"
+        :label="$t('nav.github')"
         :href="meta.githubUrl"
         :tag="githubStars"
       />
@@ -60,7 +60,7 @@ const githubStars = computed(() => {
         trailing-icon="i-lucide-arrow-up-right"
         external
         class="col-span-5"
-        :label="$t('layout.projectPage.npm')"
+        :label="$t('nav.npm')"
         :href="meta.npmUrl"
       />
     </div>
@@ -68,17 +68,16 @@ const githubStars = computed(() => {
     <div class="mt-2 grid grid-cols-12 gap-2">
       <UiBadge
         v-if="stats.npm?.version"
-        class="col-span-5"
+        class="col-span-4"
         icon="i-lucide-arrow-down-z-a"
-        :label="$t('layout.projectPage.version') + `:`"
         :value="`v${stats.npm.version}`"
         :loading="loading"
       />
       <UiBadge
         v-if="stats.npm?.downloads"
-        class="col-span-7"
+        class="col-span-8"
         icon="i-lucide-download"
-        :label="$t('layout.projectPage.downloads') + `:`"
+        :label="$t('projects.downloads') + `:`"
         :value="formatDownloads(stats.npm.downloads)"
         :loading="loading"
       />
@@ -86,7 +85,7 @@ const githubStars = computed(() => {
         v-if="stats.github?.lastCommit"
         icon="i-lucide-clock"
         class="col-span-12"
-        :label="$t('layout.projectPage.lastCommit') + `:`"
+        :label="$t('projects.lastCommit') + `:`"
         :value="formatDate(stats.github.lastCommit)"
         :loading="loading"
       />
@@ -115,10 +114,10 @@ const githubStars = computed(() => {
       class="bg-primary-500/15 text-primary-300 hover:bg-primary-500/20 mt-4 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors"
     >
       <UIcon
-        name="i-lucide-star"
+        name="i-heroicons-star-20-solid"
         class="size-4"
       />
-      <span>{{ $t("layout.projectPage.star") }}</span>
+      <span>{{ $t("projects.star") }}</span>
     </a>
   </div>
 </template>

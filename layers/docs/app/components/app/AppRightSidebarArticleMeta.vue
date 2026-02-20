@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { formatDate } from "@base/utils/date"
 import UiBadge from "@ui/components/UiBadge.vue"
 
 const props = defineProps<{
   page: unknown
 }>()
+
+const { locale } = useI18n()
 
 const meta = computed(() => {
   const p = (props.page || {}) as { meta?: Record<string, unknown> }
@@ -22,20 +25,6 @@ const hasArticleMeta = computed(() =>
     meta.value.habrUrl || meta.value.publishedAt || meta.value.readingTime || meta.value.tags.length
   )
 )
-
-const formatDate = (dateString: string) => {
-  if (!dateString) return ""
-  try {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("ru-RU", {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    })
-  } catch {
-    return dateString
-  }
-}
 </script>
 
 <template>
@@ -48,15 +37,15 @@ const formatDate = (dateString: string) => {
         v-if="meta.publishedAt"
         icon="i-lucide-calendar"
         class="w-full"
-        label="Опубликовано:"
-        :value="formatDate(meta.publishedAt)"
+        :label="$t('articles.published')"
+        :value="formatDate(meta.publishedAt, locale, 'numeric') || ''"
       />
 
       <UiBadge
         v-if="meta.readingTime"
         icon="i-lucide-clock"
         class="w-full"
-        label="Время чтения:"
+        :label="$t('articles.readingTime')"
         :value="meta.readingTime"
       />
     </div>
@@ -87,7 +76,7 @@ const formatDate = (dateString: string) => {
           name="i-simple-icons-habr"
           class="size-4"
         />
-        <span>Читать на Habr</span>
+        <span>{{ $t("articles.readOnHabr") }}</span>
       </a>
     </div>
   </div>

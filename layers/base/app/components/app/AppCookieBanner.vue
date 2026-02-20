@@ -31,7 +31,7 @@ onMounted(() => {
       class="fixed right-0 bottom-0 left-0 z-50 max-w-lg rounded-t-2xl border-t border-white/10 bg-gray-900/95 p-5 shadow-2xl backdrop-blur-xl sm:right-6 sm:bottom-6 sm:left-auto sm:max-w-sm sm:rounded-2xl sm:border"
       role="dialog"
       aria-live="polite"
-      :aria-label="$t('cookieBanner.ariaLabel')"
+      :aria-label="$t('cookie.aria')"
     >
       <div class="flex items-start gap-3">
         <div
@@ -45,10 +45,10 @@ onMounted(() => {
 
         <div class="min-w-0 flex-1">
           <p class="text-sm font-semibold text-white">
-            {{ $t("cookieBanner.title") }}
+            {{ $t("cookie.title") }}
           </p>
           <p class="text-muted mt-1 text-xs leading-relaxed">
-            {{ $t("cookieBanner.description") }}
+            {{ $t("cookie.description") }}
           </p>
         </div>
       </div>
@@ -59,7 +59,7 @@ onMounted(() => {
           size="md"
           @click="handleAccept"
         >
-          {{ $t("cookieBanner.accept") }}
+          {{ $t("cookie.accept") }}
         </UButton>
         <UButton
           class="flex-1 justify-center"
@@ -68,7 +68,7 @@ onMounted(() => {
           size="md"
           @click="handleDecline"
         >
-          {{ $t("cookieBanner.decline") }}
+          {{ $t("cookie.decline") }}
         </UButton>
       </div>
     </div>

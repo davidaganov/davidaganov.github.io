@@ -38,14 +38,14 @@ const { user } = useGitHubStats()
         icon="i-simple-icons-github"
         class="col-span-1"
         external
-        :label="$t('layout.githubProfile.repositories')"
+        :label="$t('profile.repositories')"
         :value="String(user?.public_repos || 0)"
         :href="`https://github.com/${USERNAME}?tab=repositories`"
       />
       <UiBadge
         icon="i-simple-icons-github"
         class="col-span-1"
-        :label="$t('layout.githubProfile.followers')"
+        :label="$t('profile.followers')"
         :value="String(user?.followers || 0)"
       />
     </div>
@@ -60,7 +60,7 @@ const { user } = useGitHubStats()
         name="i-simple-icons-github"
         class="size-4"
       />
-      <span>{{ $t("layout.githubProfile.myProfile") }}</span>
+      <span>{{ $t("profile.myProfile") }}</span>
     </a>
   </div>
 </template>

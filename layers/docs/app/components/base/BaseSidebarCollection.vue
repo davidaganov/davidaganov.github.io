@@ -2,6 +2,7 @@
 import type { Collections } from "@nuxt/content"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import type { SidebarCollectionItem } from "@docs/types/sidebar"
+import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import { ROUTE_PATH } from "@base/types/enums"
 
 const props = defineProps<{
@@ -16,14 +17,6 @@ const route = useRoute()
 const isOpen = ref(props.item.defaultOpen ?? false)
 
 const collection = computed(() => `content_${locale.value}` as keyof Collections)
-
-const getQueryPrefix = (pathPrefix: string) => {
-  if (pathPrefix.startsWith(ROUTE_PATH.DOCS)) {
-    return pathPrefix.replace(/^\/docs\/[^/]+/, "") || ROUTE_PATH.HOME
-  }
-
-  return pathPrefix
-}
 
 const { data: pages } = useAsyncData(
   () => `sidebar:collection:${props.item.source}:${props.item.pathPrefix || ""}:${locale.value}`,
@@ -68,7 +61,7 @@ const items = computed(() => {
       return leftTitle.localeCompare(rightTitle)
     })
     .map((p) => {
-      const relativePath = String(p.path).split(queryPrefix).pop() || ""
+      const relativePath = getRelativePath(String(p.path), queryPrefix)
       const fullPath = pathPrefix + relativePath
 
       return {

@@ -1,126 +1,85 @@
 {
   "common": {
+    "name": "Давид Аганов",
     "retry": "Повторить",
-    "name": "Давид Аганов"
+    "search": "Поиск...",
+    "noTags": "Теги отсутствуют",
+    "all": "Все"
+  },
+  "nav": {
+    "about": "Обо мне",
+    "guides": "Гайды",
+    "overview": "Обзор",
+    "stack": "Стек",
+    "services": "Слой запросов",
+    "articles": "Статьи",
+    "projects": "Проекты",
+    "contacts": "Контакты",
+    "docs": "Документация",
+    "github": "GitHub",
+    "npm": "NPM",
+    "habr": "Habr",
+    "site": "Сайт",
+    "title": "Навигация",
+    "description": "Навигация по документации"
   },
   "home": {
     "badge": "Доступен для найма",
     "description": "Фронтенд-разработчик — 5 лет коммерческого опыта.",
     "getStarted": "Начать",
-    "disableBackgroundAnimation": "Без анимации",
-    "links": {
-      "title": "Контакты",
-      "tabs": {
-        "professional": "Работа",
-        "personal": "Жизнь"
-      },
-      "cta": "Документация",
-      "scrollDown": "Листай вниз",
-      "ctaDescription": "Перейти к руководству пользователя",
-      "empty": {
-        "title": "Ссылки временно недоступны",
-        "description": "Не удалось загрузить список ссылок, но можно перейти в документацию.",
-        "cta": "Открыть документацию"
-      }
-    }
+    "disableAnimation": "Без анимации",
+    "scrollDown": "Листай вниз",
+    "tabWork": "Работа",
+    "tabLife": "Жизнь",
+    "ctaDesc": "Перейти к руководству пользователя",
+    "emptyTitle": "Ссылки временно недоступны",
+    "emptyDesc": "Не удалось загрузить список ссылок, но можно перейти в документацию.",
+    "emptyCta": "Открыть документацию"
   },
-  "commandPalette": {
+  "cmd": {
     "title": "Командная палитра",
     "description": "Поиск и навигация с помощью клавиатурных команд",
     "placeholder": "Поиск по документации...",
     "empty": "Начните ввод для поиска...",
     "noResults": "Ничего не найдено",
     "navigate": "для навигации",
-    "select": "для выбора",
-    "categories": {
-      "docs": "Документация",
-      "articles": "Статьи",
-      "projects": "Проекты"
-    }
+    "select": "для выбора"
   },
-  "layout": {
-    "search": "Поиск...",
-    "sections": {
-      "about": "О проекте",
-      "guides": "Гайды"
-    },
-    "sidebar": {
-      "nav": {
-        "gettingStarted": "Обзор",
-        "stack": "Стек",
-        "services": "Слой запросов"
-      },
-      "sections": {
-        "articles": "Статьи",
-        "projects": "Проекты",
-        "connect": "Связаться"
-      }
-    },
-    "projectsPage": {
-      "title": "Проекты",
-      "empty": "Пока нет проектов.",
-      "filters": {
-        "noTags": "Теги отсутствуют"
-      }
-    },
-    "articlesPage": {
-      "title": "Статьи",
-      "empty": "Пока нет статей.",
-      "sections": {
-        "habr": "Мои статьи на Habr",
-        "site": "Заметки на сайте"
-      },
-      "filters": {
-        "all": "Все",
-        "habr": "Habr",
-        "site": "Сайт",
-        "sortNewest": "Сначала новые",
-        "sortOldest": "Сначала старые",
-        "noTags": "Теги отсутствуют"
-      },
-      "habr": "Habr"
-    },
-    "habrProfile": {
-      "onHabr": "На Habr:",
-      "onSite": "На сайте:",
-      "myProfile": "Мой профиль"
-    },
-    "githubProfile": {
-      "repositories": "Репозитории",
-      "followers": "Подписчики",
-      "myProfile": "Мой профиль"
-    },
-    "projectPage": {
-      "onThisPage": "На этой странице",
-      "github": "GitHub",
-      "npm": "NPM",
-      "star": "Поставить звезду",
-      "version": "Вер.",
-      "downloads": "Скачиваний",
-      "lastCommit": "Последний коммит"
-    }
+  "projects": {
+    "empty": "Пока нет проектов.",
+    "onThisPage": "На этой странице",
+    "star": "Поставить звезду",
+    "downloads": "Скачиваний",
+    "lastCommit": "Последний коммит"
   },
-  "cookieBanner": {
-    "ariaLabel": "Уведомление об использовании файлов cookie",
+  "articles": {
+    "empty": "Пока нет статей.",
+    "myHabr": "Мои статьи на Habr",
+    "mySite": "Заметки на сайте",
+    "sortNewest": "Сначала новые",
+    "sortOldest": "Сначала старые",
+    "published": "Опубликовано:",
+    "readingTime": "Время чтения:",
+    "readOnHabr": "Читать на Habr"
+  },
+  "profile": {
+    "onHabr": "На Habr:",
+    "onSite": "На сайте:",
+    "myProfile": "Мой профиль",
+    "repositories": "Репозитории",
+    "followers": "Подписчики"
+  },
+  "cookie": {
+    "aria": "Уведомление об использовании файлов cookie",
     "title": "Файлы cookie",
     "description": "Собираются данные о посещениях для аналитики.",
     "accept": "Принять",
     "decline": "Отклонить"
   },
   "footer": {
-    "sections": {
-      "main": "Главное",
-      "docSections": "Разделы",
-      "projects": "Проекты",
-      "social": "Контакты"
-    },
-    "links": {
-      "overview": "Обзор",
-      "projects": "Проекты",
-      "articles": "Статьи",
-      "contacts": "Контакты",
-      "repository": "Репозиторий на GitHub"
-    },
+    "main": "Главное",
+    "docSections": "Разделы",
+    "repository": "Репозиторий на GitHub",
     "repositoryHint": "Исходный код этого портфолио."
   }
 }

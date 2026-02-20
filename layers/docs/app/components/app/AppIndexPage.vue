@@ -4,7 +4,7 @@ import BaseIndexCard from "@docs/components/base/BaseIndexCard.vue"
 import BaseIndexFilters from "@docs/components/base/BaseIndexFilters.vue"
 import type { ArticleMeta } from "@docs/types/article"
 import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
-import { ROUTE_PATH } from "@base/types/enums"
+import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 
 interface IndexPageItem {
   title: string
@@ -15,12 +15,14 @@ interface IndexPageItem {
 
 const props = withDefaults(
   defineProps<{
-    titleKey: string
-    emptyKey: string
+    titleKey?: string
+    emptyKey?: string
     pathPrefix: string
     showSourceTabs?: boolean
   }>(),
   {
+    titleKey: "",
+    emptyKey: "",
     showSourceTabs: false
   }
 )
@@ -33,14 +35,6 @@ const selectedTags = ref<string[]>([])
 
 const collection = computed(() => `content_${locale.value}` as keyof Collections)
 
-const getQueryPrefix = (pathPrefix: string) => {
-  if (pathPrefix.startsWith("/docs")) {
-    return pathPrefix.replace(/^\/docs\/[^/]+/, "") || ROUTE_PATH.HOME
-  }
-
-  return pathPrefix
-}
-
 const { data: items } = useAsyncData<IndexPageItem[]>(
   () => `index-page:${props.pathPrefix}:${locale.value}`,
   async () => {
@@ -51,7 +45,7 @@ const { data: items } = useAsyncData<IndexPageItem[]>(
       .all()
 
     return raw.map((entry) => {
-      const relativePath = String(entry.path).split(queryPrefix).pop() || ""
+      const relativePath = getRelativePath(String(entry.path), queryPrefix)
       return {
         title: String(entry.title || ""),
         description: String(entry.description || ""),

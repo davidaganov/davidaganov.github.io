@@ -16,17 +16,17 @@ const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id =
 
 const docLinks = computed(() => [
   {
-    label: t("footer.links.overview"),
+    label: t("nav.overview"),
     to: getFirstPathForSection(aboutSection.value),
     icon: "i-lucide-house"
   },
   {
-    label: t("footer.links.projects"),
+    label: t("nav.projects"),
     to: ROUTE_PATH.ABOUT_PROJECTS,
     icon: "i-lucide-folder-kanban"
   },
   {
-    label: t("footer.links.articles"),
+    label: t("nav.articles"),
     to: ROUTE_PATH.ABOUT_ARTICLES,
     icon: "i-lucide-newspaper"
   }
@@ -56,7 +56,7 @@ const docsSectionsPreview = computed(() =>
       <div class="flex flex-row flex-wrap gap-12 md:max-w-1/2 md:justify-between md:gap-20">
         <div>
           <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
-            {{ $t("footer.sections.main") }}
+            {{ $t("footer.main") }}
           </h3>
           <ul class="mt-4 flex flex-col gap-3">
             <li
@@ -79,7 +79,7 @@ const docsSectionsPreview = computed(() =>
 
         <div>
           <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
-            {{ $t("footer.sections.docSections") }}
+            {{ $t("footer.docSections") }}
           </h3>
           <ul class="mt-4 flex flex-col gap-3">
             <li
@@ -102,7 +102,7 @@ const docsSectionsPreview = computed(() =>
 
         <div v-if="projects.length">
           <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
-            {{ $t("footer.sections.projects") }}
+            {{ $t("nav.projects") }}
           </h3>
           <ul class="mt-4 flex flex-col gap-3">
             <li
@@ -119,7 +119,7 @@ const docsSectionsPreview = computed(() =>
                   class="inline-flex items-center gap-1 text-xs text-gray-500"
                 >
                   <UIcon
-                    name="i-lucide-star mb-0.5"
+                    name="i-heroicons-star-20-solid mb-0.5"
                     class="size-3"
                   />
                   {{ item.stars }}
@@ -131,7 +131,7 @@ const docsSectionsPreview = computed(() =>
 
         <div>
           <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
-            {{ $t("footer.sections.social") }}
+            {{ $t("nav.contacts") }}
           </h3>
           <ul class="mt-4 flex flex-col gap-3">
             <li
@@ -176,7 +176,7 @@ const docsSectionsPreview = computed(() =>
             name="i-lucide-github"
             class="size-4 opacity-80 transition-opacity group-hover:opacity-100"
           />
-          <span>{{ $t("footer.links.repository") }}</span>
+          <span>{{ $t("footer.repository") }}</span>
           <UIcon
             name="i-lucide-arrow-up-right"
             class="size-4 opacity-60"

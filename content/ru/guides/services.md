@@ -109,6 +109,7 @@ export const routes = {
 Когда модулей становится несколько, собираю их в общий клиент:
 
 ```ts
+// services/client.ts
 import * as products from "@/services/requests/products/index"
 import * as users from "@/services/requests/users/index"
 
@@ -125,6 +126,7 @@ export const ApiClient = {
 Пример использования в компоненте:
 
 ```ts
+// components/ProductsList.vue
 import { ApiClient } from "@/services/client"
 
 const products = ref([])

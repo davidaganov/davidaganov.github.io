@@ -12,6 +12,7 @@
     "lint": "run-s lint:*",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "prod": "run-s format lint:fix translate",
     "typecheck": "nuxt typecheck",
     "translate": "npx polyglot-keeper sync",
     "translate:init": "npx polyglot-keeper init"

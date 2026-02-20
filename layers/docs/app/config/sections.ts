@@ -6,14 +6,14 @@ import { ROUTE_PATH } from "@base/types/enums"
 export const DOCS_SECTIONS: DocsSection[] = [
   {
     id: "about",
-    labelKey: "layout.sections.about",
+    labelKey: "nav.about",
     icon: "i-lucide-circle-user-round",
     basePath: ROUTE_PATH.DOCS_ABOUT,
     sidebarItems: ABOUT_SIDEBAR_ITEMS
   },
   {
     id: "guides",
-    labelKey: "layout.sections.guides",
+    labelKey: "nav.guides",
     icon: "i-lucide-book-marked",
     basePath: ROUTE_PATH.DOCS_GUIDES,
     sidebarItems: GUIDES_SIDEBAR_ITEMS

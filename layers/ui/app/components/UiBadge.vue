@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
-  label: string
+  label?: string
   value?: string | number
   color?: string
   icon?: string
@@ -38,7 +38,12 @@ const isExternal = computed(() => props.external || (props.href?.startsWith("htt
         class="size-3 shrink-0 opacity-70"
         :name="props.icon"
       />
-      <span class="text-white/70">{{ props.label }}</span>
+      <span
+        v-if="props.label"
+        class="text-white/70"
+      >
+        {{ props.label }}
+      </span>
       <span
         v-if="props.value !== undefined"
         class="font-semibold"

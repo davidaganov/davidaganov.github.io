@@ -1,5 +1,7 @@
 import type { Collections } from "@nuxt/content"
+import { DOCS_SECTIONS } from "@docs/config/sections"
 import { TYPE_PAGE } from "@docs/types/enums"
+import type { SidebarCollectionItem } from "@docs/types/sidebar"
 
 type RawPage = {
   title?: string
@@ -16,6 +18,14 @@ export interface SearchResult {
   breadcrumb: string[]
   snippet?: string
   icon: string
+}
+
+interface ContentMapping {
+  path: string
+  sectionId: string
+  collectionSource?: string
+  collectionLabel?: string
+  isCollectionItem: boolean
 }
 
 const joinParts = (parts: string[]): string => {
@@ -83,17 +93,93 @@ const matchesQuery = (page: RawPage, query: string): boolean => {
   return inTitle || inDesc || inBody
 }
 
-const buildBreadcrumb = (path: string, category: TYPE_PAGE, title: string): string[] => {
-  if (category === TYPE_PAGE.ARTICLE) return ["Articles", title]
-  if (category === TYPE_PAGE.PROJECT) return ["Projects", title]
+const findContentMapping = (contentPath: string): ContentMapping | null => {
+  const path = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
+  const segments = path.split("/").filter(Boolean)
 
-  const segments = path.replace(/^\//, "").split("/")
-  return segments.length > 1 ? [segments.slice(0, -1).join(" > "), title] : [title]
+  for (const section of DOCS_SECTIONS) {
+    for (const item of section.sidebarItems) {
+      if (item.type === "collection") {
+        const coll = item as SidebarCollectionItem
+        const source = coll.source
+
+        if (segments[0] === source) {
+          return {
+            path,
+            sectionId: section.id,
+            collectionSource: source,
+            collectionLabel: coll.label,
+            isCollectionItem: true
+          }
+        }
+
+        if (segments[0] === section.id && segments[1] === source) {
+          return {
+            path,
+            sectionId: section.id,
+            collectionSource: source,
+            collectionLabel: coll.label,
+            isCollectionItem: true
+          }
+        }
+      }
+    }
+
+    if (segments[0] === section.id) {
+      return {
+        path,
+        sectionId: section.id,
+        isCollectionItem: false
+      }
+    }
+  }
+
+  return null
 }
 
-const getIcon = (page: RawPage, category: TYPE_PAGE): string => {
+const buildUrlFromMapping = (mapping: ContentMapping): string => {
+  if (mapping.isCollectionItem && mapping.collectionSource) {
+    return `/docs/${mapping.sectionId}/${mapping.collectionSource}${mapping.path.replace(/^\/(?:${mapping.sectionId}\/)?${mapping.collectionSource}/, "")}`
+  }
+  return `/docs${mapping.path}`
+}
+
+const getCategoryFromMapping = (mapping: ContentMapping): TYPE_PAGE => {
+  if (!mapping.isCollectionItem) return TYPE_PAGE.DOCS
+  if (mapping.collectionSource === "articles") return TYPE_PAGE.ARTICLE
+  if (mapping.collectionSource === "projects") return TYPE_PAGE.PROJECT
+  return TYPE_PAGE.DOCS
+}
+
+const buildBreadcrumbFromMapping = (
+  mapping: ContentMapping,
+  title: string,
+  t: (key: string) => string
+): string[] => {
+  const section = DOCS_SECTIONS.find((s) => s.id === mapping.sectionId)
+  const sectionLabel = section ? t(section.labelKey) : mapping.sectionId
+
+  if (mapping.isCollectionItem && mapping.collectionSource) {
+    const collectionLabel = mapping.collectionLabel
+      ? t(mapping.collectionLabel)
+      : mapping.collectionSource
+    return [sectionLabel, collectionLabel, title]
+  }
+
+  const sectionPrefixRe = new RegExp(`^/(?:${mapping.sectionId})?/`)
+  const segments = mapping.path.replace(sectionPrefixRe, "").split("/").filter(Boolean)
+  if (segments.length > 1) {
+    return [sectionLabel, ...segments.slice(0, -1), title]
+  }
+
+  return [sectionLabel, title]
+}
+
+const getIconFromMapping = (page: RawPage, mapping: ContentMapping): string => {
   const metaIcon = (page.meta as { icon?: string } | undefined)?.icon
   if (metaIcon) return metaIcon
+
+  const category = getCategoryFromMapping(mapping)
   if (category === TYPE_PAGE.ARTICLE) return "i-lucide-newspaper"
   if (category === TYPE_PAGE.PROJECT) return "i-lucide-folder-git-2"
   return "i-lucide-file-text"
@@ -102,7 +188,7 @@ const getIcon = (page: RawPage, category: TYPE_PAGE): string => {
 export const useDocsSearch = (query: Ref<string>) => {
   let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-  const { locale } = useI18n()
+  const { locale, t } = useI18n()
 
   const debouncedQuery = ref(query.value)
 
@@ -141,24 +227,22 @@ export const useDocsSearch = (query: Ref<string>) => {
         .select("title", "description", "path", "body", "meta")
         .all()
 
-      const matched = (all as RawPage[]).filter((page) => matchesQuery(page, q))
+      const matched = (all as RawPage[])
+        .map((page) => ({ page, mapping: findContentMapping(page.path) }))
+        .filter(({ page, mapping }) => mapping && matchesQuery(page, q))
 
-      return matched.map((page): SearchResult => {
-        const path = String(page.path || "")
-        let category: TYPE_PAGE = TYPE_PAGE.DOCS
-        if (path.includes("/articles/")) category = TYPE_PAGE.ARTICLE
-        else if (path.includes("/projects/")) category = TYPE_PAGE.PROJECT
-
+      return matched.map(({ page, mapping }): SearchResult => {
         const title = String(page.title || "")
-        const fullPath = `/docs${path}`
+        const fullPath = buildUrlFromMapping(mapping!)
+        const category = getCategoryFromMapping(mapping!)
 
         return {
           title,
           path: fullPath,
           category,
-          breadcrumb: buildBreadcrumb(path, category, title),
+          breadcrumb: buildBreadcrumbFromMapping(mapping!, title, t),
           snippet: getSnippet(page.body, q),
-          icon: getIcon(page, category)
+          icon: getIconFromMapping(page, mapping!)
         }
       })
     },

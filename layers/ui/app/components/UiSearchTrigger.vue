@@ -15,7 +15,7 @@ const { toggle } = useCommandPalette()
         name="i-lucide-search"
         class="size-4"
       />
-      <span class="hidden text-xs sm:inline">{{ $t("layout.search") }}</span>
+      <span class="hidden text-xs sm:inline">{{ $t("common.search") }}</span>
     </div>
     <kbd class="ml-auto hidden rounded bg-black/20 px-1 font-mono text-[10px] sm:inline-block">
       Ctrl K

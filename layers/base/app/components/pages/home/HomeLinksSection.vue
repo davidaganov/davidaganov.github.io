@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { DOCS_SECTIONS } from "@docs/config/sections"
-import { getFirstPathForSection } from "@docs/utils/sections"
 import HomeLinkCard from "@base/components/pages/home/HomeLinkCard.vue"
 import HomeLinksEmpty from "@base/components/pages/home/HomeLinksEmpty.vue"
 import { VIEW_MODE } from "@base/types/enums"
@@ -8,10 +6,7 @@ import type { Link } from "@base/types/links"
 import UiTabs from "@ui/components/UiTabs.vue"
 
 const { t, locale } = useI18n()
-const localePath = useLocalePath()
-
-const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
-const aboutEntryPath = computed(() => localePath(getFirstPathForSection(aboutSection.value)))
+const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
 
 const mode = ref<VIEW_MODE>(VIEW_MODE.PROFESSIONAL)
 const isMobile = ref(false)
@@ -21,12 +16,12 @@ const { links, error } = useLinksGistClient()
 const viewModeItems = computed(() => [
   {
     value: VIEW_MODE.PROFESSIONAL,
-    label: t("home.links.tabs.professional"),
+    label: t("home.tabWork"),
     icon: "i-lucide-briefcase"
   },
   {
     value: VIEW_MODE.PERSONAL,
-    label: t("home.links.tabs.personal"),
+    label: t("home.tabLife"),
     icon: "i-lucide-user"
   }
 ])
@@ -47,8 +42,8 @@ const localizedLinks = computed(() => {
     ...transformedLinks,
     {
       url: aboutEntryPath.value,
-      localizedName: t("home.links.cta"),
-      localizedDescription: t("home.links.ctaDescription"),
+      localizedName: t("nav.docs"),
+      localizedDescription: t("home.ctaDesc"),
       icon: "i-lucide-book-open",
       isCta: true,
       customStyle: { color: "#b87eef" }
@@ -84,7 +79,7 @@ onUnmounted(() => {
       <div class="mb-8 flex items-end justify-between gap-6">
         <div class="flex w-full items-center justify-between gap-4 sm:justify-start sm:text-3xl">
           <h2 class="text-2xl font-semibold tracking-tight text-white">
-            {{ $t("home.links.title") }}
+            {{ $t("nav.contacts") }}
           </h2>
           <UiTabs
             v-model="mode"

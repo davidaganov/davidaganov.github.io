@@ -35,6 +35,10 @@ export interface SidebarCollectionItem extends SidebarBaseItem {
   source: string
   label: string
   indexPage?: boolean
+  pageType?: string
+  titleKey?: string
+  emptyKey?: string
+  showSourceTabs?: boolean
   icon?: string
   itemIcon?: string
   pathPrefix?: string

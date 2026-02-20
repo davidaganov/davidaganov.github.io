@@ -38,13 +38,13 @@ const { habrCount, siteCount } = useHabrArticles()
       <UiBadge
         icon="i-simple-icons-habr"
         class="col-span-1"
-        :label="$t('layout.habrProfile.onHabr')"
+        :label="$t('profile.onHabr')"
         :value="String(habrCount || 0)"
       />
       <UiBadge
         icon="i-lucide-file-text"
         class="col-span-1"
-        :label="$t('layout.habrProfile.onSite')"
+        :label="$t('profile.onSite')"
         :value="String(siteCount || 0)"
       />
     </div>
@@ -59,7 +59,7 @@ const { habrCount, siteCount } = useHabrArticles()
         name="i-simple-icons-habr"
         class="size-4"
       />
-      <span>{{ $t("layout.habrProfile.myProfile") }}</span>
+      <span>{{ $t("profile.myProfile") }}</span>
     </a>
   </div>
 </template>

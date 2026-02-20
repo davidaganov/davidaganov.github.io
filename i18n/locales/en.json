@@ -1,125 +1,85 @@
 {
   "common": {
+    "name": "David Aganov",
     "retry": "Retry",
-    "name": "David Aganov"
+    "search": "Search...",
+    "noTags": "No tags",
+    "all": "All"
+  },
+  "nav": {
+    "about": "About me",
+    "guides": "Guides",
+    "overview": "Overview",
+    "stack": "Stack",
+    "services": "Service layer",
+    "articles": "Articles",
+    "projects": "Projects",
+    "contacts": "Contacts",
+    "docs": "Documentation",
+    "github": "GitHub",
+    "npm": "NPM",
+    "habr": "Habr",
+    "site": "Website",
+    "title": "Navigation",
+    "description": "Documentation navigation"
   },
   "home": {
     "badge": "Available for hire",
     "description": "Frontend Developer — 5 years of commercial experience.",
     "getStarted": "Get Started",
-    "disableBackgroundAnimation": "No animation",
-    "links": {
-      "title": "Contacts",
-      "tabs": {
-        "professional": "Work",
-        "personal": "Life"
-      },
-      "cta": "Documentation",
-      "scrollDown": "Scroll down",
-      "ctaDescription": "Go to the user guide",
-      "empty": {
-        "title": "Links are temporarily unavailable",
-        "description": "No links were loaded, but you can still open the documentation.",
-        "cta": "Open documentation"
-      }
-    }
+    "disableAnimation": "Disable animation",
+    "scrollDown": "Scroll down",
+    "tabWork": "Work",
+    "tabLife": "Life",
+    "ctaDesc": "Go to user guide",
+    "emptyTitle": "Links temporarily unavailable",
+    "emptyDesc": "Failed to load the list of links, but you can go to the documentation.",
+    "emptyCta": "Open documentation"
   },
-  "commandPalette": {
-    "title": "Command palette",
-    "description": "Search and navigate using keyboard commands",
-    "placeholder": "Search docs...",
+  "cmd": {
+    "title": "Command Palette",
+    "description": "Search and navigation using keyboard commands",
+    "placeholder": "Search documentation...",
     "empty": "Start typing to search...",
-    "noResults": "Nothing found",
+    "noResults": "No results found",
     "navigate": "to navigate",
-    "select": "to select",
-    "categories": {
-      "docs": "Docs",
-      "articles": "Articles",
-      "projects": "Projects"
-    }
+    "select": "to select"
   },
-  "layout": {
-    "search": "Search...",
-    "sections": {
-      "about": "About",
-      "guides": "Guides"
-    },
-    "sidebar": {
-      "nav": {
-        "gettingStarted": "Getting Started",
-        "stack": "Stack"
-      },
-      "sections": {
-        "articles": "Articles",
-        "projects": "Projects",
-        "connect": "Connect"
-      }
-    },
-    "projectsPage": {
-      "title": "Projects",
-      "empty": "No projects yet.",
-      "filters": {
-        "noTags": "No tags"
-      }
-    },
-    "articlesPage": {
-      "title": "Articles",
-      "empty": "No articles yet.",
-      "sections": {
-        "habr": "My articles on Habr",
-        "site": "Notes on site"
-      },
-      "filters": {
-        "all": "All",
-        "habr": "Habr",
-        "site": "Site",
-        "sortNewest": "Newest first",
-        "sortOldest": "Oldest first",
-        "noTags": "No tags"
-      },
-      "habr": "Habr"
-    },
-    "habrProfile": {
-      "onHabr": "On Habr:",
-      "onSite": "On site:",
-      "myProfile": "My profile"
-    },
-    "githubProfile": {
-      "repositories": "Repositories",
-      "followers": "Followers",
-      "myProfile": "My profile"
-    },
-    "projectPage": {
-      "onThisPage": "On this page",
-      "github": "GitHub",
-      "npm": "NPM",
-      "star": "Star on GitHub",
-      "version": "Ver.",
-      "downloads": "Downloads",
-      "lastCommit": "Last Commit"
-    }
+  "projects": {
+    "empty": "No projects yet.",
+    "onThisPage": "On this page",
+    "star": "Star",
+    "downloads": "Downloads",
+    "lastCommit": "Last commit"
   },
-  "cookieBanner": {
-    "ariaLabel": "Cookie consent notice",
-    "title": "Cookie notice",
+  "articles": {
+    "empty": "No articles yet.",
+    "myHabr": "My articles on Habr",
+    "mySite": "Website notes",
+    "sortNewest": "Newest first",
+    "sortOldest": "Oldest first",
+    "published": "Published:",
+    "readingTime": "Reading time:",
+    "readOnHabr": "Read on Habr"
+  },
+  "profile": {
+    "onHabr": "On Habr:",
+    "onSite": "On website:",
+    "myProfile": "My profile",
+    "repositories": "Repositories",
+    "followers": "Followers"
+  },
+  "cookie": {
+    "aria": "Cookie usage notification",
+    "title": "Cookies",
     "description": "Visit data is collected for analytics.",
     "accept": "Accept",
     "decline": "Decline"
   },
   "footer": {
-    "sections": {
-      "main": "Main",
-      "docSections": "Docs Sections",
-      "projects": "Projects",
-      "social": "Contacts"
-    },
-    "links": {
-      "overview": "Overview",
-      "projects": "Projects",
-      "articles": "Articles",
-      "contacts": "Contacts",
-      "repository": "GitHub Repository"
-    },
+    "main": "Main",
+    "docSections": "Sections",
+    "repository": "GitHub repository",
     "repositoryHint": "The source code of this portfolio."
   }
 }
