@@ -5,27 +5,21 @@ import { formatDate } from "@base/utils/date"
 const props = defineProps<{
   article: ArticleItem
   selectedTags: string[]
-  variant?: "habr" | "site"
 }>()
 
 const localePath = useLocalePath()
 
 const icon = computed(() => props.article.meta?.icon || "i-lucide-file-text")
 const tags = computed(() => props.article.meta?.tags || [])
-const isHabr = computed(() => props.variant === "habr")
-const iconClass = computed(() => (isHabr.value ? "text-primary-400 size-5" : "text-muted size-5"))
+const iconClass = computed(() => "text-primary-400 size-5")
 
-const cardClass = computed(() =>
-  isHabr.value
-    ? "group relative overflow-hidden rounded-xl border border-primary-500/20 bg-primary-500/5 p-4 transition-all hover:border-primary-500/30 hover:bg-primary-500/10 hover:shadow-lg hover:shadow-primary-500/10 sm:p-5"
-    : "group relative overflow-hidden rounded-xl border border-white/5 bg-white/3 p-4 transition-all hover:border-white/10 hover:bg-white/5 hover:shadow-lg hover:shadow-black/20 sm:p-5"
-)
+const cardClass = computed(() => {
+  return "group relative overflow-hidden rounded-xl border border-primary-500/20 bg-primary-500/5 p-4 transition-all hover:border-primary-500/30 hover:bg-primary-500/10 hover:shadow-lg hover:shadow-primary-500/10 sm:p-5"
+})
 
-const iconWrapClass = computed(() =>
-  isHabr.value
-    ? "hidden shrink-0 items-center justify-center rounded-xl border border-primary-500/20 bg-primary-500/10 sm:flex sm:size-12"
-    : "hidden shrink-0 items-center justify-center rounded-xl border border-white/5 bg-white/5 sm:flex sm:size-12"
-)
+const iconWrapClass = computed(() => {
+  return "hidden shrink-0 items-center justify-center rounded-xl border border-primary-500/20 bg-primary-500/10 sm:flex sm:size-12"
+})
 
 const tagClass = (tag: string) =>
   props.selectedTags.includes(tag) ? "bg-primary-500/20 text-primary-300" : "text-muted bg-white/5"
@@ -87,7 +81,7 @@ const tagClass = (tag: string) =>
           </div>
 
           <div
-            v-if="isHabr"
+            v-if="article.meta?.habrUrl"
             class="text-primary-400 flex items-center gap-1.5 text-xs"
           >
             <UIcon

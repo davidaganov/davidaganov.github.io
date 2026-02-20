@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ROUTE_PATH } from "@base/types/enums"
+import { DOCS_SECTIONS } from "@docs/config/sections"
+import { getFirstPathForSection } from "@docs/utils/sections"
 
 const localePath = useLocalePath()
+
+const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
+const aboutEntryPath = computed(() => getFirstPathForSection(aboutSection.value))
 </script>
 
 <template>
@@ -31,7 +35,7 @@ const localePath = useLocalePath()
         variant="soft"
         color="primary"
         icon="i-lucide-book-open"
-        :to="localePath(ROUTE_PATH.GETTING_STARTED)"
+        :to="localePath(aboutEntryPath)"
         :label="$t('home.links.empty.cta')"
       />
     </div>

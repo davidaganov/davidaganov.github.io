@@ -9,6 +9,7 @@ const props = defineProps<{
 }>()
 
 const { locale } = useI18n()
+
 const localePath = useLocalePath()
 const route = useRoute()
 
@@ -16,13 +17,19 @@ const isOpen = ref(props.item.defaultOpen ?? false)
 
 const collection = computed(() => `content_${locale.value}` as keyof Collections)
 
+const getQueryPrefix = (pathPrefix: string) => {
+  if (pathPrefix.startsWith(ROUTE_PATH.DOCS)) {
+    return pathPrefix.replace(/^\/docs\/[^/]+/, "") || ROUTE_PATH.HOME
+  }
+
+  return pathPrefix
+}
+
 const { data: pages } = useAsyncData(
-  () => `sidebar:collection:${props.item.source}:${locale.value}`,
+  () => `sidebar:collection:${props.item.source}:${props.item.pathPrefix || ""}:${locale.value}`,
   async () => {
     const pathPrefix = props.item.pathPrefix || ROUTE_PATH.HOME
-    const queryPrefix = pathPrefix.startsWith(ROUTE_PATH.DOCS)
-      ? pathPrefix.replace(/^\/docs/, "")
-      : pathPrefix
+    const queryPrefix = getQueryPrefix(pathPrefix)
 
     return await queryCollection(collection.value)
       .where("path", "LIKE", `%${queryPrefix}%`)
@@ -37,12 +44,29 @@ const { data: pages } = useAsyncData(
 const items = computed(() => {
   const list = pages.value || []
   const pathPrefix = props.item.pathPrefix || ROUTE_PATH.DOCS
-  const queryPrefix = pathPrefix.startsWith(ROUTE_PATH.DOCS)
-    ? pathPrefix.replace(/^\/docs/, "")
-    : pathPrefix
+  const queryPrefix = getQueryPrefix(pathPrefix)
 
   return list
-    .filter((p) => typeof p.path === "string" && p.path.includes(queryPrefix))
+    .filter((p) => {
+      if (typeof p.path !== "string" || !p.path.includes(queryPrefix)) return false
+      const hidden = Boolean((p.meta as { navigation?: boolean } | undefined)?.navigation === false)
+      return !hidden
+    })
+    .sort((left, right) => {
+      const leftMeta = (left.meta as { order?: number } | undefined) || {}
+      const rightMeta = (right.meta as { order?: number } | undefined) || {}
+
+      const leftOrder =
+        typeof leftMeta.order === "number" ? leftMeta.order : Number.MAX_SAFE_INTEGER
+      const rightOrder =
+        typeof rightMeta.order === "number" ? rightMeta.order : Number.MAX_SAFE_INTEGER
+
+      if (leftOrder !== rightOrder) return leftOrder - rightOrder
+
+      const leftTitle = String(left.title || "")
+      const rightTitle = String(right.title || "")
+      return leftTitle.localeCompare(rightTitle)
+    })
     .map((p) => {
       const relativePath = String(p.path).split(queryPrefix).pop() || ""
       const fullPath = pathPrefix + relativePath
@@ -68,6 +92,7 @@ const items = computed(() => {
   <div v-if="items.length > 0">
     <div class="flex items-center justify-between px-3 py-2">
       <NuxtLink
+        v-if="props.item.indexPage !== false"
         class="flex items-center justify-between rounded-lg text-sm font-medium transition-all hover:text-white"
         :class="
           route.path === localePath(props.item.pathPrefix || '') ? 'text-primary-400' : 'text-muted'
@@ -83,6 +108,21 @@ const items = computed(() => {
           <span class="line-clamp-1">{{ $t(item.label) }}</span>
         </div>
       </NuxtLink>
+      <button
+        v-else
+        type="button"
+        class="text-muted flex items-center justify-between rounded-lg text-sm font-medium transition-all hover:text-white"
+        @click="item.collapsible && (isOpen = !isOpen)"
+      >
+        <div class="flex items-center gap-3">
+          <UIcon
+            v-if="item.icon"
+            class="size-4"
+            :name="item.icon"
+          />
+          <span class="line-clamp-1">{{ $t(item.label) }}</span>
+        </div>
+      </button>
       <button
         v-if="item.collapsible"
         class="text-muted flex flex-1 justify-end transition-colors hover:text-white"

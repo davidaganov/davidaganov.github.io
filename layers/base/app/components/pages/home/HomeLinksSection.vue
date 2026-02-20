@@ -1,23 +1,22 @@
 <script setup lang="ts">
+import { DOCS_SECTIONS } from "@docs/config/sections"
+import { getFirstPathForSection } from "@docs/utils/sections"
 import HomeLinkCard from "@base/components/pages/home/HomeLinkCard.vue"
 import HomeLinksEmpty from "@base/components/pages/home/HomeLinksEmpty.vue"
-import { ROUTE_PATH, VIEW_MODE } from "@base/types/enums"
+import { VIEW_MODE } from "@base/types/enums"
 import type { Link } from "@base/types/links"
 import UiTabs from "@ui/components/UiTabs.vue"
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
-const { locale } = useI18n()
+
+const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
+const aboutEntryPath = computed(() => localePath(getFirstPathForSection(aboutSection.value)))
 
 const mode = ref<VIEW_MODE>(VIEW_MODE.PROFESSIONAL)
 const isMobile = ref(false)
 
 const { links, error } = useLinksGistClient()
-
-const getLocalizedText = (value?: { ru: string; en: string }): string | undefined => {
-  if (!value) return undefined
-  return value[locale.value as keyof typeof value] || value.en
-}
 
 const viewModeItems = computed(() => [
   {
@@ -47,7 +46,7 @@ const localizedLinks = computed(() => {
   return [
     ...transformedLinks,
     {
-      url: localePath(ROUTE_PATH.GETTING_STARTED),
+      url: aboutEntryPath.value,
       localizedName: t("home.links.cta"),
       localizedDescription: t("home.links.ctaDescription"),
       icon: "i-lucide-book-open",
@@ -56,6 +55,11 @@ const localizedLinks = computed(() => {
     }
   ]
 })
+
+const getLocalizedText = (value?: { ru: string; en: string }): string | undefined => {
+  if (!value) return undefined
+  return value[locale.value as keyof typeof value] || value.en
+}
 
 const checkMobile = () => {
   isMobile.value = window.innerWidth < 768

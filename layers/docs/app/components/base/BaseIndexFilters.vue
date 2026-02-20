@@ -1,22 +1,48 @@
 <script setup lang="ts">
-import { SORT_ORDER } from "@docs/types/enums"
+import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
+import UiTabs from "@ui/components/UiTabs.vue"
 
-const props = defineProps<{
-  sortOrder: SORT_ORDER
-  sortIcon: string
-  allTags: string[]
-  selectedTags: string[]
-  hasActiveFilters: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    sourceFilter: SOURCE_FILTER
+    sortOrder: SORT_ORDER
+    sortIcon: string
+    allTags: string[]
+    selectedTags: string[]
+    hasActiveFilters: boolean
+    titleKey?: string
+    showSourceTabs?: boolean
+  }>(),
+  {
+    titleKey: "layout.articlesPage.title",
+    showSourceTabs: true
+  }
+)
 
 const emit = defineEmits<{
+  (e: "update:sourceFilter", value: SOURCE_FILTER): void
   (e: "toggleSort"): void
   (e: "toggleTag", tag: string): void
   (e: "reset"): void
 }>()
 
+const { t } = useI18n()
+
+const sourceFilterTabs = computed(() => [
+  { value: SOURCE_FILTER.ALL, label: t("layout.articlesPage.filters.all") },
+  { value: SOURCE_FILTER.HABR, label: t("layout.articlesPage.filters.habr") },
+  { value: SOURCE_FILTER.SITE, label: t("layout.articlesPage.filters.site") }
+])
+
+const sourceFilterModel = computed({
+  get: () => props.sourceFilter,
+  set: (v) => emit("update:sourceFilter", v)
+})
+
+const isTagSelected = (tag: string) => props.selectedTags.includes(tag)
+
 const getTagButtonClass = (tag: string) =>
-  props.selectedTags.includes(tag)
+  isTagSelected(tag)
     ? "border-primary-500/50 bg-primary-500/15 text-primary-300"
     : "text-muted border-white/10 bg-white/5 hover:border-white/20 hover:text-white"
 
@@ -37,8 +63,15 @@ const handleReset = () => {
   <div class="mb-4 flex flex-col gap-3 sm:mb-6">
     <div class="flex w-full items-center justify-between gap-4">
       <h1 class="text-2xl font-semibold tracking-tight text-white">
-        {{ $t("layout.projectsPage.title") }}
+        {{ $t(props.titleKey) }}
       </h1>
+
+      <UiTabs
+        v-if="props.showSourceTabs"
+        v-model="sourceFilterModel"
+        variant="secondary"
+        :items="sourceFilterTabs"
+      />
     </div>
 
     <div class="flex flex-wrap items-center gap-1.5">
@@ -67,7 +100,7 @@ const handleReset = () => {
         v-else
         class="text-muted text-sm"
       >
-        {{ $t("layout.projectsPage.filters.noTags") }}
+        {{ $t("layout.articlesPage.filters.noTags") }}
       </p>
 
       <UButton

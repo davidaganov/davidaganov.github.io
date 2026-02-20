@@ -40,10 +40,15 @@
   },
   "layout": {
     "search": "Поиск...",
+    "sections": {
+      "about": "О проекте",
+      "guides": "Гайды"
+    },
     "sidebar": {
       "nav": {
         "gettingStarted": "Обзор",
-        "stack": "Стек"
+        "stack": "Стек",
+        "services": "Слой запросов"
       },
       "sections": {
         "articles": "Статьи",
@@ -104,9 +109,10 @@
   },
   "footer": {
     "sections": {
-      "docs": "Разделы",
-      "social": "Контакты",
-      "projects": "Проекты"
+      "main": "Главное",
+      "docSections": "Разделы",
+      "projects": "Проекты",
+      "social": "Контакты"
     },
     "links": {
       "overview": "Обзор",

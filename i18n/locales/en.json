@@ -40,6 +40,10 @@
   },
   "layout": {
     "search": "Search...",
+    "sections": {
+      "about": "About",
+      "guides": "Guides"
+    },
     "sidebar": {
       "nav": {
         "gettingStarted": "Getting Started",
@@ -104,9 +108,10 @@
   },
   "footer": {
     "sections": {
-      "docs": "Docs",
-      "social": "Contacts",
-      "projects": "Projects"
+      "main": "Main",
+      "docSections": "Docs Sections",
+      "projects": "Projects",
+      "social": "Contacts"
     },
     "links": {
       "overview": "Overview",

@@ -3,7 +3,8 @@ import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.v
 import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarGroup from "@docs/components/base/BaseSidebarGroup.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
-import { SIDEBAR_ITEMS } from "@docs/config/sidebar"
+import { DOCS_SECTIONS } from "@docs/config/sections"
+import { getSectionById, getSectionIdByPath } from "@docs/utils/sections"
 
 const props = defineProps<{
   open: boolean
@@ -14,6 +15,13 @@ const route = useRoute()
 const emit = defineEmits<{
   (e: "close"): void
 }>()
+
+const sidebarItems = computed(() => {
+  const sectionId = getSectionIdByPath(route.path)
+  const section = getSectionById(sectionId)
+
+  return section?.sidebarItems || DOCS_SECTIONS[0]?.sidebarItems || []
+})
 
 const handleClose = () => {
   emit("close")
@@ -51,7 +59,7 @@ watch(
         />
         <nav class="max-w-[calc(100%-30px)] flex-1 space-y-1 p-4">
           <template
-            v-for="(item, index) in SIDEBAR_ITEMS"
+            v-for="(item, index) in sidebarItems"
             :key="index"
           >
             <BaseSidebarLink

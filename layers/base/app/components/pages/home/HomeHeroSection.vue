@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ROUTE_PATH } from "@base/types/enums"
+import { DOCS_SECTIONS } from "@docs/config/sections"
+import { getFirstPathForSection } from "@docs/utils/sections"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import FaultyTerminal from "@ui/components/bits/FaultyTerminal.vue"
 import Squares from "@ui/components/bits/Squares.vue"
@@ -16,6 +17,8 @@ const animationEnabled = useCookie<boolean>("animation_enabled", {
 })
 
 const noiseAmp = computed(() => 0.3 + Math.random() * 0.3)
+const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
+const aboutEntryPath = computed(() => getFirstPathForSection(aboutSection.value))
 
 const scrollToLinks = () => {
   const element = document.getElementById("links-section")
@@ -133,7 +136,7 @@ const scrollToLinks = () => {
       <div class="mt-10 flex gap-4">
         <NuxtLink
           class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/10 px-8 py-3 font-medium text-white backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(184,126,239,0.3)]"
-          :to="localePath(ROUTE_PATH.GETTING_STARTED)"
+          :to="localePath(aboutEntryPath)"
         >
           <span class="mr-2">{{ $t("home.getStarted") }}</span>
           <UIcon

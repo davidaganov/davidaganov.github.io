@@ -6,6 +6,7 @@ import AppRightSidebarHabrProfile from "@docs/components/app/AppRightSidebarHabr
 import AppRightSidebarProjectMeta from "@docs/components/app/AppRightSidebarProjectMeta.vue"
 import AppRightSidebarToc from "@docs/components/app/AppRightSidebarToc.vue"
 import { TYPE_PAGE } from "@docs/types/enums"
+import { SOCIAL_LINKS } from "@base/constants/config"
 
 const props = withDefaults(
   defineProps<{
@@ -33,7 +34,7 @@ const isLg = breakpoints.greater("lg")
       v-if="isLg"
       to="#app-right-sidebar-root"
     >
-      <aside class="sticky top-18 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 lg:pb-14">
+      <aside class="sticky top-29 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 lg:pb-14">
         <div class="space-y-6">
           <AppRightSidebarToc
             v-if="!props.main"
@@ -53,6 +54,25 @@ const isLg = breakpoints.greater("lg")
               :page="props.page"
             />
           </template>
+
+          <div class="border-t border-white/10 pt-4">
+            <div class="flex items-center gap-4">
+              <a
+                v-for="item in SOCIAL_LINKS"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-gray-400 transition-colors hover:text-white"
+                :href="item.href"
+                :aria-label="item.label"
+                :key="item.label"
+              >
+                <UIcon
+                  :name="item.icon"
+                  class="size-5"
+                />
+              </a>
+            </div>
+          </div>
         </div>
       </aside>
     </Teleport>
@@ -77,6 +97,25 @@ const isLg = breakpoints.greater("lg")
           :page="props.page"
         />
       </template>
+
+      <div class="border-t border-white/10 pt-4">
+        <div class="flex items-center gap-4">
+          <a
+            v-for="item in SOCIAL_LINKS"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-400 transition-colors hover:text-white"
+            :href="item.href"
+            :aria-label="item.label"
+            :key="item.label"
+          >
+            <UIcon
+              :name="item.icon"
+              class="size-5"
+            />
+          </a>
+        </div>
+      </div>
     </aside>
   </ClientOnly>
 </template>

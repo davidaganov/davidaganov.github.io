@@ -7,7 +7,8 @@ export interface SidebarBaseItem {
 
 export interface SidebarLinkItem extends SidebarBaseItem {
   type: "link"
-  label: string
+  name?: string
+  label?: string
   to?: string
   href?: string
   target?: string
@@ -33,6 +34,7 @@ export interface SidebarCollectionItem extends SidebarBaseItem {
   type: "collection"
   source: string
   label: string
+  indexPage?: boolean
   icon?: string
   itemIcon?: string
   pathPrefix?: string

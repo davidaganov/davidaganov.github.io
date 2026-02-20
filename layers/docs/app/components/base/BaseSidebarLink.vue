@@ -25,7 +25,11 @@ const route = useRoute()
         :name="props.item.icon"
       />
       <span class="line-clamp-1">
-        {{ props.item.translate === false ? props.item.label : $t(props.item.label) }}
+        {{
+          props.item.translate === false
+            ? props.item.label || props.item.name || ""
+            : $t(props.item.label || "")
+        }}
       </span>
     </div>
   </NuxtLink>
@@ -43,7 +47,11 @@ const route = useRoute()
       :name="props.item.icon"
     />
     <span class="line-clamp-1">
-      {{ props.item.translate === false ? props.item.label : $t(props.item.label) }}
+      {{
+        props.item.translate === false
+          ? props.item.label || props.item.name || ""
+          : $t(props.item.label || "")
+      }}
     </span>
   </a>
 </template>

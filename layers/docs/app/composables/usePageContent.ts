@@ -8,11 +8,15 @@ export const usePageContent = (path: string) => {
   return useAsyncData(
     () => `content:${collection.value}:${path}`,
     async () => {
-      const cleanPath = path.replace(/^\/docs/, "")
+      const withoutDocs = path.replace(/^\/docs/, "")
+      const withoutSection = path.replace(/^\/docs\/[^/]+/, "")
+      const candidates = [withoutDocs, withoutSection].filter(Boolean)
       const allContent = await queryCollection(collection.value).all()
 
-      const found = allContent.find(
-        (p) => p.path === cleanPath || p.path === `/${cleanPath}` || p.path.endsWith(cleanPath)
+      const found = allContent.find((p) =>
+        candidates.some((candidate) => {
+          return p.path === candidate || p.path === `/${candidate}` || p.path.endsWith(candidate)
+        })
       )
 
       return found

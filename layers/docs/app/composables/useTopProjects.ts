@@ -4,14 +4,6 @@ import { ROUTE_PATH } from "@base/types/enums"
 
 const LIMIT = 3
 
-export interface ProjectWithStars {
-  title: string
-  description: string
-  to: string
-  githubRepo: string
-  stars: number
-}
-
 export const useTopProjects = (limit = LIMIT) => {
   const { locale } = useI18n()
 
@@ -32,7 +24,7 @@ export const useTopProjects = (limit = LIMIT) => {
             return {
               title: String(p.title || ""),
               description: String(p.description || ""),
-              to: `${ROUTE_PATH.PROJECTS}/${p.path.split("/").pop() || ""}`,
+              to: `${ROUTE_PATH.ABOUT_PROJECTS}/${p.path.split("/").pop() || ""}`,
               githubRepo,
               stars
             }

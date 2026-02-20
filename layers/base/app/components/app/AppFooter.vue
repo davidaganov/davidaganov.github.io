@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { DOCS_SECTIONS } from "@docs/config/sections"
+import { getFirstPathForSection } from "@docs/utils/sections"
 import { SOCIAL_LINKS } from "@base/constants/config"
 import { ROUTE_PATH } from "@base/types/enums/route.enum"
 import UiDivider from "@ui/components/UiDivider.vue"
@@ -7,14 +9,37 @@ import UiLogo from "@ui/components/UiLogo.vue"
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const year = computed(() => new Date().getFullYear())
 const { projects } = useTopProjects(3)
 
+const year = computed(() => new Date().getFullYear())
+const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
+
 const docLinks = computed(() => [
-  { label: t("footer.links.overview"), to: ROUTE_PATH.GETTING_STARTED },
-  { label: t("footer.links.projects"), to: ROUTE_PATH.PROJECTS },
-  { label: t("footer.links.articles"), to: ROUTE_PATH.ARTICLES }
+  {
+    label: t("footer.links.overview"),
+    to: getFirstPathForSection(aboutSection.value),
+    icon: "i-lucide-house"
+  },
+  {
+    label: t("footer.links.projects"),
+    to: ROUTE_PATH.ABOUT_PROJECTS,
+    icon: "i-lucide-folder-kanban"
+  },
+  {
+    label: t("footer.links.articles"),
+    to: ROUTE_PATH.ABOUT_ARTICLES,
+    icon: "i-lucide-newspaper"
+  }
 ])
+
+const docsSectionsPreview = computed(() =>
+  DOCS_SECTIONS.slice(0, 3).map((section) => ({
+    id: section.id,
+    icon: section.icon,
+    label: t(section.labelKey),
+    to: getFirstPathForSection(section)
+  }))
+)
 </script>
 
 <template>
@@ -29,6 +54,81 @@ const docLinks = computed(() => [
 
     <nav class="relative container py-10">
       <div class="flex flex-row flex-wrap gap-12 md:max-w-1/2 md:justify-between md:gap-20">
+        <div>
+          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
+            {{ $t("footer.sections.main") }}
+          </h3>
+          <ul class="mt-4 flex flex-col gap-3">
+            <li
+              v-for="item in docLinks"
+              :key="item.to"
+            >
+              <NuxtLink
+                class="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+                :to="localePath(item.to)"
+              >
+                <UIcon
+                  :name="item.icon"
+                  class="size-4"
+                />
+                {{ item.label }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
+            {{ $t("footer.sections.docSections") }}
+          </h3>
+          <ul class="mt-4 flex flex-col gap-3">
+            <li
+              v-for="section in docsSectionsPreview"
+              :key="section.id"
+            >
+              <NuxtLink
+                class="group inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+                :to="localePath(section.to)"
+              >
+                <UIcon
+                  :name="section.icon"
+                  class="size-4"
+                />
+                <span>{{ section.label }}</span>
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+
+        <div v-if="projects.length">
+          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
+            {{ $t("footer.sections.projects") }}
+          </h3>
+          <ul class="mt-4 flex flex-col gap-3">
+            <li
+              v-for="item in projects"
+              :key="item.to"
+            >
+              <NuxtLink
+                class="group flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+                :to="localePath(item.to)"
+              >
+                <span>{{ item.title }}</span>
+                <span
+                  v-if="item.stars"
+                  class="inline-flex items-center gap-1 text-xs text-gray-500"
+                >
+                  <UIcon
+                    name="i-lucide-star mb-0.5"
+                    class="size-3"
+                  />
+                  {{ item.stars }}
+                </span>
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+
         <div>
           <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
             {{ $t("footer.sections.social") }}
@@ -53,51 +153,6 @@ const docLinks = computed(() => [
             </li>
           </ul>
         </div>
-
-        <div>
-          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
-            {{ $t("footer.sections.docs") }}
-          </h3>
-          <ul class="mt-4 flex flex-col gap-3">
-            <li
-              v-for="item in docLinks"
-              :key="item.to"
-            >
-              <NuxtLink
-                class="block text-sm text-gray-400 transition-colors hover:text-white"
-                :to="localePath(item.to)"
-              >
-                {{ item.label }}
-              </NuxtLink>
-            </li>
-          </ul>
-        </div>
-
-        <div v-if="projects.length">
-          <h3 class="text-xs font-semibold tracking-wider text-gray-200 uppercase">
-            {{ $t("footer.sections.projects") }}
-          </h3>
-          <ul class="mt-4 flex flex-col gap-3">
-            <li
-              v-for="item in projects"
-              :key="item.to"
-            >
-              <NuxtLink
-                class="group flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
-                :to="localePath(item.to)"
-              >
-                <span>{{ item.title }}</span>
-                <span class="inline-flex items-center gap-1 text-xs text-gray-500">
-                  <UIcon
-                    name="i-lucide-star"
-                    class="size-3"
-                  />
-                  {{ item.stars }}
-                </span>
-              </NuxtLink>
-            </li>
-          </ul>
-        </div>
       </div>
     </nav>
 
@@ -107,7 +162,7 @@ const docLinks = computed(() => [
 
     <div class="relative container my-6">
       <div
-        class="flex flex-col gap-2 text-xs text-gray-500 sm:flex-row sm:items-center sm:justify-between"
+        class="flex flex-col gap-2 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between"
       >
         <div>© {{ year }} David Aganov</div>
 
