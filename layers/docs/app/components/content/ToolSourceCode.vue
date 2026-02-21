@@ -33,7 +33,11 @@ const { data: ast } = await useAsyncData(
   `tool-source-${props.file}-${props.lang}`,
   async () => {
     if (!markdown.value) return null
-    return await parseMarkdown(markdown.value)
+    return await parseMarkdown(markdown.value, {
+      highlight: {
+        theme: "github-dark"
+      }
+    })
   },
   {
     server: true
