@@ -9,6 +9,7 @@
   "nav": {
     "about": "About me",
     "guides": "Guides",
+    "tools": "Tools",
     "overview": "Overview",
     "stack": "Stack",
     "services": "Service layer",
@@ -81,5 +82,61 @@
     "docSections": "Sections",
     "repository": "GitHub repository",
     "repositoryHint": "The source code of this portfolio."
+  },
+  "tools": {
+    "dateCalculator": {
+      "aria": {
+        "selectDate": "Select date"
+      },
+      "modes": {
+        "difference": "Difference",
+        "calculate": "From date"
+      },
+      "fields": {
+        "startDate": "Start date",
+        "endDate": "End date",
+        "baseDate": "Base date",
+        "amount": "Amount",
+        "unit": "Unit",
+        "direction": "Direction"
+      },
+      "units": {
+        "days": "Days",
+        "weeks": "Weeks",
+        "months": "Months",
+        "years": "Years"
+      },
+      "directions": {
+        "forward": "Forward",
+        "backward": "Backward"
+      },
+      "actions": {
+        "clearAll": "Clear all"
+      },
+      "placeholders": {
+        "selectDate": "Select date"
+      },
+      "result": {
+        "title": "Result",
+        "days": "Days",
+        "workingDays": "Working days",
+        "weeks": "Weeks",
+        "months": "Months",
+        "years": "Years"
+      }
+    },
+    "sourceCode": {
+      "copy": "Copy",
+      "copied": "Copied",
+      "expand": "Show all",
+      "collapse": "Collapse",
+      "loading": "Loading code..."
+    },
+    "playground": {
+      "preview": "Preview",
+      "code": "Code",
+      "previewEmpty": "Preview slot is empty.",
+      "codeEmpty": "Code slot is empty."
+    }
   }
 }

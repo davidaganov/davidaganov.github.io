@@ -38,12 +38,37 @@ Polyglot Keeper делает один понятный шаг: **берёт ба
 
 ## Быстрый старт
 
-```bash
+<code-group sync="pm">
+
+```bash [npm]
 npm i -D polyglot-keeper
 npx polyglot-keeper init
 # добавь API key в .env
 npx polyglot-keeper sync
 ```
+
+```bash [yarn]
+yarn add -D polyglot-keeper
+yarn polyglot-keeper init
+# добавь API key в .env
+yarn polyglot-keeper sync
+```
+
+```bash [pnpm]
+pnpm add -D polyglot-keeper
+pnpm polyglot-keeper init
+# добавь API key в .env
+pnpm polyglot-keeper sync
+```
+
+```bash [bun]
+bun add -d polyglot-keeper
+bunx polyglot-keeper init
+# добавь API key в .env
+bunx polyglot-keeper sync
+```
+
+</code-group>
 
 ### Конфигурация
 

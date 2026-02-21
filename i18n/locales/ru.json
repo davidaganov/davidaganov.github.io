@@ -9,6 +9,7 @@
   "nav": {
     "about": "Обо мне",
     "guides": "Гайды",
+    "tools": "Инструменты",
     "overview": "Обзор",
     "stack": "Стек",
     "services": "Слой запросов",
@@ -81,5 +82,61 @@
     "docSections": "Разделы",
     "repository": "Репозиторий на GitHub",
     "repositoryHint": "Исходный код этого портфолио."
+  },
+  "tools": {
+    "dateCalculator": {
+      "aria": {
+        "selectDate": "Выбрать дату"
+      },
+      "modes": {
+        "difference": "Разница",
+        "calculate": "От даты"
+      },
+      "fields": {
+        "startDate": "Начальная дата",
+        "endDate": "Конечная дата",
+        "baseDate": "Базовая дата",
+        "amount": "Количество",
+        "unit": "Единица",
+        "direction": "Направление"
+      },
+      "units": {
+        "days": "Дней",
+        "weeks": "Недель",
+        "months": "Месяцев",
+        "years": "Лет"
+      },
+      "directions": {
+        "forward": "Вперед",
+        "backward": "Назад"
+      },
+      "actions": {
+        "clearAll": "Очистить всё"
+      },
+      "placeholders": {
+        "selectDate": "Выбрать дату"
+      },
+      "result": {
+        "title": "Результат",
+        "days": "Дней",
+        "workingDays": "Рабочих",
+        "weeks": "Недель",
+        "months": "Месяцев",
+        "years": "Лет"
+      }
+    },
+    "sourceCode": {
+      "copy": "Копировать",
+      "copied": "Скопировано",
+      "expand": "Показать целиком",
+      "collapse": "Свернуть",
+      "loading": "Загрузка кода..."
+    },
+    "playground": {
+      "preview": "Превью",
+      "code": "Код",
+      "previewEmpty": "Превью слот пуст.",
+      "codeEmpty": "Код слот пуст."
+    }
   }
 }

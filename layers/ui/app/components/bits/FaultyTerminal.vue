@@ -414,7 +414,11 @@ const setup = () => {
 onMounted(() => {
   const ctn = containerRef.value
   if (ctn) {
-    setup()
+    requestAnimationFrame(() => {
+      if (containerRef.value) {
+        setup()
+      }
+    })
   }
 })
 

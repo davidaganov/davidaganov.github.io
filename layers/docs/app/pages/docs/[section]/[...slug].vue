@@ -11,7 +11,7 @@ import {
   getSectionById
 } from "@docs/utils/sections"
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 
 const route = useRoute()
 const localePath = useLocalePath()
@@ -96,10 +96,39 @@ const resolvePageType = (pt: string | undefined): TYPE_PAGE => {
 
 const rightSidebarType = computed(() => resolvePageType(collectionItem.value?.pageType))
 const pageRightSidebarType = computed(() => resolvePageType(parentCollectionItem.value?.pageType))
+
+const breadcrumbs = computed(() => {
+  const currentSection = section.value
+  if (!currentSection) return []
+
+  const items: { label: string; to?: string }[] = [
+    {
+      label: t(currentSection.labelKey),
+      to: localePath(getFirstPathForSection(currentSection))
+    }
+  ]
+
+  const parentCollection = parentCollectionItem.value
+  if (parentCollection) {
+    items.push({
+      label: t(parentCollection.label),
+      to: localePath(
+        parentCollection.pathPrefix || `/docs/${currentSection.id}/${parentCollection.source}`
+      )
+    })
+  }
+
+  return items
+})
 </script>
 
 <template>
   <div v-if="collectionItem">
+    <UBreadcrumb
+      v-if="breadcrumbs.length"
+      class="mb-6"
+      :items="breadcrumbs"
+    />
     <AppIndexPage
       :title-key="titleKey"
       :empty-key="emptyKey"
@@ -112,6 +141,11 @@ const pageRightSidebarType = computed(() => resolvePageType(parentCollectionItem
     />
   </div>
   <div v-else-if="page">
+    <UBreadcrumb
+      v-if="breadcrumbs.length"
+      class="mb-6"
+      :items="breadcrumbs"
+    />
     <ContentRenderer :value="page" />
     <AppRightSidebar
       :page="page"

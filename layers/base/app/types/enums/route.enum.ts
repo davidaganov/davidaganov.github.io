@@ -11,5 +11,8 @@ export enum ROUTE_PATH {
   ABOUT_ARTICLES = "/docs/about/articles",
 
   // Docs - Guide
-  DOCS_GUIDES = "/docs/guides"
+  DOCS_GUIDES = "/docs/guides",
+
+  // Docs - Tools
+  DOCS_TOOLS = "/docs/tools"
 }

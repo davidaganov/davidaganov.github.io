@@ -146,7 +146,7 @@ The component knows nothing about URLs, headers, or `fetch` details. It only wor
 If you need a stable and reusable request layer, the minimum set is:
 
 1. shared `request` with unified behavior
-2. `requests/<domain>` folders with methods for each entity
+2. `requests/&​lt;domain&​gt;` folders with methods for each entity
 3. unified `ApiClient` as the app’s public API
 
 As the project grows, this split helps keep business logic separate from presentation.

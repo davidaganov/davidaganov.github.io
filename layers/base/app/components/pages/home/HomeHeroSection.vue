@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
-import FaultyTerminal from "@ui/components/bits/FaultyTerminal.vue"
-import Squares from "@ui/components/bits/Squares.vue"
-import TextType from "@ui/components/bits/TextType.vue"
+
+const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
+const Squares = defineAsyncComponent(() => import("@ui/components/bits/Squares.vue"))
+const TextType = defineAsyncComponent(() => import("@ui/components/bits/TextType.vue"))
+
+let unmountTimer: ReturnType<typeof setTimeout> | null = null
 
 const { toggle } = useCommandPalette()
 
@@ -12,7 +15,11 @@ const animationEnabled = useCookie<boolean>("animation_enabled", {
   path: "/"
 })
 
-const noiseAmp = computed(() => 0.3 + Math.random() * 0.3)
+const noiseAmp = ref(0.45)
+const backgroundReady = ref(false)
+const backgroundMounted = ref(false)
+const backgroundVisible = ref(false)
+
 const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
 
 const scrollToLinks = () => {
@@ -21,11 +28,47 @@ const scrollToLinks = () => {
     element.scrollIntoView({ behavior: "smooth" })
   }
 }
+
+watch(
+  [animationEnabled, backgroundReady],
+  ([anim, ready]) => {
+    if (unmountTimer) {
+      clearTimeout(unmountTimer)
+      unmountTimer = null
+    }
+
+    if (anim && ready) {
+      backgroundMounted.value = true
+      nextTick(() => {
+        backgroundVisible.value = true
+      })
+    } else {
+      backgroundVisible.value = false
+      unmountTimer = setTimeout(() => {
+        backgroundMounted.value = false
+      }, 500)
+    }
+  },
+  { immediate: true }
+)
+
+onMounted(() => {
+  noiseAmp.value = 0.3 + Math.random() * 0.3
+
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(() => {
+      backgroundReady.value = true
+    })
+  } else {
+    setTimeout(() => {
+      backgroundReady.value = true
+    }, 50)
+  }
+})
 </script>
 
 <template>
   <div class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center p-8">
-    <!-- Language Switcher -->
     <div class="absolute top-6 right-6 z-20 flex items-center gap-3">
       <div class="flex items-center gap-2">
         <USwitch
@@ -46,7 +89,6 @@ const scrollToLinks = () => {
       <UiLanguageSwitcher :blur="true" />
     </div>
 
-    <!-- Background Effect - Desktop -->
     <div class="absolute inset-0 hidden overflow-hidden md:block">
       <div class="absolute inset-0 bg-linear-to-br from-slate-900 via-purple-900/20 to-slate-900" />
       <div
@@ -56,55 +98,60 @@ const scrollToLinks = () => {
         class="bg-[radial-gradient(ellipse_at_bottom_right, rgba(139,92,246,0.1), transparent_50%)] absolute inset-0"
       />
     </div>
-    <div
-      class="will-change-opacity absolute inset-0 hidden overflow-hidden transition-opacity duration-500 ease-in-out md:block"
-      :class="animationEnabled ? 'opacity-100' : 'opacity-0'"
-    >
-      <FaultyTerminal
-        tint="#b87eef"
-        :scale="1.5"
-        :grid-mul="[2, 1]"
-        :digit-size="1.2"
-        :time-scale="0.2"
-        :pause="!animationEnabled"
-        :scanline-intensity="0.8"
-        :glitch-amount="0.6"
-        :flicker-amount="0.4"
-        :noise-amp="noiseAmp"
-        :chromatic-aberration="0"
-        :dither="0"
-        :curvature="0.1"
-        :mouse-react="animationEnabled"
-        :mouse-strength="0.3"
-        :page-load-animation="true"
-        :brightness="1"
-      />
-    </div>
 
-    <!-- Background Effect - Mobile -->
+    <ClientOnly>
+      <div
+        v-if="backgroundMounted"
+        class="absolute inset-0 hidden overflow-hidden transition-opacity duration-500 ease-in-out md:block"
+        :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
+      >
+        <FaultyTerminal
+          tint="#b87eef"
+          :scale="1.5"
+          :grid-mul="[2, 1]"
+          :digit-size="1.2"
+          :time-scale="0.2"
+          :pause="false"
+          :scanline-intensity="0.8"
+          :glitch-amount="0.6"
+          :flicker-amount="0.4"
+          :noise-amp="noiseAmp"
+          :chromatic-aberration="0"
+          :dither="0"
+          :curvature="0.1"
+          :mouse-react="true"
+          :mouse-strength="0.3"
+          :page-load-animation="true"
+          :brightness="1"
+        />
+      </div>
+    </ClientOnly>
+
     <div class="absolute inset-0 overflow-hidden md:hidden">
       <div class="absolute inset-0 bg-linear-to-br from-slate-900 via-purple-900/20 to-slate-900" />
       <div
         class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(184,126,239,0.15),transparent_50%)]"
       />
     </div>
-    <div
-      class="will-change-opacity absolute inset-0 overflow-hidden transition-opacity duration-500 ease-in-out md:hidden"
-      :class="animationEnabled ? 'opacity-100' : 'opacity-0'"
-    >
-      <Squares
-        direction="diagonal"
-        border-color="rgba(184, 126, 239, 0.3)"
-        hover-fill-color="rgba(184, 126, 239, 0.2)"
-        :speed="animationEnabled ? 0.5 : 0"
-        :square-size="50"
-      />
-    </div>
 
-    <!-- Overlay for better text legibility -->
+    <ClientOnly>
+      <div
+        v-if="backgroundMounted"
+        class="absolute inset-0 overflow-hidden transition-opacity duration-500 ease-in-out md:hidden"
+        :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
+      >
+        <Squares
+          direction="diagonal"
+          border-color="rgba(184, 126, 239, 0.3)"
+          hover-fill-color="rgba(184, 126, 239, 0.2)"
+          :speed="0.5"
+          :square-size="50"
+        />
+      </div>
+    </ClientOnly>
+
     <div class="bg-background-deep/50 pointer-events-none absolute inset-0 backdrop-blur-[1px]" />
 
-    <!-- Content -->
     <div class="relative z-10 flex max-w-3xl flex-col items-center text-center">
       <span
         class="text-primary-300 mb-6 inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium tracking-wide backdrop-blur-md"
@@ -143,7 +190,6 @@ const scrollToLinks = () => {
           />
         </NuxtLink>
 
-        <!-- Command Palette Trigger -->
         <button
           class="group hidden items-center justify-center rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-gray-400 backdrop-blur-md transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white md:flex"
           @click="toggle"
@@ -157,7 +203,6 @@ const scrollToLinks = () => {
       </div>
     </div>
 
-    <!-- Scroll Indicator -->
     <div class="absolute right-0 bottom-5 left-0 z-20 flex justify-center">
       <button
         class="group focus-visible:ring-primary-400/40 flex flex-col items-center gap-2 text-gray-400/80 transition-colors duration-300 hover:text-white focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:outline-none"

@@ -21,6 +21,15 @@ export default defineNuxtConfig({
     }
   },
 
+  mdc: {
+    highlight: {
+      theme: {
+        default: "github-dark"
+      },
+      langs: ["vue", "ts", "tsx", "js", "json", "bash"]
+    }
+  },
+
   i18n: {
     locales: [
       { code: "ru", iso: "ru-RU", file: "ru.json" },
