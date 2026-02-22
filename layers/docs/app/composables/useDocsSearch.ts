@@ -139,7 +139,16 @@ const findContentMapping = (contentPath: string): ContentMapping | null => {
 
 const buildUrlFromMapping = (mapping: ContentMapping): string => {
   if (mapping.isCollectionItem && mapping.collectionSource) {
-    return `/docs/${mapping.sectionId}/${mapping.collectionSource}${mapping.path.replace(/^\/(?:${mapping.sectionId}\/)?${mapping.collectionSource}/, "")}`
+    const sectionScopedPrefix = `/${mapping.sectionId}/${mapping.collectionSource}`
+
+    if (mapping.path.startsWith(sectionScopedPrefix)) return `/docs${mapping.path}`
+
+    const flatPrefix = `/${mapping.collectionSource}`
+    const suffix = mapping.path.startsWith(flatPrefix)
+      ? mapping.path.slice(flatPrefix.length)
+      : mapping.path
+
+    return `/docs/${mapping.sectionId}/${mapping.collectionSource}${suffix}`
   }
   return `/docs${mapping.path}`
 }

@@ -83,8 +83,30 @@
     "repository": "GitHub repository",
     "repositoryHint": "The source code of this portfolio."
   },
+  "archive": {
+    "title": "Download archive",
+    "download": "Download ZIP",
+    "preparing": "Preparing...",
+    "filesCount": "Files",
+    "error": "Failed to create archive.",
+    "safety": {
+      "aria": "Why this is safe",
+      "description": "The archive is generated locally in your browser from repository files, and nothing is executed on your device.",
+      "link": "View implementation"
+    }
+  },
+  "guides": {
+    "nav": {
+      "architecture": "Architecture"
+    }
+  },
   "tools": {
-    "dateCalculator": {
+    "empty": "No tools yet.",
+    "nav": {
+      "calculators": "Calculators"
+    },
+    "calculators": {
+      "empty": "No calculators yet.",
       "aria": {
         "selectDate": "Select date"
       },
@@ -126,6 +148,7 @@
       }
     },
     "sourceCode": {
+      "download": "Download",
       "copy": "Copy",
       "copied": "Copied",
       "expand": "Show all",

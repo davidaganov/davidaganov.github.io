@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useBreakpoints } from "@vueuse/core"
+import AppRightSidebarArchiveDownload from "@docs/components/app/AppRightSidebarArchiveDownload.vue"
 import AppRightSidebarArticleMeta from "@docs/components/app/AppRightSidebarArticleMeta.vue"
 import AppRightSidebarGitHubProfile from "@docs/components/app/AppRightSidebarGitHubProfile.vue"
 import AppRightSidebarHabrProfile from "@docs/components/app/AppRightSidebarHabrProfile.vue"
@@ -53,6 +54,7 @@ const isLg = breakpoints.greater("lg")
               v-else-if="props.type === TYPE_PAGE.PROJECT"
               :page="props.page"
             />
+            <AppRightSidebarArchiveDownload />
           </template>
 
           <div class="border-t border-white/10 pt-4">
@@ -96,6 +98,7 @@ const isLg = breakpoints.greater("lg")
           v-else-if="props.type === TYPE_PAGE.PROJECT"
           :page="props.page"
         />
+        <AppRightSidebarArchiveDownload />
       </template>
 
       <div class="border-t border-white/10 pt-4">

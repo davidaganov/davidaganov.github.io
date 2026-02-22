@@ -1,5 +1,9 @@
 import { fileURLToPath } from "node:url"
 
+const docsToolComponentsPath = fileURLToPath(
+  new URL("./layers/docs/app/content/tools", import.meta.url)
+)
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ["@nuxt/ui", "@nuxtjs/i18n", "@nuxt/content", "@pinia/nuxt", "@vueuse/motion/nuxt"],
@@ -21,15 +25,6 @@ export default defineNuxtConfig({
     }
   },
 
-  mdc: {
-    highlight: {
-      theme: {
-        default: "github-dark"
-      },
-      langs: ["vue", "ts", "tsx", "js", "json", "bash"]
-    }
-  },
-
   i18n: {
     locales: [
       { code: "ru", iso: "ru-RU", file: "ru.json" },
@@ -47,6 +42,57 @@ export default defineNuxtConfig({
 
   devtools: {
     enabled: false
+  },
+
+  hooks: {
+    "components:dirs": (dirs) => {
+      const ignorePattern = "content/guides/architecture/services/services/**"
+      let hasDocsToolsDir = false
+
+      for (let index = 0; index < dirs.length; index += 1) {
+        const entry = dirs[index]
+        if (!entry) continue
+
+        const rawPath = typeof entry === "string" ? entry : entry.path
+        if (!rawPath) continue
+        const path = rawPath.replace(/\\/g, "/")
+
+        if (path.includes("/layers/docs/app/content/tools")) {
+          hasDocsToolsDir = true
+        }
+
+        if (!path?.includes("/layers/docs/app/components")) continue
+
+        const currentIgnore =
+          typeof entry === "string"
+            ? []
+            : Array.isArray(entry.ignore)
+              ? entry.ignore
+              : entry.ignore
+                ? [entry.ignore]
+                : []
+
+        const ignore = currentIgnore.includes(ignorePattern)
+          ? currentIgnore
+          : [...currentIgnore, ignorePattern]
+        const extensions = ["vue"]
+
+        if (typeof entry === "string") {
+          dirs[index] = { path: rawPath, ignore, extensions }
+          continue
+        }
+
+        dirs[index] = { ...entry, path: rawPath, ignore, extensions }
+      }
+
+      if (!hasDocsToolsDir) {
+        dirs.push({
+          path: docsToolComponentsPath,
+          extensions: ["vue"],
+          pathPrefix: false
+        })
+      }
+    }
   },
 
   devServer: {

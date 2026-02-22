@@ -47,6 +47,9 @@ export default createConfigForNuxt({
       "vue/no-multiple-template-root": "off",
       "vue/valid-v-slot": ["error", { allowModifiers: true }],
       "vue/component-name-in-template-casing": ["error", "PascalCase"],
+      "vue/no-v-html": ["error", {
+        "ignorePattern": "^html"
+    }]
       "vue/block-order": [
         "error",
         {

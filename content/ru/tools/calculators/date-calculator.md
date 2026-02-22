@@ -2,6 +2,7 @@
 title: Калькулятор дат
 description: Быстро посчитать разницу между датами или получить дату через N дней/недель/месяцев/лет.
 icon: i-lucide-calendar-days
+dependencies: ["@nuxt/ui", "@internationalized/date"]
 ---
 
 # Калькулятор дат
@@ -17,10 +18,10 @@ icon: i-lucide-calendar-days
 
 #code
 
-```vue
-<!-- Tool Demo -->
-<ToolsDateCalculator />
-```
-
-<ToolSourceCode file="ToolsDateCalculator.vue" lang="vue" />
+<ToolCodeGroup
+  :items="[
+    { title: 'useDateCalculator.ts', file: 'calculators/date-calculator/useDateCalculator.ts', lang: 'ts' },
+    { title: 'ToolsDateCalculator.vue', file: 'calculators/date-calculator/ToolsDateCalculator.vue', lang: 'vue' }
+  ]"
+/>
 ::

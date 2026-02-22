@@ -2,6 +2,7 @@
 title: Date Calculator
 description: Quickly calculate the difference between dates or get a date N days/weeks/months/years from now.
 icon: i-lucide-calendar-days
+dependencies: ["@nuxt/ui", "@internationalized/date"]
 ---
 
 # Date Calculator
@@ -17,10 +18,10 @@ icon: i-lucide-calendar-days
 
 #code
 
-```vue
-<!-- Tool Demo -->
-<ToolsDateCalculator />
-```
-
-<ToolSourceCode file="ToolsDateCalculator.vue" lang="vue" />
+<ToolCodeGroup
+  :items="[
+    { title: 'useDateCalculator.ts', file: 'calculators/date-calculator/useDateCalculator.ts', lang: 'ts' },
+    { title: 'ToolsDateCalculator.vue', file: 'calculators/date-calculator/ToolsDateCalculator.vue', lang: 'vue' }
+  ]"
+/>
 ::

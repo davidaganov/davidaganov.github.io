@@ -15,6 +15,15 @@ const slots = useSlots()
 const hasTitleSlot = computed(() => Boolean(slots.title))
 const hasPreviewSlot = computed(() => Boolean(slots.preview))
 const hasCodeSlot = computed(() => Boolean(slots.code))
+
+const tabsUi = {
+  root: "gap-3",
+  list: "inline-flex w-fit self-start rounded-xl border border-white/10 bg-white/5 p-1",
+  indicator: "rounded-lg bg-primary/20",
+  trigger:
+    "rounded-lg px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:text-white data-[state=active]:bg-primary/15 data-[state=active]:text-primary",
+  content: "mt-2"
+}
 </script>
 
 <template>
@@ -40,6 +49,7 @@ const hasCodeSlot = computed(() => Boolean(slots.code))
       <ProseTabs
         default-value="0"
         class="w-full"
+        :ui="tabsUi"
       >
         <ProseTabsItem :label="$t('tools.playground.preview')">
           <div class="mt-2">

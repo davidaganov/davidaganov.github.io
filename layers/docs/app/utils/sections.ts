@@ -1,6 +1,6 @@
 import { DOCS_SECTIONS } from "@docs/config/sections"
 import type { DocsSection } from "@docs/types/docs"
-import type { SidebarItem, SidebarLinkItem } from "@docs/types/sidebar"
+import type { SidebarItem } from "@docs/types/sidebar"
 import { LOCALE_PREFIX_RE } from "@base/constants"
 import { ROUTE_PATH } from "@base/types/enums"
 
@@ -19,11 +19,6 @@ const findFirstLinkInItems = (items: SidebarItem[], sectionId: string): string |
     if (item.type === "collection") {
       if (item.pathPrefix) return item.pathPrefix
       return toDocsSectionPath(sectionId, item.source)
-    }
-
-    if (item.type === "group") {
-      const firstGroupLink = item.items.find((groupItem: SidebarLinkItem) => Boolean(groupItem.to))
-      if (firstGroupLink?.to) return firstGroupLink.to
     }
   }
 

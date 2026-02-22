@@ -82,6 +82,23 @@ export const useSidebarItems = () => {
         .filter(([slug]) => Boolean(slug))
     )
 
+    const resolveLinkItem = (item: SidebarLinkItem): SidebarLinkItem | null => {
+      const name = item.name
+      if (!name) return item
+
+      const page = pageBySlug.get(name)
+      if (!page) return null
+
+      const meta = (page.meta as { icon?: string } | undefined) || {}
+      return {
+        ...item,
+        to: `/docs/${currentSectionId}/${name}`,
+        label: String(page.title || name),
+        icon: String(meta.icon || item.icon || "i-lucide-file-text"),
+        translate: false
+      }
+    }
+
     const explicitLinkNames = new Set(
       currentSection.sidebarItems
         .filter((item): item is SidebarLinkItem => item.type === "link" && Boolean(item.name))
@@ -90,28 +107,14 @@ export const useSidebarItems = () => {
 
     const resolved = currentSection.sidebarItems
       .map((item): SidebarItem | null => {
-        if (item.type === "link") {
-          const name = item.name
-          if (!name) return item
-
-          const page = pageBySlug.get(name)
-          if (!page) return null
-
-          const meta = (page.meta as { icon?: string } | undefined) || {}
-          return {
-            ...item,
-            to: `/docs/${currentSectionId}/${name}`,
-            label: String(page.title || name),
-            icon: String(meta.icon || item.icon || "i-lucide-file-text"),
-            translate: false
-          }
-        }
+        if (item.type === "link") return resolveLinkItem(item)
 
         if (item.type === "collection") {
           const collectionItem: SidebarCollectionItem = {
             ...item,
             pathPrefix: item.pathPrefix || `/docs/${currentSectionId}/${item.source}`
           }
+
           return collectionItem
         }
 
@@ -120,6 +123,7 @@ export const useSidebarItems = () => {
       .filter((item): item is SidebarItem => Boolean(item))
 
     const autoLinks: SidebarLinkItem[] = []
+
     for (const page of pages) {
       const slug =
         String(page.path || "")

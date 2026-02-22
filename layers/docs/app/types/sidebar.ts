@@ -1,4 +1,4 @@
-export type SidebarItemType = "link" | "group" | "collection" | "divider"
+export type SidebarItemType = "link" | "collection" | "divider"
 
 export interface SidebarBaseItem {
   type: SidebarItemType
@@ -21,15 +21,6 @@ export interface SidebarDividerItem extends SidebarBaseItem {
   label?: string
 }
 
-export interface SidebarGroupItem extends SidebarBaseItem {
-  type: "group"
-  label?: string
-  items: SidebarLinkItem[]
-  collapsible?: boolean
-  defaultOpen?: boolean
-  icon?: string
-}
-
 export interface SidebarCollectionItem extends SidebarBaseItem {
   type: "collection"
   source: string
@@ -46,8 +37,4 @@ export interface SidebarCollectionItem extends SidebarBaseItem {
   defaultOpen?: boolean
 }
 
-export type SidebarItem =
-  | SidebarLinkItem
-  | SidebarDividerItem
-  | SidebarGroupItem
-  | SidebarCollectionItem
+export type SidebarItem = SidebarLinkItem | SidebarDividerItem | SidebarCollectionItem

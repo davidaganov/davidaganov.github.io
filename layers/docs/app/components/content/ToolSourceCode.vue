@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { parseMarkdown } from "@nuxtjs/mdc/runtime"
+import { useClipboard } from "@vueuse/core"
+import type { Highlighter } from "shiki"
+import { getHighlighterInstance } from "@docs/utils/shiki"
+
+const sources = import.meta.glob("../../content/tools/**/*.{ts,vue}", {
+  query: "?raw",
+  import: "default",
+  eager: true
+}) as Record<string, string>
 
 const props = withDefaults(
   defineProps<{
@@ -11,54 +19,118 @@ const props = withDefaults(
   }
 )
 
-const sources = import.meta.glob("./*.{ts,vue}", {
-  query: "?raw",
-  import: "default",
-  eager: true
-}) as Record<string, string>
-
 const expanded = ref(false)
-const copied = ref(false)
+const highlighter = shallowRef<Highlighter | null>(null)
 
-const source = computed(() => {
-  return sources[`./${props.file}`] ?? ""
-})
+const { copy, copied } = useClipboard()
 
-const markdown = computed(() => {
-  if (!source.value) return ""
-  return ["```" + props.lang, source.value.trimEnd(), "```"].join("\n")
-})
-
-const { data: ast } = await useAsyncData(
-  `tool-source-${props.file}-${props.lang}`,
-  async () => {
-    if (!markdown.value) return null
-    return await parseMarkdown(markdown.value, {
-      highlight: {
-        theme: "github-dark"
-      }
-    })
-  },
-  {
-    server: true
-  }
-)
-
-const copyCode = async () => {
-  if (!source.value) return
-  await navigator.clipboard.writeText(source.value.trimEnd())
-  copied.value = true
-  setTimeout(() => (copied.value = false), 2000)
+const normalizeSourcePath = (file: string): string => {
+  return file
+    .replace(/\\/g, "/")
+    .trim()
+    .replace(/^['"]|['"]$/g, "")
+    .replace(/^\.\/?/, "")
+    .replace(/^tools\//, "")
 }
+
+const resolveSource = (file: string): string => {
+  if (!file) return ""
+  const normalized = normalizeSourcePath(file)
+
+  const directCandidates = [
+    `../../content/tools/${normalized}`,
+    `../../content/tools/${normalized.replace(/^content\//, "")}`
+  ]
+
+  for (const candidate of directCandidates) {
+    const direct = sources[candidate]
+    if (direct) return direct
+  }
+
+  const bySuffix = Object.entries(sources).find(([key]) => {
+    const normalizedKey = normalizeSourcePath(key.replace(/^\.\.\/\.\.\/content\/tools\//, ""))
+    return normalizedKey === normalized || normalizedKey.endsWith(`/${normalized}`)
+  })
+
+  return bySuffix?.[1] ?? ""
+}
+
+const escapeHtml = (str: string) => {
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }
+
+  return str.replace(/[&<>"']/g, (m) => map[m] ?? m)
+}
+
+const source = computed(() => resolveSource(props.file).trimEnd())
+
+const downloadFileName = computed(() => {
+  const normalized = props.file?.replace(/\\/g, "/") ?? ""
+  return normalized.split("/").filter(Boolean).at(-1) ?? "source-code.txt"
+})
+
+const highlightedCode = computed(() => {
+  if (!source.value) return ""
+
+  const fallbackHtml = `<pre><code>${escapeHtml(source.value)}</code></pre>`
+
+  if (!highlighter.value) return fallbackHtml
+
+  try {
+    return highlighter.value.codeToHtml(source.value, {
+      lang: props.lang,
+      theme: "material-theme"
+    })
+  } catch {
+    return fallbackHtml
+  }
+})
+
+const downloadSource = () => {
+  if (typeof window === "undefined" || !source.value) return
+
+  const blob = new Blob([source.value], { type: "text/plain;charset=utf-8" })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement("a")
+
+  link.href = url
+  link.download = downloadFileName.value
+  link.rel = "noopener"
+  document.body.append(link)
+  link.click()
+  link.remove()
+
+  URL.revokeObjectURL(url)
+}
+
+onMounted(async () => {
+  highlighter.value = await getHighlighterInstance()
+})
 </script>
 
 <template>
   <div
     v-if="source"
-    class="relative"
+    class="group relative my-5"
   >
-    <!-- Sticky toolbar -->
-    <div class="absolute top-2 right-2 z-10 flex gap-2">
+    <div
+      class="absolute top-[11px] right-[11px] z-10 flex gap-2 transition lg:opacity-0 lg:group-hover:opacity-100"
+    >
+      <UButton
+        color="neutral"
+        variant="outline"
+        size="sm"
+        tabindex="-1"
+        icon="i-lucide-download"
+        :aria-label="$t('tools.sourceCode.download')"
+        :title="$t('tools.sourceCode.download')"
+        @click="downloadSource"
+      />
       <UButton
         color="neutral"
         variant="outline"
@@ -67,7 +139,7 @@ const copyCode = async () => {
         :icon="copied ? 'i-lucide-check' : 'i-lucide-copy'"
         :aria-label="copied ? $t('tools.sourceCode.copied') : $t('tools.sourceCode.copy')"
         :title="copied ? $t('tools.sourceCode.copied') : $t('tools.sourceCode.copy')"
-        @click="copyCode"
+        @click="copy(source)"
       />
       <UButton
         color="neutral"
@@ -82,21 +154,15 @@ const copyCode = async () => {
     </div>
 
     <div
-      class="relative overflow-hidden rounded-[4px] border border-white/10 bg-white/5 backdrop-blur-sm"
-      :class="expanded ? '' : 'max-h-96'"
+      class="border-muted bg-muted relative overflow-hidden rounded-md border px-4 py-3"
+      :class="{ 'max-h-96': !expanded }"
     >
-      <MDCRenderer
-        v-if="ast?.body"
-        class="tool-source-renderer"
-        :body="ast.body"
-        :data="ast.data"
-      />
       <div
-        v-else
-        class="text-muted p-4 text-sm"
-      >
-        {{ $t("tools.sourceCode.loading") }}
-      </div>
+        v-if="highlightedCode"
+        v-html="highlightedCode"
+        class="tool-source-renderer"
+        :class="{ 'max-h-96': !expanded }"
+      />
 
       <div
         v-if="!expanded"
@@ -107,19 +173,19 @@ const copyCode = async () => {
 </template>
 
 <style scoped>
-.tool-source-renderer:deep(> div) {
-  margin-block: 0px;
-}
-
-.tool-source-renderer:deep(> div > button) {
-  display: none;
-}
-
 .tool-source-renderer:deep(pre) {
-  margin: 0;
-  padding: 1rem;
-  overflow-x: auto;
+  white-space: pre-wrap;
+  background: transparent !important;
+}
+
+.tool-source-renderer:deep(code) {
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-source-renderer:deep(.line) {
+  display: block;
   font-size: 0.875rem;
-  line-height: 1.45;
+  min-height: 1.5rem;
 }
 </style>
