@@ -16,12 +16,12 @@ const { links, error } = useLinksGistClient()
 const viewModeItems = computed(() => [
   {
     value: VIEW_MODE.PROFESSIONAL,
-    label: t("home.tabWork"),
+    label: t("pages.home.tabWork"),
     icon: "i-lucide-briefcase"
   },
   {
     value: VIEW_MODE.PERSONAL,
-    label: t("home.tabLife"),
+    label: t("pages.home.tabLife"),
     icon: "i-lucide-user"
   }
 ])
@@ -42,8 +42,8 @@ const localizedLinks = computed(() => {
     ...transformedLinks,
     {
       url: aboutEntryPath.value,
-      localizedName: t("nav.docs"),
-      localizedDescription: t("home.ctaDesc"),
+      localizedName: t("layout.navigation.sections.docs"),
+      localizedDescription: t("pages.home.ctaDesc"),
       icon: "i-lucide-book-open",
       isCta: true,
       customStyle: { color: "#b87eef" }
@@ -79,7 +79,7 @@ onUnmounted(() => {
       <div class="mb-8 flex items-end justify-between gap-6">
         <div class="flex w-full items-center justify-between gap-4 sm:justify-start sm:text-3xl">
           <h2 class="text-2xl font-semibold tracking-tight text-white">
-            {{ $t("nav.contacts") }}
+            {{ $t("layout.navigation.menu.contacts") }}
           </h2>
           <UiTabs
             v-model="mode"

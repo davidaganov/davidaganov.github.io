@@ -27,7 +27,7 @@ const { habrCount, siteCount } = useHabrArticles()
         </div>
       </div>
       <div class="min-w-0">
-        <div class="truncate text-sm font-semibold text-white">{{ $t("common.name") }}</div>
+        <div class="truncate text-sm font-semibold text-white">{{ $t("global.name") }}</div>
         <div class="text-muted truncate text-xs">@{{ USERNAME }}</div>
       </div>
     </div>
@@ -38,13 +38,13 @@ const { habrCount, siteCount } = useHabrArticles()
       <UiBadge
         icon="i-simple-icons-habr"
         class="col-span-1"
-        :label="$t('profile.onHabr')"
+        :label="$t('pages.profile.platforms.onHabr')"
         :value="String(habrCount || 0)"
       />
       <UiBadge
         icon="i-lucide-file-text"
         class="col-span-1"
-        :label="$t('profile.onSite')"
+        :label="$t('pages.profile.platforms.onSite')"
         :value="String(siteCount || 0)"
       />
     </div>
@@ -59,7 +59,7 @@ const { habrCount, siteCount } = useHabrArticles()
         name="i-simple-icons-habr"
         class="size-4"
       />
-      <span>{{ $t("profile.myProfile") }}</span>
+      <span>{{ $t("pages.profile.myProfile") }}</span>
     </a>
   </div>
 </template>

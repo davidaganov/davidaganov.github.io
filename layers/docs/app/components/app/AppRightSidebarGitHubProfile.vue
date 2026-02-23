@@ -26,7 +26,7 @@ const { user } = useGitHubStats()
         </div>
       </div>
       <div class="min-w-0">
-        <div class="truncate text-sm font-semibold text-white">{{ $t("common.name") }}</div>
+        <div class="truncate text-sm font-semibold text-white">{{ $t("global.name") }}</div>
         <div class="text-muted truncate text-xs">@{{ USERNAME }}</div>
       </div>
     </div>
@@ -38,14 +38,14 @@ const { user } = useGitHubStats()
         icon="i-simple-icons-github"
         class="col-span-1"
         external
-        :label="$t('profile.repositories')"
+        :label="$t('pages.profile.repositories')"
         :value="String(user?.public_repos || 0)"
         :href="`https://github.com/${USERNAME}?tab=repositories`"
       />
       <UiBadge
         icon="i-simple-icons-github"
         class="col-span-1"
-        :label="$t('profile.followers')"
+        :label="$t('pages.profile.followers')"
         :value="String(user?.followers || 0)"
       />
     </div>
@@ -60,7 +60,7 @@ const { user } = useGitHubStats()
         name="i-simple-icons-github"
         class="size-4"
       />
-      <span>{{ $t("profile.myProfile") }}</span>
+      <span>{{ $t("pages.profile.myProfile") }}</span>
     </a>
   </div>
 </template>

@@ -46,52 +46,13 @@ export default defineNuxtConfig({
 
   hooks: {
     "components:dirs": (dirs) => {
-      const ignorePattern = "content/guides/architecture/services/services/**"
-      let hasDocsToolsDir = false
+      const toolsPath = fileURLToPath(new URL("./layers/docs/app/content/tools", import.meta.url))
 
-      for (let index = 0; index < dirs.length; index += 1) {
-        const entry = dirs[index]
-        if (!entry) continue
-
-        const rawPath = typeof entry === "string" ? entry : entry.path
-        if (!rawPath) continue
-        const path = rawPath.replace(/\\/g, "/")
-
-        if (path.includes("/layers/docs/app/content/tools")) {
-          hasDocsToolsDir = true
-        }
-
-        if (!path?.includes("/layers/docs/app/components")) continue
-
-        const currentIgnore =
-          typeof entry === "string"
-            ? []
-            : Array.isArray(entry.ignore)
-              ? entry.ignore
-              : entry.ignore
-                ? [entry.ignore]
-                : []
-
-        const ignore = currentIgnore.includes(ignorePattern)
-          ? currentIgnore
-          : [...currentIgnore, ignorePattern]
-        const extensions = ["vue"]
-
-        if (typeof entry === "string") {
-          dirs[index] = { path: rawPath, ignore, extensions }
-          continue
-        }
-
-        dirs[index] = { ...entry, path: rawPath, ignore, extensions }
-      }
-
-      if (!hasDocsToolsDir) {
-        dirs.push({
-          path: docsToolComponentsPath,
-          extensions: ["vue"],
-          pathPrefix: false
-        })
-      }
+      dirs.push({
+        path: toolsPath,
+        extensions: ["vue"],
+        pathPrefix: false
+      })
     }
   },
 

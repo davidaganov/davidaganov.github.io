@@ -38,7 +38,7 @@ const downloadArchive = async () => {
 
     URL.revokeObjectURL(url)
   } catch {
-    error.value = t("archive.error")
+    error.value = t("components.archiveDownloader.error")
   } finally {
     isDownloading.value = false
   }
@@ -53,7 +53,7 @@ const downloadArchive = async () => {
     <div class="flex items-start justify-between gap-2">
       <div>
         <div class="text-sm font-semibold text-white">
-          {{ $t("archive.title") }}
+          {{ $t("components.archiveDownloader.title") }}
         </div>
       </div>
       <UPopover
@@ -65,14 +65,14 @@ const downloadArchive = async () => {
           variant="ghost"
           size="xs"
           icon="i-lucide-lock"
-          :aria-label="$t('archive.safety.aria')"
-          :title="$t('archive.safety.aria')"
+          :aria-label="$t('components.archiveDownloader.safety.aria')"
+          :title="$t('components.archiveDownloader.safety.aria')"
         />
 
         <template #content>
           <div class="w-64 rounded-lg border border-white/10 bg-[#0b1220] p-3 text-xs shadow-xl">
             <p class="text-white/90">
-              {{ $t("archive.safety.description") }}
+              {{ $t("components.archiveDownloader.safety.description") }}
             </p>
             <a
               target="_blank"
@@ -80,7 +80,7 @@ const downloadArchive = async () => {
               class="text-primary mt-2 inline-flex items-center gap-1 underline-offset-4 hover:underline"
               :href="implementationUrl"
             >
-              {{ $t("archive.safety.link") }}
+              {{ $t("components.archiveDownloader.safety.link") }}
               <UIcon
                 name="i-lucide-arrow-up-right"
                 class="size-3"
@@ -92,7 +92,7 @@ const downloadArchive = async () => {
     </div>
 
     <div class="text-muted mt-2 text-xs">
-      {{ $t("archive.filesCount") }}: {{ archiveEntries.length }}
+      {{ $t("components.archiveDownloader.filesCount") }}: {{ archiveEntries.length }}
     </div>
 
     <UButton
@@ -102,7 +102,11 @@ const downloadArchive = async () => {
       variant="soft"
       icon="i-lucide-download"
       :loading="isDownloading"
-      :label="isDownloading ? $t('archive.preparing') : $t('archive.download')"
+      :label="
+        isDownloading
+          ? $t('global.status.preparing')
+          : $t('components.archiveDownloader.downloadZip')
+      "
       @click="downloadArchive"
     />
 

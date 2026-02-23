@@ -21,20 +21,20 @@ const {
 } = useDateCalculator(locale)
 
 const modeTabs = computed(() => [
-  { value: "difference", label: t("tools.calculators.modes.difference") },
-  { value: "calculate", label: t("tools.calculators.modes.calculate") }
+  { value: "difference", label: t("features.calculators.modes.difference") },
+  { value: "calculate", label: t("features.calculators.modes.calculate") }
 ])
 
 const unitItems = computed(() => [
-  { label: t("tools.calculators.units.days"), value: "days" },
-  { label: t("tools.calculators.units.weeks"), value: "weeks" },
-  { label: t("tools.calculators.units.months"), value: "months" },
-  { label: t("tools.calculators.units.years"), value: "years" }
+  { label: t("features.calculators.units.days"), value: "days" },
+  { label: t("features.calculators.units.weeks"), value: "weeks" },
+  { label: t("features.calculators.units.months"), value: "months" },
+  { label: t("features.calculators.units.years"), value: "years" }
 ])
 
 const directionItems = computed(() => [
-  { label: t("tools.calculators.directions.forward"), value: "forward" },
-  { label: t("tools.calculators.directions.backward"), value: "backward" }
+  { label: t("features.calculators.directions.forward"), value: "forward" },
+  { label: t("features.calculators.directions.backward"), value: "backward" }
 ])
 </script>
 
@@ -55,7 +55,7 @@ const directionItems = computed(() => [
           icon="i-lucide-x"
           @click="clearAll"
         >
-          {{ $t("tools.calculators.actions.clearAll") }}
+          {{ $t("global.actions.clearAll") }}
         </UButton>
       </div>
 
@@ -65,7 +65,7 @@ const directionItems = computed(() => [
       >
         <div class="space-y-1.5">
           <label class="text-muted block text-xs">
-            {{ $t("tools.calculators.fields.startDate") }}
+            {{ $t("features.calculators.fields.startDate") }}
           </label>
           <UPopover>
             <UButton
@@ -77,7 +77,7 @@ const directionItems = computed(() => [
               {{
                 startDate
                   ? df.format(toJsDate(startDate)!)
-                  : $t("tools.calculators.placeholders.selectDate")
+                  : $t("features.calculators.placeholders.selectDate")
               }}
             </UButton>
             <template #content>
@@ -92,7 +92,7 @@ const directionItems = computed(() => [
 
         <div class="space-y-1.5">
           <label class="text-muted block text-xs">
-            {{ $t("tools.calculators.fields.endDate") }}
+            {{ $t("features.calculators.fields.endDate") }}
           </label>
           <UPopover>
             <UButton
@@ -104,7 +104,7 @@ const directionItems = computed(() => [
               {{
                 endDate
                   ? df.format(toJsDate(endDate)!)
-                  : $t("tools.calculators.placeholders.selectDate")
+                  : $t("features.calculators.placeholders.selectDate")
               }}
             </UButton>
             <template #content>
@@ -124,7 +124,7 @@ const directionItems = computed(() => [
       >
         <div class="space-y-1.5">
           <label class="text-muted block text-xs">
-            {{ $t("tools.calculators.fields.baseDate") }}
+            {{ $t("features.calculators.fields.baseDate") }}
           </label>
           <UPopover>
             <UButton
@@ -136,7 +136,7 @@ const directionItems = computed(() => [
               {{
                 baseDate
                   ? df.format(toJsDate(baseDate)!)
-                  : $t("tools.calculators.placeholders.selectDate")
+                  : $t("features.calculators.placeholders.selectDate")
               }}
             </UButton>
             <template #content>
@@ -151,7 +151,7 @@ const directionItems = computed(() => [
         <div class="grid gap-3 sm:grid-cols-3">
           <div class="space-y-1.5">
             <label class="text-muted block text-xs">
-              {{ $t("tools.calculators.fields.amount") }}
+              {{ $t("features.calculators.fields.amount") }}
             </label>
             <UInput
               v-model.number="amount"
@@ -163,7 +163,7 @@ const directionItems = computed(() => [
           </div>
           <div class="space-y-1.5">
             <label class="text-muted block text-xs">
-              {{ $t("tools.calculators.fields.unit") }}
+              {{ $t("features.calculators.fields.unit") }}
             </label>
             <USelect
               v-model="unit"
@@ -175,7 +175,7 @@ const directionItems = computed(() => [
           </div>
           <div class="space-y-1.5">
             <label class="text-muted block text-xs">
-              {{ $t("tools.calculators.fields.direction") }}
+              {{ $t("features.calculators.fields.direction") }}
             </label>
             <USelect
               v-model="direction"
@@ -193,7 +193,7 @@ const directionItems = computed(() => [
         class="border-primary-500/20 bg-primary-500/5 rounded-xl border p-4"
       >
         <div class="text-muted text-center text-xs">
-          {{ $t("tools.calculators.result.title") }}
+          {{ $t("features.calculators.result.title") }}
         </div>
 
         <div
@@ -215,7 +215,7 @@ const directionItems = computed(() => [
             class="rounded-lg bg-white/3 p-2.5 text-center"
             :key="key"
           >
-            <div class="text-muted text-xs">{{ $t(`tools.calculators.result.${key}`) }}</div>
+            <div class="text-muted text-xs">{{ $t(`features.calculators.result.${key}`) }}</div>
             <div class="text-lg font-semibold text-white">{{ value }}</div>
           </div>
         </div>

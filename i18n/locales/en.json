@@ -1,110 +1,157 @@
 {
-  "common": {
+  "global": {
     "name": "David Aganov",
-    "retry": "Retry",
-    "search": "Search...",
-    "noTags": "No tags",
-    "all": "All"
-  },
-  "nav": {
-    "about": "About me",
-    "guides": "Guides",
-    "tools": "Tools",
-    "overview": "Overview",
-    "stack": "Stack",
-    "services": "Service layer",
-    "articles": "Articles",
-    "projects": "Projects",
-    "contacts": "Contacts",
-    "docs": "Documentation",
-    "github": "GitHub",
-    "npm": "NPM",
-    "habr": "Habr",
-    "site": "Website",
-    "title": "Navigation",
-    "description": "Documentation navigation"
-  },
-  "home": {
-    "badge": "Available for hire",
-    "description": "Frontend Developer — 5 years of commercial experience.",
-    "getStarted": "Get Started",
-    "disableAnimation": "Disable animation",
-    "scrollDown": "Scroll down",
-    "tabWork": "Work",
-    "tabLife": "Life",
-    "ctaDesc": "Go to user guide",
-    "emptyTitle": "Links temporarily unavailable",
-    "emptyDesc": "Failed to load the list of links, but you can go to the documentation.",
-    "emptyCta": "Open documentation"
-  },
-  "cmd": {
-    "title": "Command Palette",
-    "description": "Search and navigation using keyboard commands",
-    "placeholder": "Search documentation...",
-    "empty": "Start typing to search...",
-    "noResults": "No results found",
-    "navigate": "to navigate",
-    "select": "to select"
-  },
-  "projects": {
-    "empty": "No projects yet.",
-    "onThisPage": "On this page",
-    "star": "Star",
-    "downloads": "Downloads",
-    "lastCommit": "Last commit"
-  },
-  "articles": {
-    "empty": "No articles yet.",
-    "myHabr": "My articles on Habr",
-    "mySite": "Website notes",
-    "sortNewest": "Newest first",
-    "sortOldest": "Oldest first",
-    "published": "Published:",
-    "readingTime": "Reading time:",
-    "readOnHabr": "Read on Habr"
-  },
-  "profile": {
-    "onHabr": "On Habr:",
-    "onSite": "On website:",
-    "myProfile": "My profile",
-    "repositories": "Repositories",
-    "followers": "Followers"
-  },
-  "cookie": {
-    "aria": "Cookie usage notification",
-    "title": "Cookies",
-    "description": "Visit data is collected for analytics.",
-    "accept": "Accept",
-    "decline": "Decline"
-  },
-  "footer": {
-    "main": "Main",
-    "docSections": "Sections",
-    "repository": "GitHub repository",
-    "repositoryHint": "The source code of this portfolio."
-  },
-  "archive": {
-    "title": "Download archive",
-    "download": "Download ZIP",
-    "preparing": "Preparing...",
-    "filesCount": "Files",
-    "error": "Failed to create archive.",
-    "safety": {
-      "aria": "Why this is safe",
-      "description": "The archive is generated locally in your browser from repository files, and nothing is executed on your device.",
-      "link": "View implementation"
-    }
-  },
-  "guides": {
-    "nav": {
-      "architecture": "Architecture"
-    }
-  },
-  "tools": {
-    "empty": "No tools yet.",
-    "nav": {
-      "calculators": "Calculators"
+    "labels": {
+      "all": "All",
+      "noTags": "No tags",
+      "onThisPage": "On this page"
     },
+    "actions": {
+      "retry": "Retry",
+      "search": "Search...",
+      "download": "Download",
+      "copy": "Copy",
+      "copied": "Copied",
+      "expand": "Expand",
+      "collapse": "Collapse",
+      "accept": "Accept",
+      "decline": "Decline",
+      "clearAll": "Clear all"
+    },
+    "status": {
+      "loading": "Loading...",
+      "preparing": "Preparing...",
+      "error": "An error occurred.",
+      "empty": "No data.",
+      "noResults": "No results found"
+    }
+  },
+  "layout": {
+    "navigation": {
+      "menu": {
+        "about": "About",
+        "guides": "Guides",
+        "tools": "Tools",
+        "articles": "Articles",
+        "projects": "Projects",
+        "contacts": "Contacts"
+      },
+      "sections": {
+        "overview": "Overview",
+        "stack": "Stack",
+        "services": "Query layer",
+        "docs": "Documentation"
+      },
+      "social": {
+        "github": "GitHub",
+        "npm": "NPM",
+        "habr": "Habr",
+        "site": "Site"
+      },
+      "aria": {
+        "title": "Navigation",
+        "description": "Documentation navigation"
+      }
+    },
+    "footer": {
+      "main": "Main",
+      "docSections": "Sections",
+      "repository": "GitHub Repository",
+      "repositoryHint": "Source code of this portfolio."
+    }
+  },
+  "pages": {
+    "home": {
+      "badge": "Available for hire",
+      "description": "Frontend Developer — 5 years of commercial experience.",
+      "getStarted": "Get started",
+      "disableAnimation": "Disable animation",
+      "scrollDown": "Scroll down",
+      "tabWork": "Work",
+      "tabLife": "Life",
+      "ctaDesc": "Go to user guide",
+      "fallback": {
+        "title": "Links temporarily unavailable",
+        "description": "Failed to load links list, but you can go to documentation.",
+        "cta": "Open documentation"
+      }
+    },
+    "projects": {
+      "empty": "No projects yet.",
+      "metrics": {
+        "star": "Star",
+        "downloads": "Downloads",
+        "lastCommit": "Last commit"
+      }
+    },
+    "articles": {
+      "empty": "No articles yet.",
+      "myHabr": "My Habr articles",
+      "mySite": "Website notes",
+      "readOnHabr": "Read on Habr",
+      "sort": {
+        "newest": "Newest first",
+        "oldest": "Oldest first"
+      },
+      "meta": {
+        "published": "Published:",
+        "readingTime": "Reading time:"
+      }
+    },
+    "profile": {
+      "myProfile": "My profile",
+      "repositories": "Repositories",
+      "followers": "Followers",
+      "platforms": {
+        "onHabr": "On Habr:",
+        "onSite": "On site:"
+      }
+    },
+    "tools": {
+      "empty": "No tools yet.",
+      "nav": {
+        "calculators": "Calculators"
+      }
+    }
+  },
+  "components": {
+    "cmd": {
+      "title": "Command palette",
+      "description": "Search and navigate with keyboard commands",
+      "placeholder": "Search documentation...",
+      "empty": "Start typing to search...",
+      "hints": {
+        "navigate": "to navigate",
+        "select": "to select"
+      }
+    },
+    "cookieBanner": {
+      "aria": "Cookie usage notice",
+      "title": "Cookies",
+      "description": "Visit data is collected for analytics."
+    },
+    "archiveDownloader": {
+      "title": "Download archive",
+      "downloadZip": "Download ZIP",
+      "filesCount": "Files",
+      "error": "Failed to generate archive.",
+      "safety": {
+        "aria": "Why it's safe",
+        "description": "The archive is generated locally in the browser from this repository's files; nothing is executed on your device.",
+        "link": "View implementation"
+      }
+    },
+    "sourceCode": {
+      "loading": "Loading code..."
+    },
+    "playground": {
+      "preview": "Preview",
+      "code": "Code",
+      "previewEmpty": "Preview slot is empty.",
+      "codeEmpty": "Code slot is empty."
+    }
+  },
+  "features": {
     "calculators": {
       "empty": "No calculators yet.",
       "aria": {
@@ -132,9 +179,6 @@
         "forward": "Forward",
         "backward": "Backward"
       },
-      "actions": {
-        "clearAll": "Clear all"
-      },
       "placeholders": {
         "selectDate": "Select date"
       },
@@ -146,20 +190,6 @@
         "months": "Months",
         "years": "Years"
       }
-    },
-    "sourceCode": {
-      "download": "Download",
-      "copy": "Copy",
-      "copied": "Copied",
-      "expand": "Show all",
-      "collapse": "Collapse",
-      "loading": "Loading code..."
-    },
-    "playground": {
-      "preview": "Preview",
-      "code": "Code",
-      "previewEmpty": "Preview slot is empty.",
-      "codeEmpty": "Code slot is empty."
     }
   }
 }

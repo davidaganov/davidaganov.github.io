@@ -37,7 +37,7 @@ const hasArticleMeta = computed(() =>
         v-if="meta.publishedAt"
         icon="i-lucide-calendar"
         class="w-full"
-        :label="$t('articles.published')"
+        :label="$t('pages.articles.meta.published')"
         :value="formatDate(meta.publishedAt, locale, 'numeric') || ''"
       />
 
@@ -45,7 +45,7 @@ const hasArticleMeta = computed(() =>
         v-if="meta.readingTime"
         icon="i-lucide-clock"
         class="w-full"
-        :label="$t('articles.readingTime')"
+        :label="$t('pages.articles.meta.readingTime')"
         :value="meta.readingTime"
       />
     </div>
@@ -76,7 +76,7 @@ const hasArticleMeta = computed(() =>
           name="i-simple-icons-habr"
           class="size-4"
         />
-        <span>{{ $t("articles.readOnHabr") }}</span>
+        <span>{{ $t("pages.articles.readOnHabr") }}</span>
       </a>
     </div>
   </div>

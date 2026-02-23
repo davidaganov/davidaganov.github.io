@@ -48,7 +48,7 @@ const githubStars = computed(() => {
         trailing-icon="i-lucide-arrow-up-right"
         external
         class="col-span-7"
-        :label="$t('nav.github')"
+        :label="$t('layout.navigation.social.github')"
         :href="meta.githubUrl"
         :tag="githubStars"
       />
@@ -60,7 +60,7 @@ const githubStars = computed(() => {
         trailing-icon="i-lucide-arrow-up-right"
         external
         class="col-span-5"
-        :label="$t('nav.npm')"
+        :label="$t('layout.navigation.social.npm')"
         :href="meta.npmUrl"
       />
     </div>
@@ -77,7 +77,7 @@ const githubStars = computed(() => {
         v-if="stats.npm?.downloads"
         class="col-span-8"
         icon="i-lucide-download"
-        :label="$t('projects.downloads') + `:`"
+        :label="$t('pages.projects.metrics.downloads') + `:`"
         :value="formatDownloads(stats.npm.downloads)"
         :loading="loading"
       />
@@ -85,7 +85,7 @@ const githubStars = computed(() => {
         v-if="stats.github?.lastCommit"
         icon="i-lucide-clock"
         class="col-span-12"
-        :label="$t('projects.lastCommit') + `:`"
+        :label="$t('pages.projects.metrics.lastCommit') + `:`"
         :value="formatDate(stats.github.lastCommit)"
         :loading="loading"
       />
@@ -117,7 +117,7 @@ const githubStars = computed(() => {
         name="i-heroicons-star-20-solid"
         class="size-4"
       />
-      <span>{{ $t("projects.star") }}</span>
+      <span>{{ $t("pages.projects.metrics.star") }}</span>
     </a>
   </div>
 </template>

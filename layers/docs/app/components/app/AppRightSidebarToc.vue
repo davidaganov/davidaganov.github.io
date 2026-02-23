@@ -161,7 +161,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="rounded-xl border border-white/5 bg-white/3 p-4">
     <div class="text-muted text-xs font-semibold tracking-wider uppercase">
-      {{ $t("projects.onThisPage") }}
+      {{ $t("global.labels.onThisPage") }}
     </div>
 
     <nav

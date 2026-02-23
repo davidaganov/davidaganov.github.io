@@ -17,10 +17,10 @@ const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
 
     <div class="space-y-2">
       <h3 class="text-lg font-medium text-white">
-        {{ $t("home.emptyTitle") }}
+        {{ $t("pages.home.fallback.title") }}
       </h3>
       <p class="max-w-md text-sm text-gray-400">
-        {{ $t("home.emptyDesc") }}
+        {{ $t("pages.home.fallback.description") }}
       </p>
     </div>
 
@@ -30,7 +30,7 @@ const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
         color="primary"
         icon="i-lucide-book-open"
         :to="aboutEntryPath"
-        :label="$t('home.emptyCta')"
+        :label="$t('pages.home.fallback.cta')"
       />
     </div>
   </div>

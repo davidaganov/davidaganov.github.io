@@ -1,10 +1,28 @@
 {
-  "provider": "gemini",
-  "model": "gemini-flash-latest",
-  "localeFormat": "short",
-  "locales": ["EN", "RU"],
-  "defaultLocale": "RU",
-  "localesDir": "i18n/locales",
   "envFile": ".env",
-  "envVarName": "VITE_POLYGLOT_API_KEY"
+  "json": {
+    "provider": "gemini",
+    "model": "gemini-flash-latest",
+    "envVarName": "VITE_POLYGLOT_API_KEY",
+    "localeFormat": "short",
+    "locales": [
+      "EN",
+      "RU"
+    ],
+    "defaultLocale": "RU",
+    "localesDir": "i18n/locales",
+    "trackChanges": "carefully"
+  },
+  "markdown": {
+    "contentDir": "content",
+    "defaultLocale": "ru",
+    "locales": [
+      "en",
+      "ru"
+    ],
+    "trackChanges": "carefully",
+    "provider": "gemini",
+    "model": "gemini-flash-latest",
+    "envVarName": "VITE_POLYGLOT_MD_API_KEY"
+  }
 }

@@ -156,14 +156,14 @@ onMounted(() => {
       <span
         class="text-primary-300 mb-6 inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium tracking-wide backdrop-blur-md"
       >
-        {{ $t("home.badge") }}
+        {{ $t("pages.home.badge") }}
       </span>
 
       <TextType
         as="h1"
         class="mb-6 bg-linear-to-r from-white to-white/60 bg-clip-text pb-2 text-4xl font-bold tracking-tight text-transparent sm:text-7xl lg:text-8xl"
         cursor-class-name="text-white"
-        :text="$t('common.name')"
+        :text="$t('global.name')"
         :typing-speed="100"
         :show-cursor="true"
         :loop="false"
@@ -172,7 +172,7 @@ onMounted(() => {
       />
 
       <p class="max-w-3xl text-lg text-balance text-gray-400 sm:text-xl">
-        {{ $t("home.description") }}
+        {{ $t("pages.home.description") }}
       </p>
 
       <div class="mt-10 flex gap-4">
@@ -180,7 +180,7 @@ onMounted(() => {
           class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/10 px-8 py-3 font-medium text-white backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(184,126,239,0.3)]"
           :to="aboutEntryPath"
         >
-          <span class="mr-2">{{ $t("home.getStarted") }}</span>
+          <span class="mr-2">{{ $t("pages.home.getStarted") }}</span>
           <UIcon
             name="i-lucide-arrow-right"
             class="size-5 transition-transform group-hover:translate-x-1"
@@ -210,7 +210,7 @@ onMounted(() => {
         @click="scrollToLinks"
       >
         <span class="text-[10px] font-medium tracking-[0.28em] uppercase opacity-60">
-          {{ $t("home.scrollDown") }}
+          {{ $t("pages.home.scrollDown") }}
         </span>
         <UIcon
           name="i-lucide-chevron-down"

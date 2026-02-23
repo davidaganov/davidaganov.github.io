@@ -12,9 +12,9 @@ const { isOpen, query, selectedIndex, close, navigateUp, navigateDown, resetSele
 const { flatResults, grouped, isLoading } = useDocsSearch(query)
 
 const categoryLabels: Record<TYPE_PAGE, string> = {
-  [TYPE_PAGE.DOCS]: t("nav.docs"),
-  [TYPE_PAGE.ARTICLE]: t("nav.articles"),
-  [TYPE_PAGE.PROJECT]: t("nav.projects")
+  [TYPE_PAGE.DOCS]: t("layout.navigation.sections.docs"),
+  [TYPE_PAGE.ARTICLE]: t("layout.navigation.menu.articles"),
+  [TYPE_PAGE.PROJECT]: t("layout.navigation.menu.projects")
 }
 
 const categoryOrder = [TYPE_PAGE.DOCS, TYPE_PAGE.ARTICLE, TYPE_PAGE.PROJECT] as const
@@ -84,8 +84,8 @@ watch(query, () => {
     <UModal
       v-model:open="isOpen"
       class="max-w-2xl"
-      :title="$t('cmd.title')"
-      :description="$t('cmd.description')"
+      :title="$t('components.cmd.title')"
+      :description="$t('components.cmd.description')"
       :close="false"
       :ui="{
         overlay: 'bg-black/80 backdrop-blur-sm',
@@ -118,7 +118,7 @@ watch(query, () => {
               v-model="query"
               type="text"
               class="flex-1 bg-transparent text-sm text-white placeholder:text-gray-500 focus:outline-none"
-              :placeholder="$t('cmd.placeholder')"
+              :placeholder="$t('components.cmd.placeholder')"
               ref="inputRef"
             />
             <kbd
@@ -143,7 +143,7 @@ watch(query, () => {
                 class="size-8"
               />
               <p class="text-sm">
-                {{ $t("cmd.empty") }}
+                {{ $t("components.cmd.empty") }}
               </p>
             </div>
 
@@ -157,7 +157,7 @@ watch(query, () => {
                 class="size-8"
               />
               <p class="text-sm">
-                {{ $t("cmd.noResults") }}
+                {{ $t("components.cmd.noResults") }}
               </p>
             </div>
 
@@ -235,11 +235,11 @@ watch(query, () => {
               <span class="flex items-center gap-1">
                 <kbd class="rounded border border-white/20 bg-white/5 px-1.5 py-0.5">↑</kbd>
                 <kbd class="rounded border border-white/20 bg-white/5 px-1.5 py-0.5">↓</kbd>
-                <span class="ml-1">{{ $t("cmd.navigate") }}</span>
+                <span class="ml-1">{{ $t("components.cmd.hints.navigate") }}</span>
               </span>
               <span class="flex items-center gap-1">
                 <kbd class="rounded border border-white/20 bg-white/5 px-1.5 py-0.5">↵</kbd>
-                <span class="ml-1">{{ $t("cmd.select") }}</span>
+                <span class="ml-1">{{ $t("components.cmd.hints.select") }}</span>
               </span>
             </div>
           </div>

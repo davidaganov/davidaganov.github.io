@@ -51,27 +51,27 @@ const tabsUi = {
         class="w-full"
         :ui="tabsUi"
       >
-        <ProseTabsItem :label="$t('tools.playground.preview')">
+        <ProseTabsItem :label="$t('components.playground.preview')">
           <div class="mt-2">
             <slot name="preview">
               <div
                 v-if="!hasPreviewSlot"
                 class="text-muted text-sm"
               >
-                {{ $t("tools.playground.previewEmpty") }}
+                {{ $t("components.playground.previewEmpty") }}
               </div>
             </slot>
           </div>
         </ProseTabsItem>
 
-        <ProseTabsItem :label="$t('tools.playground.code')">
+        <ProseTabsItem :label="$t('components.playground.code')">
           <div class="mt-2">
             <slot name="code" />
             <div
               v-if="!hasCodeSlot"
               class="text-muted text-sm"
             >
-              {{ $t("tools.playground.codeEmpty") }}
+              {{ $t("components.playground.codeEmpty") }}
             </div>
           </div>
         </ProseTabsItem>

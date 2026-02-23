@@ -11,25 +11,12 @@ export const ABOUT_SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     type: "collection",
-    source: "articles",
-    label: "nav.articles",
-    indexPage: true,
-    pageType: "article",
-    titleKey: "nav.articles",
-    emptyKey: "articles.empty",
-    showSourceTabs: true,
-    icon: "i-lucide-book-open",
-    collapsible: true,
-    defaultOpen: true
-  },
-  {
-    type: "collection",
     source: "projects",
-    label: "nav.projects",
+    label: "layout.navigation.menu.projects",
     indexPage: true,
     pageType: "project",
-    titleKey: "nav.projects",
-    emptyKey: "projects.empty",
+    titleKey: "layout.navigation.menu.projects",
+    emptyKey: "pages.projects.empty",
     icon: "i-lucide-folder",
     collapsible: true,
     defaultOpen: true

@@ -41,8 +41,8 @@ watch(
   <USlideover
     v-model:open="isOpen"
     side="left"
-    :title="$t('nav.title')"
-    :description="$t('nav.description')"
+    :title="$t('layout.navigation.aria.title')"
+    :description="$t('layout.navigation.aria.description')"
     :ui="{
       overlay: 'bg-black/80 backdrop-blur-sm'
     }"
