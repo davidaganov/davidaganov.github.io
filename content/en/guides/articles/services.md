@@ -1,6 +1,6 @@
 ---
 title: Clean API Client
-description: Practical request-layer architecture that will rid your components of code duplication and chaos.
+description: Practical request-layer architecture to eliminate code duplication in components.
 icon: i-lucide-book-open
 publishedAt: 2026-02-20
 readingTime: 5 min

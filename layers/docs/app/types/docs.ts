@@ -1,4 +1,5 @@
-import type { SidebarItem } from "@docs/types/sidebar"
+import type { Ref } from "vue"
+import type { SidebarItem, SidebarCollectionItem } from "@docs/types/sidebar"
 
 export interface DocsSection {
   id: string
@@ -6,4 +7,11 @@ export interface DocsSection {
   icon: string
   basePath: string
   sidebarItems: SidebarItem[]
+}
+
+export interface DocsSeoOptions {
+  section: Ref<DocsSection | undefined>
+  collectionItem: Ref<SidebarCollectionItem | undefined>
+  parentCollectionItem: Ref<SidebarCollectionItem | undefined>
+  page: Ref<any>
 }

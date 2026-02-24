@@ -27,6 +27,7 @@ const splitToLines = (value: string, maxChars = 34, maxLines = 3): string[] => {
   const words = normalizeText(value).split(" ")
   const lines: string[] = []
   let line = ""
+  let hasMore = false
 
   for (const word of words) {
     const candidate = line ? `${line} ${word}` : word
@@ -38,18 +39,33 @@ const splitToLines = (value: string, maxChars = 34, maxLines = 3): string[] => {
 
     if (line) {
       lines.push(line)
-      if (lines.length >= maxLines) break
+      if (lines.length >= maxLines) {
+        hasMore = true
+        break
+      }
       line = word
       continue
     }
 
     lines.push(word.slice(0, maxChars))
     line = word.slice(maxChars)
-    if (lines.length >= maxLines) break
+    if (lines.length >= maxLines) {
+      hasMore = true
+      break
+    }
   }
 
-  if (line && lines.length < maxLines) lines.push(line)
-  if (lines.length > maxLines) return lines.slice(0, maxLines)
+  if (line && lines.length < maxLines) {
+    lines.push(line)
+  } else if (line) {
+    hasMore = true
+  }
+
+  if (hasMore && lines.length > 0) {
+    const last = lines[lines.length - 1] || ""
+    lines[lines.length - 1] =
+      last.length > maxChars - 1 ? `${last.slice(0, maxChars - 1)}…` : `${last}…`
+  }
 
   return lines
 }
@@ -58,6 +74,16 @@ const safeText = (value: unknown): string | undefined => {
   if (typeof value !== "string") return undefined
   const normalized = normalizeText(value)
   return normalized.length ? normalized : undefined
+}
+
+const decodeQueryText = (value: unknown): string | undefined => {
+  if (typeof value !== "string") return undefined
+
+  try {
+    return safeText(decodeURIComponent(value))
+  } catch {
+    return safeText(value)
+  }
 }
 
 const truncate = (value: string, max = 140): string => {
@@ -89,42 +115,18 @@ const parseFrontmatter = (source: string): { title?: string; description?: strin
 
 const prettifySlug = (value: string): string => {
   const normalized = value.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim()
-
   if (!normalized) return "Documentation"
-
   return normalized.charAt(0).toUpperCase() + normalized.slice(1)
 }
 
-const getPaletteBySection = (sectionId: string): OgPalette => {
-  if (sectionId === "tools") {
-    return {
-      bgStart: "#0b1328",
-      bgMid: "#132b4a",
-      bgEnd: "#153e75",
-      accentStart: "#22d3ee",
-      accentEnd: "#60a5fa",
-      glow: "#67e8f9"
-    }
-  }
-
-  if (sectionId === "guides") {
-    return {
-      bgStart: "#1a1336",
-      bgMid: "#25285a",
-      bgEnd: "#2b4a8a",
-      accentStart: "#a78bfa",
-      accentEnd: "#60a5fa",
-      glow: "#c4b5fd"
-    }
-  }
-
+const getPaletteBySection = (_sectionId: string): OgPalette => {
   return {
-    bgStart: "#071428",
-    bgMid: "#0c1f3f",
-    bgEnd: "#102f5a",
-    accentStart: "#2dd4bf",
-    accentEnd: "#60a5fa",
-    glow: "#6be6ff"
+    bgStart: "#0a0414",
+    bgMid: "#0f0820",
+    bgEnd: "#130a28",
+    accentStart: "#8b5cf6",
+    accentEnd: "#a78bfa",
+    glow: "#7c3aed"
   }
 }
 
@@ -142,7 +144,10 @@ const readDocMeta = async (
       const source = await readFile(filePath, "utf-8")
       return parseFrontmatter(source)
     } catch (error) {
-      console.error(`Failed to read file ${filePath}:`, error)
+      const err = error as NodeJS.ErrnoException
+      if (err?.code !== "ENOENT") {
+        console.error(`Failed to read file ${filePath}:`, error)
+      }
     }
   }
 
@@ -166,59 +171,141 @@ export default defineEventHandler(async (event) => {
   const sectionId = String(slugSegments[0] || "about").toLowerCase()
   const palette = getPaletteBySection(sectionId)
 
-  const sectionLabel = prettifySlug(slugSegments[0] || "docs")
-  const fallbackTitle = prettifySlug(slugSegments.at(-1) || "documentation")
+  const fallbackSectionLabel = prettifySlug(slugSegments[0] || "docs")
+  const fallbackCollectionLabel = prettifySlug(slugSegments.at(-2) || "articles")
+  const fallbackArticleLabel = prettifySlug(slugSegments.at(-1) || "documentation")
 
-  const title = safeText(query.title) || meta.title || fallbackTitle
+  const sectionLabel = decodeQueryText(query.section) || fallbackSectionLabel
+  const collectionLabel = decodeQueryText(query.collection) || fallbackCollectionLabel
+  const articleLabel = decodeQueryText(query.article) || fallbackArticleLabel
+
+  const title = decodeQueryText(query.title) || meta.title || articleLabel
   const description =
-    safeText(query.description) ||
+    decodeQueryText(query.description) ||
     meta.description ||
     (locale === "ru"
       ? "Практические материалы, заметки и инструменты из моего портфолио."
       : "Practical notes, guides, and tools from my portfolio.")
 
-  const normalizedDescription = truncate(description, 110)
+  const normalizedDescription = truncate(description, 160)
 
-  const titleLines = splitToLines(title, 28, 3)
+  // Title: centered, max 3 lines
+  const titleLines = splitToLines(title, 26, 3)
   const lineHeight = 74
-  const titleStartY = 298
+  // Vertical center of usable area (below breadcrumb ~y=120, above logo ~y=560)
+  // Total text block height
+  const titleBlockH = titleLines.length * lineHeight
+  const descLines = splitToLines(normalizedDescription, 52, 2)
+  const descLineHeight = 42
+  const descBlockH = descLines.length * descLineHeight
+  const totalBlockH = titleBlockH + (descLines.length > 0 ? 24 + descBlockH : 0)
+  const blockStartY = Math.round((630 - totalBlockH) / 2) + 15
+  const titleStartY = blockStartY + lineHeight - 10
 
   const titleText = titleLines
     .map(
       (line, index) =>
-        `<text x="92" y="${titleStartY + lineHeight * index}" fill="#f8fafc" font-size="64" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">${escapeXml(line)}</text>`
+        `<text x="600" y="${titleStartY + lineHeight * index}" text-anchor="middle" fill="#f1f5f9" font-size="68" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">${escapeXml(line)}</text>`
+    )
+    .join("")
+
+  const descStartY = titleStartY + (titleLines.length - 1) * lineHeight + 58
+
+  const descriptionText = descLines
+    .map(
+      (line, index) =>
+        `<text x="600" y="${descStartY + descLineHeight * index}" text-anchor="middle" fill="#94a3b8" font-size="34" font-weight="400" font-family="Inter, Segoe UI, Arial, sans-serif">${escapeXml(line)}</text>`
     )
     .join("")
 
   const svg = `
 <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <!-- Solid background -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="${palette.bgStart}" />
-      <stop offset="55%" stop-color="${palette.bgMid}" />
       <stop offset="100%" stop-color="${palette.bgEnd}" />
     </linearGradient>
-    <radialGradient id="glow" cx="0.15" cy="0.12" r="0.8">
-      <stop offset="0%" stop-color="${palette.glow}" stop-opacity="0.38" />
+
+    <!-- Grid cell pattern -->
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(139,92,246,0.18)" stroke-width="1" />
+    </pattern>
+
+    <!-- Side vignette: dark edges left+right -->
+    <linearGradient id="vigH" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="${palette.bgStart}" stop-opacity="1" />
+      <stop offset="22%" stop-color="${palette.bgStart}" stop-opacity="0" />
+      <stop offset="78%" stop-color="${palette.bgStart}" stop-opacity="0" />
+      <stop offset="100%" stop-color="${palette.bgStart}" stop-opacity="1" />
+    </linearGradient>
+
+    <!-- Top+bottom vignette -->
+    <linearGradient id="vigV" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="${palette.bgStart}" stop-opacity="0.85" />
+      <stop offset="25%" stop-color="${palette.bgStart}" stop-opacity="0" />
+      <stop offset="75%" stop-color="${palette.bgStart}" stop-opacity="0" />
+      <stop offset="100%" stop-color="${palette.bgStart}" stop-opacity="0.9" />
+    </linearGradient>
+
+    <!-- Top radial glow (violet) -->
+    <radialGradient id="topGlow" cx="0.5" cy="0" r="0.7" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="${palette.glow}" stop-opacity="0.36" />
       <stop offset="100%" stop-color="${palette.glow}" stop-opacity="0" />
     </radialGradient>
-    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="${palette.accentStart}" stop-opacity="0.95" />
-      <stop offset="100%" stop-color="${palette.accentEnd}" stop-opacity="0.95" />
+
+    <!-- Top accent line gradient -->
+    <linearGradient id="lineH" x1="0" x2="1200" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${palette.accentStart}" stop-opacity="0" />
+      <stop offset="0.35" stop-color="${palette.accentStart}" stop-opacity="1" />
+      <stop offset="0.65" stop-color="${palette.accentEnd}" stop-opacity="1" />
+      <stop offset="1" stop-color="${palette.accentEnd}" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Top glow vertical fade -->
+    <linearGradient id="lineVFade" x1="600" x2="600" y1="0" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="${palette.accentStart}" stop-opacity="0.176" />
+      <stop offset="1" stop-color="${palette.accentStart}" stop-opacity="0" />
     </linearGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="url(#bg)" rx="24" />
-  <rect width="1200" height="630" fill="url(#glow)" rx="24" />
+  <!-- Background solid fill -->
+  <rect width="1200" height="630" fill="url(#bg)" />
 
-  <rect x="64" y="66" width="1072" height="498" rx="24" fill="rgba(3, 10, 20, 0.46)" stroke="rgba(148, 163, 184, 0.32)" />
-  <rect x="64" y="66" width="1072" height="6" fill="url(#line)" rx="3" />
+  <!-- Grid pattern overlay -->
+  <rect width="1200" height="630" fill="url(#grid)" />
 
-  <text x="92" y="130" fill="#67e8f9" font-size="27" font-weight="600" font-family="Inter, Segoe UI, Arial, sans-serif">Aganov.dev • ${escapeXml(sectionLabel)}</text>
+  <!-- Side vignette (left + right dark fade) -->
+  <rect width="1200" height="630" fill="url(#vigH)" />
+
+  <!-- Top + bottom vignette -->
+  <rect width="1200" height="630" fill="url(#vigV)" />
+
+  <!-- Top glow vertical fade -->
+  <rect width="1200" height="220" fill="url(#lineVFade)" />
+
+  <!-- Top accent line flush to top -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#lineH)" />
+
+  <!-- Top radial halo -->
+  <rect width="1200" height="630" fill="url(#topGlow)" />
+
+  <!-- UiLogo short: top-center rounded square with letter A -->
+  <rect x="577" y="140" width="46" height="46" rx="10" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+  <text x="600" y="171" text-anchor="middle" fill="${palette.accentEnd}" font-size="22" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">A</text>
+
+  <!-- Title -->
   ${titleText}
-  <text x="92" y="530" fill="#cbd5e1" font-size="36" font-weight="500" font-family="Inter, Segoe UI, Arial, sans-serif">${escapeXml(normalizedDescription)}</text>
 
-  <circle cx="1110" cy="100" r="16" fill="#34d399" fill-opacity="0.9" />
+  <!-- Description -->
+  ${descriptionText}
+
+  <!-- Pagination breadcrumb bottom center: section (dim) / collection (bright) -->
+  <text x="600" y="572" text-anchor="middle" font-size="24" font-family="Inter, Segoe UI, Arial, sans-serif">
+    <tspan fill="rgba(148,163,184,0.5)" font-weight="500">${escapeXml(sectionLabel)}</tspan>
+    <tspan fill="rgba(148,163,184,0.35)" font-weight="400">  /  </tspan>
+    <tspan fill="#e2e8f0" font-weight="600">${escapeXml(collectionLabel)}</tspan>
+  </text>
 </svg>`.trim()
 
   const pngData = new Resvg(svg, {

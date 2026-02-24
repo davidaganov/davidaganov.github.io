@@ -1,6 +1,6 @@
 ---
 title: Conscious Vibe Coding
-description: Conscious Vibe Coding
+description: How I use AI in my workflow and why I don’t see it replacing developers.
 icon: i-lucide-file-text
 habrUrl: https://habr.com/ru/articles/982452/
 publishedAt: 2026-01-02

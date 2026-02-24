@@ -1,6 +1,6 @@
 ---
 title: Осознанный вайб-кодинг
-description: Осознанный вайб-кодинг
+description: Статья о том, как я использую ИИ в своей работе и почему не считаю его заменой разработчикам.
 icon: i-lucide-file-text
 habrUrl: https://habr.com/ru/articles/982452/
 publishedAt: 2026-01-02
