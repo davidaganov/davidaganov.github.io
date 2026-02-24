@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import HomePage from "@base/components/pages/home/HomePage.vue"
 
-const { locale, t } = useI18n()
+const { t } = useI18n()
 
-const homeTitle = computed(() => (locale.value === "ru" ? "Портфолио" : "Portfolio"))
+const homeTitle = computed(() => t("global.name"))
 const homeDescription = computed(() => t("pages.home.description"))
 
 definePageMeta({
@@ -18,6 +18,11 @@ useSeoMeta({
   twitterTitle: () => homeTitle.value,
   twitterDescription: () => homeDescription.value,
   twitterCard: "summary_large_image"
+})
+
+defineOgImageComponent("HomePage", {
+  title: homeTitle.value,
+  description: homeDescription.value
 })
 </script>
 

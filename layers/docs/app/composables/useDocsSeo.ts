@@ -1,5 +1,6 @@
-import type { DocsSeoOptions } from "@docs/types/docs"
+import type { DocsSeoOptions, DocsPageData } from "@docs/types/docs"
 import { TYPE_PAGE } from "@docs/types/enums"
+import { buildStructuredData } from "@docs/utils/structuredData"
 
 export const useDocsSeo = ({
   section,
@@ -13,53 +14,43 @@ export const useDocsSeo = ({
   const localePath = useLocalePath()
   const runtimeConfig = useRuntimeConfig()
 
-  const getString = (value: unknown): string | undefined => {
+  const nonEmptyString = (value: unknown): string | undefined => {
     if (typeof value !== "string") return undefined
     return value.trim().length ? value : undefined
   }
 
-  const pageMeta = computed<Record<string, unknown>>(() => {
-    const p = page.value as { seo?: Record<string, unknown> } | null | undefined
-    return p?.seo ?? {}
+  const trimTrailingSlash = (url: string) => (url.endsWith("/") ? url.slice(0, -1) : url)
+
+  const typedPage = computed<DocsPageData | undefined>(() => {
+    return (page.value as DocsPageData) || undefined
   })
 
+  const pageSeo = computed(() => typedPage.value?.seo || {})
+
   const seoTitle = computed<string | undefined>(() => {
-    const fromSeo = getString(pageMeta.value.title)
-    if (fromSeo) return fromSeo
-
-    const fromPageTitle = getString((page.value as { title?: unknown } | null | undefined)?.title)
-
-    if (fromPageTitle) return fromPageTitle
-    if (collectionItem.value?.titleKey) return t(collectionItem.value.titleKey)
-    if (section.value) return t(section.value.labelKey)
-
-    return undefined
+    return (
+      nonEmptyString(pageSeo.value.title) ||
+      nonEmptyString(typedPage.value?.title) ||
+      (collectionItem.value?.titleKey ? t(collectionItem.value.titleKey) : undefined) ||
+      (section.value ? t(section.value.labelKey) : undefined)
+    )
   })
 
   const seoDescription = computed<string | undefined>(() => {
-    const fromSeo = getString(pageMeta.value.description)
-    if (fromSeo) return fromSeo
-
-    const fromPageDescription = getString(
-      (page.value as { description?: unknown } | null | undefined)?.description
+    return (
+      nonEmptyString(pageSeo.value.description) ||
+      nonEmptyString(typedPage.value?.description) ||
+      (collectionItem.value?.subtitleKey ? t(collectionItem.value.subtitleKey) : undefined)
     )
-
-    if (fromPageDescription) return fromPageDescription
-    if (collectionItem.value?.subtitleKey) return t(collectionItem.value.subtitleKey)
-
-    return undefined
   })
 
   const siteUrl = computed(() => {
-    const value = String(runtimeConfig.public.siteUrl || "").trim()
-    const requestOrigin = String(requestUrl.origin || "").trim()
+    const configured = String(runtimeConfig.public.siteUrl || "").trim()
+    const origin = String(requestUrl.origin || "").trim()
 
-    if (import.meta.dev && requestOrigin) {
-      return requestOrigin.endsWith("/") ? requestOrigin.slice(0, -1) : requestOrigin
-    }
+    if (import.meta.dev && origin) return trimTrailingSlash(origin)
 
-    const normalized = value || requestOrigin || "https://aganov.dev"
-    return normalized.endsWith("/") ? normalized.slice(0, -1) : normalized
+    return trimTrailingSlash(configured || origin || "https://aganov.dev")
   })
 
   const canonicalUrl = computed(() => `${siteUrl.value}${route.path || "/"}`)
@@ -68,152 +59,77 @@ export const useDocsSeo = ({
     const currentSection = section.value
     if (!currentSection) return []
 
-    const items: { label: string; to?: string }[] = [
+    const items = [
       {
         label: t(currentSection.labelKey),
         to: localePath(`/docs/${currentSection.id}`)
       }
     ]
 
-    const parentCollection = parentCollectionItem.value
-    if (parentCollection) {
+    const parent = parentCollectionItem.value
+    if (parent) {
       items.push({
-        label: t(parentCollection.label),
-        to: localePath(
-          parentCollection.pathPrefix || `/docs/${currentSection.id}/${parentCollection.source}`
-        )
+        label: t(parent.label),
+        to: localePath(parent.pathPrefix || `/docs/${currentSection.id}/${parent.source}`)
       })
     }
 
     return items
   })
 
-  const generatedOgImagePath = computed(() => {
+  const seoImageOverride = computed(
+    () => nonEmptyString(pageSeo.value.ogImage) || nonEmptyString(pageSeo.value.image)
+  )
+
+  const generatedOgImageUrl = computed(() => {
     const pagePath = route.path || "/"
-    const normalizedPagePath = pagePath.startsWith("/") ? pagePath : `/${pagePath}`
+    const normalizedPath = pagePath.startsWith("/") ? pagePath : `/${pagePath}`
     const mode = import.meta.prerender ? "static" : "image"
-
-    return `/__og-image__/${mode}${normalizedPagePath}/og.png`
+    return `${siteUrl.value}/__og-image__/${mode}${normalizedPath}/og.png`
   })
 
-  const generatedOgImageUrl = computed(() => `${siteUrl.value}${generatedOgImagePath.value}`)
+  const seoImage = computed(() => seoImageOverride.value ?? generatedOgImageUrl.value)
 
-  const seoImageOverride = computed(() => {
-    return getString(pageMeta.value.ogImage) || getString(pageMeta.value.image)
-  })
-
-  const seoImage = computed(() => {
-    if (seoImageOverride.value) return seoImageOverride.value
-    return generatedOgImageUrl.value
-  })
-
-  const ogSectionLabel = computed(() => {
-    if (section.value) return t(section.value.labelKey)
-    return locale.value === "ru" ? "Документация" : "Documentation"
-  })
-
-  const ogCollectionLabel = computed(() => {
-    if (parentCollectionItem.value) return t(parentCollectionItem.value.label)
-    if (collectionItem.value) return t(collectionItem.value.label)
-    return ""
-  })
-
-  if (seoImageOverride.value) {
-    defineOgImage({
-      url: seoImageOverride.value,
-      alt: seoTitle.value || undefined
-    })
-  } else {
-    defineOgImageComponent("DocsPage", {
-      title:
-        seoTitle.value ||
-        (locale.value === "ru" ? "Документация и заметки" : "Documentation and notes"),
-      description:
-        seoDescription.value ||
-        (locale.value === "ru"
-          ? "Практические материалы, заметки и инструменты из моего портфолио."
-          : "Practical notes, guides, and tools from my portfolio."),
-      section: ogSectionLabel.value,
-      collection: ogCollectionLabel.value
-    })
-  }
-
-  const pageRightSidebarType = computed(() => {
+  const pageType = computed<TYPE_PAGE>(() => {
     const pt = parentCollectionItem.value?.pageType
-    if (pt === TYPE_PAGE.PROJECT) return TYPE_PAGE.PROJECT
-    return TYPE_PAGE.ARTICLE
+    return pt === TYPE_PAGE.PROJECT ? TYPE_PAGE.PROJECT : TYPE_PAGE.ARTICLE
   })
 
   const structuredDataJson = computed<string | undefined>(() => {
     const pageTitle = seoTitle.value
     if (!pageTitle) return undefined
 
-    const pageDescription = seoDescription.value
-    const language = locale.value === "ru" ? "ru-RU" : "en-US"
-    const meta = (page.value as { meta?: Record<string, unknown> } | null | undefined)?.meta || {}
+    return buildStructuredData({
+      pageTitle,
+      pageDescription: seoDescription.value,
+      canonicalUrl: canonicalUrl.value,
+      siteUrl: siteUrl.value,
+      seoImage: seoImage.value,
+      language: locale.value === "ru" ? "ru-RU" : "en-US",
+      pageType: pageType.value,
+      isCollectionPage: !!collectionItem.value,
+      meta: typedPage.value?.meta ?? {},
+      breadcrumbs: breadcrumbs.value,
+      currentPath: route.path || "/",
+      authorName: t("global.name")
+    })
+  })
 
-    const breadcrumbItemList = [
-      ...breadcrumbs.value,
-      {
-        label: pageTitle,
-        to: route.path
-      }
-    ].map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.label,
-      item: `${siteUrl.value}${item.to || route.path || "/"}`
-    }))
-
-    const breadcrumbSchema = {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: breadcrumbItemList
+  watchEffect(() => {
+    if (seoImageOverride.value) {
+      defineOgImage({ url: seoImageOverride.value, alt: seoTitle.value })
+    } else {
+      defineOgImageComponent("DocsPage", {
+        title: seoTitle.value || t("docs.seo.defaultTitle"),
+        description: seoDescription.value || t("docs.seo.defaultDescription"),
+        section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
+        collection: parentCollectionItem.value
+          ? t(parentCollectionItem.value.label)
+          : collectionItem.value
+            ? t(collectionItem.value.label)
+            : ""
+      })
     }
-
-    const basePageSchema = {
-      "@context": "https://schema.org",
-      "@type": collectionItem.value ? "CollectionPage" : "WebPage",
-      name: pageTitle,
-      description: pageDescription,
-      url: canonicalUrl.value,
-      inLanguage: language
-    }
-
-    if (collectionItem.value) {
-      return JSON.stringify([basePageSchema, breadcrumbSchema])
-    }
-
-    if (pageRightSidebarType.value === TYPE_PAGE.PROJECT) {
-      const projectSchema = {
-        "@context": "https://schema.org",
-        "@type": "SoftwareSourceCode",
-        name: pageTitle,
-        description: pageDescription,
-        url: canonicalUrl.value,
-        codeRepository: getString(meta.githubUrl),
-        inLanguage: language
-      }
-
-      return JSON.stringify([projectSchema, breadcrumbSchema])
-    }
-
-    const articleSchema = {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      headline: pageTitle,
-      description: pageDescription,
-      url: canonicalUrl.value,
-      image: seoImage.value,
-      datePublished: getString(meta.publishedAt),
-      inLanguage: language,
-      author: {
-        "@type": "Person",
-        name: locale.value === "ru" ? "Давид Аганов" : "David Aganov"
-      }
-    }
-
-    return JSON.stringify([articleSchema, breadcrumbSchema])
   })
 
   useSeoMeta({
@@ -242,6 +158,7 @@ export const useDocsSeo = ({
   return {
     breadcrumbs,
     seoTitle,
-    seoDescription
+    seoDescription,
+    pageType
   }
 }

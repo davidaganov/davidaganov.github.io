@@ -1,4 +1,11 @@
 {
+  "docs": {
+    "seo": {
+      "defaultTitle": "Documentation and notes",
+      "defaultDescription": "Practical notes, guides, and tools from my portfolio.",
+      "defaultSection": "Documentation"
+    }
+  },
   "global": {
     "name": "David Aganov",
     "labels": {

@@ -6,7 +6,7 @@ export const TOOLS_SIDEBAR_ITEMS: SidebarItem[] = [
     source: "calculators",
     label: "pages.tools.nav.calculators",
     indexPage: true,
-    pageType: "article",
+    pageType: "project",
     titleKey: "pages.tools.nav.calculators",
     emptyKey: "features.calculators.empty",
     icon: "i-lucide-wrench",

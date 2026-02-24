@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useMediaQuery } from "@vueuse/core"
+import BaseLight from "@docs/components/base/BaseLight.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 
 const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
@@ -14,6 +16,8 @@ const animationEnabled = useCookie<boolean>("animation_enabled", {
   sameSite: "lax",
   path: "/"
 })
+
+const isDesktop = useMediaQuery("(min-width: 768px)")
 
 const noiseAmp = ref(0.45)
 const backgroundReady = ref(false)
@@ -55,14 +59,16 @@ watch(
 onMounted(() => {
   noiseAmp.value = 0.3 + Math.random() * 0.3
 
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(() => {
-      backgroundReady.value = true
-    })
-  } else {
+  const initBackground = () => {
     setTimeout(() => {
       backgroundReady.value = true
-    }, 50)
+    }, 400)
+  }
+
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(initBackground, { timeout: 2000 })
+  } else {
+    initBackground()
   }
 })
 </script>
@@ -89,20 +95,67 @@ onMounted(() => {
       <UiLanguageSwitcher :blur="true" />
     </div>
 
-    <div class="absolute inset-0 hidden overflow-hidden md:block">
-      <div class="absolute inset-0 bg-linear-to-br from-slate-900 via-purple-900/20 to-slate-900" />
-      <div
-        class="bg-[radial-gradient(ellipse_at_top, rgba(184,126,239,0.15), transparent_50%)] absolute inset-0"
+    <div class="absolute inset-0 overflow-hidden">
+      <BaseLight
+        class="top-0! z-10"
+        :light="0.4"
       />
-      <div
-        class="bg-[radial-gradient(ellipse_at_bottom_right, rgba(139,92,246,0.1), transparent_50%)] absolute inset-0"
-      />
+      <svg
+        class="absolute inset-0 h-full w-full"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern
+            id="home-grid"
+            width="60"
+            height="60"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M 60 0 L 0 0 0 60"
+              fill="none"
+              stroke="rgba(184, 126, 239, 0.25)"
+              stroke-width="1"
+            />
+          </pattern>
+
+          <radialGradient
+            id="home-vignette"
+            cx="50%"
+            cy="50%"
+            r="50%"
+          >
+            <stop
+              offset="40%"
+              stop-color="#0b0b0b"
+              stop-opacity="0"
+            />
+            <stop
+              offset="100%"
+              stop-color="#0b0b0b"
+              stop-opacity="0.65"
+            />
+          </radialGradient>
+        </defs>
+
+        <rect
+          width="100%"
+          height="100%"
+          fill="url(#home-grid)"
+        />
+
+        <rect
+          width="100%"
+          height="100%"
+          fill="url(#home-vignette)"
+        />
+      </svg>
     </div>
 
     <ClientOnly>
       <div
-        v-if="backgroundMounted"
-        class="absolute inset-0 hidden overflow-hidden transition-opacity duration-500 ease-in-out md:block"
+        v-if="backgroundMounted && isDesktop"
+        class="absolute inset-0 overflow-hidden transition-opacity duration-500 ease-in-out"
         :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
       >
         <FaultyTerminal
@@ -127,17 +180,10 @@ onMounted(() => {
       </div>
     </ClientOnly>
 
-    <div class="absolute inset-0 overflow-hidden md:hidden">
-      <div class="absolute inset-0 bg-linear-to-br from-slate-900 via-purple-900/20 to-slate-900" />
-      <div
-        class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(184,126,239,0.15),transparent_50%)]"
-      />
-    </div>
-
     <ClientOnly>
       <div
-        v-if="backgroundMounted"
-        class="absolute inset-0 overflow-hidden transition-opacity duration-500 ease-in-out md:hidden"
+        v-if="backgroundMounted && !isDesktop"
+        class="absolute inset-0 overflow-hidden transition-opacity duration-500 ease-in-out"
         :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
       >
         <Squares

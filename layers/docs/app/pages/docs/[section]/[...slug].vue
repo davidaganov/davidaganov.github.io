@@ -3,7 +3,6 @@ import type { Collections } from "@nuxt/content"
 import AppIndexPage from "@docs/components/app/AppIndexPage.vue"
 import AppRightSidebar from "@docs/components/app/AppRightSidebar.vue"
 import { useDocsSeo } from "@docs/composables/useDocsSeo"
-import { TYPE_PAGE } from "@docs/types/enums"
 import type { SidebarCollectionItem } from "@docs/types/sidebar"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import {
@@ -66,11 +65,6 @@ const getFirstChildPath = async (pathPrefix: string): Promise<string | undefined
   return `${pathPrefix}${relativePath}`
 }
 
-const resolvePageType = (pt: string | undefined): TYPE_PAGE => {
-  if (pt === TYPE_PAGE.PROJECT) return TYPE_PAGE.PROJECT
-  return TYPE_PAGE.ARTICLE
-}
-
 if (collectionItem.value?.indexPage === false) {
   const pathPrefix = getCollectionPathPrefix(collectionItem.value.source)
   const firstChildPath = await getFirstChildPath(pathPrefix)
@@ -91,7 +85,7 @@ const parentCollectionItem = computed<SidebarCollectionItem | undefined>(() => {
 })
 
 const { data: page } = await usePageContent(docsPath.value)
-const { breadcrumbs } = useDocsSeo({
+const { breadcrumbs, pageType } = useDocsSeo({
   section,
   collectionItem,
   parentCollectionItem,
@@ -101,8 +95,6 @@ const { breadcrumbs } = useDocsSeo({
 const titleKey = computed(() => collectionItem.value?.titleKey)
 const subtitleKey = computed(() => collectionItem.value?.subtitleKey)
 const emptyKey = computed(() => collectionItem.value?.emptyKey)
-const rightSidebarType = computed(() => resolvePageType(collectionItem.value?.pageType))
-const pageRightSidebarType = computed(() => resolvePageType(parentCollectionItem.value?.pageType))
 </script>
 
 <template>
@@ -121,7 +113,7 @@ const pageRightSidebarType = computed(() => resolvePageType(parentCollectionItem
     />
     <AppRightSidebar
       :main="true"
-      :type="rightSidebarType"
+      :type="pageType"
     />
   </div>
   <div v-else-if="page">
@@ -133,7 +125,7 @@ const pageRightSidebarType = computed(() => resolvePageType(parentCollectionItem
     <ContentRenderer :value="page" />
     <AppRightSidebar
       :page="page"
-      :type="pageRightSidebarType"
+      :type="pageType"
     />
   </div>
 </template>
