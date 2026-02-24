@@ -103,11 +103,11 @@ export const ApiClient = {
 
 Each element of this structure solves exactly one task:
 
-| File                | Responsibility                                                                                       |
-| ------------------- | ---------------------------------------------------------------------------------------------------- |
-| `request.ts`        | Low-level transport: fetch/axios, timeouts, error normalization, and headers.                       |
-| `requests/<domain>` | Domain logic: endpoints (routes.ts) and typed methods (index.ts) for a specific entity.              |
-| `client.ts`         | A single facade (ApiClient) that collects all domains into one convenient entry point.                |
+| File                | Responsibility                                                                          |
+| ------------------- | --------------------------------------------------------------------------------------- |
+| `request.ts`        | Low-level transport: fetch/axios, timeouts, error normalization, and headers.           |
+| `requests/<domain>` | Domain logic: endpoints (routes.ts) and typed methods (index.ts) for a specific entity. |
+| `client.ts`         | A single facade (ApiClient) that collects all domains into one convenient entry point.  |
 
 ### Request Layer (Transport)
 

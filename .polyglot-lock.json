@@ -46,8 +46,6 @@
       "pages.home.getStarted": "Начать",
       "pages.home.disableAnimation": "Без анимации",
       "pages.home.scrollDown": "Листай вниз",
-      "pages.home.tabWork": "Работа",
-      "pages.home.tabLife": "Жизнь",
       "pages.home.ctaDesc": "Перейти к руководству пользователя",
       "pages.home.fallback.title": "Ссылки временно недоступны",
       "pages.home.fallback.description": "Не удалось загрузить список ссылок, но можно перейти в документацию.",
@@ -57,6 +55,7 @@
       "pages.projects.metrics.downloads": "Скачиваний",
       "pages.projects.metrics.lastCommit": "Последний коммит",
       "pages.articles.empty": "Пока нет статей.",
+      "pages.articles.indexNote": "Публикации на сайте дополнены практическими материалами: примерами, исходниками и архивами. Это расширенные версии по сравнению с исходными постами.",
       "pages.articles.myHabr": "Мои статьи на Habr",
       "pages.articles.mySite": "Заметки на сайте",
       "pages.articles.readOnHabr": "Читать на Habr",
@@ -114,7 +113,20 @@
       "features.calculators.result.workingDays": "Рабочих",
       "features.calculators.result.weeks": "Недель",
       "features.calculators.result.months": "Месяцев",
-      "features.calculators.result.years": "Лет"
+      "features.calculators.result.years": "Лет",
+      "features.calculators.time.title": "Время",
+      "features.calculators.time.placeholders.hours": "Часы",
+      "features.calculators.time.placeholders.minutes": "Мин",
+      "features.calculators.time.placeholders.seconds": "Сек",
+      "features.calculators.time.actions.add": "Добавить",
+      "features.calculators.time.actions.subtract": "Вычесть",
+      "features.calculators.time.actions.multiply": "Умножить",
+      "features.calculators.time.actions.divide": "Разделить",
+      "features.calculators.time.actions.equals": "Посчитать",
+      "features.calculators.time.maxMode.label": "Ограничение",
+      "features.calculators.time.maxMode.options.off": "Без ограничений",
+      "features.calculators.time.maxMode.options.twelveHours": "12 часов",
+      "features.calculators.time.maxMode.options.twentyFourHours": "24 часа"
     }
   },
   "md": {

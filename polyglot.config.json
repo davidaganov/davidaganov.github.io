@@ -5,10 +5,7 @@
     "model": "gemini-flash-latest",
     "envVarName": "VITE_POLYGLOT_API_KEY",
     "localeFormat": "short",
-    "locales": [
-      "EN",
-      "RU"
-    ],
+    "locales": ["EN", "RU"],
     "defaultLocale": "RU",
     "localesDir": "i18n/locales",
     "trackChanges": "carefully"
@@ -16,10 +13,7 @@
   "markdown": {
     "contentDir": "content",
     "defaultLocale": "ru",
-    "locales": [
-      "en",
-      "ru"
-    ],
+    "locales": ["en", "ru"],
     "trackChanges": "carefully",
     "provider": "gemini",
     "model": "gemini-flash-latest",
