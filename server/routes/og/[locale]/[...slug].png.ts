@@ -70,22 +70,6 @@ const splitToLines = (value: string, maxChars = 34, maxLines = 3): string[] => {
   return lines
 }
 
-const safeText = (value: unknown): string | undefined => {
-  if (typeof value !== "string") return undefined
-  const normalized = normalizeText(value)
-  return normalized.length ? normalized : undefined
-}
-
-const decodeQueryText = (value: unknown): string | undefined => {
-  if (typeof value !== "string") return undefined
-
-  try {
-    return safeText(decodeURIComponent(value))
-  } catch {
-    return safeText(value)
-  }
-}
-
 const truncate = (value: string, max = 140): string => {
   if (value.length <= max) return value
   return `${value.slice(0, max - 1).trimEnd()}…`
@@ -158,7 +142,6 @@ export default defineEventHandler(async (event) => {
   const localeParam = String(getRouterParam(event, "locale") || "ru")
   const locale = localeParam === "en" ? "en" : "ru"
   const rawSlug = getRouterParam(event, "slug")
-  const query = getQuery(event)
 
   const slugSegments = Array.isArray(rawSlug)
     ? rawSlug.map(String).filter(Boolean)
@@ -175,13 +158,12 @@ export default defineEventHandler(async (event) => {
   const fallbackCollectionLabel = prettifySlug(slugSegments.at(-2) || "articles")
   const fallbackArticleLabel = prettifySlug(slugSegments.at(-1) || "documentation")
 
-  const sectionLabel = decodeQueryText(query.section) || fallbackSectionLabel
-  const collectionLabel = decodeQueryText(query.collection) || fallbackCollectionLabel
-  const articleLabel = decodeQueryText(query.article) || fallbackArticleLabel
+  const sectionLabel = fallbackSectionLabel
+  const collectionLabel = fallbackCollectionLabel
+  const articleLabel = fallbackArticleLabel
 
-  const title = decodeQueryText(query.title) || meta.title || articleLabel
+  const title = meta.title || articleLabel
   const description =
-    decodeQueryText(query.description) ||
     meta.description ||
     (locale === "ru"
       ? "Практические материалы, заметки и инструменты из моего портфолио."
