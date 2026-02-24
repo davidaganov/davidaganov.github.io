@@ -106,10 +106,10 @@ onMounted(() => {
       >
         <defs>
           <pattern
-            id="home-grid"
             width="60"
             height="60"
             patternUnits="userSpaceOnUse"
+            id="home-grid"
           >
             <path
               d="M 60 0 L 0 0 0 60"
@@ -120,10 +120,10 @@ onMounted(() => {
           </pattern>
 
           <radialGradient
-            id="home-vignette"
             cx="50%"
             cy="50%"
             r="50%"
+            id="home-vignette"
           >
             <stop
               offset="40%"
