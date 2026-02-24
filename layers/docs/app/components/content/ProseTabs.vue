@@ -8,14 +8,16 @@ interface ProseTabItem {
 
 const props = withDefaults(
   defineProps<{
-    items: ProseTabItem[]
+    items?: ProseTabItem[]
     defaultValue?: string
     modelValue?: string
     ui?: Record<string, string>
   }>(),
   {
+    defaultValue: "0",
+    modelValue: "0",
     items: () => [],
-    defaultValue: "0"
+    ui: () => ({})
   }
 )
 

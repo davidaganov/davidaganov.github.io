@@ -7,7 +7,7 @@ interface ToolCodeGroupItem {
 
 const props = withDefaults(
   defineProps<{
-    items: ToolCodeGroupItem[] | string
+    items?: ToolCodeGroupItem[] | string
   }>(),
   {
     items: () => []
