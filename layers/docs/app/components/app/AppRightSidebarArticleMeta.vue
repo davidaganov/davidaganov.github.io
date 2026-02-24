@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { SORT_ORDER } from "@docs/types/enums"
+import { buildFiltersQuery } from "@docs/utils/indexFiltersQuery"
 import { formatDate } from "@base/utils/date"
 import UiBadge from "@ui/components/UiBadge.vue"
 
@@ -7,6 +9,9 @@ const props = defineProps<{
 }>()
 
 const { locale } = useI18n()
+
+const localePath = useLocalePath()
+const route = useRoute()
 
 const meta = computed(() => {
   const p = (props.page || {}) as { meta?: Record<string, unknown> }
@@ -25,6 +30,35 @@ const hasArticleMeta = computed(() =>
     meta.value.habrUrl || meta.value.publishedAt || meta.value.readingTime || meta.value.tags.length
   )
 )
+
+const indexPath = computed(() => {
+  const section = String(route.params.section || "")
+  const slugParam = route.params.slug
+  const slug = Array.isArray(slugParam) ? slugParam.map(String).filter(Boolean) : []
+
+  if (!section || slug.length < 2) return ""
+  return `/docs/${section}/${slug[0]}`
+})
+
+const tagLink = (tag: string) => {
+  if (!indexPath.value) return "#"
+
+  const query = buildFiltersQuery({
+    tags: [tag],
+    sortOrder: SORT_ORDER.DESC,
+    sourceFilter: null,
+    includeSource: false
+  })
+
+  return localePath({
+    path: indexPath.value,
+    query: {
+      tags: query.tags,
+      sort: query.sort,
+      source: query.source
+    }
+  })
+}
 </script>
 
 <template>
@@ -55,13 +89,14 @@ const hasArticleMeta = computed(() =>
     <div>
       <div v-if="meta.tags.length">
         <div class="flex flex-wrap gap-2">
-          <UiBadge
+          <NuxtLink
             v-for="tag in meta.tags"
-            class="text-xs"
-            color="#6b7280"
-            :label="tag"
+            class="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/85 transition-colors hover:border-white/20 hover:bg-white/10"
+            :to="tagLink(tag)"
             :key="tag"
-          />
+          >
+            {{ tag }}
+          </NuxtLink>
         </div>
       </div>
 

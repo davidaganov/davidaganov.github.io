@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withTrailingSlash, withLeadingSlash, joinURL } from "ufo"
+import { joinURL, withLeadingSlash, withTrailingSlash } from "ufo"
 
 const props = defineProps({
   src: {

@@ -26,9 +26,9 @@ description: Коротко обо мне и о том, чем я занимаю
 
 - **[Проекты](/docs/about/projects):** личные продукты и open-source.
 - **[Статьи](/docs/about/articles):** мои статьи и заметки с сайта **Habr** и не только.
-- **[Гайды](/docs/guides):** полезные руководства и инструкции.
+- **[Инструменты](/docs/tools):** полезные инструменты, небольшие утилиты, которые я создал для себя.
 
-**С чего начать?** Если вам важен практический результат — переходите в раздел **[проекты](/docs/about/projects)**. Если интересно узнать, как я мыслю и пишу код — загляните в **[статьи](/docs/about/articles)** или в **[гайды](/docs/guides)**.
+**С чего начать?** Если вам важен практический результат — переходите в раздел **[проекты](/docs/about/projects)**. Если интересно узнать, как я мыслю и пишу код — загляните в **[статьи](/docs/about/articles)**.
 
 <p align="center">
   <a href="https://github.com/davidaganov"><img height="20" src="https://img.shields.io/github/followers/davidaganov?label=GitHub&style=social"></a>

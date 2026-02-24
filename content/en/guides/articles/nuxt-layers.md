@@ -14,83 +14,125 @@ tags:
 
 ## Introduction
 
-In this short article, I would like to talk about the concept of Layers in Nuxt 3, how I implement it in my projects, and why I consider it important. I will show two examples: one demonstrating the division of a project into several layers, and the other – the separation of multiple frontends into different layers. The desire to write an article about this arose after I couldn't find enough real-world examples and articles in Russian on using layers.
+In this short article, I would like to talk about the concept of Layers in Nuxt 3, how I implement it in my projects, and why I consider it important. I will show two examples: one demonstrating the separation of a project into several layers, and the other—separating several frontends into different layers. The desire to write an article about this arose after I couldn't find enough real-world examples and articles in Russian on using layers.
 
-## The situation that led me to Layers
+## The Situation That Led Me to Layers
 
-Initially, I knew about the Layers concept in Nuxt 3, but I didn't use it, considering it redundant and not particularly clear. But one day, finding myself digging through a `components` folder that had no fewer than six subfolders, each with 10-30 components, I realized that something had clearly gone wrong. I decided to break my project into several layers, but in a way that avoids one layer depending on another. After some time, I arrived at this structure:
+Initially, I knew about the Layers concept in Nuxt 3 but didn't use it, considering it redundant and not particularly clear. But one day, finding myself digging through a `components` folder that had at least six subfolders, each with 10-30 components, I realized that something had clearly gone wrong. I decided to break my project into several layers, but in a way that avoids dependency of one layer on another. After some time, I arrived at the following structure:
 
-1.  **Base**: This layer contains common site components such as the header, footer, layouts, composables, and utilities used throughout the project, as well as the home page, user agreement page, etc.
-2.  **User**: The layer responsible for authorization, user profile, and everything directly related to the user.
-3.  **Order**: Everything related to orders on the site: order creation page, user order list, list of all orders on the site, etc.
-4.  **Chat**: Chat page between users. The logic for working with WebSockets is also implemented in this layer.
-5.  **UI**: Due to the overgrown Base layer, the decision was made to move all UI components to a separate layer. It is needed so that 20 components related to forms, modals, and cards do not clutter the base layer, which contains more global parts and pages of the application.
+1.  **Base**: This layer contains general site components such as the header, footer, layouts, composables, and utilities used throughout the project, as well as the home page, terms of service page, etc.
+2.  **User**: The layer responsible for authentication, user profile, and everything directly related to the user.
+3.  **Order**: Everything related to orders on the site: order creation page, user's order list, list of all orders on the site, etc.
+4.  **Chat**: The chat page between users. The logic for working with websockets is also implemented in this layer.
+5.  **UI**: Due to the overgrown Base layer, the decision was made to move all UI components into a separate layer. This is needed so that 20 components related to forms, modals, and cards do not clutter the base layer, which contains more global parts and pages of the application.
 
-The main advantages I experienced using this approach are, firstly, the convenience of working on a specific part of the application. If I need to update authorization, I don't search for components/pages/composables throughout the project, but go to a specific layer and work exclusively within it, without touching the others. Secondly, each layer can have its own configuration.
+The main advantages I felt when using this approach are, first, the convenience of working on a specific part of the application. If I need to update the authentication, I don't look for components/pages/composables throughout the project; I go to a specific layer and work exclusively in it without affecting the rest. Second, each layer can have its own configuration.
 
-### Project structure
+### Project Structure
 
-```
-├──layers/
-|   ├──base/
-│   |   ├── assets/
-│   |   |   ├── fonts/
-│   |   |   └── styles/
-│   |   ├── components/
-│   |   ├── composables/
-│   |   ├── pages/
-│   |   ├── stores/
-│   |   ├── utils/
-│   |   └── nuxt.config.ts
-|   ├──chat/
-│   |   ├── components/
-│   |   ├── composables/
-│   |   ├── pages/
-│   |   ├── stores/
-│   |   └── nuxt.config.ts
-|   ├──order/
-│   |   ├── components/
-│   |   ├── pages/
-│   |   └── stores/
-|   ├──ui/
-│   |   ├── components/
-│   |   └── nuxt.config.ts
-|   └──user/
-│       ├── components/
-│       ├── composables/
-│       ├── pages/
-│       ├── stores/
-│       └── nuxt.config.ts
-├── app.vue
-└── nuxt.config.ts
+Below is a minimal working example of the structure and root configuration:
+
+::code-tree{defaultValue="nuxt.config.ts"}
+
+```ts [layers/base/nuxt.config.ts]
+export default defineNuxtConfig({})
 ```
 
-In the main `nuxt.config.ts` file, I have the following:
-
-```typescript
-extends: [
-  "./layers/base",
-  "./layers/ui",
-  "./layers/order",
-  "./layers/user",
-  "./layers/chat"
-],
-// Исключительно для удобства при импортировании
-alias: {
-  "@": "./",
-  "@base": "~/layers/base",
-  "@ui": "~/layers/ui",
-  "@order": "~/layers/order",
-  "@user": "~/layers/user",
-  "@chat": "~/layers/chat"
-}
+```css [layers/base/assets/styles/main.css]
+@import "~/assets/css/tokens.css";
 ```
 
-## The problem I encountered
+```vue [layers/base/components/BaseHeader.vue]
+<template>
+  <header>Header</header>
+</template>
+```
 
-If two different layers have a component with the same name, only one will be auto-imported. This creates a risk of accidentally naming a component exactly the same as in another layer and not understanding why everything is working incorrectly. In an attempt to find a solution to the problem, I decided to disable auto-import in all layers, but in order not to lose the benefit of using auto-import, I created a `global` folder inside the `components` folder in each layer. From it, all components are available for auto-import throughout the application, while components **outside** this folder must be imported directly. To implement such logic, the following must be written in each internal `nuxt.config.ts`:
+```ts [layers/base/composables/useSeo.ts]
+export const useSeo = () => useHead({ title: "App" })
+```
 
-```typescript
+```vue [layers/base/pages/index.vue]
+<template>
+  <div>Home</div>
+</template>
+```
+
+```ts [layers/chat/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/chat/pages/index.vue]
+<template>
+  <div>Chat</div>
+</template>
+```
+
+```vue [layers/chat/components/ChatMessage.vue]
+<template>
+  <article>Message</article>
+</template>
+```
+
+```ts [layers/order/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/order/pages/index.vue]
+<template>
+  <div>Orders</div>
+</template>
+```
+
+```ts [layers/ui/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/ui/components/BaseButton.vue]
+<template>
+  <button>Button</button>
+</template>
+```
+
+```ts [layers/user/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/user/pages/profile.vue]
+<template>
+  <div>Profile</div>
+</template>
+```
+
+```vue [app.vue]
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+```
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  extends: ["./layers/base", "./layers/ui", "./layers/order", "./layers/user", "./layers/chat"],
+  alias: {
+    "@": "./",
+    "@base": "~/layers/base",
+    "@ui": "~/layers/ui",
+    "@order": "~/layers/order",
+    "@user": "~/layers/user",
+    "@chat": "~/layers/chat"
+  }
+})
+```
+
+::
+
+## The Problem I Encountered
+
+If there is a component with the same name in two different layers, only one will be auto-imported. This creates a risk of accidentally naming a component exactly the same as in another layer and not understanding why everything is working incorrectly. In an attempt to find a solution to this problem, I decided to disable auto-import in all layers, but to avoid losing the benefit of auto-import, I created a `global` folder inside the `components` folder in each layer. From there, all components are available for auto-import throughout the application, while components **outside** this folder must be imported directly. To implement such logic, you need to write the following in each internal `nuxt.config.ts`:
+
+```ts [layers/base/nuxt.config.ts]
 components: [
   {
     path: "~/layers/base/components/global",
@@ -100,33 +142,73 @@ components: [
 ]
 ```
 
-## Multiple sites based on a single API
+## Multiple Sites Based on a Single API
 
-Our team was faced with the task of creating several sites that would access one API and share common components, composables, and utilities. We decided to implement this through Layers, where each layer is a separate site.  
+Our team faced the task of making several sites that would access a single API and have common components, composables, and utilities. We decided to implement this through Layers, where each layer is a separate site.  
 The structure is as follows:
 
-```
-├── composables/
-├── components/
-├── services/
-├── layers/
-│   ├── site-1/
-│   ├── site-2/
-│   └── site-3/
+::code-tree{defaultValue="nuxt.config.ts"}
+
+```ts [composables/useApi.ts]
+export const useApi = () => $fetch
 ```
 
-In the `.env` file, there is a parameter responsible for the current site, for example `VITE_NUXT_LAYER=site-1`. It is needed to specify the path to the required site in `nuxt.config.ts`:
-
-```typescript
-extends: ["./layers/" + import.meta.env.VITE_NUXT_LAYER]
+```vue [components/BaseButton.vue]
+<template>
+  <button>Base button</button>
+</template>
 ```
 
-After this, each developer specifies the site name they need and works exclusively within one layer without affecting the work of others.
+```ts [layers/site-1/nuxt.config.ts]
+export default defineNuxtConfig({ app: { baseURL: "/site-1" } })
+```
+
+```vue [layers/site-1/pages/index.vue]
+<template>
+  <div>Site 1</div>
+</template>
+```
+
+```ts [layers/site-2/nuxt.config.ts]
+export default defineNuxtConfig({ app: { baseURL: "/site-2" } })
+```
+
+```vue [layers/site-2/pages/index.vue]
+<template>
+  <div>Site 2</div>
+</template>
+```
+
+```ts [layers/site-3/nuxt.config.ts]
+export default defineNuxtConfig({ app: { baseURL: "/site-3" } })
+```
+
+```vue [layers/site-3/pages/index.vue]
+<template>
+  <div>Site 3</div>
+</template>
+```
+
+```bash [.env]
+VITE_NUXT_LAYER=site-1
+```
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  extends: ["./layers/" + import.meta.env.VITE_NUXT_LAYER]
+})
+```
+
+::
+
+In the `.env` file, there is a parameter responsible for the current site, for example, `VITE_NUXT_LAYER=site-1`. Next, in `nuxt.config.ts`, the path to the required layer is formed dynamically.
+
+After this, each developer specifies the site name they need and develops exclusively within one layer without affecting the work of others.
 
 ## Conclusion
 
-Using Layers in Nuxt 3 significantly improves the structure and manageability of large projects. Separating into layers helps avoid unnecessary dependencies and simplifies work on individual parts of the application.
+Using Layers in Nuxt 3 significantly improves the structure and manageability of large projects. Separation into layers helps avoid unnecessary dependencies and facilitates work on individual parts of the application.
 
-**Useful links**
+**Useful Links**
 
-[Layers Nuxt](https://nuxt.com/docs/getting-started/layers) documentation
+[Nuxt Layers](https://nuxt.com/docs/getting-started/layers) documentation

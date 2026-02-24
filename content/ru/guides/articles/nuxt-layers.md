@@ -30,67 +30,109 @@ tags:
 
 ### Структура проекта
 
-```
-├──layers/
-|   ├──base/
-│   |   ├── assets/
-│   |   |   ├── fonts/
-│   |   |   └── styles/
-│   |   ├── components/
-│   |   ├── composables/
-│   |   ├── pages/
-│   |   ├── stores/
-│   |   ├── utils/
-│   |   └── nuxt.config.ts
-|   ├──chat/
-│   |   ├── components/
-│   |   ├── composables/
-│   |   ├── pages/
-│   |   ├── stores/
-│   |   └── nuxt.config.ts
-|   ├──order/
-│   |   ├── components/
-│   |   ├── pages/
-│   |   └── stores/
-|   ├──ui/
-│   |   ├── components/
-│   |   └── nuxt.config.ts
-|   └──user/
-│       ├── components/
-│       ├── composables/
-│       ├── pages/
-│       ├── stores/
-│       └── nuxt.config.ts
-├── app.vue
-└── nuxt.config.ts
+Ниже — минимальный рабочий пример структуры и корневой конфигурации:
+
+::code-tree{defaultValue="nuxt.config.ts"}
+
+```ts [layers/base/nuxt.config.ts]
+export default defineNuxtConfig({})
 ```
 
-В главном `nuxt.config.ts` файле у меня прописано следующее:
-
-```typescript
-extends: [
-  "./layers/base",
-  "./layers/ui",
-  "./layers/order",
-  "./layers/user",
-  "./layers/chat"
-],
-// Исключительно для удобства при импортировании
-alias: {
-  "@": "./",
-  "@base": "~/layers/base",
-  "@ui": "~/layers/ui",
-  "@order": "~/layers/order",
-  "@user": "~/layers/user",
-  "@chat": "~/layers/chat"
-}
+```css [layers/base/assets/styles/main.css]
+@import "~/assets/css/tokens.css";
 ```
+
+```vue [layers/base/components/BaseHeader.vue]
+<template>
+  <header>Header</header>
+</template>
+```
+
+```ts [layers/base/composables/useSeo.ts]
+export const useSeo = () => useHead({ title: "App" })
+```
+
+```vue [layers/base/pages/index.vue]
+<template>
+  <div>Home</div>
+</template>
+```
+
+```ts [layers/chat/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/chat/pages/index.vue]
+<template>
+  <div>Chat</div>
+</template>
+```
+
+```vue [layers/chat/components/ChatMessage.vue]
+<template>
+  <article>Message</article>
+</template>
+```
+
+```ts [layers/order/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/order/pages/index.vue]
+<template>
+  <div>Orders</div>
+</template>
+```
+
+```ts [layers/ui/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/ui/components/BaseButton.vue]
+<template>
+  <button>Button</button>
+</template>
+```
+
+```ts [layers/user/nuxt.config.ts]
+export default defineNuxtConfig({})
+```
+
+```vue [layers/user/pages/profile.vue]
+<template>
+  <div>Profile</div>
+</template>
+```
+
+```vue [app.vue]
+<template>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+</template>
+```
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  extends: ["./layers/base", "./layers/ui", "./layers/order", "./layers/user", "./layers/chat"],
+  alias: {
+    "@": "./",
+    "@base": "~/layers/base",
+    "@ui": "~/layers/ui",
+    "@order": "~/layers/order",
+    "@user": "~/layers/user",
+    "@chat": "~/layers/chat"
+  }
+})
+```
+
+::
 
 ## Проблема с которой я столкнулся
 
 Если в двух разных слоях есть компонент с одинаковым названием, то в автоимпорт попадет только один. Это создаёт опасность случайно назвать компонент точно так же, как в другом слое, и не понять, почему всё работает неправильно. В попытках найти решение проблемы я решил отключить автоимпорт во всех слоях, но чтобы не терять преимущество от использования автоимпорта, я сделал в каждом слое внутри папки `components` папку `global`. Из неё все компоненты доступны для автоимпорта по всему приложению, а компоненты **вне** этой папки необходимо импортировать напрямую. Чтобы реализовать такую логику в каждом внутреннем `nuxt.config.ts` нужно прописать следующее:
 
-```typescript
+```ts [layers/base/nuxt.config.ts]
 components: [
   {
     path: "~/layers/base/components/global",
@@ -105,21 +147,61 @@ components: [
 Перед нашей командой стояла задача сделать несколько сайтов, которые бы обращались к одному API, имели бы общие компоненты, композаблы и утилиты. Реализовать подобное решили через Layers, где каждый слой - отдельный сайт.  
 Структура следующая:
 
-```
-├── composables/
-├── components/
-├── services/
-├── layers/
-│   ├── site-1/
-│   ├── site-2/
-│   └── site-3/
+::code-tree{defaultValue="nuxt.config.ts"}
+
+```ts [composables/useApi.ts]
+export const useApi = () => $fetch
 ```
 
-В `.env` файле есть параметр, отвечающий за текущий сайт, например `VITE_NUXT_LAYER=site-1`. Он нужен для того чтобы в `nuxt.config.ts` прописать путь к необходимому сайту:
-
-```typescript
-extends: ["./layers/" + import.meta.env.VITE_NUXT_LAYER]
+```vue [components/BaseButton.vue]
+<template>
+  <button>Base button</button>
+</template>
 ```
+
+```ts [layers/site-1/nuxt.config.ts]
+export default defineNuxtConfig({ app: { baseURL: "/site-1" } })
+```
+
+```vue [layers/site-1/pages/index.vue]
+<template>
+  <div>Site 1</div>
+</template>
+```
+
+```ts [layers/site-2/nuxt.config.ts]
+export default defineNuxtConfig({ app: { baseURL: "/site-2" } })
+```
+
+```vue [layers/site-2/pages/index.vue]
+<template>
+  <div>Site 2</div>
+</template>
+```
+
+```ts [layers/site-3/nuxt.config.ts]
+export default defineNuxtConfig({ app: { baseURL: "/site-3" } })
+```
+
+```vue [layers/site-3/pages/index.vue]
+<template>
+  <div>Site 3</div>
+</template>
+```
+
+```bash [.env]
+VITE_NUXT_LAYER=site-1
+```
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  extends: ["./layers/" + import.meta.env.VITE_NUXT_LAYER]
+})
+```
+
+::
+
+В `.env` файле есть параметр, отвечающий за текущий сайт, например `VITE_NUXT_LAYER=site-1`. Далее в `nuxt.config.ts` путь к нужному слою формируется динамически.
 
 После этого каждый разработчик прописывает необходимое ему название сайта и занимается разработкой исключительно внутри одного слоя, не затрагивая работу других.
 

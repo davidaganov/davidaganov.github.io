@@ -3,7 +3,6 @@ import HomeLinkCard from "@base/components/pages/home/HomeLinkCard.vue"
 import HomeLinksEmpty from "@base/components/pages/home/HomeLinksEmpty.vue"
 import { VIEW_MODE } from "@base/types/enums"
 import type { Link } from "@base/types/links"
-import UiTabs from "@ui/components/UiTabs.vue"
 
 const { t, locale } = useI18n()
 const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
@@ -16,12 +15,10 @@ const { links, error } = useLinksGistClient()
 const viewModeItems = computed(() => [
   {
     value: VIEW_MODE.PROFESSIONAL,
-    label: t("pages.home.tabWork"),
     icon: "i-lucide-briefcase"
   },
   {
     value: VIEW_MODE.PERSONAL,
-    label: t("pages.home.tabLife"),
     icon: "i-lucide-user"
   }
 ])
@@ -81,10 +78,15 @@ onUnmounted(() => {
           <h2 class="text-2xl font-semibold tracking-tight text-white">
             {{ $t("layout.navigation.menu.contacts") }}
           </h2>
-          <UiTabs
+          <UTabs
             v-model="mode"
-            hide-label
             :items="viewModeItems"
+            :ui="{
+              list: 'rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur-md',
+              trigger:
+                'rounded-full px-4 py-2 text-sm font-medium data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white',
+              indicator: 'rounded-[18px] bg-white/10'
+            }"
           />
         </div>
       </div>

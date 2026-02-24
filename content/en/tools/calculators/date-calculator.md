@@ -1,16 +1,20 @@
 ---
 title: Date Calculator
-description: Quickly calculate the difference between dates or get a date N days/weeks/months/years from now.
+description: Quickly calculate the difference between dates or get a date after N days/weeks/months/years.
 icon: i-lucide-calendar-days
 dependencies: ["@nuxt/ui", "@internationalized/date"]
+tags:
+  - Calculators
+  - Date
+  - Nuxt UI
 ---
 
 # Date Calculator
 
 ## Features
 
-- **Date difference**: days, working days, weeks, months, years
-- **Date calculation**: get a date N days/weeks/months/years forward or backward
+- **Difference between dates**: days, business days, weeks, months, years
+- **Date calculation**: get a date after N days/weeks/months/years forward or backward
 
 ::tool-playground
 #preview

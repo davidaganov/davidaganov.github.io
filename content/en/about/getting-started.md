@@ -1,30 +1,34 @@
 ---
-title: About Me
+title: About me
 description: Briefly about me and what I do.
 ---
 
 # Introduction
 
-## About Me
+Hi! I'm **David Aganov**, a frontend developer. I build fast, scalable, and user-friendly web applications for E-commerce and B2B. My focus is on clean layout, strong typing, and thoughtful architecture.
 
-Hi! I am **David Aganov**, a frontend developer. I build web applications that are a pleasure to use: from neat layouts and components to well-thought-out logic, architecture, and performance.
+---
 
-## My Experience
+## My Experience and Stack
 
-I have 5 years of experience in frontend development and 1.5 years in backend development. I dive into tasks quickly and always deliver results.
+I have 5 years in commercial frontend development and 1.5 years in backend. My core toolset: **Vue 3, Nuxt 3 / 4, TypeScript, and Tailwind**.
 
-- I value clean code, strict typing, and routine automation
-- I aim for long-term and productive cooperation
+I'm used to working with a high degree of independence: I can dive into unfamiliar code, design architecture from scratch, and bring a complex feature to production.
 
-## What You Can Find Here
+- I value clean code and routine automation;
+- I am focused on long-term and productive collaboration.
 
-This portfolio is a place where I collect my work and notes:
+---
 
-- projects (personal projects, open source)
-- my tech stack and development approach
-- contacts and links
+## What you can find here
 
-If you want to quickly understand what I do, you can start with the projects. If you are more interested in "how I think and work," take a look at the section with the stack, articles, and notes.
+This portfolio is organized as a knowledge base, similar to documentation:
+
+- **[Projects](/docs/about/projects):** personal products and open-source.
+- **[Articles](/docs/about/articles):** my articles and notes from **Habr** and beyond.
+- **[Tools](/docs/tools):** useful tools and small utilities I've created for myself.
+
+**Where to start?** If you care about practical results, head over to the **[projects](/docs/about/projects)** section. If you're interested in how I think and write code, take a look at the **[articles](/docs/about/articles)**.
 
 <p align="center">
   <a href="https://github.com/davidaganov"><img height="20" src="https://img.shields.io/github/followers/davidaganov?label=GitHub&style=social"></a>

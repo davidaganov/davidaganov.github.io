@@ -74,8 +74,8 @@ onMounted(() => {
         <USwitch
           v-model="animationEnabled"
           size="sm"
-          :aria-label="$t('home.disableAnimation')"
-          :title="$t('home.disableAnimation')"
+          :aria-label="$t('pages.home.disableAnimation')"
+          :title="$t('pages.home.disableAnimation')"
           :ui="{
             base: 'bg-white/10 border border-white/20',
             thumb: 'bg-white'

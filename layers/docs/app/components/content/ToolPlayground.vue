@@ -11,19 +11,22 @@ const props = withDefaults(
 )
 
 const slots = useSlots()
+const { t } = useI18n()
 
 const hasTitleSlot = computed(() => Boolean(slots.title))
 const hasPreviewSlot = computed(() => Boolean(slots.preview))
 const hasCodeSlot = computed(() => Boolean(slots.code))
 
-const tabsUi = {
-  root: "gap-3",
-  list: "inline-flex w-fit self-start rounded-xl border border-white/10 bg-white/5 p-1",
-  indicator: "rounded-lg bg-primary/20",
-  trigger:
-    "rounded-lg px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:text-white data-[state=active]:bg-primary/15 data-[state=active]:text-primary",
-  content: "mt-2"
-}
+const tabItems = computed(() => [
+  {
+    label: t("components.playground.preview"),
+    slot: "preview"
+  },
+  {
+    label: t("components.playground.code"),
+    slot: "code"
+  }
+])
 </script>
 
 <template>
@@ -49,9 +52,9 @@ const tabsUi = {
       <ProseTabs
         default-value="0"
         class="w-full"
-        :ui="tabsUi"
+        :items="tabItems"
       >
-        <ProseTabsItem :label="$t('components.playground.preview')">
+        <template #preview>
           <div class="mt-2">
             <slot name="preview">
               <div
@@ -62,9 +65,9 @@ const tabsUi = {
               </div>
             </slot>
           </div>
-        </ProseTabsItem>
+        </template>
 
-        <ProseTabsItem :label="$t('components.playground.code')">
+        <template #code>
           <div class="mt-2">
             <slot name="code" />
             <div
@@ -74,7 +77,7 @@ const tabsUi = {
               {{ $t("components.playground.codeEmpty") }}
             </div>
           </div>
-        </ProseTabsItem>
+        </template>
       </ProseTabs>
     </div>
   </div>

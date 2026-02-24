@@ -1,3 +1,5 @@
+import { getQueryPrefix } from "@docs/utils/content"
+
 export interface DocsArchiveEntry {
   path: string
   content: string
@@ -16,6 +18,14 @@ const guideArchiveSources = import.meta.glob("../content/guides/**/*", {
   import: "default",
   eager: true
 }) as Record<string, string>
+
+const docsArchiveSources = import.meta.glob("../content/**/*", {
+  query: "?raw",
+  import: "default",
+  eager: true
+}) as Record<string, string>
+
+const docsArchivePaths = Object.keys(docsArchiveSources)
 
 const normalizeSegment = (segment: unknown): string => String(segment || "").trim()
 
@@ -65,6 +75,21 @@ const resolveGuidePrefix = (slugSegments: string[]): string => {
   }
 
   return ""
+}
+
+const toArchivePrefix = (pathPrefix: string, relativePath: string): string => {
+  const normalizedPrefix = getQueryPrefix(pathPrefix).replace(/^\/+|\/+$/g, "")
+  const normalizedRelativePath = String(relativePath || "").replace(/^\/+|\/+$/g, "")
+
+  if (!normalizedPrefix || !normalizedRelativePath) return ""
+  return `../content/${normalizedPrefix}/${normalizedRelativePath}/`
+}
+
+export const hasArchiveForPath = (pathPrefix: string, relativePath: string): boolean => {
+  const archivePrefix = toArchivePrefix(pathPrefix, relativePath)
+  if (!archivePrefix) return false
+
+  return docsArchivePaths.some((path) => path.startsWith(archivePrefix))
 }
 
 export const useDocsArchive = () => {

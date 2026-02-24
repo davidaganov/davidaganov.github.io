@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, useTemplateRef } from "vue"
+import { onMounted, onUnmounted, ref, useTemplateRef, watch } from "vue"
 
 type CanvasStrokeStyle = string | CanvasGradient | CanvasPattern
 

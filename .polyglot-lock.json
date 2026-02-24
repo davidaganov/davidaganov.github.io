@@ -120,12 +120,13 @@
   "md": {
     "__frozen": [],
     "values": {
-      "about/getting-started.md": "c300025aa3ddc15d6a0aaac175a7a8e2c4b357a0bdb87b4c8dc6593cebee14bb",
+      "about/getting-started.md": "31e3a5116becc7f845e638fe9cde86023324458196298aba2da9a64050a11335",
       "about/projects/polyglot-keeper.md": "24b6927312d036f27ec25004343261e06cfd3236245af7a97f3733a1ce8990d1",
-      "guides/articles/nuxt-layers.md": "e65953f12093d9cf5eee73fcf77e30620f392a643a8fe9a8284f069ebe226c09",
-      "guides/articles/services.md": "9576f0351a1bcc4e2fc75b1cd037da1a0da55fbd1d928c06366758905efc7f64",
+      "guides/articles/nuxt-layers.md": "4a976ddcd7a214bf28b5ab62f610013a5cfbef5b02d3a88d5aa6930f640916dd",
+      "guides/articles/services.md": "d9d508cc34b0cfb1067577ba0a5629b88027877045632cb2359ffea2be2fa436",
       "guides/articles/vibecoding.md": "a5cf37ef045c6a1c2781e7957571d64729dd33a66515ebe740cd04bfc92667fc",
-      "tools/calculators/date-calculator.md": "875548b8ab2827c39d59358103d21a97e35a69faaa1cc3bacd88e85db9a6b36c"
+      "tools/calculators/date-calculator.md": "28e72a0621b9813068c888aee9d06d819bc135db10db238cf62e343ee2650d61",
+      "tools/calculators/time-calculator.md": "ca33cce97668ee41320e882c7f7c004f9b3d56a41de46e6629ced5a7ae67d050"
     }
   }
 }

@@ -127,8 +127,8 @@ onMounted(async () => {
         size="sm"
         tabindex="-1"
         icon="i-lucide-download"
-        :aria-label="$t('tools.sourceCode.download')"
-        :title="$t('tools.sourceCode.download')"
+        :aria-label="$t('global.actions.download')"
+        :title="$t('global.actions.download')"
         @click="downloadSource"
       />
       <UButton
@@ -137,8 +137,8 @@ onMounted(async () => {
         size="sm"
         tabindex="-1"
         :icon="copied ? 'i-lucide-check' : 'i-lucide-copy'"
-        :aria-label="copied ? $t('tools.sourceCode.copied') : $t('tools.sourceCode.copy')"
-        :title="copied ? $t('tools.sourceCode.copied') : $t('tools.sourceCode.copy')"
+        :aria-label="copied ? $t('global.actions.copied') : $t('global.actions.copy')"
+        :title="copied ? $t('global.actions.copied') : $t('global.actions.copy')"
         @click="copy(source)"
       />
       <UButton
@@ -147,21 +147,21 @@ onMounted(async () => {
         size="sm"
         tabindex="-1"
         :icon="expanded ? 'i-lucide-minimize-2' : 'i-lucide-maximize-2'"
-        :aria-label="expanded ? $t('tools.sourceCode.collapse') : $t('tools.sourceCode.expand')"
-        :title="expanded ? $t('tools.sourceCode.collapse') : $t('tools.sourceCode.expand')"
+        :aria-label="expanded ? $t('global.actions.collapse') : $t('global.actions.expand')"
+        :title="expanded ? $t('global.actions.collapse') : $t('global.actions.expand')"
         @click="expanded = !expanded"
       />
     </div>
 
     <div
       class="border-muted bg-muted relative overflow-hidden rounded-md border px-4 py-3"
-      :class="{ 'max-h-96': !expanded }"
+      :class="{ 'max-h-48': !expanded }"
     >
       <div
         v-if="highlightedCode"
         v-html="highlightedCode"
         class="tool-source-renderer"
-        :class="{ 'max-h-96': !expanded }"
+        :class="{ 'max-h-48': !expanded }"
       />
 
       <div

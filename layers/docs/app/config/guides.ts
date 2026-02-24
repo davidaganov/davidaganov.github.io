@@ -8,6 +8,7 @@ export const GUIDES_SIDEBAR_ITEMS: SidebarItem[] = [
     indexPage: true,
     pageType: "article",
     titleKey: "layout.navigation.menu.articles",
+    subtitleKey: "pages.articles.indexNote",
     emptyKey: "pages.articles.empty",
     showSourceTabs: true,
     icon: "i-lucide-book-open",

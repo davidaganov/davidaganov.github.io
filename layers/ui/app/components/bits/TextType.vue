@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, computed, useTemplateRef } from "vue"
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue"
 
 const props = withDefaults(
   defineProps<{

@@ -92,6 +92,17 @@ const tagClass = (tag: string) =>
           </div>
 
           <div
+            v-if="article.meta?.hasArchive"
+            class="flex items-center gap-1.5 text-xs text-emerald-300"
+          >
+            <UIcon
+              class="size-3.5"
+              name="i-lucide-file-archive"
+            />
+            <span>ZIP</span>
+          </div>
+
+          <div
             v-if="tags.length"
             class="flex flex-wrap gap-1.5 sm:ml-auto"
           >

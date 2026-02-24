@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
-import UiTabs from "@ui/components/UiTabs.vue"
 
 const props = withDefaults(
   defineProps<{
@@ -11,10 +10,12 @@ const props = withDefaults(
     selectedTags: string[]
     hasActiveFilters: boolean
     titleKey?: string
+    subtitleKey?: string
     showSourceTabs?: boolean
   }>(),
   {
     titleKey: "layout.navigation.menu.articles",
+    subtitleKey: "",
     showSourceTabs: true
   }
 )
@@ -61,16 +62,27 @@ const handleReset = () => {
 
 <template>
   <div class="mb-4 flex flex-col gap-3 sm:mb-6">
-    <div class="flex w-full items-center justify-between gap-4">
+    <div class="grid w-full items-center justify-between gap-x-4 gap-y-2 lg:grid-cols-[1fr_auto]">
       <h1 class="text-2xl font-semibold tracking-tight text-white">
         {{ $t(props.titleKey) }}
       </h1>
+      <p
+        v-if="props.subtitleKey"
+        class="text-muted row-start-2 mt-2 text-sm md:max-w-11/12 lg:col-span-2"
+      >
+        {{ $t(props.subtitleKey) }}
+      </p>
 
-      <UiTabs
+      <UTabs
         v-if="props.showSourceTabs"
         v-model="sourceFilterModel"
-        variant="secondary"
         :items="sourceFilterTabs"
+        :ui="{
+          list: 'rounded-lg border border-white/8 bg-white/2 py-0.5 px-1',
+          trigger:
+            'rounded-md px-3 py-1.5 text-xs font-medium data-[state=active]:text-white data-[state=inactive]:text-muted data-[state=inactive]:hover:text-white',
+          indicator: 'rounded-md bg-white/8'
+        }"
       />
     </div>
 

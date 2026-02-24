@@ -2,9 +2,16 @@
 import type { Collections } from "@nuxt/content"
 import BaseIndexCard from "@docs/components/base/BaseIndexCard.vue"
 import BaseIndexFilters from "@docs/components/base/BaseIndexFilters.vue"
+import { hasArchiveForPath } from "@docs/composables/useDocsArchive"
 import type { ArticleMeta } from "@docs/types/article"
 import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
+import {
+  buildFiltersQuery,
+  parseSortFromQuery,
+  parseSourceFromQuery,
+  parseTagsFromQuery
+} from "@docs/utils/indexFiltersQuery"
 
 interface IndexPageItem {
   title: string
@@ -16,22 +23,27 @@ interface IndexPageItem {
 const props = withDefaults(
   defineProps<{
     titleKey?: string
+    subtitleKey?: string
     emptyKey?: string
     pathPrefix: string
     showSourceTabs?: boolean
   }>(),
   {
     titleKey: "",
+    subtitleKey: "",
     emptyKey: "",
     showSourceTabs: false
   }
 )
 
 const { locale } = useI18n()
+const route = useRoute()
+const router = useRouter()
 
 const sortOrder = ref<SORT_ORDER>(SORT_ORDER.DESC)
 const sourceFilter = ref<SOURCE_FILTER>(SOURCE_FILTER.ALL)
 const selectedTags = ref<string[]>([])
+const isSyncingFromQuery = ref(false)
 
 const collection = computed(() => `content_${locale.value}` as keyof Collections)
 
@@ -46,11 +58,18 @@ const { data: items } = useAsyncData<IndexPageItem[]>(
 
     return raw.map((entry) => {
       const relativePath = getRelativePath(String(entry.path), queryPrefix)
+      const entryMeta = (entry.meta as ArticleMeta | undefined) || undefined
+      const hasArchive =
+        hasArchiveForPath(props.pathPrefix, relativePath) || Boolean(entryMeta?.hasArchive)
+
       return {
         title: String(entry.title || ""),
         description: String(entry.description || ""),
         path: `${props.pathPrefix}${relativePath}`,
-        meta: entry.meta as ArticleMeta | undefined
+        meta: {
+          ...(entryMeta || {}),
+          hasArchive
+        }
       }
     })
   },
@@ -128,6 +147,67 @@ const resetFilters = () => {
   sourceFilter.value = SOURCE_FILTER.ALL
   sortOrder.value = SORT_ORDER.DESC
 }
+
+const syncStateFromQuery = () => {
+  isSyncingFromQuery.value = true
+
+  selectedTags.value = parseTagsFromQuery(route.query.tags)
+  sortOrder.value = parseSortFromQuery(route.query.sort)
+  sourceFilter.value = showSourceTabs.value
+    ? parseSourceFromQuery(route.query.source)
+    : SOURCE_FILTER.ALL
+
+  isSyncingFromQuery.value = false
+}
+
+const normalizeQueryValue = (value: unknown): string => {
+  if (Array.isArray(value)) return String(value[0] || "")
+  return String(value || "")
+}
+
+watch(
+  () => [route.query.tags, route.query.sort, route.query.source, showSourceTabs.value],
+  () => {
+    syncStateFromQuery()
+  },
+  { immediate: true }
+)
+
+watch(
+  [selectedTags, sortOrder, sourceFilter, showSourceTabs],
+  async () => {
+    if (isSyncingFromQuery.value) return
+
+    const nextFiltersQuery = buildFiltersQuery({
+      tags: selectedTags.value,
+      sortOrder: sortOrder.value,
+      sourceFilter: sourceFilter.value,
+      includeSource: showSourceTabs.value
+    })
+
+    const currentTags = normalizeQueryValue(route.query.tags)
+    const currentSort = normalizeQueryValue(route.query.sort)
+    const currentSource = normalizeQueryValue(route.query.source)
+
+    const nextTags = nextFiltersQuery.tags || ""
+    const nextSort = nextFiltersQuery.sort || ""
+    const nextSource = nextFiltersQuery.source || ""
+
+    if (currentTags === nextTags && currentSort === nextSort && currentSource === nextSource) {
+      return
+    }
+
+    await router.replace({
+      query: {
+        ...route.query,
+        tags: nextFiltersQuery.tags,
+        sort: nextFiltersQuery.sort,
+        source: nextFiltersQuery.source
+      }
+    })
+  },
+  { deep: true }
+)
 </script>
 
 <template>
@@ -135,6 +215,7 @@ const resetFilters = () => {
     <BaseIndexFilters
       v-model:source-filter="sourceFilter"
       :title-key="props.titleKey"
+      :subtitle-key="props.subtitleKey"
       :show-source-tabs="showSourceTabs"
       :sort-order="sortOrder"
       :sort-icon="sortIcon"

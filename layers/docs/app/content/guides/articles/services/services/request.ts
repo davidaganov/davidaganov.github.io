@@ -1,4 +1,4 @@
-import type { ApiRequestOptions, ApiError } from "../types"
+import type { ApiError, ApiRequestOptions } from "../types"
 
 const API_CONFIG = {
   timeout: 10000

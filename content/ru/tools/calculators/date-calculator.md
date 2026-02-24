@@ -3,6 +3,10 @@ title: Калькулятор дат
 description: Быстро посчитать разницу между датами или получить дату через N дней/недель/месяцев/лет.
 icon: i-lucide-calendar-days
 dependencies: ["@nuxt/ui", "@internationalized/date"]
+tags:
+  - Калькуляторы
+  - Дата
+  - Nuxt UI
 ---
 
 # Калькулятор дат

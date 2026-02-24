@@ -31,18 +31,75 @@ tags:
 
 ### Базовая схема директорий
 
-```bash
-/services/
-├── request.ts
-├── client.ts
-└── requests/
-    ├── products/
-    │   ├── routes.ts
-    │   └── index.ts
-    └── users/
-        ├── routes.ts
-        └── index.ts
+::code-tree{defaultValue="services/client.ts"}
+
+```ts [services/request.ts]
+export const request = {
+  get: <T>(url: string, options?: Omit<ApiRequestOptions, "method">) =>
+    apiRequest<T>(url, { ...options, method: "GET" }),
+
+  post: <T>(url: string, body?: unknown, options?: Omit<ApiRequestOptions, "method" | "body">) =>
+    apiRequest<T>(url, { ...options, method: "POST", body }),
+
+  put: <T>(url: string, body?: unknown, options?: Omit<ApiRequestOptions, "method" | "body">) =>
+    apiRequest<T>(url, { ...options, method: "PUT", body })
+}
 ```
+
+```ts [services/requests/products/routes.ts]
+export const routes = {
+  list: () => `/products`,
+  byId: (id: number) => `/products/${id}`
+}
+```
+
+```ts [services/requests/products/index.ts]
+import { request } from "@/services/request"
+import { routes } from "./routes"
+import type { Product } from "./types"
+
+export const getProducts = async (): Promise<Product[]> => {
+  try {
+    return await request.get<Product[]>(routes.list())
+  } catch {
+    return []
+  }
+}
+
+export const getProduct = async (id: number): Promise<Product | null> => {
+  try {
+    return await request.get<Product>(routes.byId(id))
+  } catch {
+    return null
+  }
+}
+```
+
+```ts [services/requests/users/routes.ts]
+export const routes = {
+  me: () => `/users/me`
+}
+```
+
+```ts [services/requests/users/index.ts]
+import { request } from "@/services/request"
+import { routes } from "./routes"
+import type { User } from "./types"
+
+export const getCurrentUser = () => request.get<User>(routes.me())
+```
+
+```ts [services/client.ts]
+import * as products from "@/services/requests/products/index"
+import * as users from "@/services/requests/users/index"
+
+export const ApiClient = {
+  products,
+  users
+}
+```
+
+::
 
 Каждый элемент этой структуры решает строго одну задачу:
 
@@ -58,8 +115,7 @@ tags:
 
 Пример реализации:
 
-```ts
-// services/request.ts
+```ts [services/request.ts]
 export const request = {
   get: <T>(url: string, options?: Omit<ApiRequestOptions, "method">) =>
     apiRequest<T>(url, { ...options, method: "GET" }),
@@ -76,8 +132,7 @@ export const request = {
 
 Каждый источник данных живет в своей папке. Например, продукты лежат в `products/`. Мы разделяем сами запросы и пути к ним, чтобы URL не размазывались по коду.
 
-```ts
-// products/routes.ts
+```ts [services/requests/products/routes.ts]
 export const routes = {
   list: () => `/products`,
   byId: (id: number) => `/products/${id}`
@@ -86,8 +141,7 @@ export const routes = {
 
 В `index.ts` мы используем эти роуты и наш базовый транспорт, оборачивая всё в строгие типы:
 
-```ts
-// products/index.ts
+```ts [services/requests/products/index.ts]
 import { request } from "@/services/request"
 import { routes } from "./routes"
 import type { Product } from "./types"
@@ -114,8 +168,7 @@ export const getProduct = async (id: number): Promise<Product | null> => {
 
 Когда модулей становится много, импортировать каждый по отдельности неудобно. Я собираю их в общий клиент:
 
-```ts
-// services/client.ts
+```ts [services/client.ts]
 import * as products from "@/services/requests/products/index"
 import * as users from "@/services/requests/users/index"
 
@@ -133,7 +186,7 @@ export const ApiClient = {
 
 Посмотрите, насколько чище становится код самого компонента. Он больше не знает про URL, headers, токены и fetch-детали.
 
-```vue
+```vue [app/components/ProductList.vue]
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import { ApiClient } from "@/services/client"

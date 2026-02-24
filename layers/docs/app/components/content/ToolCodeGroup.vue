@@ -53,14 +53,13 @@ const normalizedItems = computed<ToolCodeGroupItem[]>(() => {
   return parseItemsString(raw)
 })
 
-const tabsUi = {
-  root: "!mt-0 !mb-5 gap-2",
-  list: "rounded-xl mr-auto border border-white/10 bg-white/5 p-1",
-  indicator: "rounded-lg bg-primary/20",
-  trigger:
-    "rounded-lg px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:text-white data-[state=active]:bg-primary/15 data-[state=active]:text-primary",
-  content: "mt-2"
-}
+const tabItems = computed(() =>
+  normalizedItems.value.map((item, index) => ({
+    label: item.title,
+    value: String(index),
+    slot: `code-${index}`
+  }))
+)
 </script>
 
 <template>
@@ -68,17 +67,17 @@ const tabsUi = {
     v-if="normalizedItems.length"
     default-value="0"
     class="w-full"
-    :ui="tabsUi"
+    :items="tabItems"
   >
-    <ProseTabsItem
+    <template
       v-for="(item, index) in normalizedItems"
+      #[`code-${index}`]
       :key="`${item.file}-${index}`"
-      :label="item.title"
     >
       <ToolSourceCode
         :file="item.file"
         :lang="item.lang || 'vue'"
       />
-    </ProseTabsItem>
+    </template>
   </ProseTabs>
 </template>

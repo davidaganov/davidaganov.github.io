@@ -4,6 +4,7 @@ export interface ArticleMeta {
   publishedAt?: string
   readingTime?: string
   tags?: string[]
+  hasArchive?: boolean
 }
 
 export interface ArticleItem {
