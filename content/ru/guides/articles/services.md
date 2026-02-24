@@ -1,6 +1,6 @@
 ---
 title: Чистый API-клиент
-description: How I use AI in my workflow and why I don’t see it replacing developers.
+description: Архитектура request-слоя, которая избавит компоненты от дублирования кода.
 icon: i-lucide-book-open
 publishedAt: 2026-02-20
 readingTime: 5 мин

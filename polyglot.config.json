@@ -3,7 +3,7 @@
   "json": {
     "provider": "gemini",
     "model": "gemini-flash-latest",
-    "envVarName": "VITE_POLYGLOT_API_KEY",
+    "envVarName": "NUXT_POLYGLOT_API_KEY",
     "localeFormat": "short",
     "locales": ["EN", "RU"],
     "defaultLocale": "RU",
@@ -17,6 +17,6 @@
     "trackChanges": "carefully",
     "provider": "gemini",
     "model": "gemini-flash-latest",
-    "envVarName": "VITE_POLYGLOT_MD_API_KEY"
+    "envVarName": "NUXT_POLYGLOT_MD_API_KEY"
   }
 }

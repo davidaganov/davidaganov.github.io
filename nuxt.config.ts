@@ -1,66 +1,19 @@
-import { readdirSync } from "node:fs"
-import { join } from "node:path"
 import { fileURLToPath } from "node:url"
-
-const CONTENT_DIR = fileURLToPath(new URL("./content", import.meta.url))
-
-const collectMarkdownPaths = (directory: string): string[] => {
-  const entries = readdirSync(directory, { withFileTypes: true })
-
-  return entries.flatMap((entry) => {
-    const fullPath = join(directory, entry.name)
-
-    if (entry.isDirectory()) {
-      return collectMarkdownPaths(fullPath)
-    }
-
-    if (!entry.isFile() || !entry.name.endsWith(".md")) {
-      return []
-    }
-
-    return [fullPath]
-  })
-}
-
-const buildOgPrerenderRoutes = (): string[] => {
-  const localeDirs = readdirSync(CONTENT_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-
-  const routes = new Set<string>()
-
-  for (const locale of localeDirs) {
-    const localeDir = join(CONTENT_DIR, locale)
-    const markdownPaths = collectMarkdownPaths(localeDir)
-
-    for (const filePath of markdownPaths) {
-      const relative = filePath
-        .slice(localeDir.length)
-        .replaceAll("\\", "/")
-        .replace(/^\/+/, "")
-        .replace(/\.md$/, "")
-        .replace(/\/index$/i, "")
-
-      if (!relative) continue
-
-      const segments = relative.split("/").filter(Boolean)
-      if (segments.length < 2) continue
-
-      for (let i = 2; i <= segments.length; i++) {
-        const partialPath = segments.slice(0, i).join("/")
-        routes.add(`/og/${locale}/${partialPath}.png`)
-      }
-    }
-  }
-
-  return [...routes].sort((a, b) => a.localeCompare(b))
-}
-
-const ogPrerenderRoutes = buildOgPrerenderRoutes()
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxt/ui", "@nuxtjs/i18n", "@nuxt/content", "@pinia/nuxt", "@vueuse/motion/nuxt"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/i18n",
+    "@nuxt/content",
+    "@pinia/nuxt",
+    "@vueuse/motion/nuxt",
+    "nuxt-og-image"
+  ],
+
+  ogImage: {
+    debug: true
+  },
 
   extends: ["./layers/ui", "./layers/api", "./layers/docs", "./layers/base"],
 
@@ -160,7 +113,7 @@ export default defineNuxtConfig({
   nitro: {
     preset: "github-pages",
     prerender: {
-      routes: ["/", "/sitemap.xml", ...ogPrerenderRoutes],
+      routes: ["/", "/sitemap.xml"],
       crawlLinks: true,
       failOnError: false
     }

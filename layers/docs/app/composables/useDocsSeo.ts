@@ -88,41 +88,55 @@ export const useDocsSeo = ({
     return items
   })
 
-  const generatedOgImageUrl = computed(() => {
-    const encodedSegments = [
-      route.params.section,
-      ...(Array.isArray(route.params.slug) ? route.params.slug : [route.params.slug])
-    ]
-      .map((item) => encodeURIComponent(String(item || "").trim()))
-      .filter(Boolean)
+  const generatedOgImagePath = computed(() => {
+    const pagePath = route.path || "/"
+    const normalizedPagePath = pagePath.startsWith("/") ? pagePath : `/${pagePath}`
+    const mode = import.meta.prerender ? "static" : "image"
 
-    const path = encodedSegments.join("/")
+    return `/__og-image__/${mode}${normalizedPagePath}/og.png`
+  })
 
-    const titleText = seoTitle.value || ""
-    const descriptionText = seoDescription.value || ""
-    const sectionText = section.value ? t(section.value.labelKey) : "Docs"
-    const collectionText = parentCollectionItem.value
-      ? t(parentCollectionItem.value.label)
-      : collectionItem.value
-        ? t(collectionItem.value.label)
-        : ""
-    const breadcrumbText = breadcrumbs.value.map((b) => b.label).join(" • ")
+  const generatedOgImageUrl = computed(() => `${siteUrl.value}${generatedOgImagePath.value}`)
 
-    const title = encodeURIComponent(titleText)
-    const description = encodeURIComponent(descriptionText)
-    const sectionLabel = encodeURIComponent(sectionText)
-    const collectionLabel = encodeURIComponent(collectionText)
-    const articleLabel = encodeURIComponent(titleText)
-    const breadcrumb = encodeURIComponent(breadcrumbText)
-
-    return `${siteUrl.value}/og/${encodeURIComponent(locale.value)}/${path}.png?title=${title}&description=${description}&section=${sectionLabel}&collection=${collectionLabel}&article=${articleLabel}&breadcrumb=${breadcrumb}`
+  const seoImageOverride = computed(() => {
+    return getString(pageMeta.value.ogImage) || getString(pageMeta.value.image)
   })
 
   const seoImage = computed(() => {
-    const fromSeo = getString(pageMeta.value.ogImage) || getString(pageMeta.value.image)
-    if (fromSeo) return fromSeo
+    if (seoImageOverride.value) return seoImageOverride.value
     return generatedOgImageUrl.value
   })
+
+  const ogSectionLabel = computed(() => {
+    if (section.value) return t(section.value.labelKey)
+    return locale.value === "ru" ? "Документация" : "Documentation"
+  })
+
+  const ogCollectionLabel = computed(() => {
+    if (parentCollectionItem.value) return t(parentCollectionItem.value.label)
+    if (collectionItem.value) return t(collectionItem.value.label)
+    return ""
+  })
+
+  if (seoImageOverride.value) {
+    defineOgImage({
+      url: seoImageOverride.value,
+      alt: seoTitle.value || undefined
+    })
+  } else {
+    defineOgImageComponent("DocsPage", {
+      title:
+        seoTitle.value ||
+        (locale.value === "ru" ? "Документация и заметки" : "Documentation and notes"),
+      description:
+        seoDescription.value ||
+        (locale.value === "ru"
+          ? "Практические материалы, заметки и инструменты из моего портфолио."
+          : "Practical notes, guides, and tools from my portfolio."),
+      section: ogSectionLabel.value,
+      collection: ogCollectionLabel.value
+    })
+  }
 
   const pageRightSidebarType = computed(() => {
     const pt = parentCollectionItem.value?.pageType
