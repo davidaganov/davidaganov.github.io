@@ -25,10 +25,10 @@ I'm used to working with a high degree of independence: I can dive into unfamili
 This portfolio is organized as a knowledge base, similar to documentation:
 
 - **[Projects](/docs/about/projects):** personal products and open-source.
-- **[Articles](/docs/about/articles):** my articles and notes from **Habr** and beyond.
+- **[Articles](/docs/guides/articles):** my articles and notes from **Habr** and beyond.
 - **[Tools](/docs/tools):** useful tools and small utilities I've created for myself.
 
-**Where to start?** If you care about practical results, head over to the **[projects](/docs/about/projects)** section. If you're interested in how I think and write code, take a look at the **[articles](/docs/about/articles)**.
+**Where to start?** If you care about practical results, head over to the **[projects](/docs/about/projects)** section. If you're interested in how I think and write code, take a look at the **[articles](/docs/guides/articles)**.
 
 <p align="center">
   <a href="https://github.com/davidaganov"><img height="20" src="https://img.shields.io/github/followers/davidaganov?label=GitHub&style=social"></a>
