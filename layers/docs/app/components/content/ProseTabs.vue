@@ -15,7 +15,6 @@ const props = withDefaults(
   }>(),
   {
     defaultValue: "0",
-    modelValue: "0",
     items: () => [],
     ui: () => ({})
   }
