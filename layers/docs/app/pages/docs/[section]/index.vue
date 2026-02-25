@@ -27,7 +27,9 @@ const target = computed(() => {
   return getFirstPathForSection(section.value)
 })
 
-await navigateTo(localePath(target.value), { replace: true })
+if (import.meta.server || import.meta.client) {
+  await navigateTo(localePath(target.value), { replace: true })
+}
 
 useSeoMeta({
   title: () => seoTitle.value,

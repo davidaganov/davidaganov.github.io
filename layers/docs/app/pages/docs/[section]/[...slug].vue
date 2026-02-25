@@ -85,6 +85,14 @@ const parentCollectionItem = computed<SidebarCollectionItem | undefined>(() => {
 })
 
 const { data: page } = await usePageContent(docsPath.value)
+
+if (!page.value && !collectionItem.value) {
+  const targetPath = getFirstPathForSection(section.value)
+  if (targetPath && targetPath !== docsPath.value) {
+    await navigateTo(localePath(targetPath), { replace: true })
+  }
+}
+
 const { breadcrumbs, pageType } = useDocsSeo({
   section,
   collectionItem,

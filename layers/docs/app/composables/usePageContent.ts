@@ -5,8 +5,10 @@ export const usePageContent = (path: string) => {
 
   const collection = computed(() => `content_${locale.value}` as keyof Collections)
 
+  const key = computed(() => `content:${collection.value}:${path}`)
+
   return useAsyncData(
-    () => `content:${collection.value}:${path}`,
+    key.value,
     async () => {
       const withoutDocs = path.replace(/^\/docs/, "")
       const withoutSection = path.replace(/^\/docs\/[^/]+/, "")
@@ -19,7 +21,7 @@ export const usePageContent = (path: string) => {
         })
       )
 
-      return found
+      return found ?? null
     },
     {
       watch: [locale]
