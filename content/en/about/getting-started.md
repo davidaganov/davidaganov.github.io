@@ -39,7 +39,7 @@ My [portfolio](/docs) is organized as a knowledge base, similar to documentation
 
 If you have questions or want to get in touch, feel free to reach out:
 
-- **Telegram:** [@davidaganov](https://t.me/davidaganov) ⚡
+- **⚡ Telegram:** [@davidaganov](https://t.me/davidaganov)
 - **Email:** [davidaganov21@gmail.com](mailto:davidaganov21@gmail.com)
 
 <p align="center">

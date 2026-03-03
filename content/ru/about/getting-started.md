@@ -39,7 +39,7 @@ description: Коротко обо мне и о том, чем я занимаю
 
 Если у вас есть вопросы или вы хотите связаться со мной, буду рад пообщаться:
 
-- **Telegram:** [@davidaganov](https://t.me/davidaganov) ⚡
+- **⚡ Telegram:** [@davidaganov](https://t.me/davidaganov)
 - **Email:** [davidaganov21@gmail.com](mailto:davidaganov21@gmail.com)
 
 <p align="center">
