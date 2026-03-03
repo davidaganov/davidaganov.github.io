@@ -70,7 +70,7 @@
   "pages": {
     "home": {
       "badge": "Available for hire",
-      "description": "Frontend Developer — 5 years of commercial experience.",
+      "description": "Frontend Developer — {frontendYears} years of commercial experience.",
       "getStarted": "Get started",
       "disableAnimation": "Disable animation",
       "scrollDown": "Scroll down",

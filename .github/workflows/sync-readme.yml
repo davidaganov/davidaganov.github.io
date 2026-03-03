@@ -3,7 +3,7 @@ name: Sync Profile README
 on:
   push:
     paths:
-      - "content/ru/about/getting-started.md"
+      - "content/en/about/getting-started.md"
     branches:
       - main
 
@@ -16,9 +16,33 @@ jobs:
 
       - name: Process README
         run: |
-          # Robustly remove only the FIRST YAML frontmatter block
-          # and transform relative links to absolute ones
-          awk 'BEGIN {found=0} /^---$/ && found < 2 {found++; next} found >= 2 || found == 0 {print}' content/ru/about/getting-started.md | \
+          # --- Calculate experience years dynamically ---
+          # Same logic as useExperience.ts: ceil to nearest step
+          CURRENT_YEAR=$(date +%Y)
+          CURRENT_MONTH=$(date +%-m)
+          CURRENT_MONTHS=$((CURRENT_YEAR * 12 + CURRENT_MONTH))
+
+          # Frontend: May 2021, step = 1 year (12 months), ceil up
+          FE_START=$((2021 * 12 + 5))
+          FE_DIFF=$((CURRENT_MONTHS - FE_START))
+          FE_YEARS=$(( (FE_DIFF + 11) / 12 ))
+
+          # Backend: January 2025, step = 0.5 year (6 months), ceil up
+          BE_START=$((2025 * 12 + 1))
+          BE_DIFF=$((CURRENT_MONTHS - BE_START))
+          BE_HALF_YEARS=$(( (BE_DIFF + 5) / 6 ))
+          if [ $((BE_HALF_YEARS % 2)) -eq 0 ]; then
+            BE_YEARS="$((BE_HALF_YEARS / 2))"
+          else
+            BE_YEARS="$((BE_HALF_YEARS / 2)).5"
+          fi
+
+          echo "Frontend: ${FE_YEARS} years, Backend: ${BE_YEARS} years"
+
+          # --- Strip YAML frontmatter, substitute MDC components, fix links ---
+          awk 'BEGIN {found=0} /^---$/ && found < 2 {found++; next} found >= 2 || found == 0 {print}' content/en/about/getting-started.md | \
+          sed "s|:ExperienceText{type=\"frontend\"}|${FE_YEARS}|g" | \
+          sed "s|:ExperienceText{type=\"backend\"}|${BE_YEARS}|g" | \
           sed 's|(/docs/|https://aganov.dev/docs/|g' > README.md
 
       - name: Pushes to Profile Repo

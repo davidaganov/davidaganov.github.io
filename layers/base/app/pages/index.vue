@@ -2,9 +2,12 @@
 import HomePage from "@base/components/pages/home/HomePage.vue"
 
 const { t } = useI18n()
+const { frontendYears } = useExperience()
 
 const homeTitle = computed(() => t("global.name"))
-const homeDescription = computed(() => t("pages.home.description"))
+const homeDescription = computed(() =>
+  t("pages.home.description", { frontendYears: frontendYears.value })
+)
 
 definePageMeta({
   layout: "home"

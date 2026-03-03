@@ -70,7 +70,7 @@
   "pages": {
     "home": {
       "badge": "Доступен для найма",
-      "description": "Фронтенд-разработчик — 5 лет коммерческого опыта.",
+      "description": "Фронтенд-разработчик — {frontendYears} лет коммерческого опыта.",
       "getStarted": "Начать",
       "disableAnimation": "Без анимации",
       "scrollDown": "Листай вниз",

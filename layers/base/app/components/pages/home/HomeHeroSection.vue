@@ -3,6 +3,9 @@ import { useMediaQuery } from "@vueuse/core"
 import BaseLight from "@docs/components/base/BaseLight.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 
+const { t } = useI18n()
+const { frontendYears } = useExperience()
+
 const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
 const Squares = defineAsyncComponent(() => import("@ui/components/bits/Squares.vue"))
 const TextType = defineAsyncComponent(() => import("@ui/components/bits/TextType.vue"))
@@ -218,7 +221,7 @@ onMounted(() => {
       />
 
       <p class="max-w-3xl text-lg text-balance text-gray-400 sm:text-xl">
-        {{ $t("pages.home.description") }}
+        {{ $t("pages.home.description", { frontendYears }) }}
       </p>
 
       <div class="mt-10 flex gap-4">
