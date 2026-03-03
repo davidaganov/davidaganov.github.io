@@ -1,6 +1,6 @@
 ---
 title: Clean API Client
-description: A request layer architecture that frees components from duplicated code.
+description: A request-layer architecture that frees components from duplicated code.
 icon: i-lucide-book-open
 publishedAt: 2026-02-20
 readingTime: 5 min

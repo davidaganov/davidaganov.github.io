@@ -43,7 +43,11 @@ If you have questions or want to get in touch, feel free to reach out:
 - **Email:** [davidaganov21@gmail.com](mailto:davidaganov21@gmail.com)
 
 <p align="center">
-  <a href="https://github.com/davidaganov"><img height="20" src="https://img.shields.io/github/followers/davidaganov?label=GitHub&style=social"></a>
-  <a href="https://wakatime.com/@b3200538-21d3-46e6-b1b1-400527ffe826"><img height="20" src="https://wakatime.com/badge/user/b3200538-21d3-46e6-b1b1-400527ffe826.svg"></a>
+  <a href="https://github.com/davidaganov">
+    <img height="20" src="https://img.shields.io/github/followers/davidaganov?label=GitHub&style=social">
+  </a>
+  <a href="https://wakatime.com/@b3200538-21d3-46e6-b1b1-400527ffe826">
+    <img height="20" src="https://wakatime.com/badge/user/b3200538-21d3-46e6-b1b1-400527ffe826.svg">
+  </a>
   <img height="20" src="https://komarev.com/ghpvc/?username=davidaganov&style=flat&color=grey" alt="Views">
 </p>
