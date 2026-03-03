@@ -45,7 +45,7 @@
       "layout.footer.repository": "Репозиторий на GitHub",
       "layout.footer.repositoryHint": "Исходный код этого портфолио.",
       "pages.home.badge": "Доступен для найма",
-      "pages.home.description": "Фронтенд-разработчик — 5 лет коммерческого опыта.",
+      "pages.home.description": "Фронтенд-разработчик — {frontendYears} лет коммерческого опыта.",
       "pages.home.getStarted": "Начать",
       "pages.home.disableAnimation": "Без анимации",
       "pages.home.scrollDown": "Листай вниз",

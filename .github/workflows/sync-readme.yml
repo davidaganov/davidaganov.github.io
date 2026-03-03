@@ -17,7 +17,6 @@ jobs:
       - name: Process README
         run: |
           # --- Calculate experience years dynamically ---
-          # Same logic as useExperience.ts: ceil to nearest step
           CURRENT_YEAR=$(date +%Y)
           CURRENT_MONTH=$(date +%-m)
           CURRENT_MONTHS=$((CURRENT_YEAR * 12 + CURRENT_MONTH))
@@ -43,17 +42,19 @@ jobs:
           awk 'BEGIN {found=0} /^---$/ && found < 2 {found++; next} found >= 2 || found == 0 {print}' content/en/about/getting-started.md | \
           sed "s|:ExperienceText{type=\"frontend\"}|${FE_YEARS}|g" | \
           sed "s|:ExperienceText{type=\"backend\"}|${BE_YEARS}|g" | \
-          sed 's|(/docs/|https://aganov.dev/docs/|g' > README.md
+          sed 's|(/docs/|https://aganov.dev/docs/|g' > /tmp/README.md
 
-      - name: Pushes to Profile Repo
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.GH_PAT }}
-        with:
-          source-directory: "."
-          destination-github-username: "davidaganov"
-          destination-repository-name: "davidaganov"
-          user-email: davidaganov21@gmail.com
-          target-branch: main
-          target-directory: ""
-          rename: README.md
+          echo "--- Generated README.md ---"
+          cat /tmp/README.md
+
+      - name: Push README to Profile Repo
+        run: |
+          git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/davidaganov/davidaganov.git /tmp/profile-repo
+          cp /tmp/README.md /tmp/profile-repo/README.md
+          cd /tmp/profile-repo
+          git config user.email "davidaganov21@gmail.com"
+          git config user.name "David Aganov"
+          git add README.md
+          git diff --cached --quiet && echo "No changes, skipping push." || git commit -m "chore: sync README from portfolio"
+          git diff HEAD~1..HEAD --stat 2>/dev/null || true
+          git push
