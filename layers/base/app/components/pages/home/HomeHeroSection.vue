@@ -3,7 +3,6 @@ import { useMediaQuery } from "@vueuse/core"
 import BaseLight from "@docs/components/base/BaseLight.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 
-const { t } = useI18n()
 const { frontendYears } = useExperience()
 
 const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
