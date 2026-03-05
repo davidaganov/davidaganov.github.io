@@ -159,7 +159,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3">
+  <div
+    class="rounded-xl border border-black/15 bg-white/20 p-4 dark:border-white/5 dark:bg-white/3"
+  >
     <div class="text-muted text-xs font-semibold tracking-wider uppercase">
       {{ $t("global.labels.onThisPage") }}
     </div>

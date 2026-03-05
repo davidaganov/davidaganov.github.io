@@ -48,7 +48,7 @@ const downloadArchive = async () => {
 <template>
   <div
     v-if="hasArchive"
-    class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3"
+    class="rounded-xl border border-black/15 bg-white/20 p-4 dark:border-white/5 dark:bg-white/3"
   >
     <div class="flex items-start justify-between gap-2">
       <div>

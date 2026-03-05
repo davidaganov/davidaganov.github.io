@@ -64,7 +64,7 @@ const tagLink = (tag: string) => {
 <template>
   <div
     v-if="hasArticleMeta"
-    class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3"
+    class="rounded-xl border border-black/15 bg-white/20 p-4 dark:border-white/5 dark:bg-white/3"
   >
     <div class="space-y-3">
       <UiBadge

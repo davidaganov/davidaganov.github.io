@@ -106,7 +106,8 @@
       },
       "meta": {
         "published": "Published:",
-        "readingTime": "Reading time:"
+        "readingTime": "Reading time:",
+        "views": "Views:"
       }
     },
     "profile": {
