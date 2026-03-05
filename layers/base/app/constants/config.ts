@@ -4,6 +4,7 @@ export const USERNAME = "davidaganov"
 export const WORK_EMAIL = `${USERNAME}21@gmail.com`
 export const GITHUB_REPO = `${USERNAME}/${USERNAME}.github.io`
 export const HABR_LINK = `https://habr.com/ru/users/${USERNAME}`
+export const GITHUB_LINK = `https://github.com/${USERNAME}`
 
 export const AVAILABLE_LOCALES = [
   { label: "RU", value: LOCALE.RU },
@@ -13,7 +14,7 @@ export const AVAILABLE_LOCALES = [
 export const SOCIAL_LINKS = [
   {
     label: "GitHub",
-    href: `https://github.com/${USERNAME}`,
+    href: GITHUB_LINK,
     icon: "i-simple-icons-github"
   },
   {

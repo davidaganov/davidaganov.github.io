@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppRightSidebarCard from "@docs/components/app/right-sidebar/AppRightSidebarCard.vue"
 import { SORT_ORDER } from "@docs/types/enums"
 import { buildFiltersQuery } from "@docs/utils/indexFiltersQuery"
 import { formatDate } from "@base/utils/date"
@@ -62,10 +63,7 @@ const tagLink = (tag: string) => {
 </script>
 
 <template>
-  <div
-    v-if="hasArticleMeta"
-    class="rounded-xl border border-black/15 bg-white/20 p-4 dark:border-white/5 dark:bg-white/3"
-  >
+  <AppRightSidebarCard v-if="hasArticleMeta">
     <div class="space-y-3">
       <UiBadge
         v-if="meta.publishedAt"
@@ -115,5 +113,5 @@ const tagLink = (tag: string) => {
         {{ $t("pages.articles.readOnHabr") }}
       </UButton>
     </div>
-  </div>
+  </AppRightSidebarCard>
 </template>

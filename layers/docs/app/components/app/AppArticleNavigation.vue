@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BaseArticleNavigateButton from "@docs/components/base/BaseArticleNavigateButton.vue"
 import { useArticleNavigation } from "@docs/composables/useArticleNavigation"
 
 const props = defineProps<{
@@ -42,26 +43,11 @@ const { prevPage, nextPage, githubMdUrl } = useArticleNavigation(docsPath)
       class="grid grid-cols-2 gap-4"
     >
       <!-- Previous page -->
-      <NuxtLink
+      <BaseArticleNavigateButton
         v-if="prevPage"
-        :to="prevPage.path"
-        class="group col-start-1 flex flex-col rounded-xl border border-black/10 bg-black/3 px-5 py-4 text-left transition-colors hover:border-black/20 hover:bg-black/5 dark:border-white/10 dark:bg-white/3 dark:hover:border-white/20 dark:hover:bg-white/5"
-      >
-        <span
-          class="mb-1 text-xs text-gray-500 transition-colors group-hover:text-gray-700 dark:text-white/40 dark:group-hover:text-white/60"
-        >
-          {{ $t("docs.nav.previousPage") }}
-        </span>
-        <span
-          class="flex items-center gap-1.5 text-sm font-semibold text-gray-900 dark:text-white/85"
-        >
-          <UIcon
-            name="i-lucide-arrow-left"
-            class="group-hover:text-primary-600 size-4 shrink-0 text-gray-400 transition-colors dark:text-white/50 dark:group-hover:text-white/80"
-          />
-          {{ prevPage.title }}
-        </span>
-      </NuxtLink>
+        direction="prev"
+        :page="prevPage"
+      />
 
       <!-- Spacer when only next page exists -->
       <div
@@ -70,26 +56,11 @@ const { prevPage, nextPage, githubMdUrl } = useArticleNavigation(docsPath)
       />
 
       <!-- Next page -->
-      <NuxtLink
+      <BaseArticleNavigateButton
         v-if="nextPage"
-        class="group col-start-2 flex flex-col rounded-xl border border-black/10 bg-black/3 px-5 py-4 text-right transition-colors hover:border-black/20 hover:bg-black/5 dark:border-white/10 dark:bg-white/3 dark:hover:border-white/20 dark:hover:bg-white/5"
-        :to="nextPage.path"
-      >
-        <span
-          class="mb-1 text-xs text-gray-500 transition-colors group-hover:text-gray-700 dark:text-white/40 dark:group-hover:text-white/60"
-        >
-          {{ $t("docs.nav.nextPage") }}
-        </span>
-        <span
-          class="flex items-center justify-end gap-1.5 text-sm font-semibold text-gray-900 dark:text-white/85"
-        >
-          {{ nextPage.title }}
-          <UIcon
-            name="i-lucide-arrow-right"
-            class="group-hover:text-primary-600 size-4 shrink-0 text-gray-400 transition-colors dark:text-white/50 dark:group-hover:text-white/80"
-          />
-        </span>
-      </NuxtLink>
+        direction="next"
+        :page="nextPage"
+      />
     </div>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content"
 import AppIndexPage from "@docs/components/app/AppIndexPage.vue"
-import AppPageViewCounter from "@docs/components/app/AppPageViewCounter.vue"
-import AppRightSidebar from "@docs/components/app/AppRightSidebar.vue"
+import AppRightSidebar from "@docs/components/app/right-sidebar/AppRightSidebar.vue"
+import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
 import { useDocsSeo } from "@docs/composables/useDocsSeo"
 import type { SidebarCollectionItem } from "@docs/types/sidebar"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
@@ -89,7 +89,7 @@ const { breadcrumbs, pageType } = useDocsSeo({
         class="mb-6"
         :items="breadcrumbs"
       />
-      <AppPageViewCounter v-if="!collectionItem" />
+      <BaseViewCounter v-if="!collectionItem" />
     </div>
 
     <!-- Main Content -->

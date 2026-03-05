@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppRightSidebarCard from "@docs/components/app/right-sidebar/AppRightSidebarCard.vue"
 import { formatDate } from "@base/utils/date"
 import UiBadge from "@ui/components/UiBadge.vue"
 
@@ -22,6 +23,7 @@ const meta = computed(() => {
 })
 
 const hasLinks = computed(() => Boolean(meta.value.npmUrl || meta.value.githubUrl))
+
 const shouldRender = computed(
   () => hasLinks.value || Boolean(stats.value.github?.languages?.length)
 )
@@ -38,10 +40,7 @@ const githubStars = computed(() => {
 </script>
 
 <template>
-  <div
-    v-if="shouldRender"
-    class="rounded-xl border border-black/15 bg-white/20 p-4 dark:border-white/5 dark:bg-white/3"
-  >
+  <AppRightSidebarCard v-if="shouldRender">
     <div class="grid grid-cols-12 gap-2">
       <UiBadge
         v-if="meta.githubUrl"
@@ -121,5 +120,5 @@ const githubStars = computed(() => {
     >
       {{ $t("pages.projects.metrics.star") }}
     </UButton>
-  </div>
+  </AppRightSidebarCard>
 </template>

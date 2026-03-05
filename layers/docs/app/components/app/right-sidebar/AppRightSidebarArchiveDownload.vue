@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import AppRightSidebarCard from "@docs/components/app/right-sidebar/AppRightSidebarCard.vue"
 import { useDocsArchive } from "@docs/composables/useDocsArchive"
 import { GITHUB_REPO } from "@base/constants/config"
 
 const { t } = useI18n()
-
 const { archiveEntries, archiveName, hasArchive } = useDocsArchive()
 
 const implementationUrl = `https://github.com/${GITHUB_REPO}/blob/main/layers/docs/app/components/app/AppRightSidebarArchiveDownload.vue`
@@ -46,10 +46,7 @@ const downloadArchive = async () => {
 </script>
 
 <template>
-  <div
-    v-if="hasArchive"
-    class="rounded-xl border border-black/15 bg-white/20 p-4 dark:border-white/5 dark:bg-white/3"
-  >
+  <AppRightSidebarCard v-if="hasArchive">
     <div class="flex items-start justify-between gap-2">
       <div>
         <div class="text-sm font-semibold text-gray-900 dark:text-white">
@@ -118,5 +115,5 @@ const downloadArchive = async () => {
     >
       {{ error }}
     </p>
-  </div>
+  </AppRightSidebarCard>
 </template>
