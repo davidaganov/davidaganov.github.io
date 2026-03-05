@@ -75,17 +75,17 @@ onUnmounted(() => {
     <div class="container">
       <div class="mb-8 flex items-end justify-between gap-6">
         <div class="flex w-full items-center justify-between gap-4 sm:justify-start sm:text-3xl">
-          <h2 class="text-2xl font-semibold tracking-tight text-white">
+          <h2 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {{ $t("layout.navigation.menu.contacts") }}
           </h2>
           <UTabs
             v-model="mode"
             :items="viewModeItems"
             :ui="{
-              list: 'rounded-full border border-white/10 bg-white/5 p-1 backdrop-blur-md',
+              list: 'rounded-full border border-black/10 bg-black/5 p-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5',
               trigger:
-                'rounded-full px-4 py-2 text-sm font-medium data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white',
-              indicator: 'rounded-[18px] bg-white/10'
+                'rounded-full px-4 py-2 text-sm font-medium data-[state=active]:text-primary-600 dark:data-[state=active]:text-white data-[state=inactive]:text-gray-500 dark:data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-primary-700 dark:data-[state=inactive]:hover:text-white',
+              indicator: 'rounded-[18px] bg-black/10 dark:bg-white/10'
             }"
           />
         </div>

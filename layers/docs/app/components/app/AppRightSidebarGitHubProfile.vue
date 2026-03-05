@@ -8,7 +8,7 @@ const { user } = useGitHubStats()
 </script>
 
 <template>
-  <div class="rounded-xl border border-white/5 bg-white/3 p-4">
+  <div class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3">
     <div class="flex items-center gap-3">
       <div class="relative">
         <img
@@ -21,17 +21,19 @@ const { user } = useGitHubStats()
         >
           <UIcon
             name="i-simple-icons-github"
-            class="size-2.5 text-white"
+            class="size-2 text-white dark:text-white"
           />
         </div>
       </div>
       <div class="min-w-0">
-        <div class="truncate text-sm font-semibold text-white">{{ $t("global.name") }}</div>
+        <div class="truncate text-sm font-semibold text-gray-900 dark:text-white">
+          {{ $t("global.name") }}
+        </div>
         <div class="text-muted truncate text-xs">@{{ USERNAME }}</div>
       </div>
     </div>
 
-    <hr class="my-3 border-white/10" />
+    <hr class="my-3 border-black/15 dark:border-white/10" />
 
     <div class="grid gap-2">
       <UiBadge
@@ -50,17 +52,17 @@ const { user } = useGitHubStats()
       />
     </div>
 
-    <a
+    <UButton
       target="_blank"
       rel="noopener noreferrer"
-      class="bg-primary-500/15 text-primary-300 hover:bg-primary-500/20 mt-3 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors"
+      icon="i-simple-icons-github"
+      color="primary"
+      variant="soft"
+      class="mt-2"
+      block
       :href="`https://github.com/${USERNAME}`"
     >
-      <UIcon
-        name="i-simple-icons-github"
-        class="size-4"
-      />
-      <span>{{ $t("pages.profile.myProfile") }}</span>
-    </a>
+      {{ $t("pages.profile.myProfile") }}
+    </UButton>
   </div>
 </template>

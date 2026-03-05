@@ -46,10 +46,10 @@ const activeValue = computed({
 })
 
 const tabsUi = computed(() => ({
-  list: "rounded-lg w-fit border mr-auto border-white/8 bg-white/2 py-0.5 px-1",
+  list: "rounded-lg w-fit border mr-auto border-black/8 bg-black/2 dark:border-white/8 dark:bg-white/2 py-0.5 px-1",
   trigger:
-    "rounded-md px-3 py-2 text-xs font-medium data-[state=active]:text-white data-[state=inactive]:text-muted data-[state=inactive]:hover:text-white",
-  indicator: "rounded-md bg-white/8",
+    "rounded-md px-3 py-2 text-xs font-medium data-[state=active]:text-primary-800 dark:data-[state=active]:text-white data-[state=inactive]:text-muted data-[state=inactive]:hover:text-primary-500 dark:data-[state=inactive]:hover:text-white",
+  indicator: "rounded-md bg-black/5 dark:bg-white/8",
   ...props.ui
 }))
 </script>

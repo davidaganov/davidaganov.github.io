@@ -69,7 +69,7 @@ const setLinkRef = (el: Element | ComponentPublicInstance | null, index: number)
 
 const getLinkClasses = (link: TocLink) => {
   return [
-    activeTocIds.value.has(String(link.id)) ? "text-white" : "",
+    activeTocIds.value.has(String(link.id)) ? "text-black/70 dark:text-white" : "",
     link.depth > 0 ? "text-xs opacity-75" : ""
   ]
 }
@@ -159,7 +159,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="rounded-xl border border-white/5 bg-white/3 p-4">
+  <div class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3">
     <div class="text-muted text-xs font-semibold tracking-wider uppercase">
       {{ $t("global.labels.onThisPage") }}
     </div>
@@ -169,15 +169,15 @@ onBeforeUnmount(() => {
       class="relative mt-3 pl-4"
       ref="tocNavEl"
     >
-      <div class="absolute inset-y-0 left-1 w-px bg-white/10" />
+      <div class="absolute inset-y-0 left-1 w-px bg-black/10 dark:bg-white/10" />
       <div
-        class="bg-primary-400 absolute left-1 w-px transition-[top,height] duration-200"
+        class="dark:bg-primary-400 bg-primary-800 absolute left-1 w-px transition-[top,height] duration-200"
         :style="indicatorStyle"
       />
 
       <a
         v-for="(link, i) in tocLinks"
-        class="text-muted block rounded-md px-2 py-1 text-sm transition-colors hover:bg-white/5 hover:text-white"
+        class="dark:text-muted block rounded-md px-2 py-1 text-sm text-black/50 transition-colors hover:bg-black/5 hover:text-gray-900 dark:hover:bg-white/5 dark:hover:text-white"
         :class="getLinkClasses(link)"
         :style="{ paddingLeft: `calc(0.5rem + ${depthPadding(link.depth)})` }"
         :href="`#${link.id}`"

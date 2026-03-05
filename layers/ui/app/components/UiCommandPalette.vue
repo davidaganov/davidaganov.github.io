@@ -35,7 +35,7 @@ const highlightQuery = (text: string): string => {
   const escaped = query.value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
   return text.replace(
     new RegExp(`(${escaped})`, "gi"),
-    '<mark class="bg-primary-500/30 text-primary-300 rounded px-0.5">$1</mark>'
+    '<mark class="bg-primary-500/10 dark:bg-primary-500/30 text-primary-600 dark:text-primary-300 rounded px-0.5">$1</mark>'
   )
 }
 
@@ -88,7 +88,7 @@ watch(query, () => {
       :description="$t('components.cmd.description')"
       :close="false"
       :ui="{
-        overlay: 'bg-black/80 backdrop-blur-sm',
+        overlay: 'bg-black/40 dark:bg-black/80 backdrop-blur-sm',
         content: 'bg-transparent shadow-none',
         header: 'sr-only',
         title: 'sr-only',
@@ -99,11 +99,13 @@ watch(query, () => {
 
       <template #content>
         <div
-          class="overflow-hidden rounded-xl border border-white/10 bg-black/90 shadow-2xl shadow-purple-500/10"
+          class="overflow-hidden bg-white shadow-2xl dark:bg-black/90 dark:shadow-purple-500/10"
           @keydown="onKeydown"
         >
           <!-- Search Input -->
-          <div class="flex items-center gap-3 border-b border-white/10 px-4 py-3">
+          <div
+            class="flex items-center gap-3 border-b border-black/5 px-4 py-3 dark:border-white/10"
+          >
             <UIcon
               v-if="!isLoading"
               name="i-lucide-search"
@@ -117,12 +119,12 @@ watch(query, () => {
             <input
               v-model="query"
               type="text"
-              class="flex-1 bg-transparent text-sm text-white placeholder:text-gray-500 focus:outline-none"
+              class="flex-1 bg-transparent text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-white dark:placeholder:text-gray-500"
               :placeholder="$t('components.cmd.placeholder')"
               ref="inputRef"
             />
             <kbd
-              class="hidden rounded border border-white/20 bg-white/5 px-2 py-1 text-xs text-gray-400 md:inline"
+              class="hidden rounded border border-black/10 bg-black/5 px-2 py-1 text-xs text-gray-500 md:inline dark:border-white/20 dark:bg-white/5 dark:text-gray-400"
             >
               ESC
             </kbd>
@@ -183,8 +185,8 @@ watch(query, () => {
                   class="flex w-full items-start gap-3 px-4 py-2.5 text-left transition-colors"
                   :class="
                     globalIndexOf(result) === selectedIndex
-                      ? 'bg-white/10 text-white'
-                      : 'text-gray-300 hover:bg-white/5'
+                      ? 'bg-black/5 text-gray-900 dark:bg-white/10 dark:text-white'
+                      : 'text-gray-600 hover:bg-black/3 dark:text-gray-300 dark:hover:bg-white/5'
                   "
                   :data-active="globalIndexOf(result) === selectedIndex"
                   :key="result.path"
@@ -229,16 +231,28 @@ watch(query, () => {
 
           <!-- Footer -->
           <div
-            class="hidden items-center justify-between border-t border-white/10 bg-white/5 px-4 py-2 text-xs text-gray-400 md:flex"
+            class="hidden items-center justify-between border-t border-black/5 bg-black/3 px-4 py-2 text-xs text-gray-500 md:flex dark:border-white/10 dark:bg-white/5 dark:text-gray-400"
           >
             <div class="flex items-center gap-4">
               <span class="flex items-center gap-1">
-                <kbd class="rounded border border-white/20 bg-white/5 px-1.5 py-0.5">↑</kbd>
-                <kbd class="rounded border border-white/20 bg-white/5 px-1.5 py-0.5">↓</kbd>
+                <kbd
+                  class="rounded border border-black/10 bg-black/5 px-1.5 py-0.5 dark:border-white/20 dark:bg-white/5"
+                >
+                  ↑
+                </kbd>
+                <kbd
+                  class="rounded border border-black/10 bg-black/5 px-1.5 py-0.5 dark:border-white/20 dark:bg-white/5"
+                >
+                  ↓
+                </kbd>
                 <span class="ml-1">{{ $t("components.cmd.hints.navigate") }}</span>
               </span>
               <span class="flex items-center gap-1">
-                <kbd class="rounded border border-white/20 bg-white/5 px-1.5 py-0.5">↵</kbd>
+                <kbd
+                  class="rounded border border-black/10 bg-black/5 px-1.5 py-0.5 dark:border-white/20 dark:bg-white/5"
+                >
+                  ↵
+                </kbd>
                 <span class="ml-1">{{ $t("components.cmd.hints.select") }}</span>
               </span>
             </div>

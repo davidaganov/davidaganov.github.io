@@ -4,6 +4,11 @@
       "defaultTitle": "Документация и заметки",
       "defaultDescription": "Практические материалы, заметки и инструменты из моего портфолио.",
       "defaultSection": "Документация"
+    },
+    "nav": {
+      "previousPage": "Предыдущая страница",
+      "nextPage": "Следующая страница",
+      "editOnGitHub": "Открыть MD на GitHub"
     }
   },
   "global": {
@@ -155,6 +160,12 @@
       "code": "Код",
       "previewEmpty": "Превью слот пуст.",
       "codeEmpty": "Код слот пуст."
+    },
+    "themeToggle": {
+      "aria": "Сменить тему",
+      "light": "Светлая",
+      "dark": "Тёмная",
+      "system": "Авто"
     }
   },
   "features": {

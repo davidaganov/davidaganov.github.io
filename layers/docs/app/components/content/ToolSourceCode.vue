@@ -21,6 +21,10 @@ const props = withDefaults(
 
 const expanded = ref(false)
 const highlighter = shallowRef<Highlighter | null>(null)
+const colorMode = useColorMode()
+const shikiTheme = computed(() =>
+  colorMode.value === "dark" ? "material-theme" : "material-theme-lighter"
+)
 
 const { copy, copied } = useClipboard()
 
@@ -84,7 +88,7 @@ const highlightedCode = computed(() => {
   try {
     return highlighter.value.codeToHtml(source.value, {
       lang: props.lang,
-      theme: "material-theme"
+      theme: shikiTheme.value
     })
   } catch {
     return fallbackHtml
@@ -166,7 +170,7 @@ onMounted(async () => {
 
       <div
         v-if="!expanded"
-        class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#0b1220] to-transparent"
+        class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#f1f5f9] to-transparent dark:from-[#0b1220]"
       />
     </div>
   </div>

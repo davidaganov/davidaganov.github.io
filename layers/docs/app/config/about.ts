@@ -7,7 +7,7 @@ export const ABOUT_SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     type: "divider",
-    class: "my-2 border-t border-white/10"
+    class: "my-2 border-t border-black/10 dark:border-white/10"
   },
   {
     type: "collection",

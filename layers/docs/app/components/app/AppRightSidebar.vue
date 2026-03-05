@@ -35,7 +35,9 @@ const isLg = breakpoints.greater("lg")
       v-if="isLg"
       to="#app-right-sidebar-root"
     >
-      <aside class="sticky top-29 h-[calc(100vh-3.5rem)] overflow-y-auto py-8 lg:pb-14">
+      <aside
+        class="sticky top-(--ui-header-height) max-h-[calc(100vh-var(--ui-header-height))] overflow-y-auto pb-8"
+      >
         <div class="space-y-6">
           <AppRightSidebarToc
             v-if="!props.main"
@@ -57,13 +59,13 @@ const isLg = breakpoints.greater("lg")
             <AppRightSidebarArchiveDownload />
           </template>
 
-          <div class="border-t border-white/10 pt-4">
+          <div class="border-t border-black/10 pt-4 dark:border-white/10">
             <div class="flex items-center gap-4">
               <a
                 v-for="item in SOCIAL_LINKS"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-gray-400 transition-colors hover:text-white"
+                class="text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-white"
                 :href="item.href"
                 :aria-label="item.label"
                 :key="item.label"
@@ -101,13 +103,13 @@ const isLg = breakpoints.greater("lg")
         <AppRightSidebarArchiveDownload />
       </template>
 
-      <div class="border-t border-white/10 pt-4">
+      <div class="border-t border-black/10 pt-4 dark:border-white/10">
         <div class="flex items-center gap-4">
           <a
             v-for="item in SOCIAL_LINKS"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-gray-400 transition-colors hover:text-white"
+            class="text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-white"
             :href="item.href"
             :aria-label="item.label"
             :key="item.label"

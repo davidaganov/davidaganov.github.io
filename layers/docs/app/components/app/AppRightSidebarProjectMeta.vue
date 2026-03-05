@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { formatDate } from "@base/utils/date"
 import UiBadge from "@ui/components/UiBadge.vue"
 
 const props = defineProps<{
   page: unknown
 }>()
 
+const { locale } = useI18n()
 const pageRef = toRef(() => props.page)
 
-const { stats, loading, formatDownloads, formatDate } = useProjectStats(pageRef)
+const { stats, loading, formatDownloads } = useProjectStats(pageRef)
 
 const meta = computed(() => {
   const p = (props.page || {}) as { meta?: Record<string, unknown> }
@@ -38,7 +40,7 @@ const githubStars = computed(() => {
 <template>
   <div
     v-if="shouldRender"
-    class="rounded-xl border border-white/5 bg-white/3 p-4"
+    class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3"
   >
     <div class="grid grid-cols-12 gap-2">
       <UiBadge
@@ -84,15 +86,15 @@ const githubStars = computed(() => {
       <UiBadge
         v-if="stats.github?.lastCommit"
         icon="i-lucide-clock"
-        class="col-span-12"
+        class="col-span-12 flex-col!"
         :label="$t('pages.projects.metrics.lastCommit') + `:`"
-        :value="formatDate(stats.github.lastCommit)"
+        :value="formatDate(stats.github.lastCommit, locale, 'short') || ''"
         :loading="loading"
       />
     </div>
 
     <div v-if="stats.github?.languages?.length">
-      <hr class="my-2 border-white/10" />
+      <hr class="my-2 border-black/15 dark:border-white/10" />
 
       <div class="flex flex-wrap gap-2">
         <UiBadge
@@ -106,18 +108,18 @@ const githubStars = computed(() => {
       </div>
     </div>
 
-    <a
+    <UButton
       v-if="meta.githubUrl"
-      :href="meta.githubUrl"
+      block
+      class="mt-2"
       target="_blank"
       rel="noopener noreferrer"
-      class="bg-primary-500/15 text-primary-300 hover:bg-primary-500/20 mt-4 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors"
+      color="primary"
+      variant="soft"
+      icon="i-heroicons-star-20-solid"
+      :href="meta.githubUrl"
     >
-      <UIcon
-        name="i-heroicons-star-20-solid"
-        class="size-4"
-      />
-      <span>{{ $t("pages.projects.metrics.star") }}</span>
-    </a>
+      {{ $t("pages.projects.metrics.star") }}
+    </UButton>
   </div>
 </template>

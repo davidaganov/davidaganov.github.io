@@ -19,7 +19,16 @@ const currentLocale = computed({
 })
 
 const baseClass = computed(() => {
-  const classes = ["bg-white/10", "text-white", "border", "border-white/20", "ring-0"]
+  const classes = [
+    "bg-black/5",
+    "dark:bg-white/10",
+    "text-gray-700",
+    "dark:text-white",
+    "border",
+    "border-black/10",
+    "dark:border-white/20",
+    "ring-0"
+  ]
 
   if (props.blur) {
     classes.push("backdrop-blur-sm")
@@ -38,8 +47,11 @@ const baseClass = computed(() => {
     :items="AVAILABLE_LOCALES"
     :ui="{
       base: baseClass,
-      content: 'bg-white/10 border ring-0 backdrop-blur-sm border-white/20',
-      item: 'text-white bg-black/20 my-0.5 first:mt-0 last:mb-0 hover:bg-black/30 cursor-pointer rounded-md'
+      leadingIcon: 'text-gray-700 dark:text-primary-400',
+      trailingIcon: 'text-gray-700 dark:text-primary-400',
+      content:
+        'dark:bg-[#0d1626]/90 bg-white/90 border ring-0 backdrop-blur-sm dark:border-white/20 border-black/10',
+      item: 'dark:text-white text-gray-700 dark:bg-black/20 bg-gray-50 my-0.5 first:mt-0 last:mb-0 dark:hover:bg-black/30 hover:bg-gray-100 cursor-pointer rounded-md'
     }"
   />
 </template>

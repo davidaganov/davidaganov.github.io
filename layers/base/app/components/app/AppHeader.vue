@@ -6,6 +6,7 @@ import UiGitHubStars from "@ui/components/UiGitHubStars.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiLogo from "@ui/components/UiLogo.vue"
 import UiSearchTrigger from "@ui/components/UiSearchTrigger.vue"
+import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 
 const { t } = useI18n()
 
@@ -24,22 +25,35 @@ const docsTabs = computed(() =>
 )
 
 const isDocsRoute = computed(() => route.path.includes("/docs"))
+const headerHeight = computed(() => (isDocsRoute.value ? "148px" : "56px"))
 
 const activeSectionId = computed(() => {
   const sectionId = getSectionIdByPath(route.path)
   return getSectionById(sectionId)?.id || DOCS_SECTIONS[0]?.id || ""
 })
+
+useHead({
+  style: [
+    {
+      innerHTML: computed(() => `:root { --ui-header-height: ${headerHeight.value}; }`),
+      tagPriority: "high"
+    }
+  ]
+})
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 w-full border-b border-white/5 bg-(--ui-bg)/75 backdrop-blur-md">
+  <header
+    class="sticky top-0 z-50 w-full border-b border-black/5 bg-(--ui-bg)/75 backdrop-blur-md dark:border-white/5"
+  >
     <div class="container flex h-14 items-center justify-end gap-2 md:justify-between">
       <UiLogo class="mr-auto" />
       <UiSearchTrigger />
 
       <div class="flex items-center gap-2">
         <UiGitHubStars class="hidden sm:flex" />
-        <UiLanguageSwitcher />
+        <UiThemeToggle class="hidden lg:flex" />
+        <UiLanguageSwitcher class="hidden lg:flex" />
         <UButton
           class="lg:hidden"
           variant="ghost"
@@ -61,8 +75,8 @@ const activeSectionId = computed(() => {
           :to="tab.to"
           :class="
             activeSectionId === tab.id
-              ? 'text-primary-400 bg-primary-500/10'
-              : 'text-muted hover:text-white'
+              ? 'text-primary-800 dark:text-primary-400 bg-primary-200/50 dark:bg-primary-500/10'
+              : 'text-muted hover:text-gray-900 dark:hover:text-white'
           "
           :key="tab.id"
         >

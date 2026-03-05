@@ -28,10 +28,10 @@ onMounted(async () => {
     target="_blank"
     size="sm"
     variant="ghost"
-    class="group py-0! hover:bg-white/10"
+    class="group py-0! hover:bg-black/5 dark:hover:bg-white/10"
     :to="githubUrl"
     :ui="{
-      base: 'bg-white/10 border h-[30px] border-white/20 text-white'
+      base: 'bg-black/5 dark:bg-white/10 border h-[30px] border-black/10 dark:border-white/20 text-gray-700 dark:text-white'
     }"
   >
     <div class="flex items-center gap-1.5">
@@ -53,7 +53,7 @@ onMounted(async () => {
       </span>
       <UIcon
         name="i-heroicons-star-20-solid"
-        class="-mt-px size-3.5 text-white transition-colors group-hover:text-yellow-400"
+        class="-mt-px size-3.5 text-gray-700 transition-colors group-hover:text-yellow-400 dark:text-white"
       />
     </div>
   </UButton>

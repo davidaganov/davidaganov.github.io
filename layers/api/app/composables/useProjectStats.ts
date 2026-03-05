@@ -52,19 +52,6 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
     return String(num)
   }
 
-  const formatDate = (dateStr: string): string => {
-    const date = new Date(dateStr)
-    const now = new Date()
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
-
-    if (diffDays === 0) return "today"
-    if (diffDays === 1) return "yesterday"
-    if (diffDays < 7) return `${diffDays} days ago`
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
-    if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`
-    return `${Math.floor(diffDays / 365)} years ago`
-  }
-
   const fetchNpmStats = async (packageName: string) => {
     try {
       const [packageData, downloadsData] = await Promise.all([
@@ -142,7 +129,6 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
     stats: readonly(stats),
     loading: readonly(loading),
     error: readonly(error),
-    formatDownloads,
-    formatDate
+    formatDownloads
   }
 }

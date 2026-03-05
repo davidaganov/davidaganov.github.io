@@ -3,6 +3,8 @@ import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.v
 import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import { useSidebarItems } from "@docs/composables/useSidebarItems"
+import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
+import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 
 const props = defineProps<{
   open: boolean
@@ -48,7 +50,7 @@ watch(
     }"
   >
     <template #body>
-      <nav class="max-w-full flex-1 space-y-1">
+      <nav class="h-[calc(100%-47px)] max-w-full flex-1 space-y-1">
         <template
           v-for="(item, index) in renderedSidebarItems"
           :key="index"
@@ -69,6 +71,13 @@ watch(
           />
         </template>
       </nav>
+
+      <div
+        class="mt-auto flex items-center justify-end gap-2 border-t border-black/8 pt-4 dark:border-white/8"
+      >
+        <UiThemeToggle />
+        <UiLanguageSwitcher />
+      </div>
     </template>
   </USlideover>
 </template>

@@ -64,7 +64,7 @@ const tagLink = (tag: string) => {
 <template>
   <div
     v-if="hasArticleMeta"
-    class="rounded-xl border border-white/5 bg-white/3 p-4"
+    class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3"
   >
     <div class="space-y-3">
       <UiBadge
@@ -84,14 +84,14 @@ const tagLink = (tag: string) => {
       />
     </div>
 
-    <hr class="my-2 border-white/10" />
+    <hr class="my-2 border-black/15 dark:border-white/10" />
 
     <div>
       <div v-if="meta.tags.length">
         <div class="flex flex-wrap gap-2">
           <NuxtLink
             v-for="tag in meta.tags"
-            class="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/85 transition-colors hover:border-white/20 hover:bg-white/10"
+            class="inline-flex items-center gap-1.5 rounded-md border border-black/5 bg-black/5 px-2 py-1 text-xs text-gray-700 transition-colors hover:border-black/10 hover:bg-black/10 dark:border-white/10 dark:bg-white/5 dark:text-white/85 dark:hover:border-white/20 dark:hover:bg-white/10"
             :to="tagLink(tag)"
             :key="tag"
           >
@@ -100,19 +100,20 @@ const tagLink = (tag: string) => {
         </div>
       </div>
 
-      <a
+      <!-- Replace to UButton -->
+      <UButton
         v-if="meta.habrUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="bg-primary-500/15 text-primary-300 hover:bg-primary-500/20 mt-2 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors"
+        icon="i-simple-icons-habr"
+        color="primary"
+        variant="soft"
+        class="mt-2"
+        block
         :href="meta.habrUrl"
       >
-        <UIcon
-          name="i-simple-icons-habr"
-          class="size-4"
-        />
-        <span>{{ $t("pages.articles.readOnHabr") }}</span>
-      </a>
+        {{ $t("pages.articles.readOnHabr") }}
+      </UButton>
     </div>
   </div>
 </template>

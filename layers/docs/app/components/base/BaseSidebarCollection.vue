@@ -83,47 +83,48 @@ const items = computed(() => {
 
 <template>
   <div v-if="items.length > 0">
-    <div class="flex items-center justify-between px-3 py-2">
+    <div
+      class="group mb-0.5 flex items-center justify-between rounded-lg text-sm font-medium transition-all"
+      :class="
+        props.item.indexPage !== false && route.path === localePath(props.item.pathPrefix || '')
+          ? 'bg-primary-200/50 dark:bg-primary-500/10 text-primary-800 dark:text-primary-400'
+          : 'text-muted hover:bg-black/5 hover:text-gray-900 dark:hover:bg-white/5 dark:hover:text-white'
+      "
+    >
       <NuxtLink
         v-if="props.item.indexPage !== false"
-        class="flex items-center justify-between rounded-lg text-sm font-medium transition-all hover:text-white"
-        :class="
-          route.path === localePath(props.item.pathPrefix || '') ? 'text-primary-400' : 'text-muted'
-        "
+        class="flex flex-1 items-center gap-3 px-3 py-2"
         :to="localePath(props.item.pathPrefix || '')"
       >
-        <div class="flex items-center gap-3">
-          <UIcon
-            v-if="item.icon"
-            :name="item.icon"
-            class="size-4"
-          />
-          <span class="line-clamp-1">{{ $t(item.label) }}</span>
-        </div>
+        <UIcon
+          v-if="item.icon"
+          class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
+          :name="item.icon"
+        />
+        <span class="line-clamp-1">{{ $t(item.label) }}</span>
       </NuxtLink>
       <button
         v-else
         type="button"
-        class="text-muted flex items-center justify-between rounded-lg text-sm font-medium transition-all hover:text-white"
+        class="flex flex-1 items-center gap-3 px-3 py-2 text-left"
         @click="item.collapsible && (isOpen = !isOpen)"
       >
-        <div class="flex items-center gap-3">
-          <UIcon
-            v-if="item.icon"
-            class="size-4"
-            :name="item.icon"
-          />
-          <span class="line-clamp-1">{{ $t(item.label) }}</span>
-        </div>
+        <UIcon
+          v-if="item.icon"
+          class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
+          :name="item.icon"
+        />
+        <span class="line-clamp-1">{{ $t(item.label) }}</span>
       </button>
+
       <button
         v-if="item.collapsible"
-        class="text-muted flex flex-1 justify-end transition-colors hover:text-white"
-        @click="isOpen = !isOpen"
+        class="flex items-center justify-center py-2 pr-3 transition-colors"
+        @click.stop="isOpen = !isOpen"
       >
         <UIcon
           name="i-lucide-chevron-down"
-          class="size-4 transition-transform duration-200"
+          class="size-3.5 transition-transform duration-200"
           :class="!isOpen && '-rotate-90'"
         />
       </button>
@@ -132,7 +133,7 @@ const items = computed(() => {
     <div
       v-show="isOpen"
       v-motion
-      class="mb-1 ml-2 space-y-0.5 overflow-hidden"
+      class="space-y-0.5 overflow-hidden"
       :initial="{ opacity: 0, height: 0 }"
       :enter="{ opacity: 1, height: 'auto', transition: { duration: 300 } }"
     >

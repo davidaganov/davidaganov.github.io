@@ -4,6 +4,11 @@
       "defaultTitle": "Documentation and notes",
       "defaultDescription": "Practical notes, guides, and tools from my portfolio.",
       "defaultSection": "Documentation"
+    },
+    "nav": {
+      "previousPage": "Previous page",
+      "nextPage": "Next page",
+      "editOnGitHub": "View MD on GitHub"
     }
   },
   "global": {
@@ -155,6 +160,12 @@
       "code": "Code",
       "previewEmpty": "Preview slot is empty.",
       "codeEmpty": "Code slot is empty."
+    },
+    "themeToggle": {
+      "aria": "Switch theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "Auto"
     }
   },
   "features": {

@@ -7,7 +7,9 @@ const { toggle } = useCommandPalette()
     size="sm"
     variant="ghost"
     class="h-[30px] justify-start py-0 hover:bg-white/10 sm:w-full sm:max-w-3xs"
-    :ui="{ base: 'bg-white/10 border border-white/20 text-white' }"
+    :ui="{
+      base: 'bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/20 text-gray-700 dark:text-white'
+    }"
     @click="toggle"
   >
     <div class="flex items-center gap-2">

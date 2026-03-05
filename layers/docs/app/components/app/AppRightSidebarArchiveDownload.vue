@@ -48,11 +48,11 @@ const downloadArchive = async () => {
 <template>
   <div
     v-if="hasArchive"
-    class="rounded-xl border border-white/5 bg-white/3 p-4"
+    class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3"
   >
     <div class="flex items-start justify-between gap-2">
       <div>
-        <div class="text-sm font-semibold text-white">
+        <div class="text-sm font-semibold text-gray-900 dark:text-white">
           {{ $t("components.archiveDownloader.title") }}
         </div>
       </div>
@@ -70,8 +70,10 @@ const downloadArchive = async () => {
         />
 
         <template #content>
-          <div class="w-64 rounded-lg border border-white/10 bg-[#0b1220] p-3 text-xs shadow-xl">
-            <p class="text-white/90">
+          <div
+            class="w-64 rounded-lg border border-black/10 bg-white p-3 text-xs shadow-xl dark:border-white/10 dark:bg-[#0b1220]"
+          >
+            <p class="text-gray-700 dark:text-white/90">
               {{ $t("components.archiveDownloader.safety.description") }}
             </p>
             <a
@@ -97,7 +99,7 @@ const downloadArchive = async () => {
 
     <UButton
       block
-      class="mt-3"
+      class="mt-2"
       color="primary"
       variant="soft"
       icon="i-lucide-download"

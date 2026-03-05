@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content"
+import AppArticleNavigation from "@docs/components/app/AppArticleNavigation.vue"
 import AppIndexPage from "@docs/components/app/AppIndexPage.vue"
 import AppRightSidebar from "@docs/components/app/AppRightSidebar.vue"
 import { useDocsSeo } from "@docs/composables/useDocsSeo"
@@ -119,6 +120,10 @@ const emptyKey = computed(() => collectionItem.value?.emptyKey)
       :path-prefix="getCollectionPathPrefix(collectionItem.source)"
       :show-source-tabs="collectionItem.showSourceTabs ?? false"
     />
+    <AppArticleNavigation
+      :docs-path="docsPath"
+      :is-collection="true"
+    />
     <AppRightSidebar
       :main="true"
       :type="pageType"
@@ -131,6 +136,7 @@ const emptyKey = computed(() => collectionItem.value?.emptyKey)
       :items="breadcrumbs"
     />
     <ContentRenderer :value="page" />
+    <AppArticleNavigation :docs-path="docsPath" />
     <AppRightSidebar
       :page="page"
       :type="pageType"

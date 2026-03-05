@@ -39,7 +39,9 @@ const directionItems = computed(() => [
 </script>
 
 <template>
-  <div class="rounded-xl border border-white/5 bg-white/2 p-4 backdrop-blur-sm sm:p-5">
+  <div
+    class="rounded-xl border border-black/5 bg-black/2 p-4 backdrop-blur-sm sm:p-5 dark:border-white/5 dark:bg-white/2"
+  >
     <div class="flex flex-col gap-4">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <UTabs
@@ -158,7 +160,9 @@ const directionItems = computed(() => [
               type="number"
               min="0"
               class="w-full"
-              :ui="{ base: 'bg-white/5 border-white/10 text-white ring-0' }"
+              :ui="{
+                base: 'bg-black/5 border-black/10 text-gray-900 ring-0 dark:bg-white/5 dark:border-white/10 dark:text-white'
+              }"
             />
           </div>
           <div class="space-y-1.5">
@@ -170,7 +174,9 @@ const directionItems = computed(() => [
               value-key="value"
               class="w-full"
               :items="unitItems"
-              :ui="{ base: 'bg-white/5 border-white/10 text-white ring-0' }"
+              :ui="{
+                base: 'bg-black/5 border-black/10 text-gray-900 ring-0 dark:bg-white/5 dark:border-white/10 dark:text-white'
+              }"
             />
           </div>
           <div class="space-y-1.5">
@@ -182,7 +188,9 @@ const directionItems = computed(() => [
               value-key="value"
               class="w-full"
               :items="directionItems"
-              :ui="{ base: 'bg-white/5 border-white/10 text-white ring-0' }"
+              :ui="{
+                base: 'bg-black/5 border-black/10 text-gray-900 ring-0 dark:bg-white/5 dark:border-white/10 dark:text-white'
+              }"
             />
           </div>
         </div>
@@ -190,7 +198,7 @@ const directionItems = computed(() => [
 
       <div
         v-if="result"
-        class="border-primary-500/20 bg-primary-500/5 rounded-xl border p-4"
+        class="border-primary-500/20 bg-primary-50 dark:bg-primary-500/5 rounded-xl border p-4"
       >
         <div class="text-muted text-center text-xs">
           {{ $t("features.calculators.result.title") }}
@@ -201,9 +209,9 @@ const directionItems = computed(() => [
           class="mt-2"
         >
           <div
-            class="border-primary-500/30 bg-primary-500/10 mx-auto w-fit rounded-lg border px-3 py-1.5"
+            class="border-primary-500/10 bg-primary-100/50 dark:border-primary-500/30 dark:bg-primary-500/10 mx-auto w-fit rounded-lg border px-3 py-1.5"
           >
-            <p class="text-primary text-center text-sm font-semibold">
+            <p class="text-primary-600 dark:text-primary text-center text-sm font-semibold">
               {{ intlDf.format(calculatedDate) }}
             </p>
           </div>
@@ -212,11 +220,11 @@ const directionItems = computed(() => [
         <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
           <div
             v-for="(value, key) in result"
-            class="rounded-lg bg-white/3 p-2.5 text-center"
+            class="rounded-lg bg-black/5 p-2.5 text-center dark:bg-white/3"
             :key="key"
           >
             <div class="text-muted text-xs">{{ $t(`features.calculators.result.${key}`) }}</div>
-            <div class="text-lg font-semibold text-white">{{ value }}</div>
+            <div class="text-lg font-semibold text-gray-900 dark:text-white">{{ value }}</div>
           </div>
         </div>
       </div>

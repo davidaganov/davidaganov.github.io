@@ -2,11 +2,13 @@
 import { useMediaQuery } from "@vueuse/core"
 import BaseLight from "@docs/components/base/BaseLight.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
+import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
+
+const colorMode = useColorMode()
 
 const { frontendYears } = useExperience()
 
 const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
-const Squares = defineAsyncComponent(() => import("@ui/components/bits/Squares.vue"))
 const TextType = defineAsyncComponent(() => import("@ui/components/bits/TextType.vue"))
 
 let unmountTimer: ReturnType<typeof setTimeout> | null = null
@@ -27,6 +29,8 @@ const backgroundMounted = ref(false)
 const backgroundVisible = ref(false)
 
 const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
+
+const isDark = computed(() => colorMode.value === "dark")
 
 const scrollToLinks = () => {
   const element = document.getElementById("links-section")
@@ -76,7 +80,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center p-8">
+  <div
+    class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center p-8 transition-colors duration-500"
+    :class="isDark ? 'bg-[#060a15]' : 'bg-white'"
+  >
     <div class="absolute top-6 right-6 z-20 flex items-center gap-3">
       <div class="flex items-center gap-2">
         <USwitch
@@ -85,19 +92,26 @@ onMounted(() => {
           :aria-label="$t('pages.home.disableAnimation')"
           :title="$t('pages.home.disableAnimation')"
           :ui="{
-            base: 'bg-white/10 border border-white/20',
-            thumb: 'bg-white'
+            base: 'bg-black/10! dark:bg-white/10! border border-black/10! dark:border-white/20!',
+            thumb: 'bg-gray-700 dark:bg-white'
           }"
         />
         <UIcon
-          class="size-4 text-white/70"
+          class="size-4 text-gray-500 dark:text-white/70"
           :name="animationEnabled ? 'i-lucide-zap' : 'i-lucide-zap-off'"
         />
       </div>
+      <UiThemeToggle
+        v-if="isDesktop"
+        :blur="true"
+      />
       <UiLanguageSwitcher :blur="true" />
     </div>
 
-    <div class="absolute inset-0 overflow-hidden">
+    <div
+      class="absolute inset-0 overflow-hidden transition-opacity duration-500"
+      :class="backgroundVisible ? 'md:opacity-0' : 'md:opacity-100'"
+    >
       <BaseLight
         class="top-0! z-10"
         :light="0.4"
@@ -116,8 +130,8 @@ onMounted(() => {
             <path
               d="M 60 0 L 0 0 0 60"
               fill="none"
-              stroke="rgba(184, 126, 239, 0.25)"
-              stroke-width="1"
+              stroke-width="1.5"
+              :stroke="isDark ? 'rgba(184, 126, 239, 0.25)' : 'rgba(124, 58, 237, 0.45)'"
             />
           </pattern>
 
@@ -129,13 +143,15 @@ onMounted(() => {
           >
             <stop
               offset="40%"
-              stop-color="#0b0b0b"
+              stop-color="currentColor"
+              class="text-white dark:text-[#0b0b0b]"
               stop-opacity="0"
             />
             <stop
               offset="100%"
-              stop-color="#0b0b0b"
-              stop-opacity="0.65"
+              stop-color="currentColor"
+              class="text-white dark:text-[#0b0b0b]"
+              :stop-opacity="isDark ? 0.65 : 0.3"
             />
           </radialGradient>
         </defs>
@@ -161,7 +177,7 @@ onMounted(() => {
         :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
       >
         <FaultyTerminal
-          tint="#b87eef"
+          :tint="isDark ? '#b87eef' : '#a76ff2'"
           :scale="1.5"
           :grid-mul="[2, 1]"
           :digit-size="1.2"
@@ -177,40 +193,27 @@ onMounted(() => {
           :mouse-react="true"
           :mouse-strength="0.3"
           :page-load-animation="true"
-          :brightness="1"
+          :brightness="isDark ? 1 : 1.1"
         />
       </div>
     </ClientOnly>
 
-    <ClientOnly>
-      <div
-        v-if="backgroundMounted && !isDesktop"
-        class="absolute inset-0 overflow-hidden transition-opacity duration-500 ease-in-out"
-        :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
-      >
-        <Squares
-          direction="diagonal"
-          border-color="rgba(184, 126, 239, 0.3)"
-          hover-fill-color="rgba(184, 126, 239, 0.2)"
-          :speed="0.5"
-          :square-size="50"
-        />
-      </div>
-    </ClientOnly>
-
-    <div class="bg-background-deep/50 pointer-events-none absolute inset-0 backdrop-blur-[1px]" />
+    <div
+      class="pointer-events-none absolute inset-0 backdrop-blur-[1px] transition-opacity duration-500"
+      :class="isDark ? 'bg-black/40' : 'bg-white/10'"
+    />
 
     <div class="relative z-10 flex max-w-3xl flex-col items-center text-center">
       <span
-        class="text-primary-300 mb-6 inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium tracking-wide backdrop-blur-md"
+        class="text-primary-800 dark:text-primary-300 mb-6 inline-block rounded-full border border-white/10 bg-white/25 px-3 py-1 text-xs font-medium tracking-wide backdrop-blur-md dark:border-white/10 dark:bg-white/5"
       >
         {{ $t("pages.home.badge") }}
       </span>
 
       <TextType
         as="h1"
-        class="mb-6 bg-linear-to-r from-white to-white/60 bg-clip-text pb-2 text-4xl font-bold tracking-tight text-transparent sm:text-7xl lg:text-8xl"
-        cursor-class-name="text-white"
+        class="mb-6 pb-2 text-4xl font-bold tracking-tight text-black sm:text-7xl lg:text-8xl dark:bg-linear-to-r dark:from-white dark:to-white/60 dark:bg-clip-text dark:text-transparent"
+        cursor-class-name="text-black dark:text-white"
         :text="$t('global.name')"
         :typing-speed="100"
         :show-cursor="true"
@@ -219,13 +222,13 @@ onMounted(() => {
         :disabled="!animationEnabled"
       />
 
-      <p class="max-w-3xl text-lg text-balance text-gray-400 sm:text-xl">
+      <p class="max-w-3xl text-lg text-balance text-gray-900 sm:text-xl dark:text-gray-400">
         {{ $t("pages.home.description", { frontendYears }) }}
       </p>
 
       <div class="mt-10 flex gap-4">
         <NuxtLink
-          class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/10 px-8 py-3 font-medium text-white backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(184,126,239,0.3)]"
+          class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg border border-black/20 bg-white/25 px-8 py-3 font-medium text-gray-900 backdrop-blur-md transition-all duration-300 hover:bg-white/10 hover:shadow-lg dark:border-white/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:shadow-[0_0_20px_rgba(184,126,239,0.3)]"
           :to="aboutEntryPath"
         >
           <span class="mr-2">{{ $t("pages.home.getStarted") }}</span>
@@ -239,12 +242,12 @@ onMounted(() => {
         </NuxtLink>
 
         <button
-          class="group hidden items-center justify-center rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-gray-400 backdrop-blur-md transition-colors hover:border-white/20 hover:bg-white/5 hover:text-white md:flex"
+          class="group hidden items-center justify-center rounded-lg border border-black/20 bg-white/25 px-4 py-3 text-gray-600 backdrop-blur-md transition-colors hover:border-white/20 hover:bg-white/10 hover:text-gray-900 md:flex dark:border-white/10 dark:bg-black/20 dark:text-gray-400 dark:hover:border-white/20 dark:hover:bg-white/5 dark:hover:text-white"
           @click="toggle"
         >
           <UIcon
             name="i-lucide-command"
-            class="mr-2 h-4 w-4"
+            class="mr-2 size-4"
           />
           <span class="text-sm">Ctrl+K</span>
         </button>
@@ -253,7 +256,7 @@ onMounted(() => {
 
     <div class="absolute right-0 bottom-5 left-0 z-20 flex justify-center">
       <button
-        class="group focus-visible:ring-primary-400/40 flex flex-col items-center gap-2 text-gray-400/80 transition-colors duration-300 hover:text-white focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:outline-none"
+        class="group focus-visible:ring-primary-400/40 flex flex-col items-center gap-2 text-gray-900 transition-colors duration-300 hover:text-gray-900 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:outline-none dark:text-gray-400/80 dark:hover:text-white"
         aria-label="Scroll to links"
         @click="scrollToLinks"
       >

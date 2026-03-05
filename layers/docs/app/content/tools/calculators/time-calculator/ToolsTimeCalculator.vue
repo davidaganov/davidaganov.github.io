@@ -74,11 +74,13 @@ const onMaxModeUpdate = (value: string | number) => {
 </script>
 
 <template>
-  <div class="rounded-xl border border-white/5 bg-white/2 p-4 backdrop-blur-sm sm:p-5">
+  <div
+    class="rounded-xl border border-black/5 bg-black/2 p-4 backdrop-blur-sm sm:p-5 dark:border-white/5 dark:bg-white/2"
+  >
     <div class="flex flex-col gap-6">
       <div class="flex flex-col gap-3">
         <div class="flex items-center justify-between">
-          <span class="text-sm font-medium text-white/80">
+          <span class="text-sm font-medium text-gray-700 dark:text-white/80">
             {{ $t("features.calculators.time.title") }}
           </span>
           <div class="flex items-center gap-2">
@@ -91,7 +93,9 @@ const onMaxModeUpdate = (value: string | number) => {
               class="w-28"
               :model-value="maxMode"
               :items="maxModeItems"
-              :ui="{ base: 'bg-white/5 border-white/10 text-white ring-0' }"
+              :ui="{
+                base: 'bg-black/5 border-black/10 text-gray-900 ring-0 dark:bg-white/5 dark:border-white/10 dark:text-white'
+              }"
               @update:model-value="onMaxModeUpdate"
             />
           </div>
@@ -103,7 +107,9 @@ const onMaxModeUpdate = (value: string | number) => {
             inputmode="numeric"
             class="w-full"
             :model-value="hoursInput"
-            :ui="{ base: 'bg-white/5 border-white/10 text-white ring-0 text-right' }"
+            :ui="{
+              base: 'bg-black/5 border-black/10 text-gray-900 ring-0 text-right dark:bg-white/5 dark:border-white/10 dark:text-white'
+            }"
             :placeholder="$t('features.calculators.time.placeholders.hours')"
             :id="HOURS_INPUT_ID"
             @update:model-value="(value) => setSegment('hours', String(value ?? ''))"
@@ -116,7 +122,9 @@ const onMaxModeUpdate = (value: string | number) => {
             inputmode="numeric"
             class="w-full"
             :model-value="minutesInput"
-            :ui="{ base: 'bg-white/5 border-white/10 text-white ring-0 text-right' }"
+            :ui="{
+              base: 'bg-black/5 border-black/10 text-gray-900 ring-0 text-right dark:bg-white/5 dark:border-white/10 dark:text-white'
+            }"
             :placeholder="$t('features.calculators.time.placeholders.minutes')"
             @update:model-value="(value) => setSegment('minutes', String(value ?? ''))"
             @blur="normalizeSegmentOnBlur('minutes')"
@@ -128,7 +136,9 @@ const onMaxModeUpdate = (value: string | number) => {
             inputmode="numeric"
             class="w-full"
             :model-value="secondsInput"
-            :ui="{ base: 'bg-white/5 border-white/10 text-white ring-0 text-right' }"
+            :ui="{
+              base: 'bg-black/5 border-black/10 text-gray-900 ring-0 text-right dark:bg-white/5 dark:border-white/10 dark:text-white'
+            }"
             :placeholder="$t('features.calculators.time.placeholders.seconds')"
             @update:model-value="(value) => setSegment('seconds', String(value ?? ''))"
             @blur="normalizeSegmentOnBlur('seconds')"
@@ -201,12 +211,14 @@ const onMaxModeUpdate = (value: string | number) => {
 
       <div
         v-if="resultDisplay"
-        class="border-primary-500/20 bg-primary-500/5 rounded-xl border p-4 transition-all"
+        class="border-primary-500/20 bg-primary-50 dark:bg-primary-500/5 rounded-xl border p-4 transition-all"
       >
         <div class="text-muted text-center text-xs">
           {{ $t("features.calculators.result.title") }}
         </div>
-        <p class="text-primary mt-1 text-center text-3xl font-bold tracking-wide">
+        <p
+          class="text-primary-600 dark:text-primary mt-1 text-center text-3xl font-bold tracking-wide"
+        >
           {{ resultDisplay }}
         </p>
       </div>

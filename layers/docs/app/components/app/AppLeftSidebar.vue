@@ -9,9 +9,9 @@ const { renderedSidebarItems } = useSidebarItems()
 
 <template>
   <aside
-    class="sticky top-29 h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto border-r border-white/5"
+    class="sticky top-(--ui-header-height) h-fit max-h-[calc(100vh-var(--ui-header-height))] w-64 shrink-0 overflow-y-auto"
   >
-    <div class="py-8 pr-4">
+    <div class="pr-4 pb-8">
       <nav class="space-y-1">
         <template
           v-for="(item, index) in renderedSidebarItems"

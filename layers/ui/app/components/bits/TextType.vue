@@ -65,8 +65,11 @@ const getRandomSpeed = () => {
 }
 
 const getCurrentTextColor = () => {
-  if (!props.textColors.length) return "#ffffff"
-  return props.textColors[currentTextIndex.value % props.textColors.length]
+  if (props.textColors.length) {
+    return props.textColors[currentTextIndex.value % props.textColors.length]
+  }
+
+  return undefined
 }
 
 let timeout: ReturnType<typeof setTimeout> | null = null
@@ -172,7 +175,7 @@ onBeforeUnmount(() => {
     <template v-else>
       <span
         class="inline"
-        :style="{ color: getCurrentTextColor() }"
+        :style="getCurrentTextColor() ? { color: getCurrentTextColor() } : {}"
       >
         {{ displayedText }}
       </span>

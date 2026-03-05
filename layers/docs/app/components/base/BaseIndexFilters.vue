@@ -44,8 +44,8 @@ const isTagSelected = (tag: string) => props.selectedTags.includes(tag)
 
 const getTagButtonClass = (tag: string) =>
   isTagSelected(tag)
-    ? "border-primary-500/50 bg-primary-500/15 text-primary-300"
-    : "text-muted border-white/10 bg-white/5 hover:border-white/20 hover:text-white"
+    ? "bg-primary-200/50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-300 border-primary-500/20 dark:border-primary-500/50"
+    : "text-muted bg-black/5 dark:bg-white/5 border-black/5 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white"
 
 const handleSort = () => {
   emit("toggleSort")
@@ -63,7 +63,7 @@ const handleReset = () => {
 <template>
   <div class="mb-4 flex flex-col gap-3 sm:mb-6">
     <div class="grid w-full items-center justify-between gap-x-4 gap-y-2 lg:grid-cols-[1fr_auto]">
-      <h1 class="text-2xl font-semibold tracking-tight text-white">
+      <h1 class="text-highlighted mb-4 text-4xl font-bold">
         {{ $t(props.titleKey) }}
       </h1>
       <p
@@ -78,10 +78,10 @@ const handleReset = () => {
         v-model="sourceFilterModel"
         :items="sourceFilterTabs"
         :ui="{
-          list: 'rounded-lg border border-white/8 bg-white/2 py-0.5 px-1',
+          list: 'rounded-lg border border-black/8 bg-black/2 dark:border-white/8 dark:bg-white/2 py-0.5 px-1',
           trigger:
-            'rounded-md px-3 py-1.5 text-xs font-medium data-[state=active]:text-white data-[state=inactive]:text-muted data-[state=inactive]:hover:text-white',
-          indicator: 'rounded-md bg-white/8'
+            'rounded-md px-3 py-1.5 text-xs font-medium data-[state=active]:text-primary-600 dark:data-[state=active]:text-white data-[state=inactive]:text-muted data-[state=inactive]:hover:text-primary-500 dark:data-[state=inactive]:hover:text-white',
+          indicator: 'rounded-md bg-black/5 dark:bg-white/8'
         }"
       />
     </div>
@@ -91,7 +91,7 @@ const handleReset = () => {
         variant="ghost"
         size="xs"
         :icon="sortIcon"
-        :class="sortOrder === SORT_ORDER.DESC ? 'text-white' : 'text-muted'"
+        :class="sortOrder === SORT_ORDER.DESC ? 'text-primary-600 dark:text-white' : 'text-muted'"
         @click="handleSort"
       />
 

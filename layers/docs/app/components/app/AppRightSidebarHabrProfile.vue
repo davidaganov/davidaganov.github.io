@@ -9,7 +9,7 @@ const { habrCount, siteCount } = useHabrArticles()
 </script>
 
 <template>
-  <div class="rounded-xl border border-white/5 bg-white/3 p-4">
+  <div class="rounded-xl border border-black/5 bg-black/3 p-4 dark:border-white/5 dark:bg-white/3">
     <div class="flex items-center gap-3">
       <div class="relative">
         <img
@@ -27,12 +27,14 @@ const { habrCount, siteCount } = useHabrArticles()
         </div>
       </div>
       <div class="min-w-0">
-        <div class="truncate text-sm font-semibold text-white">{{ $t("global.name") }}</div>
+        <div class="truncate text-sm font-semibold text-gray-900 dark:text-white">
+          {{ $t("global.name") }}
+        </div>
         <div class="text-muted truncate text-xs">@{{ USERNAME }}</div>
       </div>
     </div>
 
-    <hr class="my-3 border-white/10" />
+    <hr class="my-3 border-black/5 dark:border-white/10" />
 
     <div class="grid grid-cols-2 gap-2">
       <UiBadge
@@ -49,17 +51,17 @@ const { habrCount, siteCount } = useHabrArticles()
       />
     </div>
 
-    <a
+    <UButton
+      block
       target="_blank"
       rel="noopener noreferrer"
-      class="bg-primary-500/15 text-primary-300 hover:bg-primary-500/20 mt-3 flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors"
+      class="mt-3"
+      color="primary"
+      variant="soft"
+      icon="i-simple-icons-habr"
       :href="`${HABR_LINK}/articles`"
     >
-      <UIcon
-        name="i-simple-icons-habr"
-        class="size-4"
-      />
-      <span>{{ $t("pages.profile.myProfile") }}</span>
-    </a>
+      {{ $t("pages.profile.myProfile") }}
+    </UButton>
   </div>
 </template>

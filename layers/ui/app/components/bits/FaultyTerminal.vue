@@ -230,7 +230,7 @@ void main() {
       col += (rnd - 0.5) * (uDither * 0.003922);
     }
 
-    gl_FragColor = vec4(col, 1.0);
+    gl_FragColor = vec4(col, max(col.r, max(col.g, col.b)));
 }
 `
 
@@ -302,10 +302,10 @@ const setup = () => {
   if (!ctn) return
 
   const dpr = props.dpr ?? Math.min(window.devicePixelRatio || 1, 2)
-  const renderer = new Renderer({ dpr })
+  const renderer = new Renderer({ dpr, alpha: true, premultipliedAlpha: false })
   rendererRef.value = renderer
   const gl = renderer.gl
-  gl.clearColor(0, 0, 0, 1)
+  gl.clearColor(0, 0, 0, 0)
 
   const geometry = new Triangle(gl)
 
