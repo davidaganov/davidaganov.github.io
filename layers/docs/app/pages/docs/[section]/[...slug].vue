@@ -83,10 +83,9 @@ const { breadcrumbs, pageType } = useDocsSeo({
 <template>
   <div v-if="collectionItem || page">
     <!-- Header: Breadcrumbs & Counter -->
-    <div class="flex items-center justify-between gap-4">
+    <div class="mb-6 flex items-center justify-between gap-4">
       <UBreadcrumb
         v-if="breadcrumbs.length"
-        class="mb-6"
         :items="breadcrumbs"
       />
       <BaseViewCounter v-if="!collectionItem" />
@@ -114,5 +113,7 @@ const { breadcrumbs, pageType } = useDocsSeo({
         :type="pageType"
       />
     </template>
+
+    <AppArticleNavigation :docs-path="docsPath" />
   </div>
 </template>

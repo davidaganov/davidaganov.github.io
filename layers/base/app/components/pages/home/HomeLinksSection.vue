@@ -81,6 +81,7 @@ onUnmounted(() => {
           <UTabs
             v-model="mode"
             :items="viewModeItems"
+            :content="false"
             :ui="{
               list: 'rounded-full border border-black/10 bg-black/5 p-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5',
               trigger:

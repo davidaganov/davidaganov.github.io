@@ -102,7 +102,7 @@ onMounted(() => {
         />
       </div>
       <UiThemeToggle
-        v-if="isDesktop"
+        class="hidden lg:flex"
         :blur="true"
       />
       <UiLanguageSwitcher :blur="true" />

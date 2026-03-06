@@ -29,7 +29,7 @@ export const getLinks = async (): Promise<LinksGistContent> => {
     Accept: "application/vnd.github+json"
   }
 
-  if (config.githubToken) {
+  if (import.meta.server && config.githubToken) {
     headers.Authorization = `Bearer ${config.githubToken}`
   }
 

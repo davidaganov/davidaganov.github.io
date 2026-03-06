@@ -76,6 +76,7 @@ const handleReset = () => {
       <UTabs
         v-if="props.showSourceTabs"
         v-model="sourceFilterModel"
+        :content="false"
         :items="sourceFilterTabs"
         :ui="{
           list: 'rounded-lg border border-black/8 bg-black/2 dark:border-white/8 dark:bg-white/2 py-0.5 px-1',
