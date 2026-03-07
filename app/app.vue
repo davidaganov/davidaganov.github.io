@@ -8,6 +8,7 @@ const { locale, t } = useI18n()
 const route = useRoute()
 const switchLocalePath = useSwitchLocalePath()
 const runtimeConfig = useRuntimeConfig()
+const colorMode = useColorMode()
 
 const siteUrl = computed(() => {
   const value = String(runtimeConfig.public.siteUrl || "").trim()
@@ -49,6 +50,9 @@ useHead({
     { rel: "alternate", hreflang: "en", href: enUrl },
     { rel: "alternate", hreflang: "x-default", href: ruUrl }
   ],
+  htmlAttrs: {
+    class: () => (colorMode.value === "dark" ? "dark" : "")
+  },
   script: [
     {
       key: "ld-website",
@@ -74,7 +78,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <UApp class="text-white">
+  <UApp>
     <NuxtLayout>
       <NuxtPage />
       <UiCommandPalette />

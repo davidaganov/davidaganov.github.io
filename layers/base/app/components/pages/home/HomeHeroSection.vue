@@ -5,7 +5,6 @@ import HomeLoader from "@base/components/pages/home/HomeLoader.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 
-const colorMode = useColorMode()
 const { frontendYears } = useExperience()
 const isDesktop = useMediaQuery("(min-width: 768px)")
 
@@ -32,8 +31,6 @@ const backgroundVisible = ref(false)
 
 const isLocked = useScrollLock(typeof document !== "undefined" ? document.body : null)
 const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
-
-const isDark = computed(() => colorMode.value === "dark")
 
 const scrollToLinks = () => {
   const element = document.getElementById("links-section")
@@ -108,8 +105,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center p-8 transition-colors duration-500"
-    :class="isDark ? 'bg-[#060a15]' : 'bg-white'"
+    class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center bg-white p-8 transition-colors duration-500 dark:bg-[#060a15]"
   >
     <HomeLoader
       v-if="animationEnabled"
@@ -164,7 +160,7 @@ onMounted(() => {
               d="M 60 0 L 0 0 0 60"
               fill="none"
               stroke-width="1.5"
-              :stroke="isDark ? 'rgba(184, 126, 239, 0.25)' : 'rgba(124, 58, 237, 0.45)'"
+              class="stroke-[rgba(124,58,237,0.45)] dark:stroke-[rgba(184,126,239,0.25)]"
             />
           </pattern>
 
@@ -184,7 +180,8 @@ onMounted(() => {
               offset="100%"
               stop-color="currentColor"
               class="text-white dark:text-[#0b0b0b]"
-              :stop-opacity="isDark ? 0.65 : 0.3"
+              stop-opacity="0.3"
+              style="stop-opacity: 0.3"
             />
           </radialGradient>
         </defs>
@@ -210,7 +207,7 @@ onMounted(() => {
         :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
       >
         <FaultyTerminal
-          :tint="isDark ? '#b87eef' : '#a76ff2'"
+          tint="#b87eef"
           :scale="1.5"
           :grid-mul="[2, 1]"
           :digit-size="1.2"
@@ -227,15 +224,14 @@ onMounted(() => {
           :mouse-strength="0.3"
           :page-load-animation="true"
           :start-animation="terminalStartAnimation"
-          :brightness="isDark ? 1 : 1.1"
+          :brightness="1.1"
           @ready="handleTerminalReady"
         />
       </div>
     </ClientOnly>
 
     <div
-      class="pointer-events-none absolute inset-0 backdrop-blur-[1px] transition-opacity duration-500"
-      :class="isDark ? 'bg-black/40' : 'bg-white/10'"
+      class="pointer-events-none absolute inset-0 bg-white/10 backdrop-blur-[1px] transition-opacity duration-500 dark:bg-black/40"
     />
 
     <div class="relative z-10 flex max-w-3xl flex-col items-center text-center">

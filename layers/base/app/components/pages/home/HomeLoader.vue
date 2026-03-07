@@ -46,10 +46,12 @@ onMounted(() => {
   <Teleport to="body">
     <div
       v-if="isVisible"
-      class="fixed inset-0 z-100 flex flex-col items-center justify-center bg-[#060a15] text-white transition-opacity duration-500"
+      class="fixed inset-0 z-100 flex flex-col items-center justify-center bg-white text-gray-900 transition-opacity duration-500 dark:bg-[#060a15] dark:text-white"
       :class="{ 'opacity-0': isFadingOut, 'opacity-100': !isFadingOut }"
     >
-      <div class="mb-4 text-sm font-medium tracking-widest text-white/50 uppercase">
+      <div
+        class="mb-4 text-sm font-medium tracking-widest text-gray-800 uppercase dark:text-white/50"
+      >
         {{ $t("global.status.loading") }}
       </div>
 
