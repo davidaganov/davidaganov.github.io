@@ -22,6 +22,7 @@ const props = withDefaults(
     startOnVisible?: boolean
     reverseMode?: boolean
     disabled?: boolean
+    startAnimation?: boolean
     onSentenceComplete?: (sentence: string, index: number) => void
   }>(),
   {
@@ -43,6 +44,7 @@ const props = withDefaults(
     reverseMode: false,
     onSentenceComplete: undefined,
     disabled: false,
+    startAnimation: true,
     textColors: () => []
   }
 )
@@ -122,9 +124,9 @@ const executeTypingAnimation = () => {
 }
 
 watch(
-  [displayedText, currentCharIndex, isDeleting, isVisible],
+  [displayedText, currentCharIndex, isDeleting, isVisible, () => props.startAnimation],
   () => {
-    if (!isVisible.value) return
+    if (!isVisible.value || !props.startAnimation) return
     clearTimeoutIfNeeded()
 
     if (currentCharIndex.value === 0 && !isDeleting.value && displayedText.value === "") {

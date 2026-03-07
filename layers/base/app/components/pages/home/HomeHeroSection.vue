@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useMediaQuery } from "@vueuse/core"
+import { useMediaQuery, useScrollLock } from "@vueuse/core"
 import BaseLight from "@docs/components/base/BaseLight.vue"
+import HomeLoader from "@base/components/pages/home/HomeLoader.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 
 const colorMode = useColorMode()
-
 const { frontendYears } = useExperience()
+const isDesktop = useMediaQuery("(min-width: 768px)")
 
 const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
 const TextType = defineAsyncComponent(() => import("@ui/components/bits/TextType.vue"))
@@ -21,13 +22,15 @@ const animationEnabled = useCookie<boolean>("animation_enabled", {
   path: "/"
 })
 
-const isDesktop = useMediaQuery("(min-width: 768px)")
-
+const isLoading = ref(true)
+const terminalReady = ref(false)
+const terminalStartAnimation = ref(false)
 const noiseAmp = ref(0.45)
 const backgroundReady = ref(false)
 const backgroundMounted = ref(false)
 const backgroundVisible = ref(false)
 
+const isLocked = useScrollLock(typeof document !== "undefined" ? document.body : null)
 const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
 
 const isDark = computed(() => colorMode.value === "dark")
@@ -39,6 +42,22 @@ const scrollToLinks = () => {
   }
 }
 
+const handleTerminalReady = () => {
+  terminalReady.value = true
+}
+
+const handleLoaderHidden = () => {
+  isLoading.value = false
+  isLocked.value = false
+
+  terminalStartAnimation.value = true
+  backgroundVisible.value = true
+}
+
+watchEffect(() => {
+  if (isLoading.value) isLocked.value = true
+})
+
 watch(
   [animationEnabled, backgroundReady],
   ([anim, ready]) => {
@@ -49,14 +68,22 @@ watch(
 
     if (anim && ready) {
       backgroundMounted.value = true
-      nextTick(() => {
-        backgroundVisible.value = true
-      })
     } else {
       backgroundVisible.value = false
       unmountTimer = setTimeout(() => {
         backgroundMounted.value = false
       }, 500)
+    }
+  },
+  { immediate: true }
+)
+
+watch(
+  [animationEnabled, backgroundMounted],
+  ([anim, _mounted]) => {
+    if (!anim) {
+      isLoading.value = false
+      isLocked.value = false
     }
   },
   { immediate: true }
@@ -84,6 +111,12 @@ onMounted(() => {
     class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center p-8 transition-colors duration-500"
     :class="isDark ? 'bg-[#060a15]' : 'bg-white'"
   >
+    <HomeLoader
+      v-if="animationEnabled"
+      :is-finished="terminalReady"
+      @hidden="handleLoaderHidden"
+    />
+
     <div class="absolute top-6 right-6 z-20 flex items-center gap-3">
       <div class="flex items-center gap-2">
         <USwitch
@@ -193,7 +226,9 @@ onMounted(() => {
           :mouse-react="true"
           :mouse-strength="0.3"
           :page-load-animation="true"
+          :start-animation="terminalStartAnimation"
           :brightness="isDark ? 1 : 1.1"
+          @ready="handleTerminalReady"
         />
       </div>
     </ClientOnly>
@@ -220,6 +255,7 @@ onMounted(() => {
         :loop="false"
         :hide-cursor-after-complete="true"
         :disabled="!animationEnabled"
+        :start-animation="!animationEnabled || terminalStartAnimation"
       />
 
       <p class="max-w-3xl text-lg text-balance text-gray-900 sm:text-xl dark:text-gray-400">

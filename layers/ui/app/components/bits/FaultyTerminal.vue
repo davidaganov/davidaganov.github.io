@@ -26,6 +26,7 @@ interface FaultyTerminalProps {
   brightness?: number
   className?: string
   style?: Record<string, string | number>
+  startAnimation?: boolean
 }
 
 const vertexShader = `
@@ -254,8 +255,13 @@ const props = withDefaults(defineProps<FaultyTerminalProps>(), {
   pageLoadAnimation: true,
   brightness: 1,
   className: "",
-  style: () => ({})
+  style: () => ({}),
+  startAnimation: true
 })
+
+const emit = defineEmits<{
+  (e: "ready"): void
+}>()
 
 const containerRef = useTemplateRef("containerRef")
 const programRef = ref<Program | null>(null)
@@ -266,6 +272,7 @@ const frozenTimeRef = ref(0)
 const rafRef = ref<number>(0)
 const loadAnimationStartRef = ref<number>(0)
 const timeOffsetRef = ref<number>(Math.random() * 100)
+const isReadyEmitted = ref(false)
 
 const tintVec = computed(() => hexToRgb(props.tint))
 
@@ -361,7 +368,7 @@ const setup = () => {
     if (!programRef.value || !rendererRef.value) return
     if (!props.pause) rafRef.value = requestAnimationFrame((nextT) => updateLoop?.(nextT))
 
-    if (props.pageLoadAnimation && loadAnimationStartRef.value === 0) {
+    if (props.pageLoadAnimation && props.startAnimation && loadAnimationStartRef.value === 0) {
       loadAnimationStartRef.value = t
     }
 
@@ -393,7 +400,15 @@ const setup = () => {
     }
 
     renderer.render({ scene: mesh })
+
+    if (!isReadyEmitted.value) {
+      isReadyEmitted.value = true
+      requestAnimationFrame(() => {
+        emit("ready")
+      })
+    }
   }
+
   if (!props.pause) rafRef.value = requestAnimationFrame((t) => updateLoop?.(t))
   ctn.appendChild(gl.canvas)
 
@@ -410,6 +425,19 @@ const setup = () => {
     updateLoop = null
   }
 }
+
+watch(
+  () => props.pause,
+  (paused) => {
+    if (!cleanup) return
+    if (paused) {
+      stopLoop()
+      return
+    }
+
+    startLoop()
+  }
+)
 
 onMounted(() => {
   const ctn = containerRef.value
@@ -428,19 +456,6 @@ onBeforeUnmount(() => {
     cleanup = null
   }
 })
-
-watch(
-  () => props.pause,
-  (paused) => {
-    if (!cleanup) return
-    if (paused) {
-      stopLoop()
-      return
-    }
-
-    startLoop()
-  }
-)
 </script>
 
 <template>
