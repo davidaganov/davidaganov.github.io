@@ -5,6 +5,7 @@ icon: i-lucide-file-text
 habrUrl: https://habr.com/ru/articles/982452/
 publishedAt: 2026-01-02
 readingTime: 6 мин
+languageOriginal: "ru"
 tags:
   - Искусственный интеллект
   - Разработка

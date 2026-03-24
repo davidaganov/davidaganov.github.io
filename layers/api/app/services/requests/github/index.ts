@@ -30,3 +30,11 @@ export const getUser = async (username: string): Promise<GitHubUserData | null> 
     return null
   }
 }
+
+export const getLatestRelease = async (repo: string): Promise<{ tag_name: string } | null> => {
+  try {
+    return await request.get<{ tag_name: string }>(routes.latestRelease(repo))
+  } catch {
+    return null
+  }
+}

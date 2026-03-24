@@ -4,6 +4,7 @@ description: A request-layer architecture that frees components from duplicated 
 icon: i-lucide-book-open
 publishedAt: 2026-02-20
 readingTime: 5 min
+languageOriginal: "ru"
 tags:
   - Frontend
   - Architecture

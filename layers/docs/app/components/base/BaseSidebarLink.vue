@@ -13,7 +13,7 @@ const route = useRoute()
   <NuxtLink
     v-if="props.item.to"
     :to="localePath(props.item.to)"
-    class="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all"
+    class="group ml-2 flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all"
     :class="
       route.path === localePath(props.item.to)
         ? 'bg-primary-200/50 dark:bg-primary-500/10 text-primary-800 dark:text-primary-400'

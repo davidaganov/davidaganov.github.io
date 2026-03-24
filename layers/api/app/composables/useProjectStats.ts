@@ -9,6 +9,7 @@ interface ProjectStats {
   github?: {
     stars: number
     lastCommit: string
+    version?: string
     languages: Array<{ name: string; percentage: number; color: string }>
   }
 }
@@ -70,9 +71,10 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
 
   const fetchGithubStats = async (repo: string) => {
     try {
-      const [repoData, languagesData] = await Promise.all([
+      const [repoData, languagesData, releaseData] = await Promise.all([
         ApiClient.github.getRepo(repo),
-        ApiClient.github.getLanguages(repo)
+        ApiClient.github.getLanguages(repo),
+        ApiClient.github.getLatestRelease(repo)
       ])
 
       if (!repoData || !languagesData) return null
@@ -91,6 +93,7 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
       return {
         stars: repoData.stargazers_count || 0,
         lastCommit: repoData.pushed_at || "",
+        version: releaseData?.tag_name ? releaseData.tag_name.replace(/^v/, "") : undefined,
         languages
       }
     } catch {

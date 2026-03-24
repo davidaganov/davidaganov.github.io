@@ -45,6 +45,7 @@
         "guides": "Guides",
         "tools": "Tools",
         "articles": "Articles",
+        "starters": "Starters",
         "projects": "Projects",
         "contacts": "Contacts"
       },
@@ -100,6 +101,15 @@
       "myHabr": "My Habr articles",
       "mySite": "Website notes",
       "readOnHabr": "Read on Habr",
+      "translationWarning": {
+        "title": "Machine Translated",
+        "description": "This article was originally written in {lang} and has been translated by AI.",
+        "readOriginal": "Read original"
+      },
+      "languages": {
+        "ru": "Russian",
+        "en": "English"
+      },
       "sort": {
         "newest": "Newest first",
         "oldest": "Oldest first"
@@ -109,6 +119,10 @@
         "readingTime": "Reading time:",
         "views": "Views:"
       }
+    },
+    "starters": {
+      "empty": "No starters yet.",
+      "indexNote": "Ready-made templates for quickly bootstrapping projects on different stacks. Each starter is a minimal but thought-out starting point."
     },
     "profile": {
       "myProfile": "My profile",

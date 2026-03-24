@@ -32,7 +32,9 @@ const props = withDefaults(
     />
     <template v-if="props.main">
       <AppRightSidebarHabrProfile v-if="props.type === TYPE_PAGE.ARTICLE" />
-      <AppRightSidebarGitHubProfile v-if="props.type === TYPE_PAGE.PROJECT" />
+      <AppRightSidebarGitHubProfile
+        v-else-if="props.type === TYPE_PAGE.PROJECT || props.type === TYPE_PAGE.STARTER"
+      />
     </template>
     <template v-else>
       <AppRightSidebarArticleMeta
@@ -40,7 +42,7 @@ const props = withDefaults(
         :page="props.page"
       />
       <AppRightSidebarProjectMeta
-        v-else-if="props.type === TYPE_PAGE.PROJECT"
+        v-else-if="props.type === TYPE_PAGE.PROJECT || props.type === TYPE_PAGE.STARTER"
         :page="props.page"
       />
       <AppRightSidebarArchiveDownload />

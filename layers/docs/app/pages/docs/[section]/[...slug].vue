@@ -107,6 +107,7 @@ const { breadcrumbs, pageType } = useDocsSeo({
     </template>
 
     <template v-else-if="page">
+      <AppArticleTranslationWarning :page="page" />
       <ContentRenderer :value="page" />
       <AppRightSidebar
         :page="page"

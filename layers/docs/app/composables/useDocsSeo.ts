@@ -92,7 +92,14 @@ export const useDocsSeo = ({
 
   const pageType = computed<TYPE_PAGE>(() => {
     const pt = parentCollectionItem.value?.pageType
-    return pt === TYPE_PAGE.PROJECT ? TYPE_PAGE.PROJECT : TYPE_PAGE.ARTICLE
+    switch (pt) {
+      case TYPE_PAGE.PROJECT:
+        return TYPE_PAGE.PROJECT
+      case TYPE_PAGE.STARTER:
+        return TYPE_PAGE.STARTER
+      default:
+        return TYPE_PAGE.ARTICLE
+    }
   })
 
   const structuredDataJson = computed<string | undefined>(() => {

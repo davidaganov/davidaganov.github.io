@@ -45,7 +45,7 @@ const tagClass = (tag: string) =>
         <div class="flex items-start justify-between gap-3">
           <div class="min-w-0">
             <h2
-              class="group-hover:text-primary-800 text-sm font-semibold text-gray-900 transition-colors sm:text-base dark:text-white"
+              class="group-hover:text-primary-600 text-sm font-semibold text-gray-900 transition-colors sm:text-base dark:text-white"
             >
               {{ article.title }}
             </h2>

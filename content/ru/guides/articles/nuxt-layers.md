@@ -5,6 +5,7 @@ icon: i-lucide-file-text
 habrUrl: https://habr.com/ru/articles/830968/
 publishedAt: 2025-07-24
 readingTime: 3 мин
+languageOriginal: "ru"
 tags:
   - Nuxt
   - Frontend

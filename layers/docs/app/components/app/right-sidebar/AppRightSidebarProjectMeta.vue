@@ -68,10 +68,10 @@ const githubStars = computed(() => {
 
     <div class="mt-2 grid grid-cols-12 gap-2">
       <UiBadge
-        v-if="stats.npm?.version"
+        v-if="stats.npm?.version || stats.github?.version"
         class="col-span-4"
         icon="i-lucide-arrow-down-z-a"
-        :value="`v${stats.npm.version}`"
+        :value="`v${stats.npm?.version || stats.github?.version}`"
         :loading="loading"
       />
       <UiBadge
@@ -85,7 +85,14 @@ const githubStars = computed(() => {
       <UiBadge
         v-if="stats.github?.lastCommit"
         icon="i-lucide-clock"
-        class="col-span-12 flex-col!"
+        :class="[
+          'flex-col!',
+          stats.npm?.downloads
+            ? 'col-span-12'
+            : stats.npm?.version || stats.github?.version
+              ? 'col-span-8'
+              : 'col-span-12'
+        ]"
         :label="$t('pages.projects.metrics.lastCommit') + `:`"
         :value="formatDate(stats.github.lastCommit, locale, 'short') || ''"
         :loading="loading"
