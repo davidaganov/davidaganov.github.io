@@ -13,7 +13,7 @@ export const GUIDES_SIDEBAR_ITEMS: SidebarItem[] = [
     showSourceTabs: true,
     icon: "i-lucide-book-open",
     collapsible: true,
-    defaultOpen: false
+    defaultOpen: true
   },
   {
     type: "collection",

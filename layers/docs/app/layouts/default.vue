@@ -30,7 +30,7 @@ defineShortcuts({
     <div class="container">
       <div class="flex">
         <AppLeftSidebar class="hidden lg:block" />
-        <div class="flex flex-1 border-l border-black/5 dark:border-white/5">
+        <div class="flex min-w-0 flex-1 border-l border-black/5 dark:border-white/5">
           <AppContentPanel>
             <slot />
           </AppContentPanel>

@@ -6,7 +6,7 @@ const props = defineProps<{
 
 const isPrev = computed(() => props.direction === "prev")
 const alignClass = computed(() =>
-  isPrev.value ? "text-left col-start-1" : "text-right col-start-2"
+  isPrev.value ? "text-left md:col-start-1" : "text-right md:col-start-2"
 )
 const iconClass =
   "group-hover:text-primary-600 size-4 shrink-0 text-gray-400 transition-colors dark:text-white/50 dark:group-hover:text-white/80"

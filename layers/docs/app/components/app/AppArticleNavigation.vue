@@ -40,7 +40,7 @@ const { prevPage, nextPage, githubMdUrl } = useArticleNavigation(docsPath)
     <!-- Prev / Next navigation -->
     <div
       v-if="prevPage || nextPage"
-      class="grid grid-cols-2 gap-4"
+      class="grid gap-4 md:grid-cols-2"
     >
       <!-- Previous page -->
       <BaseArticleNavigateButton
