@@ -53,7 +53,7 @@ const docsSectionsPreview = computed(() =>
     </div>
 
     <nav class="relative container py-10">
-      <div class="flex flex-row flex-wrap gap-12 lg:max-w-1/2 lg:justify-between lg:gap-20">
+      <div class="flex flex-row flex-wrap gap-12 lg:justify-center lg:gap-20">
         <div>
           <h3
             class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-200"
