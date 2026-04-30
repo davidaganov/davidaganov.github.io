@@ -84,17 +84,13 @@ export default defineNuxtConfig({
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1",
       link: [
-        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-        { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
-        { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
-        { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
-        { rel: "manifest", href: "/site.webmanifest" }
+        { rel: "icon", type: "image/x-icon", href: "/favicons/favicon.ico" },
+        { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicons/favicon-32x32.png" },
+        { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicons/favicon-16x16.png" },
+        { rel: "apple-touch-icon", sizes: "180x180", href: "/favicons/apple-touch-icon.png" },
+        { rel: "manifest", href: "/favicons/site.webmanifest" }
       ],
-      meta: [
-        { name: "msapplication-TileColor", content: "#b87eef" },
-        { name: "msapplication-config", content: "/browserconfig.xml" },
-        { name: "theme-color", content: "#3d294f" }
-      ]
+      meta: [{ name: "theme-color", content: "#3d294f" }]
     }
   },
 

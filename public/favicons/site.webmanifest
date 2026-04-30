@@ -1,0 +1,26 @@
+{
+  "name": "Aganov. Frontend Developer",
+  "short_name": "Aganov",
+  "description": "I’m frontend developer. I like to learn new technologies and try new things in every possible way.",
+  "dir": "auto",
+  "lang": "en-US",
+  "display": "standalone",
+  "orientation": "any",
+  "start_url": "https://aganov.dev/",
+  "background_color": "#3d294f",
+  "theme_color": "#3d294f",
+  "icons": [
+    {
+      "src": "/favicons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -9,15 +9,16 @@
     "preview": "nuxt preview",
     "prepare": "husky",
     "postinstall": "nuxt prepare",
-    "lint:fix": "eslint . --fix",
     "lint": "run-s lint:*",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prod": "run-s format lint:fix translate",
     "typecheck": "nuxt typecheck",
     "translate": "npx polyglot-keeper sync",
     "translate:md": "npx polyglot-keeper sync --md",
-    "translate:init": "npx polyglot-keeper init"
+    "translate:init": "npx polyglot-keeper init",
+    "generate:favicons": "node scripts/generate-favicons.mjs"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.93",
@@ -49,6 +50,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-vue": "^10.8.0",
+    "favicons": "^7.2.0",
     "husky": "^9.1.7",
     "jsrepo": "^3.6.0",
     "lint-staged": "^16.3.2",
