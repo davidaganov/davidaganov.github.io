@@ -1,6 +1,6 @@
 ---
 title: Astro Clean Template
-description: An Astro starter for static sites. Bundles components into predictable HTML/CSS/JS files — no bloat, no client-side bundler, no magic.
+description: Starter for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic.
 icon: i-simple-icons-astro
 githubRepo: davidaganov/astro-clean-template
 githubUrl: https://github.com/davidaganov/astro-clean-template
@@ -13,23 +13,47 @@ tags:
 
 # Astro Clean Template
 
-> The main goal of this template is to output **clean, readable, and handoff-ready** code. No obfuscated class names, messy bundled scripts, or endless file hashes.
+> The main goal of this template is **clean, readable, handoff-ready** output. Handy for CMS work. No hashed class names, no unreadable script soup, no endless hashes in filenames.
 
-## The Problem with Classic Bundlers
+## Setup
 
-Often, a frontend developer doesn't need to build a full-fledged SPA with complex logic. They just need to create high-quality HTML/CSS layouts that will be handed off to backend developers for CMS integration (like WordPress, Bitrix, or custom platforms).
+Scaffold with my [Stack](/docs/about/projects/stack) tool:
 
-If you use a typical stack with a bundler (Vite, Webpack, Nuxt/Next) for this task, you'll end up with a `dist` folder that is painful to work with:
+<code-group sync="pm">
+
+```bash [npm]
+npx @davidaganov/stack
+```
+
+```bash [yarn]
+yarn dlx @davidaganov/stack
+```
+
+```bash [pnpm]
+pnpm dlx @davidaganov/stack
+```
+
+```bash [bun]
+bunx @davidaganov/stack
+```
+
+</code-group>
+
+## The problem with classic builds
+
+Often a frontend dev does not need a full SPA with heavy logic, but a well-built site (or pages) that will be handed off for CMS integration (Bitrix, WordPress, or custom).
+
+If you reach for the usual stack (Vue/Nuxt/React/Next) for that job, you get a `dist` folder that is painful to work with:
 
 - **Unpredictable hashes** in filenames: `main.abc12def.js`
-- **Concatenated styles** that are difficult to separate or override selectively
-- **JSX/SFC components** that cannot be simply opened in a browser for preview
+- **Bundled styles** that are hard to split or override precisely
+- **JSX/SFC components** you cannot open in the browser as plain HTML
 
-The backend developer opens the result and struggles to find the logic they need because everything is bundled together in one minified block. On the other hand, writing raw HTML in 2026 or dragging Gulp into your project feels like pure masochism. You still want components, reusable layouts, and Scoped styles.
+The integrator opens the build and cannot find the right logic because everything is in one minified file. On the other hand, writing everything in raw HTML in 2026 or dragging Gulp into the project is its own kind of pain. You still want components, reusable layouts, and scoped styles.
 
-## The Solution
+## The solution
 
-[Astro Clean Template](https://github.com/davidaganov/astro-clean-template) solves this problem. I chose Astro as the ideal **authoring** tool (so you can comfortably write components and layouts), but I rewrote the build process. The output returns to a classic, "old-school" file structure.
+[Astro Clean Template](https://github.com/davidaganov/astro-clean-template) fixes that. Astro is used for **authoring** (comfortable components and layouts), but the build is wired so the output is a classic, “old school” file layout.
 
 ::code-tree{defaultValue="dist/index.html"}
 
@@ -54,7 +78,7 @@ The backend developer opens the result and struggles to find the logic they need
 ```
 
 ```css [dist/assets/style/main.css]
-/* All styles are combined into a single predictable file */
+/* All styles roll into one predictable file */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -71,11 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ::
 
-## How it works under the hood
+## Under the hood
 
-### One CSS file without preprocessors
+### One CSS file, no preprocessors
 
-All styles are aggregated into a single `dist/assets/style/main.css`. It uses native CSS with `@import` and native browser nesting. No more SASS or PostCSS in the project.
+All styles are aggregated into `dist/assets/style/main.css`. Native CSS with `@import` and browser-native nesting.
 
 ```css [src/assets/styles/main.css]
 @import "./reset.css";
@@ -93,80 +117,23 @@ All styles are aggregated into a single `dist/assets/style/main.css`. It uses na
 
 ### Stable script paths
 
-Vite tries to bundle all assets by default. I bypassed this: scripts are no longer packaged into a single bundle. The layout references the file as usual:
+Vite wants to bundle assets by default. This setup avoids that: scripts are not merged into one app bundle. The layout references the entry as usual:
 
 ```astro [src/layouts/Layout.astro]
 <script is:inline type="module" src="/assets/script/main.js"></script>
 ```
 
-In `build` mode, the files from `src/assets/script/` are copied "as-is" to `dist/`. This preserves the module structure, keeping the code easy to work with later. No hashes, no surprises.
+In `build` mode, files from `src/assets/script/` are copied **as-is** into `dist/`. Module structure stays intact and the code stays easy to work with. No hashes, no minification.
 
-## Build Modes
+## Build modes
 
-| Command              | What happens                                                                                                           |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `npm run build`      | Build **for handoff**. CSS/JS files are not minified, and HTML is uncompressed. Perfect for debugging and integration. |
-| `npm run build:prod` | Build **for production**. Everything is minified, and `main.js` is bundled via `esbuild` into a single compact file.   |
+| Command              | What happens                                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run build`      | **Handoff** build. CSS/JS are not minified, HTML is not compressed. Great for debugging and integration.                       |
+| `npm run build:prod` | **Production** build. Everything is minified; `main.js` is bundled with `esbuild` into one compact file with resolved imports. |
 
-## Template Management (CLI)
+## Bottom line
 
-To avoid manually deleting demo content every time you start a new project, the template comes with built-in commands to switch between repository states:
+This template largely replaces the familiar “Gulp + PUG/EJS” combo: modern authoring (Astro, Vite) with a build output that stays as predictable and clean as possible.
 
-<code-group sync="cmd">
-
-```bash [config:template]
-npm run config:template
-# Loads the full demo version: hero, features, components, pages
-```
-
-```bash [config:clean]
-npm run config:clean
-# Leaves a minimal version: just the base layout and an empty index.astro
-```
-
-```bash [config:empty]
-npm run config:empty
-# Completely clears the src/ folder — to start from absolute scratch
-```
-
-</code-group>
-
-## Quick Start
-
-<code-group sync="pm">
-
-```bash [npm]
-git clone https://github.com/davidaganov/astro-clean-template.git my-project
-cd my-project
-npm install
-npm run dev
-```
-
-```bash [yarn]
-git clone https://github.com/davidaganov/astro-clean-template.git my-project
-cd my-project
-yarn
-yarn dev
-```
-
-```bash [pnpm]
-git clone https://github.com/davidaganov/astro-clean-template.git my-project
-cd my-project
-pnpm install
-pnpm dev
-```
-
-```bash [bun]
-git clone https://github.com/davidaganov/astro-clean-template.git my-project
-cd my-project
-bun install
-bun dev
-```
-
-</code-group>
-
-## Summary
-
-This starter largely replaces the once famous "Gulp + PUG/EJS" stack by combining modern authoring technologies (Astro, Vite) with the most predictable and clean build output possible.
-
-If HTML/CSS/JS is the **final product** of your project, rather than an intermediate artifact, this template will save you a ton of time.
+If HTML/CSS/JS is the **final product**, not an intermediate artifact, this template will save a lot of time.
