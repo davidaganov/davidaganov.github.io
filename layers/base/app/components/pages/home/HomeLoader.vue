@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue"
 
-const PROGRESS_INITIAL_PERCENT = 90
+const PROGRESS_INITIAL_PERCENT = 65
+const WAITING_PROGRESS_SECONDS = 2.4
 const FADE_OUT_DURATION_MS = 300
-const FINISH_DELAY_MS = 300
+const FINISH_DELAY_MS = 120
 
 const props = defineProps<{
   isFinished: boolean
@@ -63,8 +64,8 @@ onMounted(() => {
           :style="{
             width: `${progress}%`,
             transition: isFinished
-              ? 'width 0.3s ease-out'
-              : 'width 10s cubic-bezier(0.1, 0.7, 0.1, 1)'
+              ? 'width 0.25s ease-out'
+              : `width ${WAITING_PROGRESS_SECONDS}s cubic-bezier(0.1, 0.7, 0.1, 1)`
           }"
         />
       </div>

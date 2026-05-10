@@ -90,13 +90,15 @@ onMounted(() => {
   noiseAmp.value = 0.3 + Math.random() * 0.3
 
   const initBackground = () => {
-    setTimeout(() => {
-      backgroundReady.value = true
-    }, 400)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        backgroundReady.value = true
+      })
+    })
   }
 
   if ("requestIdleCallback" in window) {
-    requestIdleCallback(initBackground, { timeout: 2000 })
+    requestIdleCallback(initBackground, { timeout: 600 })
   } else {
     initBackground()
   }
@@ -208,7 +210,8 @@ onMounted(() => {
       >
         <FaultyTerminal
           tint="#b87eef"
-          :scale="1.5"
+          :dpr="1"
+          :scale="1.15"
           :grid-mul="[2, 1]"
           :digit-size="1.2"
           :time-scale="0.2"
