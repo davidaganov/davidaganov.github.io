@@ -17,6 +17,7 @@ const localePath = useLocalePath()
 const route = useRoute()
 
 const sectionParam = computed(() => String(route.params.section || ""))
+
 const slugParam = computed(() => {
   const value = route.params.slug
   return Array.isArray(value) ? value.filter(Boolean).map(String) : value ? [String(value)] : []
@@ -24,6 +25,7 @@ const slugParam = computed(() => {
 
 const section = computed(() => getSectionById(sectionParam.value))
 const collection = computed(() => `content_${locale.value}` as keyof Collections)
+const docsPath = computed(() => `/docs/${sectionParam.value}/${slugParam.value.join("/")}`)
 
 if (!section.value) {
   await navigateTo(localePath(getFirstPathForFirstSection()), { replace: true })
@@ -31,8 +33,6 @@ if (!section.value) {
 if (!slugParam.value.length) {
   await navigateTo(localePath(getFirstPathForSection(section.value)), { replace: true })
 }
-
-const docsPath = computed(() => `/docs/${sectionParam.value}/${slugParam.value.join("/")}`)
 
 const parentCollectionItem = computed(() => {
   const topLevelSlug = slugParam.value[0]
@@ -43,9 +43,9 @@ const parentCollectionItem = computed(() => {
   )
 })
 
-const collectionItem = computed(() =>
-  slugParam.value.length === 1 ? parentCollectionItem.value : undefined
-)
+const collectionItem = computed(() => {
+  return slugParam.value.length === 1 ? parentCollectionItem.value : undefined
+})
 
 const getCollectionPathPrefix = (source: string) => `/docs/${sectionParam.value}/${source}`
 
@@ -115,6 +115,9 @@ const { breadcrumbs, pageType } = useDocsSeo({
       />
     </template>
 
-    <AppArticleNavigation :docs-path="docsPath" />
+    <AppArticleNavigation
+      :docs-path="docsPath"
+      :is-collection="!!collectionItem"
+    />
   </div>
 </template>

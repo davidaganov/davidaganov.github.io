@@ -1,6 +1,4 @@
 export default defineNuxtPlugin(() => {
-  const { isAccepted, isDecided } = useCookieConsent()
-
   const initMetrika = () => {
     useHead({
       script: [
@@ -26,15 +24,5 @@ ym(106915731,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
     })
   }
 
-  if (isDecided.value && isAccepted.value) {
-    initMetrika()
-    return
-  }
-
-  const stop = watch(isAccepted, (accepted) => {
-    if (accepted) {
-      initMetrika()
-      stop()
-    }
-  })
+  initMetrika()
 })

@@ -4,6 +4,7 @@ export enum ROUTE_PATH {
 
   // Docs
   DOCS = "/docs",
+  DOCS_CHANGELOG = "/docs/changelog",
 
   // Docs - About
   DOCS_ABOUT = "/docs/about",

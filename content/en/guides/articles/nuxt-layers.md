@@ -15,19 +15,19 @@ tags:
 
 ## Introduction
 
-In this short article, I would like to talk about the concept of Layers in Nuxt 3, how I implement it in my projects, and why I consider it important. I will show two examples: one demonstrating the separation of a project into several layers, and the other—separating several frontends into different layers. The desire to write an article about this arose after I couldn't find enough real-world examples and articles in Russian on using layers.
+In this short article, I would like to talk about the concept of Layers in Nuxt 3, how I implement it in my projects, and why I consider it important. I will show two examples: one demonstrating the division of a project into several layers, and another – separating multiple frontends into different layers. The desire to write an article about this arose after I couldn't find enough real-world examples and articles in Russian on using layers.
 
-## The Situation That Led Me to Layers
+## The situation that led me to Layers
 
-Initially, I knew about the Layers concept in Nuxt 3 but didn't use it, considering it redundant and not particularly clear. But one day, finding myself digging through a `components` folder that had at least six subfolders, each with 10-30 components, I realized that something had clearly gone wrong. I decided to break my project into several layers, but in a way that avoids dependency of one layer on another. After some time, I arrived at the following structure:
+Initially, I knew about the concept of Layers in Nuxt 3, but I didn't use it, considering it redundant and not particularly clear. But one day, finding myself digging through a `components` folder that had at least six subfolders, each with 10-30 components, I realized that something had clearly gone wrong. I decided to break my project into several layers, but in a way that avoids one layer depending on another. After some time, I arrived at this structure:
 
-1.  **Base**: This layer contains general site components such as the header, footer, layouts, composables, and utilities used throughout the project, as well as the home page, terms of service page, etc.
+1.  **Base**: This layer contains general site components such as the header, footer, layouts, composables, and utilities used throughout the project, as well as the main page, user agreement page, etc.
 2.  **User**: The layer responsible for authentication, user profile, and everything directly related to the user.
-3.  **Order**: Everything related to orders on the site: order creation page, user's order list, list of all orders on the site, etc.
-4.  **Chat**: The chat page between users. The logic for working with websockets is also implemented in this layer.
-5.  **UI**: Due to the overgrown Base layer, the decision was made to move all UI components into a separate layer. This is needed so that 20 components related to forms, modals, and cards do not clutter the base layer, which contains more global parts and pages of the application.
+3.  **Order**: Everything related to orders on the site: order creation page, user order list, list of all orders on the site, etc.
+4.  **Chat**: Chat page between users. The logic for working with WebSockets is also implemented in this layer.
+5.  **UI**: Due to the overgrown Base layer, the decision was made to move all UI components to a separate layer. It is needed so that 20 components related to forms, modal windows, and cards do not clutter the base layer, which contains more global parts and pages of the application.
 
-The main advantages I felt when using this approach are, first, the convenience of working on a specific part of the application. If I need to update the authentication, I don't look for components/pages/composables throughout the project; I go to a specific layer and work exclusively in it without affecting the rest. Second, each layer can have its own configuration.
+The main advantages I felt when using this approach are, firstly, the convenience of working on a specific part of the application. If I need to update authentication, I don't look for components/pages/composables throughout the project, but go to a specific layer and work exclusively within it, without touching the rest. Secondly, each layer can have its own configuration.
 
 ### Project Structure
 
@@ -129,9 +129,9 @@ export default defineNuxtConfig({
 
 ::
 
-## The Problem I Encountered
+## A problem I encountered
 
-If there is a component with the same name in two different layers, only one will be auto-imported. This creates a risk of accidentally naming a component exactly the same as in another layer and not understanding why everything is working incorrectly. In an attempt to find a solution to this problem, I decided to disable auto-import in all layers, but to avoid losing the benefit of auto-import, I created a `global` folder inside the `components` folder in each layer. From there, all components are available for auto-import throughout the application, while components **outside** this folder must be imported directly. To implement such logic, you need to write the following in each internal `nuxt.config.ts`:
+If two different layers have a component with the same name, only one will be included in the auto-import. This creates a risk of accidentally naming a component exactly the same as in another layer and not understanding why everything is working incorrectly. In an attempt to find a solution to the problem, I decided to disable auto-import in all layers, but to avoid losing the benefit of using auto-import, I created a `global` folder inside the `components` folder in each layer. All components from it are available for auto-import throughout the application, while components **outside** this folder must be imported directly. To implement such logic in each internal `nuxt.config.ts`, you need to write the following:
 
 ```ts [layers/base/nuxt.config.ts]
 components: [
@@ -143,7 +143,7 @@ components: [
 ]
 ```
 
-## Multiple Sites Based on a Single API
+## Multiple sites based on one API
 
 Our team faced the task of making several sites that would access a single API and have common components, composables, and utilities. We decided to implement this through Layers, where each layer is a separate site.  
 The structure is as follows:
@@ -202,14 +202,14 @@ export default defineNuxtConfig({
 
 ::
 
-In the `.env` file, there is a parameter responsible for the current site, for example, `VITE_NUXT_LAYER=site-1`. Next, in `nuxt.config.ts`, the path to the required layer is formed dynamically.
+In the `.env` file, there is a parameter responsible for the current site, for example `VITE_NUXT_LAYER=site-1`. Then, in `nuxt.config.ts`, the path to the required layer is formed dynamically.
 
-After this, each developer specifies the site name they need and develops exclusively within one layer without affecting the work of others.
+After that, each developer specifies the site name they need and works exclusively within one layer, without affecting the work of others.
 
 ## Conclusion
 
 Using Layers in Nuxt 3 significantly improves the structure and manageability of large projects. Separation into layers helps avoid unnecessary dependencies and facilitates work on individual parts of the application.
 
-**Useful Links**
+**Useful links**
 
-[Nuxt Layers](https://nuxt.com/docs/getting-started/layers) documentation
+[Nuxt Layers](https://nuxt.com/docs/getting-started/layers) Documentation

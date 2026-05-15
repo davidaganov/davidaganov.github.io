@@ -318,7 +318,7 @@ const handleCreate = handleSubmit(async (values) => {
 
 ### Service layer
 
-The API client and how requests are organized is a big topic on its own. In short: everything lives in `services/`, no component talks to `fetch` directly, and typing lives in domain modules. I covered this in detail in [“Clean API client”](/blog/clean-api-client).
+The API client and how requests are organized is a big topic on its own. In short: everything lives in `services/`, no component talks to `fetch` directly, and typing lives in domain modules. I covered this in detail in [“Clean API client”](/docs/guides/articles/services).
 
 ---
 
@@ -458,7 +458,7 @@ export const useProductsStore = defineStore("products", () => {
 
 ## How does this work in Nuxt?
 
-The approach stays the same — same naming rules, same component hierarchy, same stores. The main difference: `views/` becomes `pages/` and you use file-based routing. The main addition is **Layers**: a way to isolate features or reusable parts into modules. That is a separate article — [“Nuxt 3 Layers”](/blog/nuxt-layers).
+The approach stays the same — same naming rules, same component hierarchy, same stores. The main difference: `views/` becomes `pages/` and you use file-based routing. The main addition is **Layers**: a way to isolate features or reusable parts into modules. That is a separate article — [“Nuxt 3 Layers”](/docs/guides/articles/nuxt-layers).
 
 ---
 

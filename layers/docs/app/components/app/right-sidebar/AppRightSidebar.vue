@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useBreakpoints } from "@vueuse/core"
 import AppRightSidebarContent from "@docs/components/app/right-sidebar/AppRightSidebarContent.vue"
+import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import { TYPE_PAGE } from "@docs/types/enums"
+import { isChangelogDocsPath } from "@docs/utils/sections"
 
 const props = withDefaults(
   defineProps<{
@@ -16,23 +18,31 @@ const props = withDefaults(
   }
 )
 
+const route = useRoute()
+
 const breakpoints = useBreakpoints({
   lg: 1024
 })
 
 const isLg = breakpoints.greater("lg")
+
+const hideSidebar = computed(() => isChangelogDocsPath(route.path))
 </script>
 
 <template>
-  <ClientOnly>
+  <ClientOnly v-if="!hideSidebar">
     <Teleport
       v-if="isLg"
       to="#app-right-sidebar-root"
     >
       <aside
-        class="sticky top-(--ui-header-height) max-h-[calc(100vh-var(--ui-header-height))] overflow-y-auto pb-8"
+        class="sticky top-(--ui-header-height) max-h-[calc(100vh-var(--ui-header-height))] overflow-hidden"
       >
-        <AppRightSidebarContent v-bind="props" />
+        <BaseScrollbar height="calc(100vh - var(--ui-header-height))">
+          <div class="pb-8">
+            <AppRightSidebarContent v-bind="props" />
+          </div>
+        </BaseScrollbar>
       </aside>
     </Teleport>
 

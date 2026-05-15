@@ -8,7 +8,17 @@
     "nav": {
       "previousPage": "Previous page",
       "nextPage": "Next page",
+      "previousSection": "Return to section",
+      "nextSection": "Go to section",
       "editOnGitHub": "View MD on GitHub"
+    },
+    "changelog": {
+      "seoTitle": "Site changelog",
+      "seoDescription": "Notes on what I change on the site: new content, edits, etc.",
+      "title": "Changelog",
+      "empty": "No entries yet.",
+      "sidebarIndex": "All changes",
+      "backToIndex": "Back to all changes"
     }
   },
   "global": {
@@ -16,7 +26,6 @@
     "portfolio": "Portfolio",
     "labels": {
       "all": "All",
-      "noTags": "No tags",
       "onThisPage": "On this page"
     },
     "actions": {
@@ -43,6 +52,7 @@
     "navigation": {
       "menu": {
         "about": "About",
+        "changelog": "Changelog",
         "guides": "Guides",
         "tools": "Tools",
         "articles": "Articles",
@@ -151,11 +161,6 @@
         "navigate": "to navigate",
         "select": "to select"
       }
-    },
-    "cookieBanner": {
-      "aria": "Cookie usage notice",
-      "title": "Cookies",
-      "description": "Visit data is collected for analytics."
     },
     "archiveDownloader": {
       "title": "Download archive",

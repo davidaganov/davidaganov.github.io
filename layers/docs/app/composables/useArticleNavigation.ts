@@ -7,6 +7,7 @@ import { GITHUB_REPO } from "@base/constants/config"
 export interface NavPageItem {
   title: string
   path: string
+  isSection?: boolean
 }
 
 /**
@@ -20,7 +21,7 @@ const buildNavList = (
   sidebarItems: SidebarItem[],
   pages: Array<{ path: string; title: string; meta: unknown }>,
   localePrefix: string
-): Array<{ titleKey: string; title: string; path: string }> => {
+): Array<{ titleKey: string; title: string; path: string; isSection?: boolean }> => {
   const withPrefix = (path: string) => (localePrefix ? `${localePrefix}${path}` : path)
   const pageBySlug = new Map(
     pages.map((page) => {
@@ -33,7 +34,7 @@ const buildNavList = (
     })
   )
 
-  const result: Array<{ titleKey: string; title: string; path: string }> = []
+  const result: Array<{ titleKey: string; title: string; path: string; isSection?: boolean }> = []
 
   for (const item of sidebarItems) {
     if (item.type === "divider") continue
@@ -69,7 +70,8 @@ const buildNavList = (
         result.push({
           titleKey: collItem.label,
           title: collItem.label,
-          path: pathPrefix
+          path: pathPrefix,
+          isSection: true
         })
       }
 
@@ -181,7 +183,7 @@ export const useArticleNavigation = (docsPath: Ref<string>) => {
     if (idx <= 0) return null
     const item = flatNavItems.value[idx - 1]
     if (!item) return null
-    return { title: resolveTitle(item), path: item.path }
+    return { title: resolveTitle(item), path: item.path, isSection: item.isSection }
   })
 
   const nextPage = computed<NavPageItem | null>(() => {
@@ -189,7 +191,7 @@ export const useArticleNavigation = (docsPath: Ref<string>) => {
     if (idx < 0 || idx >= flatNavItems.value.length - 1) return null
     const item = flatNavItems.value[idx + 1]
     if (!item) return null
-    return { title: resolveTitle(item), path: item.path }
+    return { title: resolveTitle(item), path: item.path, isSection: item.isSection }
   })
 
   /**

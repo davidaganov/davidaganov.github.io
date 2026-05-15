@@ -1,6 +1,6 @@
 ---
 title: Clean API Client
-description: A request-layer architecture that frees components from duplicated code.
+description: Request-layer architecture that eliminates code duplication in components.
 icon: i-lucide-book-open
 publishedAt: 2026-02-20
 readingTime: 5 min
@@ -17,14 +17,14 @@ tags:
 
 ## The Problem: Chaos in Components
 
-When requests are made directly inside components, the project accumulates technical debt very quickly. You'll inevitably run into these problems:
+When requests are made directly inside components, the project quickly accumulates technical debt. You will inevitably face the following issues:
 
-- **Duplication:** the same endpoint is called across multiple different files.
-- **Inconsistency:** error handling and header configuration differ everywhere.
-- **Painful refactoring:** when the API changes, you have to rewrite half the UI components.
-- **Poor reusability:** the logic can't be moved to another project.
+- **Duplication:** the same endpoint is called in several different files.
+- **Inconsistency:** different error handling and header settings everywhere.
+- **Refactoring Pain:** when the API changes, you have to rewrite half of the UI components.
+- **Reusability Difficulty:** the logic cannot be moved to another project.
 
-I avoid this with a simple, flat structure that strictly separates transport, domains, and the entry point.
+I avoid this using a simple and flat structure that strictly separates transport, domains, and the entry point.
 
 ---
 
@@ -102,19 +102,19 @@ export const ApiClient = {
 
 ::
 
-Each element in this structure has exactly one responsibility:
+Each element of this structure solves exactly one task:
 
 | File                | Responsibility                                                                          |
 | ------------------- | --------------------------------------------------------------------------------------- |
 | `request.ts`        | Low-level transport: fetch/axios, timeouts, error normalization, and headers.           |
 | `requests/<domain>` | Domain logic: endpoints (routes.ts) and typed methods (index.ts) for a specific entity. |
-| `client.ts`         | A single facade (ApiClient) that assembles all domains into one convenient entry point. |
+| `client.ts`         | Unified facade (ApiClient) that gathers all domains into one convenient entry point.    |
 
 ### Request Layer (Transport)
 
-`request.ts` contains a universal wrapper that assembles URLs with query parameters, sets timeouts, and parses responses.
+Inside `request.ts` lies a universal wrapper that constructs URLs with query parameters, sets timeouts, and parses responses.
 
-Example implementation:
+Implementation example:
 
 ```ts [services/request.ts]
 export const request = {
@@ -131,7 +131,7 @@ export const request = {
 
 ### Domain Modules
 
-Each data source lives in its own folder. For example, products reside in `products/`. We separate the requests themselves from their paths so that URLs don't spread throughout the code.
+Each data source lives in its own folder. For example, products are in `products/`. We separate the requests themselves from their paths so that URLs aren't scattered throughout the code.
 
 ```ts [services/requests/products/routes.ts]
 export const routes = {
@@ -140,7 +140,7 @@ export const routes = {
 }
 ```
 
-In `index.ts` we use these routes and our base transport, wrapping everything in strict types:
+In `index.ts`, we use these routes and our base transport, wrapping everything in strict types:
 
 ```ts [services/requests/products/index.ts]
 import { request } from "@/services/request"
@@ -151,7 +151,7 @@ export const getProducts = async (): Promise<Product[]> => {
   try {
     return await request.get<Product[]>(routes.list())
   } catch (error) {
-    // Centralized handling or fallback
+    // Централизованная обработка или фоллбэк
     return []
   }
 }
@@ -167,7 +167,7 @@ export const getProduct = async (id: number): Promise<Product | null> => {
 
 ### Unified API Client
 
-When there are many modules, importing each one individually becomes inconvenient. I assemble them into a shared client:
+When there are many modules, importing each one individually becomes inconvenient. I gather them into a common client:
 
 ```ts [services/client.ts]
 import * as products from "@/services/requests/products/index"
@@ -179,13 +179,13 @@ export const ApiClient = {
 }
 ```
 
-Now the application has a predictable and convenient data access interface: `ApiClient.<domain>.<method>`.
+Now the application has a predictable and convenient interface for data access: `ApiClient.<domain>.<method>`.
 
 ---
 
 ## How It's Used in the UI
 
-See how much cleaner the component code becomes. It no longer knows anything about URLs, headers, tokens, or fetch internals.
+See how much cleaner the component's code becomes. It no longer knows about URLs, headers, tokens, or fetch details.
 
 ```vue [app/components/ProductList.vue]
 <script setup lang="ts">
@@ -205,10 +205,10 @@ onMounted(async () => {
 </script>
 ```
 
-The component only deals with its direct responsibility — managing state and rendering data.
+The component focuses only on its direct task — state management and data display.
 
 ---
 
-## Conclusion
+## Summary
 
-This separation prevents mixing business logic with presentation. The basic set of a shared `request`, domain folders, and a single `ApiClient` is more than enough to keep the code from spreading and remain readable even as the project scales significantly.
+This separation prevents business logic and presentation from getting mixed up. A basic set consisting of a common `request`, domain folders, and a unified `ApiClient` is more than enough to keep the code from spreading and to ensure it remains readable even as the project scales significantly.

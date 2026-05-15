@@ -28,6 +28,14 @@ const findFirstLinkInItems = (items: SidebarItem[], sectionId: string): string |
 export const normalizeDocsPath = (path: string): string =>
   path.replace(LOCALE_PREFIX_RE, "") || ROUTE_PATH.HOME
 
+export const isChangelogDocsPath = (path: string): boolean => {
+  const normalized = normalizeDocsPath(path)
+  return (
+    normalized === ROUTE_PATH.DOCS_CHANGELOG ||
+    normalized.startsWith(`${ROUTE_PATH.DOCS_CHANGELOG}/`)
+  )
+}
+
 export const getSectionIdByPath = (path: string): string => {
   const normalized = normalizeDocsPath(path)
   const segments = normalized.split(ROUTE_PATH.HOME).filter(Boolean)

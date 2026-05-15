@@ -8,7 +8,17 @@
     "nav": {
       "previousPage": "Предыдущая страница",
       "nextPage": "Следующая страница",
+      "previousSection": "Вернуться к разделу",
+      "nextSection": "Перейти к разделу",
       "editOnGitHub": "Открыть MD на GitHub"
+    },
+    "changelog": {
+      "seoTitle": "Изменения на сайте",
+      "seoDescription": "Заметки о том, что я меняю на сайте: новые материалы, правки и т.д.",
+      "title": "Изменения",
+      "empty": "Пока нет записей.",
+      "sidebarIndex": "Все изменения",
+      "backToIndex": "Ко всем изменениям"
     }
   },
   "global": {
@@ -16,7 +26,6 @@
     "portfolio": "Портфолио",
     "labels": {
       "all": "Все",
-      "noTags": "Теги отсутствуют",
       "onThisPage": "На этой странице"
     },
     "actions": {
@@ -43,6 +52,7 @@
     "navigation": {
       "menu": {
         "about": "Обо мне",
+        "changelog": "Изменения",
         "guides": "Гайды",
         "tools": "Инструменты",
         "articles": "Статьи",
@@ -151,11 +161,6 @@
         "navigate": "для навигации",
         "select": "для выбора"
       }
-    },
-    "cookieBanner": {
-      "aria": "Уведомление об использовании файлов cookie",
-      "title": "Файлы cookie",
-      "description": "Собираются данные о посещениях для аналитики."
     },
     "archiveDownloader": {
       "title": "Скачать архив",

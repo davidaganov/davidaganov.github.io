@@ -157,6 +157,7 @@ const getCategoryFromMapping = (mapping: ContentMapping): TYPE_PAGE => {
   if (!mapping.isCollectionItem) return TYPE_PAGE.DOCS
   if (mapping.collectionSource === "articles") return TYPE_PAGE.ARTICLE
   if (mapping.collectionSource === "projects") return TYPE_PAGE.PROJECT
+  if (mapping.collectionSource === "starters") return TYPE_PAGE.STARTER
   return TYPE_PAGE.DOCS
 }
 
@@ -191,6 +192,7 @@ const getIconFromMapping = (page: RawPage, mapping: ContentMapping): string => {
   const category = getCategoryFromMapping(mapping)
   if (category === TYPE_PAGE.ARTICLE) return "i-lucide-newspaper"
   if (category === TYPE_PAGE.PROJECT) return "i-lucide-folder-git-2"
+  if (category === TYPE_PAGE.STARTER) return "i-lucide-rocket"
   return "i-lucide-file-text"
 }
 
@@ -208,7 +210,8 @@ export const useDocsSearch = (query: Ref<string>) => {
     const groups: Record<TYPE_PAGE, SearchResult[]> = {
       [TYPE_PAGE.DOCS]: [],
       [TYPE_PAGE.ARTICLE]: [],
-      [TYPE_PAGE.PROJECT]: []
+      [TYPE_PAGE.PROJECT]: [],
+      [TYPE_PAGE.STARTER]: []
     }
     for (const item of list) {
       groups[item.category].push(item)
@@ -220,7 +223,8 @@ export const useDocsSearch = (query: Ref<string>) => {
     return [
       ...(grouped.value[TYPE_PAGE.DOCS] || []),
       ...(grouped.value[TYPE_PAGE.ARTICLE] || []),
-      ...(grouped.value[TYPE_PAGE.PROJECT] || [])
+      ...(grouped.value[TYPE_PAGE.PROJECT] || []),
+      ...(grouped.value[TYPE_PAGE.STARTER] || [])
     ]
   })
 

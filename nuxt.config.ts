@@ -75,7 +75,7 @@ export default defineNuxtConfig({
     host: "0.0.0.0"
   },
 
-  css: ["@/assets/css/main.css"],
+  css: ["simplebar-vue/dist/simplebar.min.css", "@/assets/css/main.css"],
 
   app: {
     pageTransition: { name: "page" },

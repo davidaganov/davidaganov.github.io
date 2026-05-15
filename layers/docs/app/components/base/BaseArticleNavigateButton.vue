@@ -1,10 +1,16 @@
 <script setup lang="ts">
 const props = defineProps<{
   direction: "prev" | "next"
-  page: { path: string; title: string }
+  page: { path: string; title: string; isSection?: boolean }
 }>()
 
 const isPrev = computed(() => props.direction === "prev")
+
+const navLabelKey = computed(() => {
+  const kind = props.page.isSection ? "Section" : "Page"
+  return isPrev.value ? `docs.nav.previous${kind}` : `docs.nav.next${kind}`
+})
+
 const alignClass = computed(() =>
   isPrev.value ? "text-left md:col-start-1" : "text-right md:col-start-2"
 )
@@ -21,7 +27,7 @@ const iconClass =
     <span
       class="mb-1 text-xs text-gray-500 transition-colors group-hover:text-gray-700 dark:text-white/40 dark:group-hover:text-white/60"
     >
-      {{ isPrev ? $t("docs.nav.previousPage") : $t("docs.nav.nextPage") }}
+      {{ $t(navLabelKey) }}
     </span>
     <span
       class="flex items-center gap-1.5 text-sm font-semibold text-gray-900 dark:text-white/85"

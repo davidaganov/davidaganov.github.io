@@ -68,7 +68,7 @@ const handleReset = () => {
       </h1>
       <p
         v-if="props.subtitleKey"
-        class="text-muted row-start-2 mt-2 text-sm md:max-w-11/12 lg:col-span-2"
+        class="text-muted row-start-2 text-sm md:max-w-11/12 lg:col-span-2"
       >
         {{ $t(props.subtitleKey) }}
       </p>
@@ -87,7 +87,10 @@ const handleReset = () => {
       />
     </div>
 
-    <div class="flex flex-wrap items-center gap-1.5">
+    <div
+      v-if="allTags.length"
+      class="flex flex-wrap items-center gap-1.5"
+    >
       <UButton
         variant="ghost"
         size="xs"
@@ -96,25 +99,16 @@ const handleReset = () => {
         @click="handleSort"
       />
 
-      <template v-if="allTags.length">
-        <UButton
-          v-for="tag in allTags"
-          variant="ghost"
-          size="xs"
-          :class="getTagButtonClass(tag)"
-          :key="tag"
-          @click="handleTag(tag)"
-        >
-          {{ tag }}
-        </UButton>
-      </template>
-
-      <p
-        v-else
-        class="text-muted text-sm"
+      <UButton
+        v-for="tag in allTags"
+        variant="ghost"
+        size="xs"
+        :class="getTagButtonClass(tag)"
+        :key="tag"
+        @click="handleTag(tag)"
       >
-        {{ $t("global.labels.noTags") }}
-      </p>
+        {{ tag }}
+      </UButton>
 
       <UButton
         v-if="hasActiveFilters"

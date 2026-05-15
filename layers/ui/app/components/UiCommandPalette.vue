@@ -14,10 +14,16 @@ const { flatResults, grouped, isLoading } = useDocsSearch(query)
 const categoryLabels: Record<TYPE_PAGE, string> = {
   [TYPE_PAGE.DOCS]: t("layout.navigation.sections.docs"),
   [TYPE_PAGE.ARTICLE]: t("layout.navigation.menu.articles"),
-  [TYPE_PAGE.PROJECT]: t("layout.navigation.menu.projects")
+  [TYPE_PAGE.PROJECT]: t("layout.navigation.menu.projects"),
+  [TYPE_PAGE.STARTER]: t("layout.navigation.menu.starters")
 }
 
-const categoryOrder = [TYPE_PAGE.DOCS, TYPE_PAGE.ARTICLE, TYPE_PAGE.PROJECT] as const
+const categoryOrder = [
+  TYPE_PAGE.DOCS,
+  TYPE_PAGE.ARTICLE,
+  TYPE_PAGE.PROJECT,
+  TYPE_PAGE.STARTER
+] as const
 
 const inputRef = ref<HTMLInputElement | null>(null)
 const listRef = ref<HTMLElement | null>(null)

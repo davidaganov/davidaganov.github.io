@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { useChangelogUnreadIndicator } from "@docs/composables/useChangelogUnreadIndicator"
 import { DOCS_SECTIONS } from "@docs/config/sections"
 import { getFirstPathForSection, getSectionById, getSectionIdByPath } from "@docs/utils/sections"
 import AppMobileMenu from "@base/components/app/AppMobileMenu.vue"
+import { ROUTE_PATH } from "@base/types/enums"
 import UiGitHubStars from "@ui/components/UiGitHubStars.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
+import UiLink from "@ui/components/UiLink.vue"
 import UiLogo from "@ui/components/UiLogo.vue"
 import UiSearchTrigger from "@ui/components/UiSearchTrigger.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
+
+const CHANGELOG_SECTION_ID = "changelog" as const
 
 const { t } = useI18n()
 
@@ -15,8 +20,10 @@ const localePath = useLocalePath()
 
 const isMobileMenuOpen = ref(false)
 
-const docsTabs = computed(() =>
-  DOCS_SECTIONS.map((section) => ({
+const { showUnreadDot } = useChangelogUnreadIndicator()
+
+const docsMainTabs = computed(() =>
+  DOCS_SECTIONS.filter((section) => section.id !== CHANGELOG_SECTION_ID).map((section) => ({
     id: section.id,
     icon: section.icon,
     label: t(section.labelKey),
@@ -24,8 +31,19 @@ const docsTabs = computed(() =>
   }))
 )
 
-const isDocsRoute = computed(() => route.path.includes("/docs"))
-const headerHeight = computed(() => (isDocsRoute.value ? "148px" : "56px"))
+const docsChangelogTab = computed(() => {
+  const section = getSectionById(CHANGELOG_SECTION_ID)
+  if (!section) return null
+  return {
+    id: section.id,
+    icon: section.icon,
+    label: t(section.labelKey),
+    to: localePath(getFirstPathForSection(section))
+  }
+})
+
+const isDocsRoute = computed(() => route.path.includes(ROUTE_PATH.DOCS))
+const headerHeight = computed(() => (isDocsRoute.value ? "130px" : "56px"))
 
 const activeSectionId = computed(() => {
   const sectionId = getSectionIdByPath(route.path)
@@ -68,24 +86,40 @@ useHead({
       v-if="isDocsRoute"
       class="border-primary/20 border-t border-b"
     >
-      <div class="container flex h-14 items-center gap-1 overflow-x-auto">
-        <NuxtLink
-          v-for="tab in docsTabs"
-          class="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors"
-          :to="tab.to"
-          :class="
-            activeSectionId === tab.id
-              ? 'text-primary-800 dark:text-primary-400 bg-primary-200/50 dark:bg-primary-500/10'
-              : 'text-muted hover:text-gray-900 dark:hover:text-white'
-          "
-          :key="tab.id"
+      <div class="container flex h-14 items-center gap-2 overflow-x-auto">
+        <div class="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
+          <UiLink
+            v-for="tab in docsMainTabs"
+            :to="tab.to"
+            :active="activeSectionId === tab.id"
+            :key="tab.id"
+          >
+            <UIcon
+              class="size-4"
+              :name="tab.icon"
+            />
+            {{ tab.label }}
+          </UiLink>
+        </div>
+
+        <UiLink
+          v-if="docsChangelogTab"
+          is-icon
+          :to="docsChangelogTab.to"
+          :active="activeSectionId === docsChangelogTab.id"
+          :aria-label="docsChangelogTab.label"
+          :title="docsChangelogTab.label"
         >
           <UIcon
             class="size-4"
-            :name="tab.icon"
+            :name="docsChangelogTab.icon"
           />
-          {{ tab.label }}
-        </NuxtLink>
+          <span
+            v-if="showUnreadDot"
+            class="bg-primary-500 absolute top-1 right-1 size-2 rounded-full ring-2 ring-(--ui-bg)"
+            aria-hidden="true"
+          />
+        </UiLink>
       </div>
     </div>
   </header>

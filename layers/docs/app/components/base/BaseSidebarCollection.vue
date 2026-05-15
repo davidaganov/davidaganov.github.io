@@ -4,6 +4,7 @@ import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import type { SidebarCollectionItem } from "@docs/types/sidebar"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import { ROUTE_PATH } from "@base/types/enums"
+import UiLink from "@ui/components/UiLink.vue"
 
 const props = defineProps<{
   item: SidebarCollectionItem
@@ -11,8 +12,8 @@ const props = defineProps<{
 
 const { locale } = useI18n()
 
-const localePath = useLocalePath()
 const route = useRoute()
+const localePath = useLocalePath()
 
 const isOpen = ref(props.item.defaultOpen ?? false)
 
@@ -79,55 +80,72 @@ const items = computed(() => {
     })
     .filter((p) => Boolean(p.label))
 })
+
+const isIndexActive = computed(() => {
+  return (props.item.indexPage ?? true) && route.path === localePath(props.item.pathPrefix || "")
+})
 </script>
 
 <template>
   <div v-if="items.length > 0">
-    <div
-      class="group mb-0.5 flex items-center justify-between rounded-lg text-sm font-medium transition-all"
-      :class="
-        props.item.indexPage !== false && route.path === localePath(props.item.pathPrefix || '')
-          ? 'bg-primary-200/50 dark:bg-primary-500/10 text-primary-800 dark:text-primary-400'
-          : 'text-muted hover:bg-black/5 hover:text-gray-900 dark:hover:bg-white/5 dark:hover:text-white'
-      "
-    >
-      <NuxtLink
-        v-if="props.item.indexPage !== false"
-        class="flex flex-1 items-center gap-3 px-3 py-2"
-        :to="localePath(props.item.pathPrefix || '')"
+    <div class="mb-0.5">
+      <UiLink
+        v-if="props.item.indexPage ?? true"
+        class="w-full"
+        :to="props.item.pathPrefix || ''"
+        :active="isIndexActive"
       >
-        <UIcon
-          v-if="item.icon"
-          class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
-          :name="item.icon"
-        />
-        <span class="line-clamp-1">{{ $t(item.label) }}</span>
-      </NuxtLink>
-      <button
+        <div class="flex flex-1 items-center gap-3">
+          <UIcon
+            v-if="item.icon"
+            class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
+            :name="item.icon"
+          />
+          <span class="line-clamp-1">{{ $t(item.label) }}</span>
+        </div>
+
+        <button
+          v-if="item.collapsible"
+          type="button"
+          class="text-muted flex items-center justify-center transition-colors hover:text-gray-900 dark:hover:text-white"
+          @click.prevent.stop="isOpen = !isOpen"
+        >
+          <UIcon
+            name="i-lucide-chevron-down"
+            class="size-3.5 transition-transform duration-200"
+            :class="!isOpen && '-rotate-90'"
+          />
+        </button>
+      </UiLink>
+
+      <UiLink
         v-else
-        type="button"
-        class="flex flex-1 items-center gap-3 px-3 py-2 text-left"
+        class="w-full"
+        :active="isOpen"
         @click="item.collapsible && (isOpen = !isOpen)"
       >
-        <UIcon
-          v-if="item.icon"
-          class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
-          :name="item.icon"
-        />
-        <span class="line-clamp-1">{{ $t(item.label) }}</span>
-      </button>
+        <div class="flex flex-1 items-center gap-3">
+          <UIcon
+            v-if="item.icon"
+            class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
+            :name="item.icon"
+          />
+          <span class="line-clamp-1">{{ $t(item.label) }}</span>
+        </div>
 
-      <button
-        v-if="item.collapsible"
-        class="flex items-center justify-center py-2 pr-3 transition-colors"
-        @click.stop="isOpen = !isOpen"
-      >
-        <UIcon
-          name="i-lucide-chevron-down"
-          class="size-3.5 transition-transform duration-200"
-          :class="!isOpen && '-rotate-90'"
-        />
-      </button>
+        <button
+          v-if="item.collapsible"
+          type="button"
+          class="text-muted flex items-center justify-center transition-colors hover:text-gray-900 dark:hover:text-white"
+          @click.stop="isOpen = !isOpen"
+        >
+          <UIcon
+            name="i-lucide-chevron-down"
+            class="size-3.5 transition-transform duration-200"
+            :class="!isOpen && '-rotate-90'"
+          />
+        </button>
+      </UiLink>
     </div>
 
     <div

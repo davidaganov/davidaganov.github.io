@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import AppCookieBanner from "@base/components/app/AppCookieBanner.vue"
 import UiCommandPalette from "@ui/components/UiCommandPalette.vue"
 
 const { locale, t } = useI18n()
@@ -83,6 +82,5 @@ useSeoMeta({
       <NuxtPage />
       <UiCommandPalette />
     </NuxtLayout>
-    <AppCookieBanner />
   </UApp>
 </template>
