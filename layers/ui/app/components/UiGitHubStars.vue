@@ -2,25 +2,25 @@
 import { ApiClient } from "@api/services/client"
 import { GITHUB_REPO } from "@base/constants/config"
 
-const stars = ref<number>(0)
-const loading = ref(true)
-
-const formatStars = (count: number): string => {
-  if (count >= 1000) {
-    return `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k`
-  }
-  return String(count)
-}
-
 const githubUrl = `https://github.com/${GITHUB_REPO}`
 
-onMounted(async () => {
-  try {
-    stars.value = await ApiClient.github.getStars(GITHUB_REPO)
-  } finally {
-    loading.value = false
+const { data: starsCount, status } = await useAsyncData(
+  `github-stars-${GITHUB_REPO}`,
+  () => ApiClient.github.getStars(GITHUB_REPO),
+  {
+    default: () => 0,
+    lazy: true,
+    server: true
   }
-})
+)
+
+const loading = computed(() => status.value === "pending")
+const stars = computed(() => starsCount.value || 0)
+
+const formatStars = (count: number): string => {
+  if (count >= 1000) return `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k`
+  return String(count)
+}
 </script>
 
 <template>

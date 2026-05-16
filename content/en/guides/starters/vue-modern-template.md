@@ -8,7 +8,6 @@ publishedAt: 2026-05-09
 tags:
   - Vue
   - Frontend
-  - Tools
 ---
 
 # Vue Modern Template

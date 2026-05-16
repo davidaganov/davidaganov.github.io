@@ -31,7 +31,7 @@ const label = computed(() => {
 <template>
   <UiLink
     v-if="props.item.to"
-    class="ml-2 w-[calc(100%-0.5rem)]"
+    class="w-full"
     :to="props.item.to"
     :active="isActive"
   >

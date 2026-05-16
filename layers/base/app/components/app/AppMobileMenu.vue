@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.vue"
 import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
@@ -42,41 +43,48 @@ watch(
 <template>
   <USlideover
     v-model:open="isOpen"
-    side="left"
+    side="right"
     :title="$t('layout.navigation.aria.title')"
     :description="$t('layout.navigation.aria.description')"
     :ui="{
-      overlay: 'bg-black/80 backdrop-blur-sm'
+      content: 'max-w-none sm:max-w-md',
+      overlay: 'bg-black/80 backdrop-blur-sm pointer-events-auto'
     }"
   >
     <template #body>
-      <nav class="h-[calc(100%-47px)] max-w-full flex-1 space-y-1">
-        <template
-          v-for="(item, index) in renderedSidebarItems"
-          :key="index"
-        >
-          <BaseSidebarLink
-            v-if="item.type === 'link'"
-            :item="item"
-            @click="handleClose"
-          />
-          <BaseSidebarDivider
-            v-else-if="item.type === 'divider'"
-            :item="item"
-          />
-          <BaseSidebarCollection
-            v-else-if="item.type === 'collection'"
-            :item="item"
-            @click="handleClose"
-          />
-        </template>
-      </nav>
+      <div class="flex h-full flex-col overflow-hidden">
+        <div class="min-h-0 flex-1 overflow-hidden pr-2">
+          <BaseScrollbar height="100%">
+            <nav class="space-y-1 pb-4">
+              <template
+                v-for="(item, index) in renderedSidebarItems"
+                :key="index"
+              >
+                <BaseSidebarLink
+                  v-if="item.type === 'link'"
+                  :item="item"
+                  @click="handleClose"
+                />
+                <BaseSidebarDivider
+                  v-else-if="item.type === 'divider'"
+                  :item="item"
+                />
+                <BaseSidebarCollection
+                  v-else-if="item.type === 'collection'"
+                  :item="item"
+                  @click="handleClose"
+                />
+              </template>
+            </nav>
+          </BaseScrollbar>
+        </div>
 
-      <div
-        class="mt-auto flex items-center justify-end gap-2 border-t border-black/8 pt-4 dark:border-white/8"
-      >
-        <UiThemeToggle />
-        <UiLanguageSwitcher />
+        <div
+          class="mt-auto flex items-center justify-end gap-2 border-t border-black/8 pt-4 pb-2 dark:border-white/8"
+        >
+          <UiThemeToggle />
+          <UiLanguageSwitcher />
+        </div>
       </div>
     </template>
   </USlideover>

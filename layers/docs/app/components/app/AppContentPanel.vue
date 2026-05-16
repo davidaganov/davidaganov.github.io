@@ -1,10 +1,10 @@
 <template>
   <main class="min-w-0 flex-1 pt-4 pb-14 lg:pl-6">
     <div
-      class="relative min-h-[50vh] min-w-0 rounded-xl border border-white/5 bg-white/2 p-6 shadow-2xl backdrop-blur-sm lg:p-10"
+      class="relative min-h-[50vh] min-w-0 overflow-hidden md:rounded-xl md:border md:border-white/5 md:bg-white/2 md:p-6 md:shadow-2xl md:backdrop-blur-sm lg:p-10"
     >
       <div
-        class="via-primary-500/20 absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent"
+        class="md:via-primary-500/20 md:absolute md:inset-x-0 md:top-0 md:h-px md:bg-linear-to-r md:from-transparent md:to-transparent"
       />
       <slot />
     </div>

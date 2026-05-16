@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { DOCS_SECTIONS } from "@docs/config/sections"
 import { getFirstPathForSection } from "@docs/utils/sections"
-import { SOCIAL_LINKS } from "@base/constants/config"
+import { SOCIAL_LINKS, GITHUB_REPO } from "@base/constants/config"
 import { ROUTE_PATH } from "@base/types/enums/route.enum"
-import UiDivider from "@ui/components/UiDivider.vue"
 import UiLogo from "@ui/components/UiLogo.vue"
+
+const repoUrl = `https://github.com/${GITHUB_REPO}`
 
 const localePath = useLocalePath()
 const { t } = useI18n()
@@ -43,35 +44,29 @@ const docsSectionsPreview = computed(() =>
 </script>
 
 <template>
-  <footer class="w-full">
-    <div class="relative">
-      <div class="absolute right-0 left-0 z-1 mx-auto flex -translate-y-1/2 justify-center">
-        <UiLogo :short="true" />
-      </div>
-
-      <UiDivider />
-    </div>
-
-    <nav class="relative container py-10">
-      <div class="flex flex-row flex-wrap gap-12 lg:justify-center lg:gap-20">
-        <div>
+  <footer class="mt-auto pt-6 lg:pb-8">
+    <div
+      class="relative mx-auto w-full max-w-5xl border border-black/15 bg-white/20 px-3.5 py-6 shadow-xl backdrop-blur-xl lg:rounded-2xl lg:px-10 dark:border-white/5 dark:bg-white/3"
+    >
+      <div class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:gap-8">
+        <div class="space-y-4">
           <h3
-            class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-200"
+            class="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase dark:text-gray-500"
           >
             {{ $t("layout.footer.main") }}
           </h3>
-          <ul class="mt-4 flex flex-col gap-3">
+          <ul class="flex flex-col gap-2.5">
             <li
               v-for="item in docLinks"
               :key="item.to"
             >
               <NuxtLink
-                class="inline-flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                class="group inline-flex items-center gap-2.5 text-sm font-medium text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 :to="localePath(item.to)"
               >
                 <UIcon
                   :name="item.icon"
-                  class="size-4"
+                  class="size-3.5 opacity-50 transition-opacity group-hover:opacity-100"
                 />
                 {{ item.label }}
               </NuxtLink>
@@ -79,24 +74,24 @@ const docsSectionsPreview = computed(() =>
           </ul>
         </div>
 
-        <div>
+        <div class="space-y-4">
           <h3
-            class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-200"
+            class="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase dark:text-gray-500"
           >
             {{ $t("layout.footer.docSections") }}
           </h3>
-          <ul class="mt-4 flex flex-col gap-3">
+          <ul class="flex flex-col gap-2.5">
             <li
               v-for="section in docsSectionsPreview"
               :key="section.id"
             >
               <NuxtLink
-                class="group inline-flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                class="group inline-flex items-center gap-2.5 text-sm font-medium text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 :to="localePath(section.to)"
               >
                 <UIcon
+                  class="size-3.5 opacity-50 transition-opacity group-hover:opacity-100"
                   :name="section.icon"
-                  class="size-4"
                 />
                 <span>{{ section.label }}</span>
               </NuxtLink>
@@ -104,56 +99,59 @@ const docsSectionsPreview = computed(() =>
           </ul>
         </div>
 
-        <div v-if="projects.length">
+        <div
+          v-if="projects.length"
+          class="space-y-4"
+        >
           <h3
-            class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-200"
+            class="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase dark:text-gray-500"
           >
             {{ $t("layout.navigation.menu.projects") }}
           </h3>
-          <ul class="mt-4 flex flex-col gap-3">
+          <ul class="flex flex-col gap-2.5">
             <li
               v-for="item in projects"
               :key="item.to"
             >
               <NuxtLink
-                class="group flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                class="group flex items-center gap-2.5 text-sm font-medium text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 :to="localePath(item.to)"
               >
-                <span>{{ item.title }}</span>
-                <span
+                <span class="truncate">{{ item.title }}</span>
+                <div
                   v-if="item.stars"
-                  class="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500"
+                  class="flex items-center gap-0.5 text-[10px] text-yellow-500/80"
                 >
                   <UIcon
                     name="i-heroicons-star-20-solid"
-                    class="mb-0.5 size-3"
+                    class="size-3"
                   />
-                  {{ item.stars }}
-                </span>
+                  <span class="font-bold">{{ item.stars }}</span>
+                </div>
               </NuxtLink>
             </li>
           </ul>
         </div>
 
-        <div>
+        <div class="space-y-4">
           <h3
-            class="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-200"
+            class="text-[10px] font-bold tracking-[0.2em] text-gray-400 uppercase dark:text-gray-500"
           >
             {{ $t("layout.navigation.menu.contacts") }}
           </h3>
-          <ul class="mt-4 flex flex-col gap-3">
+          <ul class="flex flex-col gap-2.5">
             <li
               v-for="item in SOCIAL_LINKS"
               :key="item.label"
             >
               <a
-                class="inline-flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                class="group inline-flex items-center gap-2.5 text-sm font-medium text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 target="_blank"
                 rel="noopener noreferrer"
                 :href="item.href"
               >
                 <UIcon
-                  class="size-4"
+                  class="size-3.5 opacity-50 transition-opacity group-hover:opacity-100"
                   :name="item.icon"
                 />
                 <span>{{ item.label }}</span>
@@ -162,32 +160,32 @@ const docsSectionsPreview = computed(() =>
           </ul>
         </div>
       </div>
-    </nav>
 
-    <div class="relative">
-      <UiDivider />
-    </div>
-
-    <div class="relative container my-6">
       <div
-        class="flex flex-col gap-2 text-sm text-gray-400 sm:flex-row sm:items-center sm:justify-between dark:text-gray-500"
+        class="mt-10 flex flex-col items-center justify-between gap-6 border-t border-black/5 pt-6 sm:flex-row dark:border-white/5"
       >
-        <div>© {{ year }} David Aganov</div>
+        <div class="flex items-center gap-4">
+          <UiLogo />
+          <div class="h-6 w-px bg-black/10 dark:bg-white/10" />
+          <span class="pt-0.5 text-xs font-medium text-gray-400 dark:text-gray-500">
+            © {{ year }}
+          </span>
+        </div>
 
         <a
-          class="group inline-flex items-center gap-2 rounded-lg border border-black/10 bg-black/5 px-3 py-2 text-sm text-gray-600 backdrop-blur-md transition-colors hover:border-black/20 hover:bg-black/10 hover:text-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-gray-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
-          href="https://github.com/davidaganov/davidaganov.github.io"
+          class="group inline-flex items-center gap-2 rounded-full border border-black/5 bg-black/5 px-4 py-1.5 text-[11px] font-bold text-gray-500 transition-all hover:border-black/10 hover:bg-black/10 hover:text-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-gray-400 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
+          :href="repoUrl"
           target="_blank"
           rel="noopener noreferrer"
         >
           <UIcon
-            name="i-lucide-github"
-            class="size-4 opacity-80 transition-opacity group-hover:opacity-100"
+            name="i-simple-icons-github"
+            class="size-3.5 opacity-70 transition-opacity group-hover:opacity-100"
           />
           <span>{{ $t("layout.footer.repository") }}</span>
           <UIcon
             name="i-lucide-arrow-up-right"
-            class="size-4 opacity-60"
+            class="size-3 opacity-40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
           />
         </a>
       </div>

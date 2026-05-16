@@ -43,10 +43,6 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
     }
   })
 
-  const stats = ref<ProjectStats>({})
-  const loading = ref(false)
-  const error = ref<Error | null>(null)
-
   const formatDownloads = (num: number): string => {
     if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`
     if (num >= 1_000) return `${(num / 1_000).toFixed(1)}k`
@@ -79,10 +75,11 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
 
       if (!repoData || !languagesData) return null
 
-      const totalBytes = Object.values(languagesData).reduce((a, b) => a + b, 0)
+      const langs = languagesData as Record<string, number>
+      const totalBytes = Object.values(langs).reduce((a: number, b: number) => a + b, 0)
 
-      const languages = Object.entries(languagesData)
-        .map(([name, bytes]) => ({
+      const languages = Object.entries(langs)
+        .map(([name, bytes]: [string, number]) => ({
           name,
           percentage: Math.round((bytes / totalBytes) * 1000) / 10,
           color: githubColors[name] || "#7c3aed"
@@ -101,37 +98,36 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
     }
   }
 
-  const fetchStats = async () => {
-    if (!meta.value.npmPackage && !meta.value.githubRepo) return
+  const {
+    data: stats,
+    pending: loading,
+    error
+  } = useAsyncData(
+    `project-stats-${meta.value.npmPackage}-${meta.value.githubRepo}`,
+    async () => {
+      const result: ProjectStats = {}
+      if (!meta.value.npmPackage && !meta.value.githubRepo) return result
 
-    loading.value = true
-    error.value = null
-
-    try {
       const [npm, github] = await Promise.all([
         meta.value.npmPackage ? fetchNpmStats(meta.value.npmPackage) : null,
         meta.value.githubRepo ? fetchGithubStats(meta.value.githubRepo) : null
       ])
 
-      if (npm) stats.value.npm = npm
-      if (github) stats.value.github = github
-    } catch (e) {
-      error.value = e as Error
-    } finally {
-      loading.value = false
-    }
-  }
+      if (npm) result.npm = npm
+      if (github) result.github = github
 
-  watch(
-    () => meta.value,
-    () => fetchStats(),
-    { immediate: true }
+      return result
+    },
+    {
+      watch: [meta],
+      default: () => ({})
+    }
   )
 
   return {
-    stats: readonly(stats),
-    loading: readonly(loading),
-    error: readonly(error),
+    stats,
+    loading,
+    error,
     formatDownloads
   }
 }

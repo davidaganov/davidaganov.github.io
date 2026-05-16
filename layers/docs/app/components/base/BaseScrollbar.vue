@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTransition } from "@vueuse/core"
 import Simplebar from "simplebar-vue"
+import "simplebar-vue/dist/simplebar.min.css"
 
 const props = withDefaults(
   defineProps<{
@@ -60,7 +61,7 @@ const updateScrollState = (e: Event) => {
 const checkScrollbarVisibility = () => {
   try {
     const element = scrollBlockRef.value?.$el || scrollBlockRef.value
-    if (!element) return
+    if (!element || typeof element.querySelector !== "function") return
 
     const wrapper = element.querySelector(".simplebar-content-wrapper")
     if (wrapper) {
@@ -83,10 +84,13 @@ const checkScrollbarVisibility = () => {
 
 onMounted(async () => {
   await nextTick()
-  checkScrollbarVisibility()
 
   const element = scrollBlockRef.value?.$el || scrollBlockRef.value
-  const wrapper = element?.querySelector(".simplebar-content-wrapper")
+  if (!element || typeof element.querySelector !== "function") return
+
+  checkScrollbarVisibility()
+
+  const wrapper = element.querySelector(".simplebar-content-wrapper")
   if (wrapper) {
     wrapper.addEventListener("scroll", updateScrollState)
   }
@@ -105,9 +109,11 @@ onMounted(async () => {
 
 onUnmounted(() => {
   const element = scrollBlockRef.value?.$el || scrollBlockRef.value
-  const wrapper = element?.querySelector(".simplebar-content-wrapper")
-  if (wrapper) {
-    wrapper.removeEventListener("scroll", updateScrollState)
+  if (element && typeof element.querySelector === "function") {
+    const wrapper = element.querySelector(".simplebar-content-wrapper")
+    if (wrapper) {
+      wrapper.removeEventListener("scroll", updateScrollState)
+    }
   }
 
   if (observer.value) {

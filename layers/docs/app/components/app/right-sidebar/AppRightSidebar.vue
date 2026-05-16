@@ -36,9 +36,12 @@ const hideSidebar = computed(() => isChangelogDocsPath(route.path))
       to="#app-right-sidebar-root"
     >
       <aside
-        class="sticky top-(--ui-header-height) max-h-[calc(100vh-var(--ui-header-height))] overflow-hidden"
+        class="sticky top-(--ui-header-height) max-h-[calc(100vh-var(--ui-header-height))] overflow-x-hidden overflow-y-hidden"
       >
-        <BaseScrollbar height="calc(100vh - var(--ui-header-height))">
+        <BaseScrollbar
+          height="calc(100vh - var(--ui-header-height))"
+          class="overflow-x-hidden"
+        >
           <div class="pb-8">
             <AppRightSidebarContent v-bind="props" />
           </div>

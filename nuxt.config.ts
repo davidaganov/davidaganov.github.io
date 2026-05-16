@@ -52,6 +52,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    githubToken: process.env.NUXT_GITHUB_TOKEN || "",
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "https://aganov.dev",
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL || "",
@@ -75,7 +76,7 @@ export default defineNuxtConfig({
     host: "0.0.0.0"
   },
 
-  css: ["simplebar-vue/dist/simplebar.min.css", "@/assets/css/main.css"],
+  css: ["@/assets/css/main.css"],
 
   app: {
     pageTransition: { name: "page" },
@@ -105,16 +106,11 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/**": { prerender: true }
+    "/**": { isr: 21600 }
   },
 
   nitro: {
-    preset: "github-pages",
-    prerender: {
-      routes: ["/", "/sitemap.xml"],
-      crawlLinks: true,
-      failOnError: false
-    }
+    preset: "vercel"
   },
 
   ssr: true,

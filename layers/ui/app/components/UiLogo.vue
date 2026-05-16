@@ -14,7 +14,7 @@ const localePath = useLocalePath()
 </script>
 
 <template>
-  <div class="dark:bg-background-deep rounded-md bg-[#f8fafc] sm:rounded-lg">
+  <div class="rounded-md sm:rounded-lg">
     <NuxtLink
       class="inline-flex items-center gap-2 font-semibold text-gray-900 transition-opacity hover:opacity-80 dark:text-white"
       :to="localePath(ROUTE_PATH.HOME)"

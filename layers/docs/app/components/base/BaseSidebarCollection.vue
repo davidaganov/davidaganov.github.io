@@ -149,17 +149,16 @@ const isIndexActive = computed(() => {
     </div>
 
     <div
-      v-show="isOpen"
-      v-motion
-      class="space-y-0.5 overflow-hidden"
-      :initial="{ opacity: 0, height: 0 }"
-      :enter="{ opacity: 1, height: 'auto', transition: { duration: 300 } }"
+      class="grid transition-[grid-template-rows,opacity,margin] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      :class="isOpen ? 'mt-0.5 grid-rows-[1fr] opacity-100' : 'mt-0 grid-rows-[0fr] opacity-0'"
     >
-      <BaseSidebarLink
-        v-for="subItem in items"
-        :item="subItem"
-        :key="subItem.to"
-      />
+      <div class="ml-2 min-h-0 space-y-0.5 overflow-hidden">
+        <BaseSidebarLink
+          v-for="subItem in items"
+          :item="subItem"
+          :key="subItem.to"
+        />
+      </div>
     </div>
   </div>
 </template>

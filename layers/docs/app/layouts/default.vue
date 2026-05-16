@@ -35,14 +35,21 @@ defineShortcuts({
     <div class="container">
       <div class="flex">
         <AppLeftSidebar class="hidden lg:block" />
-        <div class="flex min-w-0 flex-1 border-l border-black/5 dark:border-white/5">
+        <div class="flex min-w-0 flex-1 lg:border-l lg:border-black/5 dark:lg:border-white/5">
           <AppContentPanel :class="{ 'w-full lg:max-w-none': hideDocsRightColumn }">
             <slot />
           </AppContentPanel>
 
           <div
             v-if="!hideDocsRightColumn"
+            v-motion="'sidebar-right'"
             class="hidden shrink-0 lg:block lg:w-[300px] lg:pl-6"
+            :initial="{ opacity: 0, x: 20 }"
+            :enter="{
+              opacity: 1,
+              x: 0,
+              transition: { duration: 600, ease: [0.16, 1, 0.3, 1], delay: 200 }
+            }"
             id="app-right-sidebar-root"
           />
         </div>

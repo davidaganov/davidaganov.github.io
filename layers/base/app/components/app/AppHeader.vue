@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import { useChangelogUnreadIndicator } from "@docs/composables/useChangelogUnreadIndicator"
 import { DOCS_SECTIONS } from "@docs/config/sections"
 import { getFirstPathForSection, getSectionById, getSectionIdByPath } from "@docs/utils/sections"
@@ -86,40 +87,76 @@ useHead({
       v-if="isDocsRoute"
       class="border-primary/20 border-t border-b"
     >
-      <div class="container flex h-14 items-center gap-2 overflow-x-auto">
-        <div class="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
-          <UiLink
-            v-for="tab in docsMainTabs"
-            :to="tab.to"
-            :active="activeSectionId === tab.id"
-            :key="tab.id"
+      <div class="container flex h-14 items-center gap-2 overflow-hidden">
+        <div class="flex min-w-0 flex-1 items-center overflow-hidden pb-1">
+          <BaseScrollbar
+            width="100%"
+            :offset-y="5"
           >
-            <UIcon
-              class="size-4"
-              :name="tab.icon"
-            />
-            {{ tab.label }}
-          </UiLink>
+            <div class="mt-2.5 mb-1 flex items-center gap-1 lg:mb-0">
+              <UiLink
+                v-for="tab in docsMainTabs"
+                class="py-1.5! lg:py-2!"
+                :to="tab.to"
+                :active="activeSectionId === tab.id"
+                :key="tab.id"
+              >
+                <UIcon
+                  class="size-4"
+                  :name="tab.icon"
+                />
+                {{ tab.label }}
+              </UiLink>
+
+              <!-- Changelog for Mobile -->
+              <UiLink
+                v-if="docsChangelogTab"
+                class="lg:hidden"
+                :to="docsChangelogTab.to"
+                :active="activeSectionId === docsChangelogTab.id"
+              >
+                <div class="relative mt-1">
+                  <UIcon
+                    class="size-4"
+                    :name="docsChangelogTab.icon"
+                  />
+                  <span
+                    v-if="showUnreadDot"
+                    class="bg-primary-500 absolute -top-1 -right-1 size-2 rounded-full ring-2 ring-(--ui-bg)"
+                    aria-hidden="true"
+                  />
+                </div>
+                {{ docsChangelogTab.label }}
+              </UiLink>
+            </div>
+          </BaseScrollbar>
         </div>
 
-        <UiLink
+        <!-- Changelog for Desktop -->
+        <div
           v-if="docsChangelogTab"
-          is-icon
-          :to="docsChangelogTab.to"
-          :active="activeSectionId === docsChangelogTab.id"
-          :aria-label="docsChangelogTab.label"
-          :title="docsChangelogTab.label"
+          class="hidden lg:flex"
         >
-          <UIcon
-            class="size-4"
-            :name="docsChangelogTab.icon"
-          />
-          <span
-            v-if="showUnreadDot"
-            class="bg-primary-500 absolute top-1 right-1 size-2 rounded-full ring-2 ring-(--ui-bg)"
-            aria-hidden="true"
-          />
-        </UiLink>
+          <UiLink
+            is-icon
+            :to="docsChangelogTab.to"
+            :active="activeSectionId === docsChangelogTab.id"
+            :aria-label="docsChangelogTab.label"
+            :title="docsChangelogTab.label"
+          >
+            <div class="relative mt-1">
+              <UIcon
+                class="size-4"
+                :name="docsChangelogTab.icon"
+              />
+              <span
+                v-if="showUnreadDot"
+                class="bg-primary-500 absolute -top-1 -right-1 size-2 rounded-full ring-2 ring-(--ui-bg)"
+                aria-hidden="true"
+              />
+            </div>
+          </UiLink>
+        </div>
       </div>
     </div>
   </header>
