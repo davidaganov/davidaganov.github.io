@@ -123,5 +123,12 @@ export default defineNuxtConfig({
     payloadExtraction: false
   },
 
+  icon: {
+    clientBundle: {
+      scan: true
+    },
+    serverBundle: "local"
+  },
+
   compatibilityDate: "2025-01-15"
 })
