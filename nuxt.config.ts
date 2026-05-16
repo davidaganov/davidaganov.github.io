@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "@pinia/nuxt",
     "@vueuse/motion/nuxt",
+    "@vercel/speed-insights",
     "nuxt-og-image"
   ],
 
