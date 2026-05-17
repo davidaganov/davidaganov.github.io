@@ -121,7 +121,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: true
+    payloadExtraction: false
   },
 
   icon: {
