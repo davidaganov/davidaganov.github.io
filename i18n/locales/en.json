@@ -74,7 +74,10 @@
       },
       "aria": {
         "title": "Navigation",
-        "description": "Documentation navigation"
+        "description": "Documentation navigation",
+        "docsSidebar": "Sections in documentation",
+        "articlesGuides": "Articles in Guides",
+        "articlesAbout": "Articles in About"
       }
     },
     "footer": {
@@ -82,6 +85,17 @@
       "docSections": "Sections",
       "repository": "GitHub Repository",
       "repositoryHint": "Source code of this portfolio."
+    },
+    "a11y": {
+      "skipToContent": "Skip to main content",
+      "openMobileMenu": "Open site navigation menu",
+      "closeMobileMenu": "Close menu",
+      "docsPrimaryNav": "Documentation topics",
+      "openSearchPalette": "Open search and navigation (Ctrl K or Cmd K)",
+      "languageSelect": "Interface language",
+      "githubStars": "{count} stars on GitHub",
+      "changelogUnread": "Unread changelog indicator",
+      "toggleDocsSubgroup": "Expand or collapse nested pages under {title}"
     }
   },
   "pages": {
@@ -157,6 +171,9 @@
       "description": "Search and navigate with keyboard commands",
       "placeholder": "Search documentation...",
       "empty": "Start typing to search...",
+      "noResults": "No matches for this query",
+      "resultsLabel": "Search results",
+      "searchInputLabel": "Search query",
       "hints": {
         "navigate": "to navigate",
         "select": "to select"

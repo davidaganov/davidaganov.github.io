@@ -1,4 +1,4 @@
-import { LOCALE } from "@base/types/enums"
+import { LOCALE } from "@base/types"
 
 export const USERNAME = "davidaganov"
 export const WORK_EMAIL = `${USERNAME}21@gmail.com`

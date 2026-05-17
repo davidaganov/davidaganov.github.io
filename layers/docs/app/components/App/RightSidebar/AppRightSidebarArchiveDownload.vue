@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import AppRightSidebarCard from "@docs/components/app/right-sidebar/AppRightSidebarCard.vue"
 import { useDocsArchive } from "@docs/composables/useDocsArchive"
 import { GITHUB_REPO } from "@base/constants/config"
+import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
 
 const { t } = useI18n()
 const { archiveEntries, archiveName, hasArchive } = useDocsArchive()
 
-const implementationUrl = `https://github.com/${GITHUB_REPO}/blob/main/layers/docs/app/components/app/AppRightSidebarArchiveDownload.vue`
+const implementationUrl = `https://github.com/${GITHUB_REPO}/blob/main/layers/docs/app/components/App/RightSidebar/AppRightSidebarArchiveDownload.vue`
 
 const isDownloading = ref(false)
 const error = ref("")

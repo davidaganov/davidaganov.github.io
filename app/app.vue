@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue"
+import AppSkipLink from "@base/components/App/AppSkipLink.vue"
 import UiCommandPalette from "@ui/components/UiCommandPalette.vue"
 
 const { locale, t } = useI18n()
@@ -50,6 +51,9 @@ useHead({
     { rel: "alternate", hreflang: "x-default", href: ruUrl }
   ],
   htmlAttrs: {
+    lang: computed(() =>
+      locale.value === "ru" ? "ru" : locale.value === "en" ? "en" : locale.value
+    ),
     class: () => (colorMode.value === "dark" ? "dark" : "")
   },
   script: [
@@ -78,6 +82,7 @@ useSeoMeta({
 
 <template>
   <UApp>
+    <AppSkipLink />
     <NuxtLayout>
       <NuxtPage />
       <UiCommandPalette />

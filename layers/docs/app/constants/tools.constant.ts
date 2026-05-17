@@ -1,4 +1,4 @@
-import type { SidebarItem } from "@docs/types/sidebar"
+import type { SidebarItem } from "@docs/types"
 
 export const TOOLS_SIDEBAR_ITEMS: SidebarItem[] = [
   {

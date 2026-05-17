@@ -42,9 +42,10 @@ const baseClass = computed(() => {
   <USelect
     v-model="currentLocale"
     size="sm"
-    class="h-[30px] w-21"
+    class="h-8 w-auto min-w-21"
     icon="i-lucide-globe"
     :items="AVAILABLE_LOCALES"
+    :aria-label="$t('layout.a11y.languageSelect')"
     :ui="{
       base: baseClass,
       leadingIcon: 'text-gray-700 dark:text-primary-400',

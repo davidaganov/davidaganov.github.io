@@ -1,21 +1,30 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content"
-import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
-import type { SidebarCollectionItem } from "@docs/types/sidebar"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
-import { ROUTE_PATH } from "@base/types/enums"
+import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import UiLink from "@ui/components/UiLink.vue"
+import { ROUTE_PATH } from "@base/types/enums"
+import type { SidebarCollectionItem } from "@docs/types/sidebar"
 
 const props = defineProps<{
   item: SidebarCollectionItem
 }>()
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 
 const route = useRoute()
 const localePath = useLocalePath()
 
 const isOpen = ref(props.item.defaultOpen ?? false)
+
+const submenuPanelId = `docs-sidebar-submenu-${useId()}`
+const submenuLabel = computed(() => t(props.item.label))
+
+const expandableLabel = computed(() =>
+  t("layout.a11y.toggleDocsSubgroup", { title: submenuLabel.value })
+)
+
+const submenuVisible = computed(() => !props.item.collapsible || isOpen.value)
 
 const collection = computed(() => `content_${locale.value}` as keyof Collections)
 
@@ -84,75 +93,85 @@ const items = computed(() => {
 const isIndexActive = computed(() => {
   return (props.item.indexPage ?? true) && route.path === localePath(props.item.pathPrefix || "")
 })
+
+const toggleOpen = () => {
+  if (props.item.collapsible) {
+    isOpen.value = !isOpen.value
+  }
+}
 </script>
 
 <template>
   <div v-if="items.length > 0">
-    <div class="mb-0.5">
-      <UiLink
-        v-if="props.item.indexPage ?? true"
-        class="w-full"
-        :to="props.item.pathPrefix || ''"
-        :active="isIndexActive"
-      >
-        <div class="flex flex-1 items-center gap-3">
-          <UIcon
-            v-if="item.icon"
-            class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
-            :name="item.icon"
-          />
-          <span class="line-clamp-1">{{ $t(item.label) }}</span>
-        </div>
+    <template v-if="props.item.indexPage ?? true">
+      <div class="flex w-full items-stretch gap-1">
+        <UiLink
+          class="min-w-0 flex-1 items-center"
+          :to="props.item.pathPrefix || ''"
+          :active="isIndexActive"
+          :aria-label="item.ariaLabelKey ? t(item.ariaLabelKey) : undefined"
+        >
+          <div class="flex min-w-0 flex-1 items-center gap-3">
+            <UIcon
+              v-if="item.icon"
+              class="size-4 shrink-0 opacity-70 transition-opacity group-hover:opacity-100"
+              aria-hidden="true"
+              :name="item.icon"
+            />
+            <span class="line-clamp-1">{{ $t(item.label) }}</span>
+          </div>
+        </UiLink>
 
-        <button
+        <UiLink
           v-if="item.collapsible"
-          type="button"
-          class="text-muted flex items-center justify-center transition-colors hover:text-gray-900 dark:hover:text-white"
-          @click.prevent.stop="isOpen = !isOpen"
+          is-icon
+          :active="isIndexActive"
+          :aria-expanded="isOpen"
+          :aria-controls="submenuPanelId"
+          :aria-label="expandableLabel"
+          @click.prevent.stop="toggleOpen"
         >
           <UIcon
             name="i-lucide-chevron-down"
-            class="size-3.5 transition-transform duration-200"
-            :class="!isOpen && '-rotate-90'"
+            class="size-4.5 opacity-70 transition-[transform,opacity] duration-200 group-hover:opacity-100"
+            aria-hidden="true"
+            :class="item.collapsible && !isOpen ? '-rotate-90' : 'rotate-0'"
           />
-        </button>
-      </UiLink>
+        </UiLink>
+      </div>
+    </template>
 
-      <UiLink
-        v-else
-        class="w-full"
-        :active="isOpen"
-        @click="item.collapsible && (isOpen = !isOpen)"
-      >
-        <div class="flex flex-1 items-center gap-3">
-          <UIcon
-            v-if="item.icon"
-            class="size-4 opacity-70 transition-opacity group-hover:opacity-100"
-            :name="item.icon"
-          />
-          <span class="line-clamp-1">{{ $t(item.label) }}</span>
-        </div>
-
-        <button
-          v-if="item.collapsible"
-          type="button"
-          class="text-muted flex items-center justify-center transition-colors hover:text-gray-900 dark:hover:text-white"
-          @click.stop="isOpen = !isOpen"
-        >
-          <UIcon
-            name="i-lucide-chevron-down"
-            class="size-3.5 transition-transform duration-200"
-            :class="!isOpen && '-rotate-90'"
-          />
-        </button>
-      </UiLink>
-    </div>
+    <button
+      v-else-if="props.item.collapsible"
+      type="button"
+      class="text-muted mb-0.5 flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-sm font-medium hover:bg-black/5 hover:text-gray-900 dark:hover:bg-white/5 dark:hover:text-white"
+      :class="isOpen ? 'text-primary-700 dark:text-primary-400' : ''"
+      :aria-expanded="isOpen"
+      :aria-controls="submenuPanelId"
+      :aria-label="expandableLabel"
+      @click="toggleOpen"
+    >
+      <UIcon
+        v-if="item.icon"
+        class="size-4 shrink-0 opacity-70 transition-opacity hover:opacity-100"
+        aria-hidden="true"
+        :name="item.icon"
+      />
+      <span class="line-clamp-1 flex-1 text-left">{{ $t(item.label) }}</span>
+      <UIcon
+        name="i-lucide-chevron-down"
+        class="size-3.5 shrink-0 transition-transform duration-200"
+        aria-hidden="true"
+        :class="!isOpen && '-rotate-90'"
+      />
+    </button>
 
     <div
       class="grid transition-[grid-template-rows,opacity,margin] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
-      :class="isOpen ? 'mt-0.5 grid-rows-[1fr] opacity-100' : 'mt-0 grid-rows-[0fr] opacity-0'"
+      :class="submenuVisible ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
+      :id="submenuPanelId"
     >
-      <div class="ml-2 min-h-0 space-y-0.5 overflow-hidden">
+      <div class="ml-2 min-h-0 space-y-0.5 overflow-hidden p-1">
         <BaseSidebarLink
           v-for="subItem in items"
           :item="subItem"

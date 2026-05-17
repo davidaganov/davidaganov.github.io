@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppFooter from "@base/components/app/AppFooter.vue"
+import AppFooter from "@base/components/App/AppFooter.vue"
 
 const { toggle, close } = useCommandPalette()
 
@@ -16,7 +16,13 @@ defineShortcuts({
 
 <template>
   <div>
-    <slot />
+    <main
+      tabindex="-1"
+      class="outline-none"
+      id="main-content"
+    >
+      <slot />
+    </main>
     <AppFooter />
   </div>
 </template>

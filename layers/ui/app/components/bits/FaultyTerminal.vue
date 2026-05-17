@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Color, Mesh, Program, Renderer, Triangle } from "ogl"
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue"
+import { Color, Mesh, Program, Renderer, Triangle } from "ogl"
 import { hexToRgb } from "@base/utils/hexToRgb"
 
 type Vec2 = [number, number]
@@ -461,6 +461,8 @@ onBeforeUnmount(() => {
 <template>
   <div
     v-bind="$attrs"
+    aria-hidden="true"
+    role="presentation"
     :class="['relative h-full w-full overflow-hidden', className]"
     :style="style"
     ref="containerRef"

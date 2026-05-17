@@ -1,6 +1,5 @@
 import { ApiClient } from "@api/services/client"
-import type { GitHubUserData } from "@api/types/github"
-import { USERNAME } from "@base/constants/config"
+import { USERNAME } from "@base/constants"
 
 export const useGitHubStats = () => {
   const {

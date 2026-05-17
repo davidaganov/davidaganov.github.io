@@ -1,8 +1,8 @@
-import { DOCS_SECTIONS } from "@docs/config/sections"
+import { LOCALE_PREFIX_RE } from "@base/constants"
+import { DOCS_SECTIONS } from "@docs/constants"
+import { ROUTE_PATH } from "@base/types/enums"
 import type { DocsSection } from "@docs/types/docs"
 import type { SidebarItem } from "@docs/types/sidebar"
-import { LOCALE_PREFIX_RE } from "@base/constants"
-import { ROUTE_PATH } from "@base/types/enums"
 
 const toDocsSectionPath = (sectionId: string, suffix?: string): string => {
   if (!suffix) return `/docs/${sectionId}`

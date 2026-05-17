@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useIndexPageFilters } from "@docs/composables/useIndexPageFilters"
 import BaseIndexCard from "@docs/components/base/BaseIndexCard.vue"
 import BaseIndexFilters from "@docs/components/base/BaseIndexFilters.vue"
-import { useIndexPageFilters } from "@docs/composables/useIndexPageFilters"
 
 const props = withDefaults(
   defineProps<{

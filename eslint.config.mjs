@@ -48,30 +48,11 @@ export default createConfigForNuxt({
       "vue/valid-v-slot": ["error", { allowModifiers: true }],
       "vue/component-name-in-template-casing": ["error", "PascalCase"],
       "vue/no-v-html": "off",
+      "vue/attributes-order": "off",
       "vue/block-order": [
         "error",
         {
           order: ["script", "template", "style"]
-        }
-      ],
-      "vue/attributes-order": [
-        "error",
-        {
-          order: [
-            "DEFINITION",
-            "LIST_RENDERING",
-            "CONDITIONALS",
-            "RENDER_MODIFIERS",
-            "TWO_WAY_BINDING",
-            "OTHER_DIRECTIVES",
-            "SLOT",
-            "CONTENT",
-            "OTHER_ATTR",
-            "UNIQUE",
-            "GLOBAL",
-            "EVENTS"
-          ],
-          alphabetical: false
         }
       ],
 

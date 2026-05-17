@@ -8,54 +8,67 @@ const props = withDefaults(
   }
 )
 
+const { t } = useI18n()
 const colorMode = useColorMode()
-
-const themeItems = [
-  { value: "system", icon: "i-lucide-monitor" },
-  { value: "light", icon: "i-lucide-sun" },
-  { value: "dark", icon: "i-lucide-moon" }
-]
 
 const preference = computed({
   get: () => colorMode.preference,
   set: (val) => (colorMode.preference = val as "system" | "light" | "dark")
 })
+
+const themeItems = computed(() => [
+  {
+    value: "system" as const,
+    icon: "i-lucide-monitor",
+    a11yLabel: t("components.themeToggle.system")
+  },
+  { value: "light" as const, icon: "i-lucide-sun", a11yLabel: t("components.themeToggle.light") },
+  { value: "dark" as const, icon: "i-lucide-moon", a11yLabel: t("components.themeToggle.dark") }
+])
+
+const setPreference = (val: "system" | "light" | "dark") => {
+  preference.value = val
+}
 </script>
 
 <template>
   <ClientOnly>
-    <UTabs
-      v-model="preference"
-      :items="themeItems"
-      :content="false"
-      :ui="{
-        root: 'flex items-center',
-        list: [
-          'flex items-center gap-0.5 p-0.5 rounded-lg border h-[30px] border-black/10 bg-black/5 dark:border-white/20 dark:bg-white/10',
-          props.blur ? 'backdrop-blur-sm' : ''
-        ],
-        indicator: 'bg-white dark:bg-white/15 shadow-sm rounded-md inset-y-0.5',
-        trigger: [
-          'flex h-full w-8 items-center justify-center rounded-md p-0',
-          'text-gray-700 dark:text-white',
-          'data-[state=inactive]:hover:text-primary-500 dark:data-[state=inactive]:hover:text-primary-400',
-          'data-[state=active]:text-primary-500 dark:data-[state=active]:text-primary-400',
-          'focus-visible:ring-0 transition-colors'
-        ]
-      }"
+    <div
+      role="toolbar"
+      :aria-label="$t('components.themeToggle.aria')"
+      :class="[
+        'flex h-8 shrink-0 items-center gap-0.5 rounded-lg border border-black/10 bg-black/5 p-0.5 dark:border-white/20 dark:bg-white/10',
+        props.blur ? 'backdrop-blur-sm' : ''
+      ]"
     >
-      <template #leading="{ item }">
+      <button
+        v-for="opt in themeItems"
+        type="button"
+        class="focus-visible:ring-primary-500 flex size-6.5 shrink-0 items-center justify-center rounded-md p-0 text-gray-700 ring-offset-(--ui-bg) transition-colors outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-offset-2 dark:text-white"
+        :class="
+          preference === opt.value
+            ? 'text-primary-500 dark:text-primary-400 bg-white shadow-sm dark:bg-white/15'
+            : 'hover:text-primary-500 dark:hover:text-primary-400'
+        "
+        :aria-pressed="preference === opt.value"
+        :aria-label="opt.a11yLabel"
+        :key="opt.value"
+        @click="setPreference(opt.value)"
+      >
         <UIcon
           class="size-4"
-          :name="item.icon"
+          aria-hidden="true"
+          :name="opt.icon"
         />
-      </template>
-    </UTabs>
+      </button>
+    </div>
 
     <template #fallback>
       <div
-        class="h-[30px] w-25 rounded-lg border border-black/10 bg-black/5 dark:border-white/20 dark:bg-white/10"
+        class="flex h-8 items-center rounded-lg border border-black/10 bg-black/5 dark:border-white/20 dark:bg-white/10"
+        role="status"
         :class="props.blur ? 'backdrop-blur-sm' : ''"
+        :aria-label="$t('global.status.loading')"
       />
     </template>
   </ClientOnly>

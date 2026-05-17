@@ -12,6 +12,8 @@ interface Props {
   isIcon?: boolean
   /** Target attribute for external links (e.g., '_blank') */
   target?: string
+  /** Accessible name when visible text is ambiguous (e.g. duplicate link labels) */
+  ariaLabel?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,7 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
   href: undefined,
   active: false,
   isIcon: false,
-  target: "_self"
+  target: "_self",
+  ariaLabel: undefined
 })
 
 const localePath = useLocalePath()
@@ -65,6 +68,8 @@ const classes = computed(() => {
   <NuxtLink
     v-if="props.to"
     v-bind="componentProps"
+    :aria-current="props.active ? 'page' : undefined"
+    :aria-label="props.ariaLabel"
     :class="classes"
   >
     <slot />
@@ -73,6 +78,7 @@ const classes = computed(() => {
   <a
     v-else-if="props.href"
     v-bind="componentProps"
+    :aria-label="props.ariaLabel"
     :class="classes"
   >
     <slot />
@@ -81,6 +87,7 @@ const classes = computed(() => {
   <button
     v-else
     v-bind="componentProps"
+    :aria-label="props.ariaLabel"
     :class="classes"
   >
     <slot />

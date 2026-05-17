@@ -14,8 +14,6 @@ const navLabelKey = computed(() => {
 const alignClass = computed(() =>
   isPrev.value ? "text-left md:col-start-1" : "text-right md:col-start-2"
 )
-const iconClass =
-  "group-hover:text-primary-600 size-4 shrink-0 text-gray-400 transition-colors dark:text-white/50 dark:group-hover:text-white/80"
 </script>
 
 <template>
@@ -25,7 +23,7 @@ const iconClass =
     :class="alignClass"
   >
     <span
-      class="mb-1 text-xs text-gray-500 transition-colors group-hover:text-gray-700 dark:text-white/40 dark:group-hover:text-white/60"
+      class="mb-1 text-xs text-gray-600 transition-colors group-hover:text-gray-800 dark:text-gray-400 dark:group-hover:text-gray-200"
     >
       {{ $t(navLabelKey) }}
     </span>
@@ -36,13 +34,13 @@ const iconClass =
       <UIcon
         v-if="isPrev"
         name="i-lucide-arrow-left"
-        :class="iconClass"
+        class="group-hover:text-primary-700 dark:group-hover:text-primary-400 size-4 shrink-0 text-gray-500 transition-colors dark:text-gray-400"
       />
       {{ page.title }}
       <UIcon
         v-if="!isPrev"
         name="i-lucide-arrow-right"
-        :class="iconClass"
+        class="group-hover:text-primary-700 dark:group-hover:text-primary-400 size-4 shrink-0 text-gray-500 transition-colors dark:text-gray-400"
       />
     </span>
   </NuxtLink>

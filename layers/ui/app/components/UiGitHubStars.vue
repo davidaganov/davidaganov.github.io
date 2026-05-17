@@ -4,6 +4,8 @@ import { GITHUB_REPO } from "@base/constants/config"
 
 const githubUrl = `https://github.com/${GITHUB_REPO}`
 
+const { t } = useI18n()
+
 const { data: starsCount, status } = await useAsyncData(
   `github-stars-${GITHUB_REPO}`,
   () => ApiClient.github.getStars(GITHUB_REPO),
@@ -17,6 +19,10 @@ const { data: starsCount, status } = await useAsyncData(
 const loading = computed(() => status.value === "pending")
 const stars = computed(() => starsCount.value || 0)
 
+const ariaLabel = computed(() =>
+  loading.value ? t("global.status.loading") : t("layout.a11y.githubStars", { count: stars.value })
+)
+
 const formatStars = (count: number): string => {
   if (count >= 1000) return `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k`
   return String(count)
@@ -28,16 +34,22 @@ const formatStars = (count: number): string => {
     target="_blank"
     size="sm"
     variant="ghost"
-    class="group py-0! hover:bg-black/5 dark:hover:bg-white/10"
+    rel="noopener noreferrer"
+    class="group h-8 px-2.5 py-0! hover:bg-black/5 dark:hover:bg-white/10"
     :to="githubUrl"
+    :aria-busy="loading"
+    :aria-label="ariaLabel"
     :ui="{
-      base: 'bg-black/5 dark:bg-white/10 border h-[30px] border-black/10 dark:border-white/20 text-gray-700 dark:text-white'
+      base: 'bg-black/5 dark:bg-white/10 border h-8 border-black/10 dark:border-white/20 text-gray-900 dark:text-white'
     }"
   >
-    <div class="flex items-center gap-1.5">
+    <span
+      class="flex items-center gap-1.5"
+      aria-hidden="true"
+    >
       <UIcon
         name="i-simple-icons-github"
-        class="size-4"
+        class="size-4 shrink-0"
       />
       <span
         v-if="!loading"
@@ -53,8 +65,8 @@ const formatStars = (count: number): string => {
       </span>
       <UIcon
         name="i-heroicons-star-20-solid"
-        class="-mt-px size-3.5 text-gray-700 transition-colors group-hover:text-yellow-400 dark:text-white"
+        class="-mt-px size-3.5 text-gray-800 transition-colors group-hover:text-yellow-400 dark:text-white"
       />
-    </div>
+    </span>
   </UButton>
 </template>

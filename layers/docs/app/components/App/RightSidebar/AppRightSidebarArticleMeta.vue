@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import AppRightSidebarCard from "@docs/components/app/right-sidebar/AppRightSidebarCard.vue"
-import { SORT_ORDER } from "@docs/types/enums"
-import { buildFiltersQuery } from "@docs/utils/indexFiltersQuery"
 import { formatDate } from "@base/utils/date"
+import { buildFiltersQuery } from "@docs/utils/indexFiltersQuery"
+import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
 import UiBadge from "@ui/components/UiBadge.vue"
+import { SORT_ORDER } from "@docs/types/enums"
 
 const props = defineProps<{
   page: unknown

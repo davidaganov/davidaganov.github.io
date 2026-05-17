@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseArticleNavigateButton from "@docs/components/base/BaseArticleNavigateButton.vue"
 import { useArticleNavigation } from "@docs/composables/useArticleNavigation"
+import BaseArticleNavigateButton from "@docs/components/base/BaseArticleNavigateButton.vue"
 
 const props = defineProps<{
   docsPath: string
@@ -22,7 +22,7 @@ const { prevPage, nextPage, githubMdUrl } = useArticleNavigation(docsPath)
       <a
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 text-sm text-gray-400 transition-colors hover:text-gray-700 dark:text-white/40 dark:hover:text-white/70"
+        class="inline-flex items-center gap-1.5 text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
         :href="githubMdUrl"
       >
         <UIcon

@@ -1,5 +1,5 @@
+import { computed, ref, type Ref, shallowRef, watch } from "vue"
 import { CalendarDate, DateFormatter, getLocalTimeZone, today } from "@internationalized/date"
-import { computed, ref, shallowRef, watch, type Ref } from "vue"
 
 export type Mode = "difference" | "calculate"
 export type Unit = "days" | "weeks" | "months" | "years"

@@ -1,18 +1,6 @@
 import type { Collections } from "@nuxt/content"
 import { ApiClient } from "@api/services/client"
-
-interface ProjectStats {
-  npm?: {
-    version: string
-    downloads: number
-  }
-  github?: {
-    stars: number
-    lastCommit: string
-    version?: string
-    languages: Array<{ name: string; percentage: number; color: string }>
-  }
-}
+import type { ProjectStats } from "@api/types"
 
 const githubColors: Record<string, string> = {
   TypeScript: "#3178c6",
@@ -102,9 +90,9 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
     data: stats,
     pending: loading,
     error
-  } = useAsyncData(
+  } = useAsyncData<ProjectStats>(
     `project-stats-${meta.value.npmPackage}-${meta.value.githubRepo}`,
-    async () => {
+    async (): Promise<ProjectStats> => {
       const result: ProjectStats = {}
       if (!meta.value.npmPackage && !meta.value.githubRepo) return result
 
@@ -120,7 +108,7 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
     },
     {
       watch: [meta],
-      default: () => ({})
+      default: (): ProjectStats => ({})
     }
   )
 

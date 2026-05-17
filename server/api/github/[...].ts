@@ -1,4 +1,4 @@
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<unknown> => {
   const config = useRuntimeConfig()
   const path = event.context.params?._
   const query = getQuery(event)
@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   const url = `https://api.github.com/${path}`
 
   try {
-    return await $fetch(url, {
+    return await $fetch<unknown>(url, {
       query,
       headers: {
         ...(config.githubToken ? { Authorization: `Bearer ${config.githubToken}` } : {}),

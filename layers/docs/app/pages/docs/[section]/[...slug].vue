@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content"
-import AppIndexPage from "@docs/components/app/AppIndexPage.vue"
-import AppRightSidebar from "@docs/components/app/right-sidebar/AppRightSidebar.vue"
-import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
 import { useDocsSeo } from "@docs/composables/useDocsSeo"
-import type { SidebarCollectionItem } from "@docs/types/sidebar"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import {
   getFirstPathForFirstSection,
   getFirstPathForSection,
   getSectionById
 } from "@docs/utils/sections"
+import AppIndexPage from "@docs/components/App/AppIndexPage.vue"
+import AppRightSidebar from "@docs/components/App/RightSidebar/AppRightSidebar.vue"
+import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
+import type { SidebarCollectionItem } from "@docs/types/sidebar"
 
 const { locale } = useI18n()
 const localePath = useLocalePath()
@@ -108,7 +108,9 @@ const { breadcrumbs, pageType } = useDocsSeo({
 
     <template v-else-if="page">
       <AppArticleTranslationWarning :page="page" />
-      <ContentRenderer :value="page" />
+      <div class="docs-markdown-scope">
+        <ContentRenderer :value="page" />
+      </div>
       <AppRightSidebar
         :page="page"
         :type="pageType"

@@ -74,7 +74,10 @@
       },
       "aria": {
         "title": "Навигация",
-        "description": "Навигация по документации"
+        "description": "Навигация по документации",
+        "docsSidebar": "Разделы документации",
+        "articlesGuides": "Статьи, раздел «Гайды»",
+        "articlesAbout": "Статьи, раздел «Обо мне»"
       }
     },
     "footer": {
@@ -82,6 +85,17 @@
       "docSections": "Разделы",
       "repository": "Репозиторий на GitHub",
       "repositoryHint": "Исходный код этого портфолио."
+    },
+    "a11y": {
+      "skipToContent": "Перейти к основному содержимому",
+      "openMobileMenu": "Открыть меню навигации",
+      "closeMobileMenu": "Закрыть меню",
+      "docsPrimaryNav": "Темы документации",
+      "openSearchPalette": "Открыть поиск и навигацию (Ctrl K или Cmd K)",
+      "languageSelect": "Язык интерфейса",
+      "githubStars": "{count} звёзд на GitHub",
+      "changelogUnread": "Индикатор непрочитанных изменений",
+      "toggleDocsSubgroup": "Раскрыть или скрыть вложенные страницы: {title}"
     }
   },
   "pages": {
@@ -157,6 +171,9 @@
       "description": "Поиск и навигация с помощью клавиатурных команд",
       "placeholder": "Поиск по документации...",
       "empty": "Начните ввод для поиска...",
+      "noResults": "Ничего не найдено по запросу",
+      "resultsLabel": "Результаты поиска",
+      "searchInputLabel": "Строка поиска",
       "hints": {
         "navigate": "для навигации",
         "select": "для выбора"

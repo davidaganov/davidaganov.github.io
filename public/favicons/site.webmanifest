@@ -6,7 +6,7 @@
   "lang": "en-US",
   "display": "standalone",
   "orientation": "any",
-  "start_url": "https://aganov.dev/",
+  "start_url": "/",
   "background_color": "#3d294f",
   "theme_color": "#3d294f",
   "icons": [

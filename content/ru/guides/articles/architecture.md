@@ -161,7 +161,7 @@ definePageMeta({
 ```vue [components/pages/products/ProductsPage.vue]
 <script setup lang="ts">
 // 1. Импорты (Фреймворк → Сторы → Компоненты → Типы)
-import { ref, computed, onMounted } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useProductsStore } from "@/stores/useProductsStore"
 import ProductsListSection from "@/components/pages/products/ProductsListSection.vue"
@@ -287,7 +287,7 @@ export const useProductsStore = defineStore("products", () => {
 Схема — это всегда функция, а не объект. Это позволяет использовать `useI18n()` внутри и получать переведённые сообщения об ошибках:
 
 ```ts [validation/productSchema.ts]
-import { object, string, number } from "yup"
+import { number, object, string } from "yup"
 
 export default function schema() {
   const { t } = useI18n()
@@ -352,10 +352,10 @@ import ProductsPage from "@/components/pages/products/ProductsPage.vue"
 
 ```vue [components/pages/products/ProductsPage.vue]
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useProductsStore } from "@/stores/useProductsStore"
-import AppHeader from "@/components/app/AppHeader.vue"
+import AppHeader from "@/components/App/AppHeader.vue"
 import ProductsListSection from "@/components/pages/products/ProductsListSection.vue"
 import type { Product } from "@/types"
 

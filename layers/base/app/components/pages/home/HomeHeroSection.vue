@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useMediaQuery, useScrollLock } from "@vueuse/core"
-import BaseLight from "@docs/components/base/BaseLight.vue"
 import HomeLoader from "@base/components/pages/home/HomeLoader.vue"
+import BaseLight from "@docs/components/base/BaseLight.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 

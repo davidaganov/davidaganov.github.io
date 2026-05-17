@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppRightSidebarProfile from "@docs/components/app/right-sidebar/AppRightSidebarProfile.vue"
 import { useHabrArticles } from "@docs/composables/useHabrArticles"
 import { HABR_LINK } from "@base/constants/config"
+import AppRightSidebarProfile from "@docs/components/App/RightSidebar/AppRightSidebarProfile.vue"
 
 const { t } = useI18n()
 const { habrCount, siteCount } = useHabrArticles()

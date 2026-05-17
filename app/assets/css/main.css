@@ -4,6 +4,12 @@
 
 :root {
   --ui-bg: #050a14;
+  --ui-header-height: 56px;
+  --ui-sticky-top: calc(var(--ui-header-height) + 0.75rem);
+}
+
+#main-content {
+  scroll-margin-top: calc(var(--ui-header-height, 56px) + 1.5rem);
 }
 
 .light {
@@ -14,14 +20,46 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 button {
   cursor: pointer;
+}
+
+.docs-markdown-scope :where(pre) {
+  border-color: rgb(15 23 42 / 0.13);
+}
+
+.dark .docs-markdown-scope :where(pre) {
+  border-color: rgb(255 255 255 / 0.13);
 }
 
 .container {
   max-width: 1440px;
   margin-inline: auto;
   padding-inline: 14px;
+}
+
+:where(
+  button,
+  summary,
+  select,
+  textarea,
+  input,
+  [role="radio"],
+  [role="switch"],
+  [role="checkbox"]
+) {
+  scroll-margin-top: calc(var(--ui-header-height, 56px) + 8px);
+}
+
+*:focus-visible {
+  outline: 2px solid rgb(139 92 246 / 0.85);
+  outline-offset: 2px;
 }
 
 /* Scrollbar styling */

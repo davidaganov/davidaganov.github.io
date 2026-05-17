@@ -1,9 +1,9 @@
-import { ABOUT_SIDEBAR_ITEMS } from "@docs/config/about"
-import { CHANGELOG_SIDEBAR_ITEMS } from "@docs/config/changelog"
-import { GUIDES_SIDEBAR_ITEMS } from "@docs/config/guides"
-import { TOOLS_SIDEBAR_ITEMS } from "@docs/config/tools"
-import type { DocsSection } from "@docs/types/docs"
-import { ROUTE_PATH } from "@base/types/enums"
+import { ROUTE_PATH } from "@base/types"
+import type { DocsSection } from "@docs/types"
+import { ABOUT_SIDEBAR_ITEMS } from "./about.constant"
+import { CHANGELOG_SIDEBAR_ITEMS } from "./changelog.constant"
+import { GUIDES_SIDEBAR_ITEMS } from "./guides.constant"
+import { TOOLS_SIDEBAR_ITEMS } from "./tools.constant"
 
 export const DOCS_SECTIONS: DocsSection[] = [
   {

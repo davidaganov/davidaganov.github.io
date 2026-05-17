@@ -1,6 +1,7 @@
-import type { DocsSeoOptions, DocsPageData } from "@docs/types/docs"
-import { TYPE_PAGE } from "@docs/types/enums"
+import { getFirstPathForSection } from "@docs/utils/sections"
 import { buildStructuredData } from "@docs/utils/structuredData"
+import { TYPE_PAGE } from "@docs/types/enums"
+import type { DocsPageData, DocsSeoOptions } from "@docs/types/docs"
 
 export const useDocsSeo = ({
   section,
@@ -62,7 +63,7 @@ export const useDocsSeo = ({
     const items = [
       {
         label: t(currentSection.labelKey),
-        to: localePath(`/docs/${currentSection.id}`)
+        to: localePath(getFirstPathForSection(currentSection))
       }
     ]
 
@@ -70,7 +71,8 @@ export const useDocsSeo = ({
     if (parent) {
       items.push({
         label: t(parent.label),
-        to: localePath(parent.pathPrefix || `/docs/${currentSection.id}/${parent.source}`)
+        to: localePath(parent.pathPrefix || `/docs/${currentSection.id}/${parent.source}`),
+        ...(parent.ariaLabelKey ? { "aria-label": t(parent.ariaLabelKey) } : {})
       })
     }
 

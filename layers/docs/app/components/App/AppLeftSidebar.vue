@@ -1,20 +1,23 @@
 <script setup lang="ts">
+import { useSidebarItems } from "@docs/composables/useSidebarItems"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.vue"
 import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
-import { useSidebarItems } from "@docs/composables/useSidebarItems"
 
 const { renderedSidebarItems } = useSidebarItems()
 </script>
 
 <template>
   <aside
-    class="sticky top-(--ui-header-height) h-fit max-h-[calc(100vh-var(--ui-header-height))] w-[240px] shrink-0 overflow-hidden pr-2"
+    class="sticky top-(--ui-sticky-top) h-fit max-h-[calc(100vh-var(--ui-sticky-top))] w-[240px] shrink-0 overflow-hidden pr-2"
   >
-    <BaseScrollbar height="calc(100vh - var(--ui-header-height))">
+    <BaseScrollbar height="calc(100vh - var(--ui-sticky-top))">
       <div class="pb-8">
-        <nav class="flex flex-col gap-1">
+        <nav
+          class="flex flex-col gap-1 p-1"
+          :aria-label="$t('layout.navigation.aria.docsSidebar')"
+        >
           <template
             v-for="(item, index) in renderedSidebarItems"
             :key="index"

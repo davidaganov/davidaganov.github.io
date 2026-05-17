@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <main
+    tabindex="-1"
+    class="outline-none"
+    id="main-content"
+  >
     <slot />
-  </div>
+  </main>
 </template>

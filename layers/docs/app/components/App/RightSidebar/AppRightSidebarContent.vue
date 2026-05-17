@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useWindowScroll, useWindowSize } from "@vueuse/core"
-import AppRightSidebarArchiveDownload from "@docs/components/app/right-sidebar/AppRightSidebarArchiveDownload.vue"
-import AppRightSidebarArticleMeta from "@docs/components/app/right-sidebar/AppRightSidebarArticleMeta.vue"
-import AppRightSidebarGitHubProfile from "@docs/components/app/right-sidebar/AppRightSidebarGitHubProfile.vue"
-import AppRightSidebarHabrProfile from "@docs/components/app/right-sidebar/AppRightSidebarHabrProfile.vue"
-import AppRightSidebarProjectMeta from "@docs/components/app/right-sidebar/AppRightSidebarProjectMeta.vue"
-import AppRightSidebarToc from "@docs/components/app/right-sidebar/AppRightSidebarToc.vue"
-import { TYPE_PAGE } from "@docs/types/enums"
 import { SOCIAL_LINKS } from "@base/constants/config"
+import AppRightSidebarArchiveDownload from "@docs/components/App/RightSidebar/AppRightSidebarArchiveDownload.vue"
+import AppRightSidebarArticleMeta from "@docs/components/App/RightSidebar/AppRightSidebarArticleMeta.vue"
+import AppRightSidebarGitHubProfile from "@docs/components/App/RightSidebar/AppRightSidebarGitHubProfile.vue"
+import AppRightSidebarHabrProfile from "@docs/components/App/RightSidebar/AppRightSidebarHabrProfile.vue"
+import AppRightSidebarProjectMeta from "@docs/components/App/RightSidebar/AppRightSidebarProjectMeta.vue"
+import AppRightSidebarToc from "@docs/components/App/RightSidebar/AppRightSidebarToc.vue"
+import { TYPE_PAGE } from "@docs/types/enums"
 
 const props = withDefaults(
   defineProps<{

@@ -1,5 +1,5 @@
 import type { Collections } from "@nuxt/content"
-import { DOCS_SECTIONS } from "@docs/config/sections"
+import { DOCS_SECTIONS } from "@docs/constants"
 import { TYPE_PAGE } from "@docs/types/enums"
 import type { SidebarCollectionItem } from "@docs/types/sidebar"
 

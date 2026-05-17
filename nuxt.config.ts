@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   ],
 
   ogImage: {
-    debug: true
+    debug: process.env.NODE_ENV !== "production"
   },
 
   extends: ["./layers/ui", "./layers/api", "./layers/docs", "./layers/base"],
@@ -121,10 +121,11 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: false
+    payloadExtraction: true
   },
 
   icon: {
+    provider: "iconify",
     clientBundle: {
       scan: true
     },

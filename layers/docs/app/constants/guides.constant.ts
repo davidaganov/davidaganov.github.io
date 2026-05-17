@@ -1,10 +1,11 @@
-import type { SidebarItem } from "@docs/types/sidebar"
+import type { SidebarItem } from "@docs/types"
 
 export const GUIDES_SIDEBAR_ITEMS: SidebarItem[] = [
   {
     type: "collection",
     source: "articles",
     label: "layout.navigation.menu.articles",
+    ariaLabelKey: "layout.navigation.aria.articlesGuides",
     indexPage: true,
     pageType: "article",
     titleKey: "layout.navigation.menu.articles",

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import AppRightSidebarCard from "@docs/components/app/right-sidebar/AppRightSidebarCard.vue"
 import { formatDate } from "@base/utils/date"
+import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
 import UiBadge from "@ui/components/UiBadge.vue"
 
 const props = defineProps<{

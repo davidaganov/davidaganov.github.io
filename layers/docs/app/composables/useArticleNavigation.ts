@@ -1,8 +1,8 @@
 import type { Collections } from "@nuxt/content"
-import type { SidebarItem, SidebarLinkItem, SidebarCollectionItem } from "@docs/types/sidebar"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import { getSectionById } from "@docs/utils/sections"
 import { GITHUB_REPO } from "@base/constants/config"
+import type { SidebarCollectionItem, SidebarItem, SidebarLinkItem } from "@docs/types/sidebar"
 
 export interface NavPageItem {
   title: string

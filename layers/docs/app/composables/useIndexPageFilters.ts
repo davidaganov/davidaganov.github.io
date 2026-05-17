@@ -1,7 +1,5 @@
 import type { Collections } from "@nuxt/content"
 import { hasArchiveForPath } from "@docs/composables/useDocsArchive"
-import type { ArticleMeta } from "@docs/types/article"
-import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import {
   buildFiltersQuery,
@@ -9,6 +7,8 @@ import {
   parseSourceFromQuery,
   parseTagsFromQuery
 } from "@docs/utils/indexFiltersQuery"
+import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
+import type { ArticleMeta } from "@docs/types/article"
 
 export interface IndexPageItem {
   title: string

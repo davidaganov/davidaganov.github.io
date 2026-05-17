@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue"
+import { onMounted, ref, watch } from "vue"
 
 const PROGRESS_INITIAL_PERCENT = 65
 const WAITING_PROGRESS_SECONDS = 2.4

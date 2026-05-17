@@ -4,11 +4,11 @@ import { ROUTE_PATH } from "@base/types/enums"
 
 const LIMIT = 3
 
-export const useTopProjects = (limit = LIMIT) => {
+export const useTopProjects = async (limit = LIMIT) => {
   const { locale } = useI18n()
 
-  const { data: projects, pending: loading } = useAsyncData(
-    () => `top-projects:${locale.value}`,
+  const { data: projects, pending: loading } = await useAsyncData(
+    "top-projects",
     async () => {
       const collection = `content_${locale.value}` as keyof Collections
       const allProjects = await queryCollection(collection)

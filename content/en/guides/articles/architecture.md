@@ -161,7 +161,7 @@ I stick to a strict order because when every file is structured the same way, yo
 ```vue [components/pages/products/ProductsPage.vue]
 <script setup lang="ts">
 // 1. Imports (Framework → Stores → Components → Types)
-import { ref, computed, onMounted } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useProductsStore } from "@/stores/useProductsStore"
 import ProductsListSection from "@/components/pages/products/ProductsListSection.vue"
@@ -287,7 +287,7 @@ When validation lives inside the component, scaling hurts. I move all schemas to
 A schema is always a function, not an object. That lets you use `useI18n()` inside and get translated error messages:
 
 ```ts [validation/productSchema.ts]
-import { object, string, number } from "yup"
+import { number, object, string } from "yup"
 
 export default function schema() {
   const { t } = useI18n()
@@ -352,10 +352,10 @@ import ProductsPage from "@/components/pages/products/ProductsPage.vue"
 
 ```vue [components/pages/products/ProductsPage.vue]
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useProductsStore } from "@/stores/useProductsStore"
-import AppHeader from "@/components/app/AppHeader.vue"
+import AppHeader from "@/components/App/AppHeader.vue"
 import ProductsListSection from "@/components/pages/products/ProductsListSection.vue"
 import type { Product } from "@/types"
 

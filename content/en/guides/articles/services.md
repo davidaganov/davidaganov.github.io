@@ -189,7 +189,7 @@ See how much cleaner the component's code becomes. It no longer knows about URLs
 
 ```vue [app/components/ProductList.vue]
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { onMounted, ref } from "vue"
 import { ApiClient } from "@/services/client"
 
 const products = ref([])

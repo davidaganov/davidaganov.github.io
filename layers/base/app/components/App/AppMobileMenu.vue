@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { useSidebarItems } from "@docs/composables/useSidebarItems"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.vue"
 import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
-import { useSidebarItems } from "@docs/composables/useSidebarItems"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 
@@ -55,7 +55,11 @@ watch(
       <div class="flex h-full flex-col overflow-hidden">
         <div class="min-h-0 flex-1 overflow-hidden pr-2">
           <BaseScrollbar height="100%">
-            <nav class="space-y-1 pb-4">
+            <nav
+              class="space-y-1 pb-4"
+              :aria-label="$t('layout.navigation.aria.title')"
+              id="site-mobile-nav"
+            >
               <template
                 v-for="(item, index) in renderedSidebarItems"
                 :key="index"

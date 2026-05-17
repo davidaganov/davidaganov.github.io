@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useBreakpoints } from "@vueuse/core"
-import AppRightSidebarContent from "@docs/components/app/right-sidebar/AppRightSidebarContent.vue"
+import { isChangelogDocsPath } from "@docs/utils/sections"
+import AppRightSidebarContent from "@docs/components/App/RightSidebar/AppRightSidebarContent.vue"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import { TYPE_PAGE } from "@docs/types/enums"
-import { isChangelogDocsPath } from "@docs/utils/sections"
 
 const props = withDefaults(
   defineProps<{
@@ -36,10 +36,10 @@ const hideSidebar = computed(() => isChangelogDocsPath(route.path))
       to="#app-right-sidebar-root"
     >
       <aside
-        class="sticky top-(--ui-header-height) max-h-[calc(100vh-var(--ui-header-height))] overflow-x-hidden overflow-y-hidden"
+        class="sticky top-(--ui-sticky-top) max-h-[calc(100vh-var(--ui-sticky-top))] overflow-x-hidden overflow-y-hidden"
       >
         <BaseScrollbar
-          height="calc(100vh - var(--ui-header-height))"
+          height="calc(100vh - var(--ui-sticky-top))"
           class="overflow-x-hidden"
         >
           <div class="pb-8">

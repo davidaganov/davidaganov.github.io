@@ -40,6 +40,8 @@
       "layout.navigation.menu.guides": "Гайды",
       "layout.navigation.menu.tools": "Инструменты",
       "layout.navigation.menu.articles": "Статьи",
+      "layout.navigation.aria.articlesGuides": "Статьи, раздел «Гайды»",
+      "layout.navigation.aria.articlesAbout": "Статьи, раздел «Обо мне»",
       "layout.navigation.menu.starters": "Шаблоны",
       "layout.navigation.menu.projects": "Проекты",
       "layout.navigation.menu.contacts": "Контакты",

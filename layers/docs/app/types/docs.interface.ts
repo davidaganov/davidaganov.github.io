@@ -1,5 +1,4 @@
-import type { Ref } from "vue"
-import type { SidebarCollectionItem, SidebarItem } from "@docs/types/sidebar"
+import type { SidebarCollectionItem, SidebarItem } from "@docs/types"
 
 export interface DocsSection {
   id: string
