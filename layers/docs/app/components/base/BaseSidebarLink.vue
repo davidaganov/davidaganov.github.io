@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UiLink from "@ui/components/UiLink.vue"
-import type { SidebarLinkItem } from "@docs/types/sidebar"
+import type { SidebarLinkItem } from "@docs/types"
 
 const props = defineProps<{
   item: SidebarLinkItem

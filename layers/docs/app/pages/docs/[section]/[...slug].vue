@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Collections } from "@nuxt/content"
-import { useDocsSeo } from "@docs/composables/useDocsSeo"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import {
   getFirstPathForFirstSection,
@@ -10,7 +9,8 @@ import {
 import AppIndexPage from "@docs/components/App/AppIndexPage.vue"
 import AppRightSidebar from "@docs/components/App/RightSidebar/AppRightSidebar.vue"
 import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
-import type { SidebarCollectionItem } from "@docs/types/sidebar"
+import type { SidebarCollectionItem } from "@docs/types"
+import { useDocsSeo } from "@/layers/docs/app/composables/docs/useDocsSeo"
 
 const { locale } = useI18n()
 const localePath = useLocalePath()

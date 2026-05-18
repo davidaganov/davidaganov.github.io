@@ -463,8 +463,8 @@ onBeforeUnmount(() => {
     v-bind="$attrs"
     aria-hidden="true"
     role="presentation"
+    ref="containerRef"
     :class="['relative h-full w-full overflow-hidden', className]"
     :style="style"
-    ref="containerRef"
   />
 </template>

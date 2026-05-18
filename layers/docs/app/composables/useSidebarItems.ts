@@ -1,7 +1,7 @@
 import type { Collections } from "@nuxt/content"
 import { getSectionById, getSectionIdByPath } from "@docs/utils/sections"
 import { DOCS_SECTIONS } from "@docs/constants"
-import type { SidebarCollectionItem, SidebarItem, SidebarLinkItem } from "@docs/types/sidebar"
+import type { SidebarCollectionItem, SidebarItem, SidebarLinkItem } from "@docs/types"
 
 export const useSidebarItems = () => {
   const { locale } = useI18n()

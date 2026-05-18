@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useArticleNavigation } from "@docs/composables/useArticleNavigation"
 import BaseArticleNavigateButton from "@docs/components/base/BaseArticleNavigateButton.vue"
+import { useArticlesNavigation } from "@/layers/docs/app/composables/articles/useArticlesNavigation"
 
 const props = defineProps<{
   docsPath: string
@@ -9,7 +9,9 @@ const props = defineProps<{
 
 const docsPath = toRef(() => props.docsPath)
 
-const { prevPage, nextPage, githubMdUrl } = useArticleNavigation(docsPath)
+const localePath = useLocalePath()
+
+const { prevPage, nextPage, githubMdUrl } = useArticlesNavigation(docsPath)
 </script>
 
 <template>
@@ -17,7 +19,7 @@ const { prevPage, nextPage, githubMdUrl } = useArticleNavigation(docsPath)
     <!-- GitHub MD link -->
     <div
       v-if="githubMdUrl && !props.isCollection"
-      class="mb-6"
+      class="mb-6 flex flex-wrap items-center gap-x-6 gap-y-2"
     >
       <a
         target="_blank"
@@ -35,32 +37,41 @@ const { prevPage, nextPage, githubMdUrl } = useArticleNavigation(docsPath)
           class="size-3.5"
         />
       </a>
+      <NuxtLink
+        class="inline-flex items-center gap-1.5 text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+        :to="localePath('/docs/graph')"
+      >
+        <UIcon
+          name="i-lucide-git-fork"
+          class="size-3.5"
+        />
+        <span>{{ $t("docs.graph.linkFromArticle") }}</span>
+      </NuxtLink>
     </div>
 
     <!-- Prev / Next navigation -->
-    <div
-      v-if="prevPage || nextPage"
-      class="grid gap-4 md:grid-cols-2"
-    >
-      <!-- Previous page -->
-      <BaseArticleNavigateButton
-        v-if="prevPage"
-        direction="prev"
-        :page="prevPage"
-      />
-
-      <!-- Spacer when only next page exists -->
+    <ClientOnly>
       <div
-        v-else
-        class="col-start-1"
-      />
+        v-if="prevPage || nextPage"
+        class="grid gap-4 md:grid-cols-2"
+      >
+        <BaseArticleNavigateButton
+          v-if="prevPage"
+          direction="prev"
+          :page="prevPage"
+        />
 
-      <!-- Next page -->
-      <BaseArticleNavigateButton
-        v-if="nextPage"
-        direction="next"
-        :page="nextPage"
-      />
-    </div>
+        <div
+          v-else
+          class="col-start-1"
+        />
+
+        <BaseArticleNavigateButton
+          v-if="nextPage"
+          direction="next"
+          :page="nextPage"
+        />
+      </div>
+    </ClientOnly>
   </div>
 </template>

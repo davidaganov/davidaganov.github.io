@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatDate } from "@base/utils/date"
-import type { ArticleItem } from "@docs/types/article"
+import type { ArticleItem } from "@docs/types"
 
 const props = defineProps<{
   article: ArticleItem

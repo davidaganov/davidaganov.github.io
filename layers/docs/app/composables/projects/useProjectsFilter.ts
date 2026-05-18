@@ -1,6 +1,6 @@
 import type { Collections } from "@nuxt/content"
 import { SORT_ORDER } from "@docs/types/enums/filter.enum"
-import type { ProjectItem, ProjectMeta } from "@docs/types/project"
+import type { ProjectItem, ProjectMeta } from "@docs/types"
 
 export const useProjectsFilter = () => {
   const { locale } = useI18n()

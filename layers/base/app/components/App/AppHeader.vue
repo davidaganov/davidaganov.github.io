@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useChangelogUnreadIndicator } from "@docs/composables/useChangelogUnreadIndicator"
-import { getFirstPathForSection, getSectionById, getSectionIdByPath } from "@docs/utils/sections"
+import {
+  getFirstPathForSection,
+  getSectionById,
+  getSectionIdByPath,
+  isGraphDocsPath
+} from "@docs/utils/sections"
 import { DOCS_SECTIONS } from "@docs/constants"
 import AppMobileMenu from "@base/components/App/AppMobileMenu.vue"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
@@ -46,9 +51,12 @@ const docsChangelogTab = computed(() => {
   }
 })
 
+const isGraphRoute = computed(() => isGraphDocsPath(route.path))
+
 const isDocsRoute = computed(() => route.path.includes(ROUTE_PATH.DOCS))
 
 const activeSectionId = computed(() => {
+  if (isGraphRoute.value) return ""
   const sectionId = getSectionIdByPath(route.path)
   return getSectionById(sectionId)?.id || DOCS_SECTIONS[0]?.id || ""
 })
@@ -149,12 +157,25 @@ const docsChangelogAriaLabel = computed(() => {
           </BaseScrollbar>
         </div>
 
-        <!-- Changelog for Desktop -->
         <div
-          v-if="docsChangelogTab"
-          class="hidden lg:flex"
+          v-if="isDocsRoute"
+          class="hidden items-center gap-1 lg:flex"
         >
           <UiLink
+            is-icon
+            :to="localePath(ROUTE_PATH.DOCS_GRAPH)"
+            :active="isGraphRoute"
+            :aria-label="$t('docs.graph.headerAria')"
+            :title="$t('docs.graph.headerAria')"
+          >
+            <UIcon
+              name="i-lucide-git-fork"
+              class="size-4 shrink-0"
+              aria-hidden="true"
+            />
+          </UiLink>
+          <UiLink
+            v-if="docsChangelogTab"
             is-icon
             :to="docsChangelogTab.to"
             :active="activeSectionId === docsChangelogTab.id"

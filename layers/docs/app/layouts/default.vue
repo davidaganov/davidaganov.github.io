@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isChangelogDocsPath } from "@docs/utils/sections"
+import { isChangelogDocsPath, isGraphDocsPath } from "@docs/utils/sections"
 import AppFooter from "@base/components/App/AppFooter.vue"
 import AppHeader from "@base/components/App/AppHeader.vue"
 import AppContentPanel from "@docs/components/App/AppContentPanel.vue"
@@ -11,7 +11,11 @@ const route = useRoute()
 const { toggle, close } = useCommandPalette()
 const { light } = usePageTransitionLight()
 
-const hideDocsRightColumn = computed(() => isChangelogDocsPath(route.path))
+const hideDocsRightColumn = computed(
+  () => isChangelogDocsPath(route.path) || isGraphDocsPath(route.path)
+)
+
+const isGraphPage = computed(() => isGraphDocsPath(route.path))
 
 defineShortcuts({
   meta_k: () => {
@@ -32,15 +36,25 @@ defineShortcuts({
     <AppHeader />
     <BaseLight :light="light" />
 
-    <div class="container">
-      <div class="flex">
-        <AppLeftSidebar class="hidden lg:block" />
+    <div :class="isGraphPage ? 'w-full max-w-none' : 'container'">
+      <div
+        class="flex"
+        :class="{ 'min-h-[calc(100dvh-7.5rem)]': isGraphPage }"
+      >
+        <AppLeftSidebar
+          v-if="!isGraphPage"
+          class="hidden lg:block"
+        />
         <main
           tabindex="-1"
-          class="flex min-w-0 flex-1 outline-none lg:border-l lg:border-black/5 dark:lg:border-white/5"
+          class="flex min-w-0 flex-1 outline-none"
+          :class="isGraphPage ? '' : 'lg:border-l lg:border-black/5 dark:lg:border-white/5'"
           id="main-content"
         >
-          <AppContentPanel :class="{ 'w-full lg:max-w-none': hideDocsRightColumn }">
+          <AppContentPanel
+            :bare="isGraphPage"
+            :class="{ 'w-full lg:max-w-none': hideDocsRightColumn }"
+          >
             <slot />
           </AppContentPanel>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ApiClient } from "@api/services/client"
-import { GITHUB_REPO } from "@base/constants/config"
+import { GITHUB_REPO } from "@base/constants"
 
 const githubUrl = `https://github.com/${GITHUB_REPO}`
 

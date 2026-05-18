@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useGitHubStats } from "@docs/composables/useGitHubStats"
-import { GITHUB_LINK } from "@base/constants/config"
+import { GITHUB_LINK } from "@base/constants"
 import AppRightSidebarProfile from "@docs/components/App/RightSidebar/AppRightSidebarProfile.vue"
 
 const { t } = useI18n()

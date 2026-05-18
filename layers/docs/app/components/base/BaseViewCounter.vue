@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePageViews } from "@docs/composables/usePageViews"
+import { usePageViews } from "@/layers/docs/app/composables/page/usePageViews"
 
 const route = useRoute()
 const viewSlug = computed(() => route.path)

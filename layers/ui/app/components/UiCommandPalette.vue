@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { SearchResult } from "@docs/composables/useDocsSearch"
 import { TYPE_PAGE } from "@docs/types"
+import type { SearchResult } from "@/layers/docs/app/composables/docs/useDocsSearch"
 
 const { t } = useI18n()
 const router = useRouter()
@@ -62,6 +62,11 @@ const highlightQuery = (text: string): string => {
 
 const selectResult = (result: SearchResult) => {
   router.push(localePath(result.path))
+  close()
+}
+
+const openDocsGraph = () => {
+  router.push(localePath("/docs/graph"))
   close()
 }
 
@@ -187,6 +192,15 @@ watch(query, () => {
               <p class="text-sm">
                 {{ $t("components.cmd.empty") }}
               </p>
+              <UButton
+                color="neutral"
+                variant="subtle"
+                size="sm"
+                class="mt-1"
+                icon="i-lucide-git-fork"
+                :label="$t('docs.graph.openFromPalette')"
+                @click="openDocsGraph"
+              />
             </div>
 
             <div

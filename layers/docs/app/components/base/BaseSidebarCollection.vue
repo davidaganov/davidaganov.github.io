@@ -3,8 +3,8 @@ import type { Collections } from "@nuxt/content"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import UiLink from "@ui/components/UiLink.vue"
-import { ROUTE_PATH } from "@base/types/enums"
-import type { SidebarCollectionItem } from "@docs/types/sidebar"
+import { ROUTE_PATH } from "@base/types"
+import type { SidebarCollectionItem } from "@docs/types"
 
 const props = defineProps<{
   item: SidebarCollectionItem

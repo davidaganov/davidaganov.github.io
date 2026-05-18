@@ -1,6 +1,5 @@
 import type { Collections } from "@nuxt/content"
-import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums/filter.enum"
-import type { ArticleItem, ArticleMeta } from "@docs/types/article"
+import { type ArticleItem, type ArticleMeta, SORT_ORDER, SOURCE_FILTER } from "@docs/types"
 
 export const useArticlesFilter = () => {
   const { locale } = useI18n()

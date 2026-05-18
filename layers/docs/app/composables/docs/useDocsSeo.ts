@@ -1,7 +1,7 @@
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { buildStructuredData } from "@docs/utils/structuredData"
 import { TYPE_PAGE } from "@docs/types/enums"
-import type { DocsPageData, DocsSeoOptions } from "@docs/types/docs"
+import type { DocsPageData, DocsSeoOptions } from "@docs/types"
 
 export const useDocsSeo = ({
   section,

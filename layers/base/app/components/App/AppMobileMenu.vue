@@ -6,12 +6,23 @@ import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
+import { ROUTE_PATH } from "@base/types"
 
 const props = defineProps<{
   open: boolean
 }>()
 
 const route = useRoute()
+
+const isDocsRoute = computed(() => route.path.includes(ROUTE_PATH.DOCS))
+
+const graphNavItem = computed(() => ({
+  type: "link" as const,
+  to: ROUTE_PATH.DOCS_GRAPH,
+  label: "docs.graph.sidebar",
+  icon: "i-lucide-git-fork",
+  translate: true
+}))
 
 const emit = defineEmits<{
   (e: "close"): void
@@ -60,6 +71,11 @@ watch(
               :aria-label="$t('layout.navigation.aria.title')"
               id="site-mobile-nav"
             >
+              <BaseSidebarLink
+                v-if="isDocsRoute"
+                :item="graphNavItem"
+                @click="handleClose"
+              />
               <template
                 v-for="(item, index) in renderedSidebarItems"
                 :key="index"

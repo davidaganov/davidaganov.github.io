@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SidebarDividerItem } from "@docs/types/sidebar"
+import type { SidebarDividerItem } from "@docs/types"
 
 const props = defineProps<{
   item: SidebarDividerItem

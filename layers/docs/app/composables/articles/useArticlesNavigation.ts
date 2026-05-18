@@ -1,8 +1,8 @@
 import type { Collections } from "@nuxt/content"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import { getSectionById } from "@docs/utils/sections"
-import { GITHUB_REPO } from "@base/constants/config"
-import type { SidebarCollectionItem, SidebarItem, SidebarLinkItem } from "@docs/types/sidebar"
+import { GITHUB_REPO } from "@base/constants"
+import type { SidebarCollectionItem, SidebarItem, SidebarLinkItem } from "@docs/types"
 
 export interface NavPageItem {
   title: string
@@ -16,6 +16,26 @@ export interface NavPageItem {
  * - SidebarCollectionItem → pathPrefix (the collection index page)
  * Dividers are skipped.
  */
+/** Same ordering on server (Node) and client (browser) to avoid hydration mismatches. */
+const comparePagesForNav = (
+  a: { path: string; title: string; meta: unknown },
+  b: { path: string; title: string; meta: unknown }
+): number => {
+  const aMeta = (a.meta as { order?: number } | undefined) || {}
+  const bMeta = (b.meta as { order?: number } | undefined) || {}
+  const aOrder = typeof aMeta.order === "number" ? aMeta.order : Number.MAX_SAFE_INTEGER
+  const bOrder = typeof bMeta.order === "number" ? bMeta.order : Number.MAX_SAFE_INTEGER
+
+  if (aOrder !== bOrder) return aOrder - bOrder
+  const t = String(a.title || "").localeCompare(String(b.title || ""), "en", {
+    sensitivity: "base",
+    numeric: true
+  })
+  if (t !== 0) return t
+
+  return String(a.path).localeCompare(String(b.path || ""), "en", { numeric: true })
+}
+
 const buildNavList = (
   sectionId: string,
   sidebarItems: SidebarItem[],
@@ -88,14 +108,7 @@ const buildNavList = (
           )
           return !hidden
         })
-        .sort((a, b) => {
-          const aMeta = (a.meta as { order?: number } | undefined) || {}
-          const bMeta = (b.meta as { order?: number } | undefined) || {}
-          const aOrder = typeof aMeta.order === "number" ? aMeta.order : Number.MAX_SAFE_INTEGER
-          const bOrder = typeof bMeta.order === "number" ? bMeta.order : Number.MAX_SAFE_INTEGER
-          if (aOrder !== bOrder) return aOrder - bOrder
-          return String(a.title || "").localeCompare(String(b.title || ""))
-        })
+        .sort(comparePagesForNav)
 
       for (const child of children) {
         const relativePath = getRelativePath(child.path, queryPrefix)
@@ -114,7 +127,7 @@ const buildNavList = (
 /** Normalize path: strip locale prefix and trailing slash */
 const normalizePath = (path: string) => path.replace(/^\/[a-z]{2}\//, "/").replace(/\/$/, "")
 
-export const useArticleNavigation = (docsPath: Ref<string>) => {
+export const useArticlesNavigation = (docsPath: Ref<string>) => {
   const { locale, defaultLocale, t } = useI18n()
 
   /** "/en" for non-default locales, "" for default (no prefix needed) */
@@ -158,14 +171,7 @@ export const useArticleNavigation = (docsPath: Ref<string>) => {
         )
         return !hidden
       })
-      .sort((a, b) => {
-        const aMeta = (a.meta as { order?: number } | undefined) || {}
-        const bMeta = (b.meta as { order?: number } | undefined) || {}
-        const aOrder = typeof aMeta.order === "number" ? aMeta.order : Number.MAX_SAFE_INTEGER
-        const bOrder = typeof bMeta.order === "number" ? bMeta.order : Number.MAX_SAFE_INTEGER
-        if (aOrder !== bOrder) return aOrder - bOrder
-        return String(a.title || "").localeCompare(String(b.title || ""))
-      })
+      .sort(comparePagesForNav)
 
     return buildNavList(sectionId.value, currentSection.sidebarItems, pages, localePrefix.value)
   })

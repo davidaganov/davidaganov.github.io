@@ -4,7 +4,7 @@ import { ROUTE_PATH } from "@base/types/enums"
 
 const LIMIT = 3
 
-export const useTopProjects = async (limit = LIMIT) => {
+export const useProjectsTop = async (limit = LIMIT) => {
   const { locale } = useI18n()
 
   const { data: projects, pending: loading } = await useAsyncData(

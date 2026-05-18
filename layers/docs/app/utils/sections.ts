@@ -1,8 +1,7 @@
 import { LOCALE_PREFIX_RE } from "@base/constants"
 import { DOCS_SECTIONS } from "@docs/constants"
-import { ROUTE_PATH } from "@base/types/enums"
-import type { DocsSection } from "@docs/types/docs"
-import type { SidebarItem } from "@docs/types/sidebar"
+import { ROUTE_PATH } from "@base/types"
+import type { DocsSection, SidebarItem } from "@docs/types"
 
 const toDocsSectionPath = (sectionId: string, suffix?: string): string => {
   if (!suffix) return `/docs/${sectionId}`
@@ -36,6 +35,10 @@ export const isChangelogDocsPath = (path: string): boolean => {
   )
 }
 
+export const isGraphDocsPath = (path: string): boolean => {
+  return normalizeDocsPath(path) === ROUTE_PATH.DOCS_GRAPH
+}
+
 export const getSectionIdByPath = (path: string): string => {
   const normalized = normalizeDocsPath(path)
   const segments = normalized.split(ROUTE_PATH.HOME).filter(Boolean)
@@ -45,8 +48,9 @@ export const getSectionIdByPath = (path: string): string => {
   return segments[1] || ""
 }
 
-export const getSectionById = (id: string): DocsSection | undefined =>
-  DOCS_SECTIONS.find((section) => section.id === id)
+export const getSectionById = (id: string): DocsSection | undefined => {
+  return DOCS_SECTIONS.find((section) => section.id === id)
+}
 
 export const getFirstPathForSection = (section: DocsSection | undefined): string => {
   if (!section) return ROUTE_PATH.DOCS

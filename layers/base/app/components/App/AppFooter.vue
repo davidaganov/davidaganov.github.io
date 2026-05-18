@@ -10,7 +10,7 @@ const repoUrl = `https://github.com/${GITHUB_REPO}`
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const { projects } = await useTopProjects(3)
+const { projects } = await useProjectsTop(3)
 
 const projectList = computed(() => projects.value ?? [])
 
@@ -109,39 +109,57 @@ const repositoryLinkTitle = computed(
           </ul>
         </div>
 
-        <div
-          v-if="projectList.length"
-          class="space-y-4"
-        >
+        <div class="space-y-4">
           <h3
             class="text-[10px] font-bold tracking-[0.2em] text-gray-600 uppercase dark:text-gray-400"
           >
             {{ $t("layout.navigation.menu.projects") }}
           </h3>
-          <ul class="flex flex-col gap-2.5">
-            <li
-              v-for="item in projectList"
-              :key="item.to"
-            >
-              <NuxtLink
-                class="group flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
-                :to="localePath(item.to)"
+          <ClientOnly>
+            <ul class="flex flex-col gap-2.5">
+              <li
+                v-for="slotIdx in 3"
+                :key="slotIdx"
               >
-                <span class="truncate">{{ item.title }}</span>
-                <div
-                  class="flex min-w-8 shrink-0 items-center gap-0.5 text-[10px] text-amber-700 tabular-nums dark:text-amber-400/90"
-                  :class="{ invisible: !item.stars }"
+                <NuxtLink
+                  v-if="projectList[slotIdx - 1]"
+                  class="group flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
+                  :to="localePath(projectList[slotIdx - 1]!.to)"
                 >
-                  <UIcon
-                    name="i-heroicons-star-20-solid"
+                  <span class="truncate">{{ projectList[slotIdx - 1]!.title }}</span>
+                  <div
+                    class="flex min-w-8 shrink-0 items-center gap-0.5 text-[10px] text-amber-700 tabular-nums dark:text-amber-400/90"
+                    :class="{ invisible: !projectList[slotIdx - 1]!.stars }"
+                  >
+                    <UIcon
+                      name="i-heroicons-star-20-solid"
+                      aria-hidden="true"
+                      class="size-3"
+                    />
+                    <span class="font-bold">{{ projectList[slotIdx - 1]!.stars }}</span>
+                  </div>
+                </NuxtLink>
+                <div
+                  v-else
+                  class="min-h-8"
+                  aria-hidden="true"
+                />
+              </li>
+            </ul>
+            <template #fallback>
+              <ul class="flex flex-col gap-2.5">
+                <li
+                  v-for="slotIdx in 3"
+                  :key="slotIdx"
+                >
+                  <div
+                    class="min-h-8"
                     aria-hidden="true"
-                    class="size-3"
                   />
-                  <span class="font-bold">{{ item.stars }}</span>
-                </div>
-              </NuxtLink>
-            </li>
-          </ul>
+                </li>
+              </ul>
+            </template>
+          </ClientOnly>
         </div>
 
         <div class="space-y-4">

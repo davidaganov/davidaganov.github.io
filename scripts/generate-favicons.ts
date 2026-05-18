@@ -1,6 +1,17 @@
 import { favicons } from "favicons"
-import fs from "fs/promises"
-import path from "path"
+import fs from "node:fs/promises"
+import path from "node:path"
+
+interface ManifestIcon {
+  src: string
+  sizes: string
+  types?: string
+}
+
+interface Manifest {
+  icons: ManifestIcon[]
+  [key: string]: any
+}
 
 const source = "public/favicon.src.png" // Source image
 const dest = "public/favicons" // Output directory
@@ -26,7 +37,7 @@ const configuration = {
   }
 }
 
-async function generate() {
+async function generate(): Promise<void> {
   try {
     console.log(`Generating favicons from ${source}...`)
 
@@ -70,7 +81,7 @@ async function generate() {
 
       if (fileName === "site.webmanifest") {
         // Filter manifest icons to only keep 192 and 512
-        const manifest = JSON.parse(file.contents)
+        const manifest = JSON.parse(file.contents.toString()) as Manifest
         manifest.icons = manifest.icons.filter((icon) =>
           ["192x192", "512x512"].includes(icon.sizes)
         )
@@ -86,13 +97,9 @@ async function generate() {
     }
 
     console.log("Favicons generated successfully! (Optimized set)")
-
-    // Optional: Log HTML tags if user needs to update them
-    // console.log('\nSuggested HTML tags:');
-    // response.html.forEach(tag => console.log(tag));
   } catch (error) {
     console.error("Error generating favicons:", error)
   }
 }
 
-generate()
+void generate()

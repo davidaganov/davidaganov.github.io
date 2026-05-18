@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "predev": "npm run build:docs-graph",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -18,7 +19,8 @@
     "translate": "npx polyglot-keeper sync",
     "translate:md": "npx polyglot-keeper sync --md",
     "translate:init": "npx polyglot-keeper init",
-    "generate:favicons": "node scripts/generate-favicons.mjs"
+    "generate:favicons": "tsx scripts/generate-favicons.ts",
+    "build:docs-graph": "tsx scripts/build-docs-graph.ts"
   },
   "dependencies": {
     "@iconify-json/heroicons": "^1.2.3",
@@ -33,6 +35,8 @@
     "@vueuse/core": "^14.2.1",
     "@vueuse/motion": "^3.0.3",
     "better-sqlite3": "^12.6.2",
+    "d3-force-3d": "^3.0.6",
+    "force-graph": "^1.49.4",
     "jszip": "^3.10.1",
     "motion-v": "^1.10.3",
     "nuxt": "^4.3.1",
@@ -62,6 +66,7 @@
     "polyglot-keeper": "^1.3.1",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
+    "tsx": "^4.19.4",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.1",
     "vue-tsc": "^3.2.5"

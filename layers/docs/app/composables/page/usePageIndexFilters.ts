@@ -1,5 +1,4 @@
 import type { Collections } from "@nuxt/content"
-import { hasArchiveForPath } from "@docs/composables/useDocsArchive"
 import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
 import {
   buildFiltersQuery,
@@ -8,7 +7,8 @@ import {
   parseTagsFromQuery
 } from "@docs/utils/indexFiltersQuery"
 import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
-import type { ArticleMeta } from "@docs/types/article"
+import type { ArticleMeta } from "@docs/types"
+import { hasArchiveForPath } from "@/layers/docs/app/composables/docs/useDocsArchive"
 
 export interface IndexPageItem {
   title: string
@@ -17,7 +17,7 @@ export interface IndexPageItem {
   meta?: ArticleMeta
 }
 
-export function useIndexPageFilters(
+export function usePageIndexFilters(
   pathPrefix: Ref<string> | string,
   showSourceTabs: Ref<boolean> | boolean
 ) {
