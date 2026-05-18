@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue"
-
 interface Props {
   /** The target URL for internal navigation (NuxtLink) */
   to?: string | object

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from "vue"
 import { Color, Mesh, Program, Renderer, Triangle } from "ogl"
 import { hexToRgb } from "@base/utils/hexToRgb"
 

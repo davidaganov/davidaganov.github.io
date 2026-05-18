@@ -4,7 +4,7 @@ import HomeLinksSection from "@base/components/pages/home/HomeLinksSection.vue"
 </script>
 
 <template>
-  <div>
+  <div class="bg-white dark:bg-[#060a15]">
     <HomeHeroSection />
     <HomeLinksSection />
   </div>

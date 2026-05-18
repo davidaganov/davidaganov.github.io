@@ -11,11 +11,13 @@ const localePath = useLocalePath()
 const router = useRouter()
 
 const containerRef = ref<HTMLDivElement | null>(null)
-
 const attraction = ref(70)
 const repulsion = ref(70)
 const linkPull = ref(70)
 const nodeGap = ref(25)
+const labelFade = ref(100)
+const nodeSize = ref(50)
+const linkThickness = ref(50)
 
 useDocsForceGraph(
   containerRef,
@@ -24,7 +26,10 @@ useDocsForceGraph(
     attraction,
     repulsion,
     linkPull,
-    nodeGap
+    nodeGap,
+    labelFade,
+    nodeSize,
+    linkThickness
   },
   (node: DocsGraphNode) => {
     void router.push(localePath(node.id))
@@ -33,10 +38,10 @@ useDocsForceGraph(
 </script>
 
 <template>
-  <div class="relative min-h-[calc(100dvh-9rem)] min-w-0 flex-1 md:min-h-[calc(100dvh-8.5rem)]">
+  <div class="relative h-[calc(100dvh-var(--ui-header-height,7rem))] min-h-0 min-w-0 flex-1">
     <div
       ref="containerRef"
-      class="force-graph-root h-full min-h-[inherit] w-full overflow-hidden rounded-lg border border-gray-200 dark:border-white/10"
+      class="force-graph-root h-full w-full overflow-hidden"
     />
 
     <AppGraphSettings
@@ -44,6 +49,9 @@ useDocsForceGraph(
       v-model:repulsion="repulsion"
       v-model:link-pull="linkPull"
       v-model:node-gap="nodeGap"
+      v-model:label-fade="labelFade"
+      v-model:node-size="nodeSize"
+      v-model:link-thickness="linkThickness"
     />
   </div>
 </template>

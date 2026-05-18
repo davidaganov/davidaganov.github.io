@@ -159,8 +159,8 @@ onUnmounted(() => {
 }
 
 :deep(.simplebar-horizontal .simplebar-scrollbar::before) {
-  left: 4px;
-  right: 4px;
+  left: 0px;
+  right: 0px;
 }
 
 :deep(.simplebar-vertical),

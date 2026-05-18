@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMediaQuery, useScrollLock } from "@vueuse/core"
+import { useScrollLock } from "@vueuse/core"
 import { useCommandPalette } from "@base/composables/useCommandPalette"
 import { useExperience } from "@base/composables/useExperience"
 import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
@@ -9,7 +9,8 @@ import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 
 const { frontendYears } = useExperience()
-const isDesktop = useMediaQuery("(min-width: 768px)")
+
+const isDesktop = ref(false)
 
 const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
 const TextType = defineAsyncComponent(() => import("@ui/components/bits/TextType.vue"))
@@ -19,7 +20,7 @@ let unmountTimer: ReturnType<typeof setTimeout> | null = null
 const { toggle } = useCommandPalette()
 
 const animationEnabled = useCookie<boolean>("animation_enabled", {
-  default: () => true,
+  default: () => false,
   sameSite: "lax",
   path: "/"
 })
@@ -32,6 +33,8 @@ const backgroundReady = ref(false)
 const backgroundMounted = ref(false)
 const backgroundVisible = ref(false)
 
+const showAnimation = computed(() => isDesktop.value && animationEnabled.value)
+
 const isLocked = useScrollLock(typeof document !== "undefined" ? document.body : null)
 const { localizedPath: aboutEntryPath } = useDocsSectionEntry("about")
 
@@ -43,6 +46,7 @@ const scrollToLinks = () => {
 }
 
 const handleTerminalReady = () => {
+  if (!isLoading.value) return
   terminalReady.value = true
 }
 
@@ -54,42 +58,70 @@ const handleLoaderHidden = () => {
   backgroundVisible.value = true
 }
 
+const resetTerminalState = () => {
+  terminalReady.value = false
+  terminalStartAnimation.value = false
+}
+
+const unlockWithoutLoader = () => {
+  isLoading.value = false
+  isLocked.value = false
+}
+
 watchEffect(() => {
   if (isLoading.value) isLocked.value = true
 })
 
-watch(
-  [animationEnabled, backgroundReady],
-  ([anim, ready]) => {
-    if (unmountTimer) {
-      clearTimeout(unmountTimer)
-      unmountTimer = null
-    }
+watch(isDesktop, (desktop) => {
+  if (!desktop) {
+    animationEnabled.value = false
+    resetTerminalState()
+    unlockWithoutLoader()
+    backgroundMounted.value = false
+    backgroundVisible.value = false
+  }
+})
 
+watch(
+  [showAnimation, backgroundReady],
+  ([anim, ready]) => {
     if (anim && ready) {
       backgroundMounted.value = true
-    } else {
-      backgroundVisible.value = false
-      unmountTimer = setTimeout(() => {
-        backgroundMounted.value = false
-      }, 500)
     }
   },
   { immediate: true }
 )
 
-watch(
-  [animationEnabled, backgroundMounted],
-  ([anim, _mounted]) => {
-    if (!anim) {
-      isLoading.value = false
-      isLocked.value = false
-    }
-  },
-  { immediate: true }
-)
+watch(showAnimation, (anim, wasAnim) => {
+  if (!anim) {
+    backgroundVisible.value = false
+    resetTerminalState()
+    unlockWithoutLoader()
+
+    if (unmountTimer) clearTimeout(unmountTimer)
+    unmountTimer = setTimeout(() => {
+      backgroundMounted.value = false
+      unmountTimer = null
+    }, 280)
+
+    return
+  }
+
+  if (anim && !wasAnim) {
+    resetTerminalState()
+    isLoading.value = true
+    isLocked.value = true
+  }
+})
+
+const syncDesktop = () => {
+  isDesktop.value = window.matchMedia("(min-width: 768px)").matches
+}
 
 onMounted(() => {
+  syncDesktop()
+  window.addEventListener("resize", syncDesktop)
+
   noiseAmp.value = 0.3 + Math.random() * 0.3
 
   const initBackground = () => {
@@ -105,21 +137,34 @@ onMounted(() => {
   } else {
     initBackground()
   }
+
+  if (!showAnimation.value) {
+    unlockWithoutLoader()
+    terminalStartAnimation.value = true
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener("resize", syncDesktop)
+  if (unmountTimer) clearTimeout(unmountTimer)
 })
 </script>
 
 <template>
   <div
-    class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center bg-white p-8 transition-colors duration-500 dark:bg-[#060a15]"
+    class="relative flex h-screen min-h-[500px] w-full flex-col items-center justify-center bg-white p-8 dark:bg-[#060a15]"
   >
     <HomeLoader
-      v-if="animationEnabled"
+      v-if="showAnimation"
       :is-finished="terminalReady"
       @hidden="handleLoaderHidden"
     />
 
     <div class="absolute top-6 right-6 z-20 flex items-center gap-3">
-      <div class="flex items-center gap-2">
+      <div
+        v-if="isDesktop"
+        class="flex items-center gap-2"
+      >
         <USwitch
           v-model="animationEnabled"
           size="sm"
@@ -207,8 +252,9 @@ onMounted(() => {
 
     <ClientOnly>
       <div
-        v-if="backgroundMounted && isDesktop"
-        class="absolute inset-0 overflow-hidden transition-opacity duration-500 ease-in-out"
+        v-if="showAnimation"
+        v-show="backgroundMounted"
+        class="absolute inset-0 z-1 overflow-hidden transition-opacity duration-300 ease-out"
         :class="backgroundVisible ? 'opacity-100' : 'opacity-0'"
       >
         <FaultyTerminal
@@ -234,10 +280,18 @@ onMounted(() => {
           @ready="handleTerminalReady"
         />
       </div>
+
+      <template #fallback>
+        <div
+          class="absolute inset-0 z-1 overflow-hidden opacity-0"
+          aria-hidden="true"
+        />
+      </template>
     </ClientOnly>
 
     <div
-      class="pointer-events-none absolute inset-0 bg-white/10 backdrop-blur-[1px] transition-opacity duration-500 dark:bg-black/40"
+      v-if="showAnimation"
+      class="pointer-events-none absolute inset-0 z-2 bg-white/20 backdrop-blur-[1px] dark:bg-black/35"
     />
 
     <div class="relative z-10 flex max-w-3xl flex-col items-center text-center">
@@ -249,15 +303,15 @@ onMounted(() => {
 
       <TextType
         as="h1"
-        class="mb-6 pb-2 text-4xl font-bold tracking-tight text-black sm:text-7xl lg:text-8xl dark:bg-linear-to-r dark:from-white dark:to-white/60 dark:bg-clip-text dark:text-transparent"
+        class="mb-5 pb-2 text-4xl font-bold tracking-tight text-black sm:text-7xl lg:text-8xl dark:bg-linear-to-r dark:from-white dark:to-white/60 dark:bg-clip-text dark:text-transparent"
         cursor-class-name="text-black dark:text-white"
         :text="$t('global.name')"
         :typing-speed="100"
         :show-cursor="true"
         :loop="false"
         :hide-cursor-after-complete="true"
-        :disabled="!animationEnabled"
-        :start-animation="!animationEnabled || terminalStartAnimation"
+        :disabled="!showAnimation"
+        :start-animation="!showAnimation || terminalStartAnimation"
       />
 
       <p class="max-w-3xl text-lg text-balance text-gray-900 sm:text-xl dark:text-gray-400">

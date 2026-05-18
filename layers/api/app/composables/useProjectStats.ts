@@ -53,12 +53,12 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
     }
   }
 
-  const fetchGithubStats = async (repo: string) => {
+  const fetchGithubStats = async (repo: string, includeRelease: boolean) => {
     try {
       const [repoData, languagesData, releaseData] = await Promise.all([
         ApiClient.github.getRepo(repo),
         ApiClient.github.getLanguages(repo),
-        ApiClient.github.getLatestRelease(repo)
+        includeRelease ? ApiClient.github.getLatestRelease(repo) : Promise.resolve(null)
       ])
 
       if (!repoData || !languagesData) return null
@@ -98,7 +98,9 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
 
       const [npm, github] = await Promise.all([
         meta.value.npmPackage ? fetchNpmStats(meta.value.npmPackage) : null,
-        meta.value.githubRepo ? fetchGithubStats(meta.value.githubRepo) : null
+        meta.value.githubRepo
+          ? fetchGithubStats(meta.value.githubRepo, Boolean(meta.value.npmPackage))
+          : null
       ])
 
       if (npm) result.npm = npm

@@ -16,6 +16,7 @@ const isTrailingSection = (section: DocsSection) => section.navPlacement === "tr
 export const useDocsHeaderNav = () => {
   const { t } = useI18n()
   const route = useRoute()
+
   const localePath = useLocalePath()
   const { showUnreadDot } = useChangelogUnreadIndicator()
 
@@ -55,7 +56,7 @@ export const useDocsHeaderNav = () => {
       to: localePath(action.path),
       active: action.isActive(route.path),
       showBadge: false,
-      mobileInline: false
+      mobileInline: action.mobileInline ?? false
     }))
 
     const sections = DOCS_SECTIONS.filter(isTrailingSection).map((section) =>

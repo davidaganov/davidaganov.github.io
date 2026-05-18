@@ -24,6 +24,7 @@
       "seoTitle": "Граф документации",
       "seoDescription": "Интерактивный граф ссылок между страницами документации.",
       "sidebar": "Граф связей",
+      "headerTab": "Граф",
       "headerAria": "Граф связей страниц документации",
       "missingJson": "Файл графа ещё не сгенерирован. Соберите проект (npm run build) или выполните npm run build:docs-assets после nuxt prepare.",
       "openFromPalette": "Открыть граф связей",
@@ -32,7 +33,11 @@
       "forcesAttraction": "Сила притяжения",
       "forcesRepulsion": "Сила отталкивания",
       "forcesLink": "Сила связи",
-      "forcesDistance": "Расстояние между узлами"
+      "forcesDistance": "Расстояние между узлами",
+      "displayTitle": "Отображение",
+      "displayLabelFade": "Отображение текста",
+      "displayNodeSize": "Размер узла",
+      "displayLinkThickness": "Толщина линий"
     }
   },
   "global": {

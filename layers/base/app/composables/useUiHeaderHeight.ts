@@ -1,4 +1,3 @@
-import type { Ref } from "vue"
 import { useResizeObserver } from "@vueuse/core"
 
 const CSS_VAR = "--ui-header-height"

@@ -24,7 +24,7 @@ const props = withDefaults(
 
   <div
     v-else
-    class="flex min-h-0 min-w-0 flex-1 flex-col pb-4 lg:pl-0"
+    class="flex min-h-0 min-w-0 flex-1 flex-col pb-0 lg:pl-0"
   >
     <div class="flex min-h-0 min-w-0 flex-1 flex-col">
       <slot />

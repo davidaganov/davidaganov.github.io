@@ -42,4 +42,7 @@ export interface ForceGraphControlSettings {
   repulsion: Ref<number>
   linkPull: Ref<number>
   nodeGap: Ref<number>
+  labelFade: Ref<number>
+  nodeSize: Ref<number>
+  linkThickness: Ref<number>
 }

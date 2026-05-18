@@ -16,7 +16,7 @@ const { views, loading } = useContentViews(viewSlug)
   >
     <div
       v-if="views !== null"
-      class="inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-600 backdrop-blur-md dark:border-white/10 dark:bg-black/40 dark:text-white/60"
+      class="absolute top-0 right-0 inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-600 backdrop-blur-md md:top-5 md:right-5 dark:border-white/10 dark:bg-black/40 dark:text-white/60"
     >
       <UIcon
         name="i-lucide-eye"

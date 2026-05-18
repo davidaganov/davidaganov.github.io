@@ -12,12 +12,12 @@ const platformLabel = computed(() => t("pages.profile.myProfile"))
 const stats = computed(() => [
   {
     label: t("pages.profile.platforms.onHabr"),
-    value: String(unref(habrCount) || 0),
+    value: String(unref(habrCount) || "-"),
     icon: "i-simple-icons-habr"
   },
   {
     label: t("pages.profile.platforms.onSite"),
-    value: String(unref(siteCount) || 0),
+    value: String(unref(siteCount) || "-"),
     icon: "i-lucide-file-text"
   }
 ])

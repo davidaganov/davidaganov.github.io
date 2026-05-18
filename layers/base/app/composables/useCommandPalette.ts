@@ -1,5 +1,3 @@
-import { ref } from "vue"
-
 const isOpen = ref(false)
 const query = ref("")
 const selectedIndex = ref(0)

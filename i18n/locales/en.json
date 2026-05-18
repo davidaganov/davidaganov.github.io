@@ -24,6 +24,7 @@
       "seoTitle": "Documentation graph",
       "seoDescription": "Interactive graph of links between documentation pages.",
       "sidebar": "Link graph",
+      "headerTab": "Graph",
       "headerAria": "Documentation link graph",
       "missingJson": "The graph file has not been generated yet. Build the project (npm run build) or run npm run build:docs-assets after nuxt prepare.",
       "openFromPalette": "Open link graph",
@@ -32,7 +33,11 @@
       "forcesAttraction": "Attraction force",
       "forcesRepulsion": "Repulsion force",
       "forcesLink": "Link force",
-      "forcesDistance": "Node distance"
+      "forcesDistance": "Node distance",
+      "displayTitle": "Display",
+      "displayLabelFade": "Text display",
+      "displayNodeSize": "Node size",
+      "displayLinkThickness": "Line thickness"
     }
   },
   "global": {

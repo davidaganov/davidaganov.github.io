@@ -20,10 +20,14 @@ export default defineEventHandler(async (event): Promise<unknown> => {
         "User-Agent": "Nuxt-Portfolio"
       }
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const status = (error as { response?: { status?: number } })?.response?.status
+    if (status === 404 && String(path).endsWith("/releases/latest")) {
+      return null
+    }
     throw createError({
-      statusCode: error.response?.status || 500,
-      message: error.message || "GitHub API Error"
+      statusCode: status || 500,
+      message: error instanceof Error ? error.message : "GitHub API Error"
     })
   }
 })

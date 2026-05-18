@@ -1,5 +1,16 @@
+import {
+  mapBaseLinkWidth,
+  mapIndexLabelAlpha,
+  mapLabelFadeMinAlpha
+} from "@docs/utils/force-graph/display"
 import { baseNodeHsl, dimmedNodeHsl, lerp, toHsla } from "@docs/utils/force-graph/theme"
 import type { DocsGraphLink, DocsGraphNode, GraphHighlightState } from "@docs/types"
+
+export interface GraphHighlightDisplay {
+  labelFade: Ref<number>
+  linkThickness: Ref<number>
+  onFrame?: () => void
+}
 
 const HOVER_BLEND_MS = 260
 
@@ -33,7 +44,8 @@ export const linkEndpointId = (value: DocsGraphNode | string): string => {
 
 export const createHighlightController = (
   state: GraphHighlightState,
-  getActiveNode: () => DocsGraphNode | undefined
+  getActiveNode: () => DocsGraphNode | undefined,
+  display: GraphHighlightDisplay
 ) => {
   let rafId = 0
   let onDone: (() => void) | null = null
@@ -47,10 +59,12 @@ export const createHighlightController = (
       const t = Math.min(1, (now - started) / HOVER_BLEND_MS)
       const eased = 1 - (1 - t) ** 3
       state.blend = from + (target - from) * eased
+      display.onFrame?.()
       if (t < 1) {
         rafId = requestAnimationFrame(step)
       } else {
         state.blend = target
+        display.onFrame?.()
         const callback = onDone
         onDone = null
         callback?.()
@@ -107,10 +121,20 @@ export const createHighlightController = (
     if (!state.focusId || u < 0.001) return toHsla(base)
 
     if (node.id === state.focusId) {
-      return toHsla({ ...base, a: lerp(base.a, 0.98, u) })
+      return toHsla({
+        ...base,
+        s: lerp(base.s, Math.min(base.s + 8, 85), u),
+        l: lerp(base.l, Math.min(base.l + 6, 68), u),
+        a: 1
+      })
     }
     if (state.neighbors.has(node.id)) {
-      return toHsla({ ...base, a: lerp(base.a, 0.92, u) })
+      return toHsla({
+        ...base,
+        s: lerp(base.s, Math.min(base.s + 4, 78), u),
+        l: lerp(base.l, Math.min(base.l + 4, 62), u),
+        a: 1
+      })
     }
 
     const dim = dimmedNodeHsl(node)
@@ -118,7 +142,7 @@ export const createHighlightController = (
       h: base.h,
       s: lerp(base.s, dim.s, u),
       l: lerp(base.l, dim.l, u),
-      a: lerp(base.a, dim.a, u)
+      a: 1
     })
   }
 
@@ -143,22 +167,31 @@ export const createHighlightController = (
   }
 
   const linkWidth = (sourceId: string, targetId: string): number => {
+    const base = mapBaseLinkWidth(display.linkThickness.value)
     const u = state.blend
-    if (!state.focusId || u < 0.001) return 0.6
+    if (!state.focusId || u < 0.001) return base
 
     const hit =
       (sourceId === state.focusId && state.neighbors.has(targetId)) ||
       (targetId === state.focusId && state.neighbors.has(sourceId))
 
-    return hit ? lerp(0.6, 1.35, u) : lerp(0.6, 0.35, u)
+    return hit ? lerp(base, base * 2.25, u) : lerp(base, base * 0.58, u)
   }
 
-  const labelAlpha = (nodeId: string): number => {
+  const labelAlpha = (node: DocsGraphNode): number => {
+    const fade = display.labelFade.value
+    if (fade <= 0) return 0
+
+    const idleAlpha = node.kind === "index" ? mapIndexLabelAlpha(fade) : mapLabelFadeMinAlpha(fade)
     const u = state.blend
-    if (!state.focusId || u < 0.001) return 0.92
-    if (nodeId === state.focusId) return lerp(0.92, 0.98, u)
-    if (state.neighbors.has(nodeId)) return lerp(0.92, 0.95, u)
-    return lerp(0.92, 0.38, u)
+
+    if (!state.focusId || u < 0.001) return idleAlpha
+
+    if (node.id === state.focusId) return lerp(idleAlpha, 0.98, u)
+    if (state.neighbors.has(node.id)) return lerp(idleAlpha, 0.95, u)
+
+    const hoverDim = Math.min(idleAlpha * 0.35, 0.12)
+    return lerp(idleAlpha, hoverDim, u)
   }
 
   return {

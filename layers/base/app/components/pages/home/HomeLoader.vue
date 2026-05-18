@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue"
-
 const PROGRESS_INITIAL_PERCENT = 65
 const WAITING_PROGRESS_SECONDS = 2.4
 const FADE_OUT_DURATION_MS = 300
 const FINISH_DELAY_MS = 120
+const LOADER_MAX_WAIT_MS = 8000
 
 const props = defineProps<{
   isFinished: boolean
@@ -22,24 +21,37 @@ watch(
   () => props.isFinished,
   (finished) => {
     if (finished) {
-      progress.value = 100
-
-      setTimeout(() => {
-        isFadingOut.value = true
-
-        setTimeout(() => {
-          isVisible.value = false
-          emit("hidden")
-        }, FADE_OUT_DURATION_MS)
-      }, FINISH_DELAY_MS)
+      if (maxWaitTimer) clearTimeout(maxWaitTimer)
+      setTimeout(() => finishLoader(), FINISH_DELAY_MS)
     }
-  }
+  },
+  { immediate: true }
 )
+
+let maxWaitTimer: ReturnType<typeof setTimeout> | null = null
+
+const finishLoader = () => {
+  if (!isVisible.value || isFadingOut.value) return
+  progress.value = 100
+  isFadingOut.value = true
+  setTimeout(() => {
+    isVisible.value = false
+    emit("hidden")
+  }, FADE_OUT_DURATION_MS)
+}
 
 onMounted(() => {
   requestAnimationFrame(() => {
     progress.value = PROGRESS_INITIAL_PERCENT
   })
+
+  maxWaitTimer = setTimeout(() => {
+    if (!props.isFinished) finishLoader()
+  }, LOADER_MAX_WAIT_MS)
+})
+
+onBeforeUnmount(() => {
+  if (maxWaitTimer) clearTimeout(maxWaitTimer)
 })
 </script>
 

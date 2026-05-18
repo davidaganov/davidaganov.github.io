@@ -24,7 +24,7 @@ const { isDocsRoute, primaryTabs, trailingActions, mobileInlineTrailingTabs, act
     class="sticky top-0 z-50 w-full border-b border-black/5 bg-(--ui-bg)/75 backdrop-blur-md dark:border-white/5"
     ref="headerRef"
   >
-    <div class="container flex h-14 items-center justify-end gap-2 md:justify-between">
+    <div class="container flex h-14 items-center justify-end gap-2 pl-1 md:justify-between">
       <UiLogo class="mr-auto" />
       <UiSearchTrigger />
 
@@ -57,7 +57,7 @@ const { isDocsRoute, primaryTabs, trailingActions, mobileInlineTrailingTabs, act
             :offset-y="5"
           >
             <nav
-              class="mt-2.5 mb-1 flex items-center gap-1 pl-1 lg:mb-0"
+              class="mt-2.5 mb-2 flex items-center gap-1 lg:mb-0 lg:pl-1"
               :aria-label="$t('layout.a11y.docsPrimaryNav')"
             >
               <AppHeaderNavLink

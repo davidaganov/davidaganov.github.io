@@ -17,7 +17,7 @@ const props = withDefaults(
 const resolvedAriaLabel = computed(() => props.ariaLabel ?? props.action.label)
 
 const classes = computed(() => {
-  return props.variant === "tab" ? "min-h-11 px-3 py-1.5 lg:min-h-0 lg:py-2!" : undefined
+  return props.variant === "tab" ? "px-3 py-1! lg:py-1.5!" : undefined
 })
 </script>
 
