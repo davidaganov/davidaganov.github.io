@@ -25,7 +25,7 @@
       "seoDescription": "Interactive graph of links between documentation pages.",
       "sidebar": "Link graph",
       "headerAria": "Documentation link graph",
-      "missingJson": "Graph file is not generated yet. Run a production build (npm run build) or npm run build:docs-assets after nuxt prepare.",
+      "missingJson": "The graph file has not been generated yet. Build the project (npm run build) or run npm run build:docs-assets after nuxt prepare.",
       "openFromPalette": "Open link graph",
       "linkFromArticle": "Link graph",
       "forcesTitle": "Forces",

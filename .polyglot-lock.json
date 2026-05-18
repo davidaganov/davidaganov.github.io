@@ -20,7 +20,7 @@
       "docs.graph.seoDescription": "Интерактивный граф ссылок между страницами документации.",
       "docs.graph.sidebar": "Граф связей",
       "docs.graph.headerAria": "Граф связей страниц документации",
-      "docs.graph.missingJson": "Файл графа ещё не сгенерирован. Соберите проект (npm run build) или выполните npm run build:docs-graph после nuxt prepare.",
+      "docs.graph.missingJson": "Файл графа ещё не сгенерирован. Соберите проект (npm run build) или выполните npm run build:docs-assets после nuxt prepare.",
       "docs.graph.openFromPalette": "Открыть граф связей",
       "docs.graph.linkFromArticle": "Граф связей",
       "docs.graph.forcesTitle": "Силы",
