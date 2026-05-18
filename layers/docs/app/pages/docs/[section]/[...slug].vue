@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useDocsRoute } from "@docs/composables/docs/useDocsRoute"
 import { useDocsSeo } from "@docs/composables/docs/useDocsSeo"
-import AppArticleNavigation from "@docs/components/App/AppArticleNavigation.vue"
-import AppArticleTranslationWarning from "@docs/components/App/AppArticleTranslationWarning.vue"
-import AppIndexPage from "@docs/components/App/AppIndexPage.vue"
-import AppRightSidebar from "@docs/components/App/RightSidebar/AppRightSidebar.vue"
+import AppArticleNavigation from "@docs/components/app/AppArticleNavigation.vue"
+import AppArticleTranslationWarning from "@docs/components/app/AppArticleTranslationWarning.vue"
+import AppIndexPage from "@docs/components/app/AppIndexPage.vue"
+import AppRightSidebar from "@docs/components/app/rightsidebar/AppRightSidebar.vue"
 import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
 
 const { section, docsPath, parentCollectionItem, collectionItem, page, getCollectionPathPrefix } =

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useGitHubStats } from "@docs/composables/useGitHubStats"
 import { GITHUB_LINK } from "@base/constants"
-import AppRightSidebarProfile from "@docs/components/App/RightSidebar/AppRightSidebarProfile.vue"
+import AppRightSidebarProfile from "@docs/components/app/rightsidebar/AppRightSidebarProfile.vue"
 
 const { t } = useI18n()
 const { user } = useGitHubStats()

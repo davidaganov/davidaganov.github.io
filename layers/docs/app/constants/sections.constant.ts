@@ -32,6 +32,8 @@ export const DOCS_SECTIONS: DocsSection[] = [
     labelKey: "layout.navigation.menu.changelog",
     icon: "i-lucide-scroll-text",
     basePath: ROUTE_PATH.DOCS_CHANGELOG,
-    sidebarItems: CHANGELOG_SIDEBAR_ITEMS
+    sidebarItems: CHANGELOG_SIDEBAR_ITEMS,
+    navPlacement: "trailing",
+    unreadBadge: "changelog"
   }
 ]

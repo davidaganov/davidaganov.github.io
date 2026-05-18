@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDocsForceGraph } from "@docs/composables/docs/useDocsForceGraph"
-import AppDocsForceGraphSettings from "@docs/components/App/Docs/AppDocsForceGraphSettings.vue"
+import AppGraphSettings from "@docs/components/app/graph/AppGraphSettings.vue"
 import type { DocsGraphFile, DocsGraphNode } from "@docs/types"
 
 const props = defineProps<{
@@ -39,7 +39,7 @@ useDocsForceGraph(
       class="force-graph-root h-full min-h-[inherit] w-full overflow-hidden rounded-lg border border-gray-200 dark:border-white/10"
     />
 
-    <AppDocsForceGraphSettings
+    <AppGraphSettings
       v-model:attraction="attraction"
       v-model:repulsion="repulsion"
       v-model:link-pull="linkPull"

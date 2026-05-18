@@ -5,7 +5,6 @@
 :root {
   --ui-bg: #050a14;
   --ui-header-height: 56px;
-  --ui-sticky-top: calc(var(--ui-header-height) + 0.75rem);
 }
 
 #main-content {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineShortcuts } from "@nuxt/ui/composables"
 import { useCommandPalette } from "@base/composables/useCommandPalette"
-import AppFooter from "@base/components/App/AppFooter.vue"
+import AppFooter from "@base/components/app/AppFooter.vue"
 
 const { toggle, close } = useCommandPalette()
 

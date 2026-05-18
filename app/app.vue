@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import AppSkipLink from "@base/components/App/AppSkipLink.vue"
+import AppSkipLink from "@base/components/app/AppSkipLink.vue"
 import UiCommandPalette from "@ui/components/UiCommandPalette.vue"
 
 const { locale, t } = useI18n()

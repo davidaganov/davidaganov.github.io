@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useDocsArchive } from "@docs/composables/docs/useDocsArchive"
 import { GITHUB_REPO } from "@base/constants"
-import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
+import AppRightSidebarCard from "@docs/components/app/rightsidebar/AppRightSidebarCard.vue"
+
+const IMPLEMENTATION_URL = `https://github.com/${GITHUB_REPO}/blob/main/layers/docs/app/components/app/rightsidebar/AppRightSidebarArchiveDownload.vue`
 
 const { t } = useI18n()
 const { archiveEntries, archiveName, hasArchive } = useDocsArchive()
-
-const implementationUrl = `https://github.com/${GITHUB_REPO}/blob/main/layers/docs/app/components/App/RightSidebar/AppRightSidebarArchiveDownload.vue`
 
 const isDownloading = ref(false)
 const error = ref("")
@@ -77,7 +77,7 @@ const downloadArchive = async () => {
               target="_blank"
               rel="noopener noreferrer"
               class="text-primary mt-2 inline-flex items-center gap-1 underline-offset-4 hover:underline"
-              :href="implementationUrl"
+              :href="IMPLEMENTATION_URL"
             >
               {{ $t("components.archiveDownloader.safety.link") }}
               <UIcon

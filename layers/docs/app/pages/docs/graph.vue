@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppDocsForceGraph from "@docs/components/App/Docs/AppDocsForceGraph.vue"
+import AppGraph from "@docs/components/app/graph/AppGraph.vue"
 import type { DocsGraphFile } from "@docs/types"
 
 const { locale, t } = useI18n()
@@ -40,7 +40,7 @@ const graphFile = computed(() => data.value)
       {{ $t("global.status.loading") }}
     </div>
 
-    <AppDocsForceGraph
+    <AppGraph
       v-else-if="graphFile"
       :key="graphFile.builtAt"
       :data="graphFile"

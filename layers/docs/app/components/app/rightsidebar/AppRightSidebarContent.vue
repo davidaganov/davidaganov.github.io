@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { useWindowScroll, useWindowSize } from "@vueuse/core"
+import { useWindowScroll } from "@vueuse/core"
 import { SOCIAL_LINKS } from "@base/constants"
-import AppRightSidebarArchiveDownload from "@docs/components/App/RightSidebar/AppRightSidebarArchiveDownload.vue"
-import AppRightSidebarArticleMeta from "@docs/components/App/RightSidebar/AppRightSidebarArticleMeta.vue"
-import AppRightSidebarGitHubProfile from "@docs/components/App/RightSidebar/AppRightSidebarGitHubProfile.vue"
-import AppRightSidebarHabrProfile from "@docs/components/App/RightSidebar/AppRightSidebarHabrProfile.vue"
-import AppRightSidebarProjectMeta from "@docs/components/App/RightSidebar/AppRightSidebarProjectMeta.vue"
-import AppRightSidebarToc from "@docs/components/App/RightSidebar/AppRightSidebarToc.vue"
+import AppRightSidebarArchiveDownload from "@docs/components/app/rightsidebar/AppRightSidebarArchiveDownload.vue"
+import AppRightSidebarArticleMeta from "@docs/components/app/rightsidebar/AppRightSidebarArticleMeta.vue"
+import AppRightSidebarGitHubProfile from "@docs/components/app/rightsidebar/AppRightSidebarGitHubProfile.vue"
+import AppRightSidebarHabrProfile from "@docs/components/app/rightsidebar/AppRightSidebarHabrProfile.vue"
+import AppRightSidebarProjectMeta from "@docs/components/app/rightsidebar/AppRightSidebarProjectMeta.vue"
+import AppRightSidebarToc from "@docs/components/app/rightsidebar/AppRightSidebarToc.vue"
 import { TYPE_PAGE } from "@docs/types"
+
+const SCROLL_TOP_THRESHOLD_PX = 300
 
 const props = withDefaults(
   defineProps<{
@@ -25,14 +27,8 @@ const props = withDefaults(
 )
 
 const { y } = useWindowScroll()
-const { height } = useWindowSize()
 
-const isScrollShown = computed(() => {
-  if (import.meta.server) return false
-  const scrollableHeight = document.documentElement.scrollHeight - height.value
-  if (scrollableHeight <= 0) return false
-  return y.value / scrollableHeight > 0.2
-})
+const isScrollShown = computed(() => !import.meta.server && y.value >= SCROLL_TOP_THRESHOLD_PX)
 
 const scrollToTop = () => {
   window.scrollTo({

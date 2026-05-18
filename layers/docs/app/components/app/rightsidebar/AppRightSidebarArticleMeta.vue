@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { formatDate } from "@base/utils/date"
 import { buildFiltersQuery } from "@docs/utils/indexFiltersQuery"
-import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
+import AppRightSidebarCard from "@docs/components/app/rightsidebar/AppRightSidebarCard.vue"
 import UiBadge from "@ui/components/UiBadge.vue"
 import { SORT_ORDER } from "@docs/types"
 

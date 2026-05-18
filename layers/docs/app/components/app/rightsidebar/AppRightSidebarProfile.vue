@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAvatar } from "@base/composables/useAvatar"
 import { USERNAME } from "@base/constants"
-import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
+import AppRightSidebarCard from "@docs/components/app/rightsidebar/AppRightSidebarCard.vue"
 
 const props = withDefaults(
   defineProps<{

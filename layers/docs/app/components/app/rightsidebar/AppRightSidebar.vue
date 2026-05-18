@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreakpoints } from "@vueuse/core"
 import { isChangelogDocsPath } from "@docs/utils/sections"
-import AppRightSidebarContent from "@docs/components/App/RightSidebar/AppRightSidebarContent.vue"
+import AppRightSidebarContent from "@docs/components/app/rightsidebar/AppRightSidebarContent.vue"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import { TYPE_PAGE } from "@docs/types"
 
@@ -59,11 +59,9 @@ onMounted(async () => {
       defer
       :to="RIGHT_SIDEBAR_TARGET"
     >
-      <aside
-        class="sticky top-(--ui-sticky-top) max-h-[calc(100vh-var(--ui-sticky-top))] overflow-x-hidden overflow-y-hidden"
-      >
+      <aside class="sticky top-(--ui-header-height) overflow-x-hidden overflow-y-hidden pt-4">
         <BaseScrollbar
-          height="calc(100vh - var(--ui-sticky-top))"
+          height="calc(100vh - var(--ui-header-height))"
           class="overflow-x-hidden"
         >
           <div class="pb-8">
