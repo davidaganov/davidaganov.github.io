@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { TYPE_PAGE } from "@docs/types"
-import type { SearchResult } from "@/layers/docs/app/composables/docs/useDocsSearch"
+import { useCommandPalette } from "@base/composables/useCommandPalette"
+import { useDocsSearch } from "@docs/composables/docs/useDocsSearch"
+import { type DocsSearchResult, TYPE_PAGE } from "@docs/types"
 
 const { t } = useI18n()
 const router = useRouter()
@@ -35,7 +36,7 @@ const visibleGroups = computed(() =>
   categoryOrder.filter((cat) => (grouped.value[cat]?.length ?? 0) > 0)
 )
 
-const globalIndexOf = (result: SearchResult): number => {
+const globalIndexOf = (result: DocsSearchResult): number => {
   return flatResults.value.indexOf(result)
 }
 
@@ -60,7 +61,7 @@ const highlightQuery = (text: string): string => {
   )
 }
 
-const selectResult = (result: SearchResult) => {
+const selectResult = (result: DocsSearchResult) => {
   router.push(localePath(result.path))
   close()
 }

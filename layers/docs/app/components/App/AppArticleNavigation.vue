@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useDocsFlatNav } from "@docs/composables/docs/useDocsFlatNav"
 import BaseArticleNavigateButton from "@docs/components/base/BaseArticleNavigateButton.vue"
-import { useArticlesNavigation } from "@/layers/docs/app/composables/articles/useArticlesNavigation"
 
 const props = defineProps<{
   docsPath: string
@@ -11,7 +11,7 @@ const docsPath = toRef(() => props.docsPath)
 
 const localePath = useLocalePath()
 
-const { prevPage, nextPage, githubMdUrl } = useArticlesNavigation(docsPath)
+const { prevPage, nextPage, githubMdUrl } = useDocsFlatNav(docsPath)
 </script>
 
 <template>

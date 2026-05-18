@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useExperience } from "@base/composables/useExperience"
+
 const props = defineProps<{
   type: "frontend" | "backend"
 }>()

@@ -1,9 +1,5 @@
 import { execSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
-import { findComposablesDirs } from "./scripts/composables-scanner"
-
-const rootDir = fileURLToPath(new URL(".", import.meta.url))
-const composablesDirs = findComposablesDirs(rootDir)
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -67,18 +63,9 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    "components:dirs": (dirs) => {
-      const toolsPath = fileURLToPath(new URL("./layers/docs/app/content/tools", import.meta.url))
-
-      dirs.push({
-        path: toolsPath,
-        extensions: ["vue"],
-        pathPrefix: false
-      })
-    },
     "build:done": () => {
       const root = fileURLToPath(new URL(".", import.meta.url))
-      execSync("npx tsx scripts/build-docs-graph.ts", {
+      execSync("npx tsx scripts/build-docs-assets.ts", {
         cwd: root,
         stdio: "inherit",
         env: process.env
@@ -115,8 +102,19 @@ export default defineNuxtConfig({
     classSuffix: ""
   },
 
+  components: {
+    dirs: [
+      {
+        path: fileURLToPath(new URL("./layers/docs/app/content/tools", import.meta.url)),
+        extensions: ["vue"],
+        pathPrefix: false
+      }
+    ]
+  },
+
   imports: {
-    dirs: composablesDirs
+    scan: false,
+    dirs: []
   },
 
   pinia: {

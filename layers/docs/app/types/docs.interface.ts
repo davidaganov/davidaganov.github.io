@@ -36,3 +36,14 @@ export interface DocsSeoOptions {
   parentCollectionItem: Ref<SidebarCollectionItem | undefined>
   page: Ref<unknown>
 }
+
+export interface DocsArchiveEntry {
+  path: string
+  content: string
+}
+
+export interface DocsNavPageItem {
+  title: string
+  path: string
+  isSection?: boolean
+}

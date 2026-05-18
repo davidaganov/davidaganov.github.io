@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDocsGraphData } from "@docs/composables/docs/useDocsGraphData"
 import AppDocsForceGraph from "@docs/components/App/Docs/AppDocsForceGraph.vue"
 
 const { t } = useI18n()

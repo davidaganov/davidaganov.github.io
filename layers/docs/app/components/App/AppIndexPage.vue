@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useContentListFilters } from "@docs/composables/content/useContentListFilters"
 import BaseIndexCard from "@docs/components/base/BaseIndexCard.vue"
 import BaseIndexFilters from "@docs/components/base/BaseIndexFilters.vue"
-import { usePageIndexFilters } from "@/layers/docs/app/composables/page/usePageIndexFilters"
 
 const props = withDefaults(
   defineProps<{
@@ -34,7 +34,11 @@ const {
   toggleSortOrder,
   toggleTag,
   resetFilters
-} = usePageIndexFilters(pathPrefixRef, showSourceTabsRef)
+} = useContentListFilters({
+  publicPathPrefix: pathPrefixRef,
+  showSourceTabs: showSourceTabsRef,
+  syncQuery: true
+})
 </script>
 
 <template>

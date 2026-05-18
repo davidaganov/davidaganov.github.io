@@ -1,4 +1,4 @@
-import type { Collections } from "@nuxt/content"
+import { useContentCollection } from "@docs/composables/content/useContentCollection"
 import { isChangelogDocsPath } from "@docs/utils/sections"
 
 const SESSION_BUMP_KEY = "portfolio:visit_session_bumped"
@@ -22,14 +22,12 @@ const releaseTimestamp = (path: string, publishedAt: unknown): number => {
 
 export const useChangelogUnreadIndicator = () => {
   const route = useRoute()
-  const { locale } = useI18n()
+  const { collection } = useContentCollection()
 
   const showUnreadDot = ref(false)
 
-  const collection = computed(() => `content_${locale.value}` as keyof Collections)
-
   const { data: latestReleaseTs } = useAsyncData(
-    () => `changelog-latest-release:${locale.value}`,
+    () => `changelog-latest-release:${collection.value}`,
     async () => {
       const pages = await queryCollection(collection.value)
         .where("path", "LIKE", "%/changelog/releases/%")
@@ -43,7 +41,7 @@ export const useChangelogUnreadIndicator = () => {
       }
       return max
     },
-    { watch: [locale] }
+    { watch: [collection] }
   )
 
   const bumpSessionVisitIfNeeded = () => {

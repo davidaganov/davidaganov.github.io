@@ -1,5 +1,6 @@
 import { buildUrlFromMapping, findContentMapping } from "@docs/utils/path/pathMapping"
 import { LOCALE_PREFIX_RE } from "@base/constants"
+import { ROUTE_PATH } from "@base/types"
 
 export const normalizePublicDocsPath = (path: string): string => {
   const noHash = path.split("#")[0] ?? path
@@ -9,27 +10,22 @@ export const normalizePublicDocsPath = (path: string): string => {
   return p
 }
 
-export const contentPathToPublicDocsPath = (contentPath: string): string => {
-  const normalized = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
-  const mapping = findContentMapping(normalized)
-  if (!mapping) return `/docs${normalized}`
-  return buildUrlFromMapping(mapping)
+export const publicPathToContentPath = (publicPath: string): string => {
+  const normalized = normalizePublicDocsPath(publicPath)
+  if (!normalized.startsWith(ROUTE_PATH.DOCS)) {
+    return normalized.startsWith("/") ? normalized : `/${normalized}`
+  }
+
+  const stripped = normalized.slice(ROUTE_PATH.DOCS.length) || "/"
+  const contentPath = stripped.startsWith("/") ? stripped : `/${stripped}`
+  return findContentMapping(contentPath)?.path ?? contentPath
 }
 
-export const findContentPageByPublicPath = <T extends { path: string }>(
-  pages: T[],
-  publicDocsPath: string
-): T | undefined => {
-  const normalized = normalizePublicDocsPath(publicDocsPath)
-  const withoutDocs = normalized.replace(/^\/docs/, "") || "/"
-  const withoutSection = normalized.replace(/^\/docs\/[^/]+/, "")
-  const candidates = [withoutDocs, withoutSection].filter(Boolean)
-
-  return pages.find((p) =>
-    candidates.some((candidate) => {
-      return p.path === candidate || p.path === `/${candidate}` || p.path.endsWith(candidate)
-    })
-  )
+export const contentPathToPublicPath = (contentPath: string): string => {
+  const normalized = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
+  const mapping = findContentMapping(normalized)
+  if (!mapping) return `${ROUTE_PATH.DOCS}${normalized}`
+  return buildUrlFromMapping(mapping)
 }
 
 export const canonicalDocsPathFromHref = (
@@ -51,8 +47,7 @@ export const canonicalDocsPathFromHref = (
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     try {
       const u = new URL(trimmed)
-      pathname = u.pathname
-      pathname = pathname.replace(LOCALE_PREFIX_RE, "") || pathname
+      pathname = u.pathname.replace(LOCALE_PREFIX_RE, "") || u.pathname
     } catch {
       return null
     }
@@ -70,7 +65,7 @@ export const canonicalDocsPathFromHref = (
     }
   }
 
-  if (!pathname.startsWith("/docs")) return null
+  if (!pathname.startsWith(ROUTE_PATH.DOCS)) return null
 
   let p = pathname.split("?")[0] ?? pathname
   if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1)

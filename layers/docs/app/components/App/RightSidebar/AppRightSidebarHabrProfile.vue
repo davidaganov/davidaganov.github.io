@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useHabrArticles } from "@docs/composables/useHabrArticles"
 import { HABR_LINK } from "@base/constants"
 import AppRightSidebarProfile from "@docs/components/App/RightSidebar/AppRightSidebarProfile.vue"
 

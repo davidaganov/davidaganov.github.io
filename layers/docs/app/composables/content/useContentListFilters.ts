@@ -1,54 +1,56 @@
-import type { Collections } from "@nuxt/content"
-import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
+import { useContentCollection } from "@docs/composables/content/useContentCollection"
+import { hasArchiveAtSync, loadArchiveIndex } from "@docs/utils/archiveManifest"
+import { filterByTags, sortByPublishedAt } from "@docs/utils/content/listFilters"
+import { toContentPrefix, toRelativeContentPath } from "@docs/utils/content/paths"
 import {
   buildFiltersQuery,
   parseSortFromQuery,
   parseSourceFromQuery,
   parseTagsFromQuery
 } from "@docs/utils/indexFiltersQuery"
-import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
-import type { ArticleMeta } from "@docs/types"
-import { hasArchiveForPath } from "@/layers/docs/app/composables/docs/useDocsArchive"
+import { type ArticleMeta, type ContentListItem, SORT_ORDER, SOURCE_FILTER } from "@docs/types"
 
-export interface IndexPageItem {
-  title: string
-  description: string
-  path: string
-  meta?: ArticleMeta
+export interface UseContentListFiltersOptions {
+  publicPathPrefix: Ref<string> | string
+  showSourceTabs?: Ref<boolean> | boolean
+  syncQuery?: boolean
 }
 
-export function usePageIndexFilters(
-  pathPrefix: Ref<string> | string,
-  showSourceTabs: Ref<boolean> | boolean
-) {
-  const { locale } = useI18n()
+export const useContentListFilters = (options: UseContentListFiltersOptions) => {
   const route = useRoute()
   const router = useRouter()
+  const { collection } = useContentCollection()
+
+  const prefixRef = toRef(options.publicPathPrefix)
+  const sourceTabsRef = toRef(options.showSourceTabs ?? false)
+  const syncQuery = options.syncQuery ?? true
 
   const sortOrder = ref<SORT_ORDER>(SORT_ORDER.DESC)
   const sourceFilter = ref<SOURCE_FILTER>(SOURCE_FILTER.ALL)
   const selectedTags = ref<string[]>([])
   const isSyncingFromQuery = ref(false)
 
-  const prefixRef = toRef(pathPrefix)
-  const sourceTabsRef = toRef(showSourceTabs)
+  const { data: archiveKeys } = useAsyncData("docs-archive-index", () => loadArchiveIndex(), {
+    server: true,
+    lazy: true,
+    default: () => new Set<string>()
+  })
 
-  const collection = computed(() => `content_${locale.value}` as keyof Collections)
-
-  const { data: items } = useAsyncData<IndexPageItem[]>(
-    () => `index-page:${prefixRef.value}:${locale.value}`,
+  const { data: items } = useAsyncData<ContentListItem[]>(
+    () => `content-list-filters:${collection.value}:${prefixRef.value}`,
     async () => {
-      const queryPrefix = getQueryPrefix(prefixRef.value)
+      const contentPrefix = toContentPrefix(prefixRef.value)
+      const keys = archiveKeys.value ?? (await loadArchiveIndex())
       const raw = await queryCollection(collection.value)
-        .where("path", "LIKE", `%${queryPrefix}%`)
+        .where("path", "LIKE", `${contentPrefix}%`)
         .select("title", "description", "meta", "path")
         .all()
 
       return raw.map((entry) => {
-        const relativePath = getRelativePath(String(entry.path), queryPrefix)
+        const relativePath = toRelativeContentPath(String(entry.path), contentPrefix)
         const entryMeta = (entry.meta as ArticleMeta | undefined) || undefined
         const hasArchive =
-          hasArchiveForPath(prefixRef.value, relativePath) || Boolean(entryMeta?.hasArchive)
+          hasArchiveAtSync(keys, prefixRef.value, relativePath) || Boolean(entryMeta?.hasArchive)
 
         return {
           title: String(entry.title || ""),
@@ -62,7 +64,7 @@ export function usePageIndexFilters(
       })
     },
     {
-      watch: [locale]
+      watch: [prefixRef, collection, archiveKeys]
     }
   )
 
@@ -80,12 +82,13 @@ export function usePageIndexFilters(
 
   const shouldShowSourceTabs = computed(() => sourceTabsRef.value && hasExternalSource.value)
 
-  const hasActiveFilters = computed(
-    () =>
+  const hasActiveFilters = computed(() => {
+    return (
       selectedTags.value.length > 0 ||
       sortOrder.value !== SORT_ORDER.DESC ||
       (shouldShowSourceTabs.value && sourceFilter.value !== SOURCE_FILTER.ALL)
-  )
+    )
+  })
 
   const filteredItems = computed(() => {
     let list = items.value || []
@@ -98,7 +101,7 @@ export function usePageIndexFilters(
       )
     }
 
-    return sortByDate(filterByTags(list))
+    return sortByPublishedAt(filterByTags(list, selectedTags.value), sortOrder.value)
   })
 
   const totalFiltered = computed(() => filteredItems.value.length)
@@ -108,19 +111,6 @@ export function usePageIndexFilters(
       ? "i-lucide-calendar-arrow-down"
       : "i-lucide-calendar-arrow-up"
   )
-
-  const filterByTags = <T extends { meta?: ArticleMeta }>(list: T[]): T[] => {
-    if (!selectedTags.value.length) return list
-    return list.filter((item) => selectedTags.value.every((tag) => item.meta?.tags?.includes(tag)))
-  }
-
-  const sortByDate = <T extends { meta?: ArticleMeta }>(list: T[]): T[] => {
-    return [...list].sort((a, b) => {
-      const dateA = new Date(a.meta?.publishedAt || 0).getTime()
-      const dateB = new Date(b.meta?.publishedAt || 0).getTime()
-      return sortOrder.value === SORT_ORDER.DESC ? dateB - dateA : dateA - dateB
-    })
-  }
 
   const toggleSortOrder = () => {
     sortOrder.value = sortOrder.value === SORT_ORDER.DESC ? SORT_ORDER.ASC : SORT_ORDER.DESC
@@ -139,13 +129,13 @@ export function usePageIndexFilters(
   }
 
   const syncStateFromQuery = () => {
+    if (!syncQuery) return
     isSyncingFromQuery.value = true
     selectedTags.value = parseTagsFromQuery(route.query.tags)
     sortOrder.value = parseSortFromQuery(route.query.sort)
     sourceFilter.value = shouldShowSourceTabs.value
       ? parseSourceFromQuery(route.query.source)
       : SOURCE_FILTER.ALL
-
     isSyncingFromQuery.value = false
   }
 
@@ -154,49 +144,49 @@ export function usePageIndexFilters(
     return String(value || "")
   }
 
-  watch(
-    () => [route.query.tags, route.query.sort, route.query.source, shouldShowSourceTabs.value],
-    () => {
-      syncStateFromQuery()
-    },
-    { immediate: true }
-  )
+  if (syncQuery) {
+    watch(
+      () => [route.query.tags, route.query.sort, route.query.source, shouldShowSourceTabs.value],
+      () => syncStateFromQuery(),
+      { immediate: true }
+    )
 
-  watch(
-    [selectedTags, sortOrder, sourceFilter, shouldShowSourceTabs],
-    async () => {
-      if (isSyncingFromQuery.value) return
+    watch(
+      [selectedTags, sortOrder, sourceFilter, shouldShowSourceTabs],
+      async () => {
+        if (isSyncingFromQuery.value) return
 
-      const nextFiltersQuery = buildFiltersQuery({
-        tags: selectedTags.value,
-        sortOrder: sortOrder.value,
-        sourceFilter: sourceFilter.value,
-        includeSource: shouldShowSourceTabs.value
-      })
+        const nextFiltersQuery = buildFiltersQuery({
+          tags: selectedTags.value,
+          sortOrder: sortOrder.value,
+          sourceFilter: sourceFilter.value,
+          includeSource: shouldShowSourceTabs.value
+        })
 
-      const currentTags = normalizeQueryValue(route.query.tags)
-      const currentSort = normalizeQueryValue(route.query.sort)
-      const currentSource = normalizeQueryValue(route.query.source)
+        const currentTags = normalizeQueryValue(route.query.tags)
+        const currentSort = normalizeQueryValue(route.query.sort)
+        const currentSource = normalizeQueryValue(route.query.source)
 
-      const nextTags = nextFiltersQuery.tags || ""
-      const nextSort = nextFiltersQuery.sort || ""
-      const nextSource = nextFiltersQuery.source || ""
+        const nextTags = nextFiltersQuery.tags || ""
+        const nextSort = nextFiltersQuery.sort || ""
+        const nextSource = nextFiltersQuery.source || ""
 
-      if (currentTags === nextTags && currentSort === nextSort && currentSource === nextSource) {
-        return
-      }
-
-      await router.replace({
-        query: {
-          ...route.query,
-          tags: nextFiltersQuery.tags,
-          sort: nextFiltersQuery.sort,
-          source: nextFiltersQuery.source
+        if (currentTags === nextTags && currentSort === nextSort && currentSource === nextSource) {
+          return
         }
-      })
-    },
-    { deep: true }
-  )
+
+        await router.replace({
+          query: {
+            ...route.query,
+            tags: nextFiltersQuery.tags,
+            sort: nextFiltersQuery.sort,
+            source: nextFiltersQuery.source
+          }
+        })
+      },
+      { deep: true }
+    )
+  }
 
   return {
     items,

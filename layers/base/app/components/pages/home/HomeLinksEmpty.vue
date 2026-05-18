@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
+import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
+
+const { localizedPath: aboutEntryPath } = useDocsSectionEntry("about")
 </script>
 
 <template>

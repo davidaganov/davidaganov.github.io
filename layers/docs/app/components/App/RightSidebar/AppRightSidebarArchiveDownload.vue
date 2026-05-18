@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDocsArchive } from "@docs/composables/docs/useDocsArchive"
 import { GITHUB_REPO } from "@base/constants"
 import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
 

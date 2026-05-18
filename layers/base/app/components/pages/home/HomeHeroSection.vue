@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { useMediaQuery, useScrollLock } from "@vueuse/core"
+import { useCommandPalette } from "@base/composables/useCommandPalette"
+import { useExperience } from "@base/composables/useExperience"
+import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
 import HomeLoader from "@base/components/pages/home/HomeLoader.vue"
 import BaseLight from "@docs/components/base/BaseLight.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
@@ -30,7 +33,7 @@ const backgroundMounted = ref(false)
 const backgroundVisible = ref(false)
 
 const isLocked = useScrollLock(typeof document !== "undefined" ? document.body : null)
-const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
+const { localizedPath: aboutEntryPath } = useDocsSectionEntry("about")
 
 const scrollToLinks = () => {
   const element = document.getElementById("links-section")

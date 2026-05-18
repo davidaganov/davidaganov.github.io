@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { useLinksGistClient } from "@api/composables/useLinksGistClient"
+import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
 import HomeLinkCard from "@base/components/pages/home/HomeLinkCard.vue"
 import HomeLinksEmpty from "@base/components/pages/home/HomeLinksEmpty.vue"
-import { VIEW_MODE } from "@base/types/enums"
-import type { Link } from "@base/types/links"
+import type { Link } from "@api/types"
+import { VIEW_MODE } from "@base/types"
 
 const { t, locale } = useI18n()
-const { localizedPath: aboutEntryPath } = useDocsSectionEntryPath("about")
+const { localizedPath: aboutEntryPath } = useDocsSectionEntry("about")
 
 const mode = ref<VIEW_MODE>(VIEW_MODE.PROFESSIONAL)
 const isMobile = ref(false)

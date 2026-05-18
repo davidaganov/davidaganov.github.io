@@ -1,31 +1,10 @@
-import { getQueryPrefix } from "@docs/utils/content"
+import { loadArchiveIndex, resolveArchiveKeyFromRoute } from "@docs/utils/archiveManifest"
+import type { DocsArchiveEntry } from "@docs/types"
 
-export interface DocsArchiveEntry {
-  path: string
-  content: string
-}
-
-type ArchiveKind = "tools" | "guides" | null
-
-const toolArchiveSources = import.meta.glob("../content/tools/**/*", {
+const contentModules = import.meta.glob("../content/**/*", {
   query: "?raw",
-  import: "default",
-  eager: true
-}) as Record<string, string>
-
-const guideArchiveSources = import.meta.glob("../content/guides/**/*", {
-  query: "?raw",
-  import: "default",
-  eager: true
-}) as Record<string, string>
-
-const docsArchiveSources = import.meta.glob("../content/**/*", {
-  query: "?raw",
-  import: "default",
-  eager: true
-}) as Record<string, string>
-
-const docsArchivePaths = Object.keys(docsArchiveSources)
+  import: "default"
+}) as Record<string, () => Promise<string>>
 
 const normalizeSegment = (segment: unknown): string => String(segment || "").trim()
 
@@ -35,9 +14,8 @@ const toSlugSegments = (value: unknown): string[] => {
   return normalized ? [normalized] : []
 }
 
-const toArchiveName = (section: string, slugSegments: string[]) => {
-  const base = [section, ...slugSegments]
-    .join("-")
+const toArchiveName = (archiveKey: string) => {
+  const base = archiveKey
     .replace(/[^a-zA-Z0-9-]+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
@@ -46,50 +24,20 @@ const toArchiveName = (section: string, slugSegments: string[]) => {
   return `${base || "archive"}.zip`
 }
 
-const collectEntries = (source: Record<string, string>, prefix: string): DocsArchiveEntry[] => {
-  return Object.entries(source)
-    .filter(([path]) => path.startsWith(prefix))
-    .map(([path, content]) => ({
-      path: path.slice(prefix.length),
-      content
+const collectEntries = async (
+  modules: Record<string, () => Promise<string>>,
+  vfsPrefix: string
+): Promise<DocsArchiveEntry[]> => {
+  const entries = Object.entries(modules)
+    .filter(([path]) => path.startsWith(vfsPrefix))
+    .map(async ([path, loader]) => ({
+      path: path.slice(vfsPrefix.length),
+      content: await loader()
     }))
-    .filter((entry) => Boolean(entry.path))
-    .sort((a, b) => a.path.localeCompare(b.path))
-}
 
-const resolveGuidePrefix = (slugSegments: string[]): string => {
-  if (!slugSegments.length) return ""
-
-  const candidates = [
-    `../content/guides/${slugSegments.join("/")}/`,
-    `../content/guides/${slugSegments.slice(-1)[0] || ""}/`
-  ]
-
-  for (const candidate of candidates) {
-    if (
-      !candidate.endsWith("//") &&
-      Object.keys(guideArchiveSources).some((path) => path.startsWith(candidate))
-    ) {
-      return candidate
-    }
-  }
-
-  return ""
-}
-
-const toArchivePrefix = (pathPrefix: string, relativePath: string): string => {
-  const normalizedPrefix = getQueryPrefix(pathPrefix).replace(/^\/+|\/+$/g, "")
-  const normalizedRelativePath = String(relativePath || "").replace(/^\/+|\/+$/g, "")
-
-  if (!normalizedPrefix || !normalizedRelativePath) return ""
-  return `../content/${normalizedPrefix}/${normalizedRelativePath}/`
-}
-
-export const hasArchiveForPath = (pathPrefix: string, relativePath: string): boolean => {
-  const archivePrefix = toArchivePrefix(pathPrefix, relativePath)
-  if (!archivePrefix) return false
-
-  return docsArchivePaths.some((path) => path.startsWith(archivePrefix))
+  return Promise.all(entries).then((list) =>
+    list.filter((entry) => Boolean(entry.path)).sort((a, b) => a.path.localeCompare(b.path))
+  )
 }
 
 export const useDocsArchive = () => {
@@ -98,38 +46,36 @@ export const useDocsArchive = () => {
   const section = computed(() => normalizeSegment(route.params.section))
   const slugSegments = computed(() => toSlugSegments(route.params.slug))
 
-  const archiveKind = computed<ArchiveKind>(() => {
-    if (section.value === "tools" && slugSegments.value.length > 1) return "tools"
-    if (section.value === "guides" && slugSegments.value.length > 0) return "guides"
-    return null
+  const { data: archiveKeys } = useAsyncData("docs-archive-index", () => loadArchiveIndex(), {
+    default: () => new Set<string>()
   })
 
-  const sourcePrefix = computed(() => {
-    if (archiveKind.value === "tools") {
-      return `../content/tools/${slugSegments.value.join("/")}/`
-    }
+  const archiveKey = computed(() =>
+    resolveArchiveKeyFromRoute(archiveKeys.value, section.value, slugSegments.value)
+  )
 
-    if (archiveKind.value === "guides") {
-      return resolveGuidePrefix(slugSegments.value)
-    }
+  const vfsPrefix = computed(() => (archiveKey.value ? `../content/${archiveKey.value}/` : ""))
 
-    return ""
+  const { data: archiveEntries, pending } = useAsyncData(
+    () => `docs-archive:${archiveKey.value}`,
+    async (): Promise<DocsArchiveEntry[]> => {
+      const prefix = vfsPrefix.value
+      if (!prefix) return []
+      return collectEntries(contentModules, prefix)
+    },
+    { watch: [archiveKey] }
+  )
+
+  const archiveName = computed(() => toArchiveName(archiveKey.value))
+
+  const hasArchive = computed(() => {
+    return Boolean(archiveKey.value && (archiveEntries.value?.length ?? 0) > 0)
   })
-
-  const archiveEntries = computed<DocsArchiveEntry[]>(() => {
-    const prefix = sourcePrefix.value
-    if (!prefix || !archiveKind.value) return []
-
-    const source = archiveKind.value === "tools" ? toolArchiveSources : guideArchiveSources
-    return collectEntries(source, prefix)
-  })
-
-  const archiveName = computed(() => toArchiveName(section.value, slugSegments.value))
-  const hasArchive = computed(() => archiveEntries.value.length > 0)
 
   return {
-    archiveEntries,
+    archiveEntries: computed(() => archiveEntries.value ?? []),
     archiveName,
-    hasArchive
+    hasArchive,
+    loading: pending
   }
 }

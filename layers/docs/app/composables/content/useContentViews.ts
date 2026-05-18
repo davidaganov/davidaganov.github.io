@@ -30,13 +30,11 @@ const writeCache = (slug: string, count: number) => {
   }
 }
 
-const isCacheValid = (cache: ViewCache): boolean => {
-  return Date.now() - cache.visitedAt < VIEW_TTL_MS
-}
+const isCacheValid = (cache: ViewCache): boolean => Date.now() - cache.visitedAt < VIEW_TTL_MS
 
-export const usePageViews = (slug: Ref<string> | string) => {
+export const useContentViews = (slug: Ref<string> | string) => {
   const nuxtApp = useNuxtApp()
-  const supabase = nuxtApp.$supabase as SupabaseClient
+  const supabase = nuxtApp.$supabase as SupabaseClient | undefined
 
   const views = ref<number | null>(null)
   const loading = ref(false)
@@ -46,7 +44,6 @@ export const usePageViews = (slug: Ref<string> | string) => {
     if (!slugValue || !supabase) return
 
     const cache = readCache(slugValue)
-
     if (cache && isCacheValid(cache)) {
       views.value = cache.count
       return
@@ -72,7 +69,7 @@ export const usePageViews = (slug: Ref<string> | string) => {
 
   if (import.meta.client) {
     onMounted(() => {
-      trackAndFetch()
+      void trackAndFetch()
     })
   }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { Collections } from "@nuxt/content"
-import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
+import { useContentCollection } from "@docs/composables/content/useContentCollection"
+import { compareContentPages, isNavigationHidden } from "@docs/utils/content/comparePages"
+import { toContentPrefix, toRelativeContentPath } from "@docs/utils/content/paths"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import UiLink from "@ui/components/UiLink.vue"
 import { ROUTE_PATH } from "@base/types"
@@ -10,7 +11,8 @@ const props = defineProps<{
   item: SidebarCollectionItem
 }>()
 
-const { locale, t } = useI18n()
+const { t } = useI18n()
+const { collection } = useContentCollection()
 
 const route = useRoute()
 const localePath = useLocalePath()
@@ -26,13 +28,12 @@ const expandableLabel = computed(() =>
 
 const submenuVisible = computed(() => !props.item.collapsible || isOpen.value)
 
-const collection = computed(() => `content_${locale.value}` as keyof Collections)
-
 const { data: pages } = useAsyncData(
-  () => `sidebar:collection:${props.item.source}:${props.item.pathPrefix || ""}:${locale.value}`,
+  () =>
+    `sidebar:collection:${props.item.source}:${props.item.pathPrefix || ""}:${collection.value}`,
   async () => {
     const pathPrefix = props.item.pathPrefix || ROUTE_PATH.HOME
-    const queryPrefix = getQueryPrefix(pathPrefix)
+    const queryPrefix = toContentPrefix(pathPrefix)
 
     return await queryCollection(collection.value)
       .where("path", "LIKE", `%${queryPrefix}%`)
@@ -40,38 +41,23 @@ const { data: pages } = useAsyncData(
       .all()
   },
   {
-    watch: [locale]
+    watch: [collection]
   }
 )
 
 const items = computed(() => {
   const list = pages.value || []
   const pathPrefix = props.item.pathPrefix || ROUTE_PATH.DOCS
-  const queryPrefix = getQueryPrefix(pathPrefix)
+  const queryPrefix = toContentPrefix(pathPrefix)
 
   return list
     .filter((p) => {
       if (typeof p.path !== "string" || !p.path.includes(queryPrefix)) return false
-      const hidden = Boolean((p.meta as { navigation?: boolean } | undefined)?.navigation === false)
-      return !hidden
+      return !isNavigationHidden(p.meta)
     })
-    .sort((left, right) => {
-      const leftMeta = (left.meta as { order?: number } | undefined) || {}
-      const rightMeta = (right.meta as { order?: number } | undefined) || {}
-
-      const leftOrder =
-        typeof leftMeta.order === "number" ? leftMeta.order : Number.MAX_SAFE_INTEGER
-      const rightOrder =
-        typeof rightMeta.order === "number" ? rightMeta.order : Number.MAX_SAFE_INTEGER
-
-      if (leftOrder !== rightOrder) return leftOrder - rightOrder
-
-      const leftTitle = String(left.title || "")
-      const rightTitle = String(right.title || "")
-      return leftTitle.localeCompare(rightTitle)
-    })
+    .sort(compareContentPages)
     .map((p) => {
-      const relativePath = getRelativePath(String(p.path), queryPrefix)
+      const relativePath = toRelativeContentPath(String(p.path), queryPrefix)
       const fullPath = pathPrefix + relativePath
 
       return {

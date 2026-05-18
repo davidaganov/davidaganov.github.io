@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useProjectsTop } from "@docs/composables/useProjectsTop"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { GITHUB_REPO, SOCIAL_LINKS } from "@base/constants"
 import { DOCS_SECTIONS } from "@docs/constants"

@@ -2,7 +2,7 @@ import { createHighlighter, type Highlighter } from "shiki"
 
 let highlighterPromise: Promise<Highlighter> | null = null
 
-export function getHighlighterInstance() {
+export const getHighlighterInstance = (): Promise<Highlighter> => {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighter({
       themes: ["material-theme", "material-theme-lighter", "material-theme-palenight"],

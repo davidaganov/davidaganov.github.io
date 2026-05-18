@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useExperience } from "@base/composables/useExperience"
 import HomePage from "@base/components/pages/home/HomePage.vue"
 
 const { t } = useI18n()

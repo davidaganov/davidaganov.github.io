@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCommandPalette } from "@base/composables/useCommandPalette"
+
 const { toggle } = useCommandPalette()
 </script>
 

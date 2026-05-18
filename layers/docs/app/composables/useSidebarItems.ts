@@ -1,19 +1,15 @@
-import type { Collections } from "@nuxt/content"
+import { useContentCollection } from "@docs/composables/content/useContentCollection"
+import { compareContentPages, isNavigationHidden } from "@docs/utils/content/comparePages"
 import { getSectionById, getSectionIdByPath } from "@docs/utils/sections"
 import { DOCS_SECTIONS } from "@docs/constants"
 import type { SidebarCollectionItem, SidebarItem, SidebarLinkItem } from "@docs/types"
 
 export const useSidebarItems = () => {
-  const { locale } = useI18n()
   const route = useRoute()
+  const { collection } = useContentCollection()
 
   const sectionId = computed(() => getSectionIdByPath(route.path))
-
-  const section = computed(() => {
-    return getSectionById(sectionId.value)
-  })
-
-  const collection = computed(() => `content_${locale.value}` as keyof Collections)
+  const section = computed(() => getSectionById(sectionId.value))
 
   const { data: sectionRootPages } = useAsyncData(
     () => `sidebar:section-root:${collection.value}:${sectionId.value}`,
@@ -34,29 +30,12 @@ export const useSidebarItems = () => {
           const relative = page.path.slice(prefix.length)
           if (!relative || relative.includes("/")) return false
 
-          const hidden = Boolean(
-            (page.meta as { navigation?: boolean } | undefined)?.navigation === false
-          )
-          return !hidden
+          return !isNavigationHidden(page.meta)
         })
-        .sort((left, right) => {
-          const leftMeta = (left.meta as { order?: number } | undefined) || {}
-          const rightMeta = (right.meta as { order?: number } | undefined) || {}
-
-          const leftOrder =
-            typeof leftMeta.order === "number" ? leftMeta.order : Number.MAX_SAFE_INTEGER
-          const rightOrder =
-            typeof rightMeta.order === "number" ? rightMeta.order : Number.MAX_SAFE_INTEGER
-
-          if (leftOrder !== rightOrder) return leftOrder - rightOrder
-
-          const leftTitle = String(left.title || "")
-          const rightTitle = String(right.title || "")
-          return leftTitle.localeCompare(rightTitle)
-        })
+        .sort(compareContentPages)
     },
     {
-      watch: [locale, sectionId]
+      watch: [collection, sectionId]
     }
   )
 

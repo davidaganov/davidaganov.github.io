@@ -1,276 +1,59 @@
 import type { Ref } from "vue"
 import { forceX, forceY } from "d3-force-3d"
-import type { DocsGraphFile, DocsGraphLink, DocsGraphNode } from "@docs/types"
+import type ForceGraph from "force-graph"
+import {
+  buildAdjacency,
+  createHighlightController,
+  createHighlightState,
+  linkEndpointId
+} from "@docs/utils/force-graph/highlight"
+import { applyForceGraphPhysics } from "@docs/utils/force-graph/physics"
+import type { DocsGraphFile, DocsGraphNode, ForceGraphControlSettings } from "@docs/types"
 
-export function useDocsForceGraph(
+export const useDocsForceGraph = (
   containerRef: Ref<HTMLElement | null>,
   data: Ref<DocsGraphFile>,
-  settings: {
-    attraction: Ref<number>
-    repulsion: Ref<number>
-    linkPull: Ref<number>
-    nodeGap: Ref<number>
-  },
+  settings: ForceGraphControlSettings,
   onNodeClick: (node: DocsGraphNode) => void
-) {
-  const HOVER_BLEND_MS = 260
-
+) => {
   const { t } = useI18n()
 
-  const graphRef = shallowRef<InstanceType<(typeof import("force-graph"))["default"]> | null>(null)
+  const graphRef = shallowRef<ForceGraph | null>(null)
+  const highlightState = createHighlightState()
 
   let resizeObserver: ResizeObserver | null = null
   let instanceAlive = true
-
   let pullXInst: ReturnType<typeof forceX> | null = null
   let pullYInst: ReturnType<typeof forceY> | null = null
+  let adjacency = new Map<string, Set<string>>()
 
-  let renderFocusId: string | null = null
-  const renderNeighbors = new Set<string>()
-  let adjacency: Map<string, Set<string>> = new Map()
+  const highlight = createHighlightController(highlightState, () =>
+    data.value.nodes.find((node) => node.id === highlightState.focusId)
+  )
 
-  let highlightBlend = 0
-  let hoverAnimRaf = 0
-  let blendOnDone: (() => void) | null = null
-
-  const linkEndpointId = (x: DocsGraphNode | string): string => {
-    return typeof x === "object" && x !== null && "id" in x ? String(x.id) : String(x)
+  const resolveNodeTitle = (node: DocsGraphNode): string => {
+    if (node.title?.trim()) return node.title.trim()
+    if (node.titleKey) return t(node.titleKey)
+    return node.id.replace(/^\/docs\/?/, "") || node.id
   }
 
-  const rebuildAdjacency = (links: DocsGraphLink[]): void => {
-    const next = new Map<string, Set<string>>()
-    const add = (a: string, b: string): void => {
-      if (!next.has(a)) next.set(a, new Set())
-      if (!next.has(b)) next.set(b, new Set())
-      next.get(a)!.add(b)
-      next.get(b)!.add(a)
-    }
-
-    for (const l of links) {
-      add(String(l.source), String(l.target))
-    }
-
-    adjacency = next
-  }
-
-  const lerp = (a: number, b: number, t: number): number => a + (b - a) * t
-
-  const baseNodeHsl = (n: DocsGraphNode): { h: number; s: number; l: number; a: number } => ({
-    h: (n.hueIndex * 53 + 265) % 360,
-    s: 72,
-    l: 58,
-    a: n.kind === "index" ? 0.95 : 0.42
+  const readSettings = () => ({
+    attraction: settings.attraction.value,
+    repulsion: settings.repulsion.value,
+    linkPull: settings.linkPull.value,
+    nodeGap: settings.nodeGap.value
   })
-
-  const dimmedHsl = (n: DocsGraphNode): { h: number; s: number; l: number; a: number } => ({
-    h: (n.hueIndex * 53 + 265) % 360,
-    s: 28,
-    l: 42,
-    a: 0.16
-  })
-
-  const toHsla = (o: { h: number; s: number; l: number; a: number }): string => {
-    return `hsla(${o.h}, ${o.s}%, ${o.l}%, ${o.a})`
-  }
-
-  const resolveNodeTitle = (n: DocsGraphNode): string => {
-    if (n.title?.trim()) return n.title.trim()
-    if (n.titleKey) return t(n.titleKey)
-    return n.id.replace(/^\/docs\/?/, "") || n.id
-  }
-
-  const nodeVal = (n: any): number => {
-    const base = n.kind === "index" ? 2.6 : 1
-    const u = highlightBlend
-    if (!renderFocusId || u < 0.001) return base
-    if (n.id === renderFocusId) return base * lerp(1, 1.9, u)
-    if (renderNeighbors.has(n.id)) return base * lerp(1, 1.45, u)
-    return base * lerp(1, 0.75, u)
-  }
-
-  const nodeColor = (n: any): string => {
-    const base = baseNodeHsl(n)
-    const u = highlightBlend
-
-    if (!renderFocusId || u < 0.001) return toHsla(base)
-    if (n.id === renderFocusId) {
-      return toHsla({
-        h: base.h,
-        s: base.s,
-        l: base.l,
-        a: lerp(base.a, 0.98, u)
-      })
-    }
-    if (renderNeighbors.has(n.id)) {
-      return toHsla({
-        h: base.h,
-        s: base.s,
-        l: base.l,
-        a: lerp(base.a, 0.92, u)
-      })
-    }
-
-    const dim = dimmedHsl(n)
-    return toHsla({
-      h: base.h,
-      s: lerp(base.s, dim.s, u),
-      l: lerp(base.l, dim.l, u),
-      a: lerp(base.a, dim.a, u)
-    })
-  }
-
-  const linkColor = (link: any): string => {
-    const a = linkEndpointId(link.source)
-    const b = linkEndpointId(link.target)
-    const u = highlightBlend
-
-    if (!renderFocusId || u < 0.001) return "rgba(140, 140, 160, 0.35)"
-    const hit =
-      (a === renderFocusId && renderNeighbors.has(b)) ||
-      (b === renderFocusId && renderNeighbors.has(a))
-
-    if (hit) {
-      const activeNode = data.value.nodes.find((n) => n.id === renderFocusId)
-      if (activeNode) {
-        const base = baseNodeHsl(activeNode)
-        return `hsla(${base.h}, 72%, 58%, ${lerp(0.35, 0.85, u)})`
-      }
-      return `rgba(180, 180, 200, ${lerp(0.35, 0.85, u)})`
-    }
-    return `rgba(90, 90, 110, ${lerp(0.35, 0.06, u)})`
-  }
-
-  const linkWidth = (link: any): number => {
-    const a = linkEndpointId(link.source)
-    const b = linkEndpointId(link.target)
-    const u = highlightBlend
-
-    if (!renderFocusId || u < 0.001) return 0.6
-    const hit =
-      (a === renderFocusId && renderNeighbors.has(b)) ||
-      (b === renderFocusId && renderNeighbors.has(a))
-
-    return hit ? lerp(0.6, 1.35, u) : lerp(0.6, 0.35, u)
-  }
-
-  const paintLabelBelowNode = (
-    node: any,
-    ctx: CanvasRenderingContext2D,
-    globalScale: number
-  ): void => {
-    if (node.x === undefined || node.y === undefined) return
-    const r = Math.sqrt(Math.max(0, nodeVal(node) || 1)) * 5
-    const raw = resolveNodeTitle(node)
-    const maxLen = 28
-    const label = raw.length > maxLen ? `${raw.slice(0, maxLen - 1)}…` : raw
-    const fontPx = Math.max(9, 11 / globalScale)
-
-    ctx.font = `500 ${fontPx}px ui-sans-serif, system-ui, sans-serif`
-    ctx.textAlign = "center"
-    ctx.textBaseline = "top"
-
-    const u = highlightBlend
-    let a = 0.92
-
-    if (renderFocusId && u > 0.001) {
-      if (node.id === renderFocusId) a = lerp(0.92, 0.98, u)
-      else if (renderNeighbors.has(node.id)) a = lerp(0.92, 0.95, u)
-      else a = lerp(0.92, 0.38, u)
-    }
-
-    ctx.fillStyle = `rgba(248, 250, 252, ${a})`
-    ctx.fillText(label, node.x, node.y + r + 3 / globalScale)
-  }
-
-  const animateHighlightBlend = (target: number, onDone?: () => void): void => {
-    blendOnDone = onDone ?? null
-    const from = highlightBlend
-    const started = performance.now()
-
-    const step = (now: number): void => {
-      const t = Math.min(1, (now - started) / HOVER_BLEND_MS)
-      const e = 1 - (1 - t) ** 3
-      highlightBlend = from + (target - from) * e
-      if (t < 1) hoverAnimRaf = requestAnimationFrame(step)
-      else {
-        highlightBlend = target
-        const done = blendOnDone
-        blendOnDone = null
-        done?.()
-      }
-    }
-
-    cancelAnimationFrame(hoverAnimRaf)
-    hoverAnimRaf = requestAnimationFrame(step)
-  }
-
-  const setHover = (node: any): void => {
-    cancelAnimationFrame(hoverAnimRaf)
-    blendOnDone = null
-
-    if (node) {
-      renderFocusId = node.id
-      renderNeighbors.clear()
-      if (adjacency.has(node.id)) {
-        for (const id of adjacency.get(node.id)!) {
-          renderNeighbors.add(id)
-        }
-      }
-      animateHighlightBlend(1)
-    } else {
-      animateHighlightBlend(0, () => {
-        renderFocusId = null
-        renderNeighbors.clear()
-      })
-    }
-  }
-
-  const applyPhysics = (): void => {
-    const fg = graphRef.value
-    if (!fg) return
-
-    const center = fg.d3Force("center") as { strength?: (s: number) => unknown } | undefined
-    const centerStrength = 0.01 + (settings.attraction.value / 100) * 0.24
-    center?.strength?.(centerStrength)
-
-    const charge = fg.d3Force("charge") as { strength?: (s: number) => unknown } | undefined
-    const chargeStrength = -30 - (settings.repulsion.value / 100) * 370
-    charge?.strength?.(chargeStrength)
-
-    const pull = 0.005 + (settings.attraction.value / 100) * 0.045
-    pullXInst?.strength(pull)
-    pullYInst?.strength(pull)
-
-    const lk = fg.d3Force("link") as
-      | {
-          strength?: (s: number | ((l: unknown) => number)) => unknown
-          distance?: (s: number | ((l: unknown) => number)) => unknown
-        }
-      | undefined
-    const ls = 0.05 + (settings.linkPull.value / 100) * 0.55
-    const dist = 30 + (settings.nodeGap.value / 100) * 170
-    lk?.strength?.(ls)
-    lk?.distance?.(dist)
-
-    fg.d3ReheatSimulation()
-  }
 
   const teardown = (): void => {
     resizeObserver?.disconnect()
     resizeObserver = null
-    cancelAnimationFrame(hoverAnimRaf)
-    hoverAnimRaf = 0
-    highlightBlend = 0
-    blendOnDone = null
-    renderFocusId = null
-    renderNeighbors.clear()
+    highlight.dispose()
     pullXInst = null
     pullYInst = null
-    const fg = graphRef.value
+    const graph = graphRef.value
     graphRef.value = null
-    fg?._destructor?.()
-    const host = containerRef.value
-    if (host) host.replaceChildren()
+    graph?._destructor?.()
+    containerRef.value?.replaceChildren()
   }
 
   const build = async (): Promise<void> => {
@@ -278,51 +61,72 @@ export function useDocsForceGraph(
     if (!el) return
 
     teardown()
-    rebuildAdjacency(data.value.links)
+    adjacency = buildAdjacency(data.value.links)
 
     pullXInst = forceX(0)
     pullYInst = forceY(0)
 
-    const { default: ForceGraph } = await import("force-graph")
+    const { default: ForceGraphConstructor } = await import("force-graph")
     if (!instanceAlive || containerRef.value !== el) return
 
-    const fg = new ForceGraph(el)
+    const graph = new ForceGraphConstructor(el)
       .graphData({
-        nodes: data.value.nodes.map((n) => ({ ...n })),
-        links: data.value.links.map((l) => ({ ...l }))
+        nodes: data.value.nodes.map((node) => ({ ...node })),
+        links: data.value.links.map((link) => ({ ...link }))
       })
       .nodeId("id")
-      .nodeVal(nodeVal)
+      .nodeVal((node) => highlight.nodeVal(node as DocsGraphNode))
       .nodeRelSize(5)
       .nodeLabel(() => "")
       .nodeCanvasObjectMode(() => "after")
-      .nodeCanvasObject(paintLabelBelowNode)
-      .nodeColor(nodeColor)
-      .linkColor(linkColor)
-      .linkWidth(linkWidth)
+      .nodeCanvasObject((node, ctx, globalScale) => {
+        const graphNode = node as DocsGraphNode & { x?: number; y?: number }
+        if (graphNode.x === undefined || graphNode.y === undefined) return
+
+        const radius = Math.sqrt(Math.max(0, highlight.nodeVal(graphNode))) * 5
+        const raw = resolveNodeTitle(graphNode)
+        const label = raw.length > 28 ? `${raw.slice(0, 27)}…` : raw
+        const fontPx = Math.max(9, 11 / globalScale)
+
+        ctx.font = `500 ${fontPx}px ui-sans-serif, system-ui, sans-serif`
+        ctx.textAlign = "center"
+        ctx.textBaseline = "top"
+        ctx.fillStyle = `rgba(248, 250, 252, ${highlight.labelAlpha(graphNode.id)})`
+        ctx.fillText(label, graphNode.x, graphNode.y + radius + 3 / globalScale)
+      })
+      .nodeColor((node) => highlight.nodeColor(node as DocsGraphNode))
+      .linkColor((link) => {
+        const sourceId = linkEndpointId(link.source as DocsGraphNode | string)
+        const targetId = linkEndpointId(link.target as DocsGraphNode | string)
+        return highlight.linkColor(sourceId, targetId)
+      })
+      .linkWidth((link) => {
+        const sourceId = linkEndpointId(link.source as DocsGraphNode | string)
+        const targetId = linkEndpointId(link.target as DocsGraphNode | string)
+        return highlight.linkWidth(sourceId, targetId)
+      })
       .d3Force("pullX", pullXInst)
       .d3Force("pullY", pullYInst)
-      .onNodeHover((node: any) => {
-        setHover(node)
+      .onNodeHover((node) => {
+        highlight.setHover((node as DocsGraphNode | null) ?? null, adjacency)
       })
-      .onNodeClick((n: any) => {
-        onNodeClick(n)
+      .onNodeClick((node) => {
+        onNodeClick(node as DocsGraphNode)
       })
       .backgroundColor("rgba(0, 0, 0, 0)")
       .d3VelocityDecay(0.38)
 
     if (!instanceAlive) {
-      fg._destructor?.()
+      graph._destructor?.()
       el.replaceChildren()
       return
     }
-    graphRef.value = fg as any
-    applyPhysics()
+
+    graphRef.value = graph
+    applyForceGraphPhysics(graph, readSettings(), pullXInst, pullYInst)
 
     const resize = (): void => {
-      const w = el.clientWidth || 800
-      const h = el.clientHeight || 520
-      fg.width(w).height(h)
+      graph.width(el.clientWidth || 800).height(el.clientHeight || 520)
     }
 
     resize()
@@ -338,7 +142,9 @@ export function useDocsForceGraph(
       settings.nodeGap.value
     ],
     () => {
-      applyPhysics()
+      const graph = graphRef.value
+      if (!graph || !pullXInst || !pullYInst) return
+      applyForceGraphPhysics(graph, readSettings(), pullXInst, pullYInst)
     }
   )
 

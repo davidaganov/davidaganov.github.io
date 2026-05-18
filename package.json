@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "predev": "npm run build:docs-graph",
+    "predev": "npm run build:docs-assets",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -20,7 +20,7 @@
     "translate:md": "npx polyglot-keeper sync --md",
     "translate:init": "npx polyglot-keeper init",
     "generate:favicons": "tsx scripts/generate-favicons.ts",
-    "build:docs-graph": "tsx scripts/build-docs-graph.ts"
+    "build:docs-assets": "tsx scripts/build-docs-assets.ts"
   },
   "dependencies": {
     "@iconify-json/heroicons": "^1.2.3",

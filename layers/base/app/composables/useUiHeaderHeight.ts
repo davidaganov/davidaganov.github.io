@@ -3,7 +3,7 @@ import { useResizeObserver } from "@vueuse/core"
 
 const CSS_VAR = "--ui-header-height"
 
-export function useUiHeaderHeight(headerRef: Ref<HTMLElement | null>) {
+export const useUiHeaderHeight = (headerRef: Ref<HTMLElement | null>) => {
   const syncHeight = () => {
     const el = headerRef.value
     if (!el || import.meta.server) return

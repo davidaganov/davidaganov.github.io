@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { usePageViews } from "@/layers/docs/app/composables/page/usePageViews"
+import { useContentViews } from "@docs/composables/content/useContentViews"
 
 const route = useRoute()
+
 const viewSlug = computed(() => route.path)
-const { views, loading } = usePageViews(viewSlug)
+
+const { views, loading } = useContentViews(viewSlug)
 </script>
 
 <template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useProjectStats } from "@api/composables/useProjectStats"
 import { formatDate } from "@base/utils/date"
 import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
 import UiBadge from "@ui/components/UiBadge.vue"

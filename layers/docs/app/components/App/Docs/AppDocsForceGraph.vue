@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDocsForceGraph } from "@docs/composables/docs/useDocsForceGraph"
 import AppDocsForceGraphSettings from "@docs/components/App/Docs/AppDocsForceGraphSettings.vue"
 import type { DocsGraphFile, DocsGraphNode } from "@docs/types"
 

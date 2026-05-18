@@ -1,75 +1,27 @@
 <script setup lang="ts">
-import type { Collections } from "@nuxt/content"
-import { getQueryPrefix, getRelativePath } from "@docs/utils/content"
-import {
-  getFirstPathForFirstSection,
-  getFirstPathForSection,
-  getSectionById
-} from "@docs/utils/sections"
+import { useDocsRoute } from "@docs/composables/docs/useDocsRoute"
+import { useDocsSeo } from "@docs/composables/docs/useDocsSeo"
+import AppArticleNavigation from "@docs/components/App/AppArticleNavigation.vue"
+import AppArticleTranslationWarning from "@docs/components/App/AppArticleTranslationWarning.vue"
 import AppIndexPage from "@docs/components/App/AppIndexPage.vue"
 import AppRightSidebar from "@docs/components/App/RightSidebar/AppRightSidebar.vue"
 import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
-import type { SidebarCollectionItem } from "@docs/types"
-import { useDocsSeo } from "@/layers/docs/app/composables/docs/useDocsSeo"
 
-const { locale } = useI18n()
-const localePath = useLocalePath()
-const route = useRoute()
+const {
+  section,
+  docsPath,
+  parentCollectionItem,
+  collectionItem,
+  page,
+  getCollectionPathPrefix,
+  ensureValidRoute,
+  redirectCollectionWithoutIndex,
+  redirectMissingPage
+} = useDocsRoute()
 
-const sectionParam = computed(() => String(route.params.section || ""))
-
-const slugParam = computed(() => {
-  const value = route.params.slug
-  return Array.isArray(value) ? value.filter(Boolean).map(String) : value ? [String(value)] : []
-})
-
-const section = computed(() => getSectionById(sectionParam.value))
-const collection = computed(() => `content_${locale.value}` as keyof Collections)
-const docsPath = computed(() => `/docs/${sectionParam.value}/${slugParam.value.join("/")}`)
-
-if (!section.value) {
-  await navigateTo(localePath(getFirstPathForFirstSection()), { replace: true })
-}
-if (!slugParam.value.length) {
-  await navigateTo(localePath(getFirstPathForSection(section.value)), { replace: true })
-}
-
-const parentCollectionItem = computed(() => {
-  const topLevelSlug = slugParam.value[0]
-  if (!topLevelSlug) return undefined
-  return section.value?.sidebarItems.find(
-    (item): item is SidebarCollectionItem =>
-      item.type === "collection" && item.source === topLevelSlug
-  )
-})
-
-const collectionItem = computed(() => {
-  return slugParam.value.length === 1 ? parentCollectionItem.value : undefined
-})
-
-const getCollectionPathPrefix = (source: string) => `/docs/${sectionParam.value}/${source}`
-
-if (collectionItem.value?.indexPage === false) {
-  const pathPrefix = getCollectionPathPrefix(collectionItem.value.source)
-  const queryPrefix = getQueryPrefix(pathPrefix)
-  const firstChild = await queryCollection(collection.value)
-    .where("path", "LIKE", `%${queryPrefix}%`)
-    .select("path")
-    .first()
-
-  if (firstChild?.path) {
-    const relativePath = getRelativePath(String(firstChild.path), queryPrefix)
-    await navigateTo(localePath(`${pathPrefix}${relativePath}`), { replace: true })
-  }
-}
-
-const { data: page } = await usePageContent(docsPath.value)
-
-if (!page.value && !collectionItem.value) {
-  const targetPath = getFirstPathForSection(section.value)
-  if (targetPath && targetPath !== docsPath.value) {
-    await navigateTo(localePath(targetPath), { replace: true })
-  }
+if (await ensureValidRoute()) {
+  await redirectCollectionWithoutIndex()
+  await redirectMissingPage()
 }
 
 const { breadcrumbs, pageType } = useDocsSeo({
@@ -82,7 +34,6 @@ const { breadcrumbs, pageType } = useDocsSeo({
 
 <template>
   <div v-if="collectionItem || page">
-    <!-- Header: Breadcrumbs & Counter -->
     <div class="mb-6 flex items-center justify-between gap-4">
       <UBreadcrumb
         v-if="breadcrumbs.length"
@@ -91,7 +42,6 @@ const { breadcrumbs, pageType } = useDocsSeo({
       <BaseViewCounter v-if="!collectionItem" />
     </div>
 
-    <!-- Main Content -->
     <template v-if="collectionItem">
       <AppIndexPage
         :title-key="collectionItem.titleKey"

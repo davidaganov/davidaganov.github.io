@@ -1,6 +1,6 @@
 import { getFirstPathForSection, getSectionById } from "@docs/utils/sections"
 
-export const useDocsSectionEntryPath = (sectionId: string) => {
+export const useDocsSectionEntry = (sectionId: string) => {
   const localePath = useLocalePath()
 
   const section = computed(() => getSectionById(sectionId))

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { defineShortcuts } from "@nuxt/ui/composables"
+import { useCommandPalette } from "@base/composables/useCommandPalette"
+import { useDocsLayoutTransition } from "@docs/composables/docs/useDocsLayoutTransition"
 import { isChangelogDocsPath, isGraphDocsPath } from "@docs/utils/sections"
 import AppFooter from "@base/components/App/AppFooter.vue"
 import AppHeader from "@base/components/App/AppHeader.vue"
@@ -9,7 +12,7 @@ import BaseLight from "@docs/components/base/BaseLight.vue"
 const route = useRoute()
 
 const { toggle, close } = useCommandPalette()
-const { light } = usePageTransitionLight()
+const { light } = useDocsLayoutTransition()
 
 const hideDocsRightColumn = computed(
   () => isChangelogDocsPath(route.path) || isGraphDocsPath(route.path)

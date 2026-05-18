@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useUiHeaderHeight } from "@base/composables/useUiHeaderHeight"
 import { useChangelogUnreadIndicator } from "@docs/composables/useChangelogUnreadIndicator"
 import {
   getFirstPathForSection,

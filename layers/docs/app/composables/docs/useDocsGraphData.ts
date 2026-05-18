@@ -5,7 +5,7 @@ export const useDocsGraphData = () => {
 
   return useAsyncData(
     () => `docs-graph-json:${locale.value}`,
-    () => $fetch<DocsGraphFile>(`/api/docs-graph/${locale.value}`),
+    () => $fetch<DocsGraphFile>(`/api/docs/${locale.value}`),
     {
       watch: [locale],
       server: false

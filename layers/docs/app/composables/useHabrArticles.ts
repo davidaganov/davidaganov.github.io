@@ -1,20 +1,21 @@
-import type { Collections } from "@nuxt/content"
+import { useContentCollection } from "@docs/composables/content/useContentCollection"
+import { toContentPrefix } from "@docs/utils/content/paths"
+import { ROUTE_PATH } from "@base/types"
 
 export const useHabrArticles = () => {
-  const { locale } = useI18n()
-
-  const collection = computed(() => `content_${locale.value}` as keyof Collections)
+  const { collection } = useContentCollection()
+  const contentPrefix = toContentPrefix(ROUTE_PATH.ABOUT_ARTICLES)
 
   const { data: articles } = useAsyncData(
-    "habr-articles",
+    () => `habr-articles:${collection.value}`,
     async () => {
       return await queryCollection(collection.value)
-        .where("path", "LIKE", "%/articles/%")
+        .where("path", "LIKE", `${contentPrefix}%`)
         .select("title", "description", "meta", "path")
         .all()
     },
     {
-      watch: [locale]
+      watch: [collection]
     }
   )
 
