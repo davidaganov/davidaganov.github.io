@@ -1,6 +1,8 @@
+import { until } from "@vueuse/core"
 import { useContentCollection } from "@docs/composables/content/useContentCollection"
 import { useContentPage } from "@docs/composables/content/useContentPage"
 import { toContentPrefix, toRelativeContentPath } from "@docs/utils/content/paths"
+import { joinPublicDocsPath } from "@docs/utils/path/joinPublicPath"
 import {
   getFirstPathForFirstSection,
   getFirstPathForSection,
@@ -8,7 +10,7 @@ import {
 } from "@docs/utils/sections"
 import type { SidebarCollectionItem } from "@docs/types"
 
-export const useDocsRoute = () => {
+export const useDocsRoute = async () => {
   const localePath = useLocalePath()
   const route = useRoute()
   const { collection } = useContentCollection()
@@ -62,19 +64,37 @@ export const useDocsRoute = () => {
 
     if (firstChild?.path) {
       const relativePath = toRelativeContentPath(String(firstChild.path), queryPrefix)
-      await navigateTo(localePath(`${pathPrefix}${relativePath}`), { replace: true })
+      await navigateTo(localePath(joinPublicDocsPath(pathPrefix, relativePath)), { replace: true })
     }
   }
 
-  const { data: page } = useContentPage(docsPath)
+  const pageQuery = useContentPage(docsPath)
+
+  const page = computed(() => pageQuery.data.value)
+
+  const waitForPage = async () => {
+    if (collectionItem.value) return
+    if (pageQuery.status.value === "pending") {
+      await until(pageQuery.status).not.toBe("pending")
+    }
+  }
 
   const redirectMissingPage = async () => {
+    await waitForPage()
     if (page.value || collectionItem.value) return
     const targetPath = getFirstPathForSection(section.value)
     if (targetPath && targetPath !== docsPath.value) {
-      await navigateTo(localePath(targetPath), { replace: true })
+      ;(await localePath(targetPath), { replace: true })
     }
   }
+
+  if (await ensureValidRoute()) {
+    await redirectCollectionWithoutIndex()
+    await redirectMissingPage()
+    await waitForPage()
+  }
+
+  await pageQuery
 
   return {
     section,
@@ -84,9 +104,6 @@ export const useDocsRoute = () => {
     parentCollectionItem,
     collectionItem,
     page,
-    getCollectionPathPrefix,
-    ensureValidRoute,
-    redirectCollectionWithoutIndex,
-    redirectMissingPage
+    getCollectionPathPrefix
   }
 }

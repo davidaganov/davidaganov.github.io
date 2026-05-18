@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "@pinia/nuxt",
     "@vueuse/motion/nuxt",
-    "@vercel/speed-insights",
     "nuxt-og-image"
   ],
 
@@ -73,10 +72,6 @@ export default defineNuxtConfig({
     }
   },
 
-  devServer: {
-    host: "0.0.0.0"
-  },
-
   css: ["@/assets/css/main.css"],
 
   app: {
@@ -136,7 +131,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: false
+    payloadExtraction: true
   },
 
   icon: {

@@ -3,7 +3,9 @@ import { useBreakpoints } from "@vueuse/core"
 import { isChangelogDocsPath } from "@docs/utils/sections"
 import AppRightSidebarContent from "@docs/components/App/RightSidebar/AppRightSidebarContent.vue"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
-import { TYPE_PAGE } from "@docs/types/enums"
+import { TYPE_PAGE } from "@docs/types"
+
+const RIGHT_SIDEBAR_TARGET = "#app-right-sidebar-root"
 
 const props = withDefaults(
   defineProps<{
@@ -26,14 +28,36 @@ const breakpoints = useBreakpoints({
 
 const isLg = breakpoints.greater("lg")
 
+const hasTarget = ref(false)
+
+const syncTarget = () => {
+  if (!import.meta.client) return
+  hasTarget.value = Boolean(document.querySelector(RIGHT_SIDEBAR_TARGET))
+}
+
 const hideSidebar = computed(() => isChangelogDocsPath(route.path))
+const useTeleport = computed(() => isLg.value && hasTarget.value)
+
+watch(
+  () => route.path,
+  async () => {
+    await nextTick()
+    syncTarget()
+  }
+)
+
+onMounted(async () => {
+  await nextTick()
+  syncTarget()
+})
 </script>
 
 <template>
   <ClientOnly v-if="!hideSidebar">
     <Teleport
-      v-if="isLg"
-      to="#app-right-sidebar-root"
+      v-if="useTeleport"
+      defer
+      :to="RIGHT_SIDEBAR_TARGET"
     >
       <aside
         class="sticky top-(--ui-sticky-top) max-h-[calc(100vh-var(--ui-sticky-top))] overflow-x-hidden overflow-y-hidden"
@@ -50,7 +74,7 @@ const hideSidebar = computed(() => isChangelogDocsPath(route.path))
     </Teleport>
 
     <aside
-      v-else
+      v-else-if="!isLg"
       class="mt-8 lg:hidden"
     >
       <AppRightSidebarContent

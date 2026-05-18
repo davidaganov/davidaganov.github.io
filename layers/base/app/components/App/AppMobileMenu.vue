@@ -29,7 +29,7 @@ const emit = defineEmits<{
   (e: "update:open", value: boolean): void
 }>()
 
-const { renderedSidebarItems } = useSidebarItems()
+const { renderedSidebarItems } = await useSidebarItems()
 
 const isOpen = computed({
   get: () => props.open,

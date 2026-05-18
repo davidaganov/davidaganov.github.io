@@ -1,10 +1,35 @@
-import { loadArchiveIndex, resolveArchiveKeyFromRoute } from "@docs/utils/archiveManifest"
+import { loadArchiveIndex } from "@docs/utils/archiveManifest"
 import type { DocsArchiveEntry } from "@docs/types"
 
 const contentModules = import.meta.glob("../content/**/*", {
   query: "?raw",
   import: "default"
 }) as Record<string, () => Promise<string>>
+
+const resolveArchiveKeyFromRoute = (
+  keys: Set<string>,
+  section: string,
+  slugSegments: string[]
+): string => {
+  if (!section || !slugSegments.length) return ""
+
+  const candidates: string[] = []
+  for (let depth = slugSegments.length; depth >= 1; depth -= 1) {
+    candidates.push(`${section}/${slugSegments.slice(0, depth).join("/")}`)
+  }
+
+  const lastSegment = slugSegments.at(-1)
+  if (lastSegment) candidates.push(`${section}/${lastSegment}`)
+
+  const seen = new Set<string>()
+  for (const candidate of candidates) {
+    if (seen.has(candidate)) continue
+    seen.add(candidate)
+    if (keys.has(candidate)) return candidate
+  }
+
+  return ""
+}
 
 const normalizeSegment = (segment: unknown): string => String(segment || "").trim()
 
@@ -50,9 +75,9 @@ export const useDocsArchive = () => {
     default: () => new Set<string>()
   })
 
-  const archiveKey = computed(() =>
-    resolveArchiveKeyFromRoute(archiveKeys.value, section.value, slugSegments.value)
-  )
+  const archiveKey = computed(() => {
+    return resolveArchiveKeyFromRoute(archiveKeys.value, section.value, slugSegments.value)
+  })
 
   const vfsPrefix = computed(() => (archiveKey.value ? `../content/${archiveKey.value}/` : ""))
 

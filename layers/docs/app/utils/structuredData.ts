@@ -1,5 +1,4 @@
-import { TYPE_PAGE } from "@docs/types/enums"
-import type { DocsBreadcrumbItem, DocsPageMeta } from "@docs/types"
+import { type DocsBreadcrumbItem, type DocsPageMeta, TYPE_PAGE } from "@docs/types"
 
 interface StructuredDataOptions {
   pageTitle: string

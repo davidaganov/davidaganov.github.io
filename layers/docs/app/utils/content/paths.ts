@@ -9,22 +9,20 @@ export const toContentPrefix = (publicPathPrefix: string): string => {
   return publicPathPrefix
 }
 
+const normalizeRelativeSlice = (slice: string): string => {
+  if (!slice) return ""
+  return slice.startsWith("/") ? slice : `/${slice}`
+}
+
 export const toRelativeContentPath = (fullPath: string, contentPrefix: string): string => {
   if (contentPrefix === ROUTE_PATH.HOME) {
     const idx = fullPath.indexOf(contentPrefix)
     if (idx === -1) return ""
-    return fullPath.slice(idx + contentPrefix.length)
+    return normalizeRelativeSlice(fullPath.slice(idx + contentPrefix.length))
   }
 
   const path = fullPath.replace(/^\/+/, "")
   const prefix = contentPrefix.replace(/^\/+/, "")
   if (!path.startsWith(prefix)) return ""
-  return path.slice(prefix.length)
-}
-
-export const archiveKeyFromPaths = (publicPathPrefix: string, relativePath: string): string => {
-  const prefix = toContentPrefix(publicPathPrefix).replace(/^\/+|\/+$/g, "")
-  const relative = String(relativePath || "").replace(/^\/+|\/+$/g, "")
-  if (!prefix || !relative) return ""
-  return `${prefix}/${relative}`
+  return normalizeRelativeSlice(path.slice(prefix.length))
 }

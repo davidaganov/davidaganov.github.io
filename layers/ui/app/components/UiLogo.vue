@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ROUTE_PATH } from "@base/types/enums/route.enum"
+import { ROUTE_PATH } from "@base/types"
 
 const props = withDefaults(
   defineProps<{

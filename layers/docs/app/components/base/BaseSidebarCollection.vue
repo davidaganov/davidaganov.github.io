@@ -1,90 +1,22 @@
 <script setup lang="ts">
-import { useContentCollection } from "@docs/composables/content/useContentCollection"
-import { compareContentPages, isNavigationHidden } from "@docs/utils/content/comparePages"
-import { toContentPrefix, toRelativeContentPath } from "@docs/utils/content/paths"
+import { useSidebarCollection } from "@docs/composables/useSidebarCollection"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import UiLink from "@ui/components/UiLink.vue"
-import { ROUTE_PATH } from "@base/types"
 import type { SidebarCollectionItem } from "@docs/types"
 
 const props = defineProps<{
   item: SidebarCollectionItem
 }>()
 
-const { t } = useI18n()
-const { collection } = useContentCollection()
-
-const route = useRoute()
-const localePath = useLocalePath()
-
-const isOpen = ref(props.item.defaultOpen ?? false)
-
-const submenuPanelId = `docs-sidebar-submenu-${useId()}`
-const submenuLabel = computed(() => t(props.item.label))
-
-const expandableLabel = computed(() =>
-  t("layout.a11y.toggleDocsSubgroup", { title: submenuLabel.value })
-)
-
-const submenuVisible = computed(() => !props.item.collapsible || isOpen.value)
-
-const { data: pages } = useAsyncData(
-  () =>
-    `sidebar:collection:${props.item.source}:${props.item.pathPrefix || ""}:${collection.value}`,
-  async () => {
-    const pathPrefix = props.item.pathPrefix || ROUTE_PATH.HOME
-    const queryPrefix = toContentPrefix(pathPrefix)
-
-    return await queryCollection(collection.value)
-      .where("path", "LIKE", `%${queryPrefix}%`)
-      .select("title", "description", "meta", "path")
-      .all()
-  },
-  {
-    watch: [collection]
-  }
-)
-
-const items = computed(() => {
-  const list = pages.value || []
-  const pathPrefix = props.item.pathPrefix || ROUTE_PATH.DOCS
-  const queryPrefix = toContentPrefix(pathPrefix)
-
-  return list
-    .filter((p) => {
-      if (typeof p.path !== "string" || !p.path.includes(queryPrefix)) return false
-      return !isNavigationHidden(p.meta)
-    })
-    .sort(compareContentPages)
-    .map((p) => {
-      const relativePath = toRelativeContentPath(String(p.path), queryPrefix)
-      const fullPath = pathPrefix + relativePath
-
-      return {
-        type: "link" as const,
-        label: String(p.title || ""),
-        description: String(p.description || ""),
-        to: fullPath,
-        icon: String(
-          (p.meta as { icon?: string } | undefined)?.icon ||
-            props.item.itemIcon ||
-            "i-lucide-file-text"
-        ),
-        translate: false
-      }
-    })
-    .filter((p) => Boolean(p.label))
-})
-
-const isIndexActive = computed(() => {
-  return (props.item.indexPage ?? true) && route.path === localePath(props.item.pathPrefix || "")
-})
-
-const toggleOpen = () => {
-  if (props.item.collapsible) {
-    isOpen.value = !isOpen.value
-  }
-}
+const {
+  items,
+  isOpen,
+  submenuPanelId,
+  expandableLabel,
+  submenuVisible,
+  isIndexActive,
+  toggleOpen
+} = await useSidebarCollection(props.item)
 </script>
 
 <template>
@@ -95,7 +27,7 @@ const toggleOpen = () => {
           class="min-w-0 flex-1 items-center"
           :to="props.item.pathPrefix || ''"
           :active="isIndexActive"
-          :aria-label="item.ariaLabelKey ? t(item.ariaLabelKey) : undefined"
+          :aria-label="item.ariaLabelKey ? $t(item.ariaLabelKey) : undefined"
         >
           <div class="flex min-w-0 flex-1 items-center gap-3">
             <UIcon

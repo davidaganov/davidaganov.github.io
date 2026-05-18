@@ -1,3 +1,4 @@
+import { docsPathFromContentPath } from "@docs/utils/path/joinPublicPath"
 import { buildUrlFromMapping, findContentMapping } from "@docs/utils/path/pathMapping"
 import { LOCALE_PREFIX_RE } from "@base/constants"
 import { ROUTE_PATH } from "@base/types"
@@ -10,21 +11,10 @@ export const normalizePublicDocsPath = (path: string): string => {
   return p
 }
 
-export const publicPathToContentPath = (publicPath: string): string => {
-  const normalized = normalizePublicDocsPath(publicPath)
-  if (!normalized.startsWith(ROUTE_PATH.DOCS)) {
-    return normalized.startsWith("/") ? normalized : `/${normalized}`
-  }
-
-  const stripped = normalized.slice(ROUTE_PATH.DOCS.length) || "/"
-  const contentPath = stripped.startsWith("/") ? stripped : `/${stripped}`
-  return findContentMapping(contentPath)?.path ?? contentPath
-}
-
 export const contentPathToPublicPath = (contentPath: string): string => {
   const normalized = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
   const mapping = findContentMapping(normalized)
-  if (!mapping) return `${ROUTE_PATH.DOCS}${normalized}`
+  if (!mapping) return docsPathFromContentPath(normalized)
   return buildUrlFromMapping(mapping)
 }
 

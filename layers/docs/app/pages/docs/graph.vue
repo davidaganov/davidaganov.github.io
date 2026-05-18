@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useDocsGraphData } from "@docs/composables/docs/useDocsGraphData"
 import AppDocsForceGraph from "@docs/components/App/Docs/AppDocsForceGraph.vue"
+import type { DocsGraphFile } from "@docs/types"
 
-const { t } = useI18n()
+const { locale, t } = useI18n()
 
 definePageMeta({
-  layout: "default",
-  ssr: false
+  layout: "default"
 })
 
 useSeoMeta({
@@ -14,7 +13,11 @@ useSeoMeta({
   description: () => t("docs.graph.seoDescription")
 })
 
-const { data, error, pending } = useDocsGraphData()
+const { data, error, pending } = await useAsyncData(
+  () => `docs-graph-json:${locale.value}`,
+  () => $fetch<DocsGraphFile>(`/api/docs/${locale.value}`),
+  { watch: [locale] }
+)
 
 const graphFile = computed(() => data.value)
 </script>

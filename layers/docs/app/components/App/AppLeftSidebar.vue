@@ -4,8 +4,21 @@ import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.vue"
 import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
+import type { SidebarItem } from "@docs/types"
 
-const { renderedSidebarItems } = useSidebarItems()
+const getSidebarItemKey = (item: SidebarItem): string => {
+  if (item.type === "link") {
+    return `link:${item.name || item.to || item.href || item.label || "unknown"}`
+  }
+
+  if (item.type === "collection") {
+    return `collection:${item.source}`
+  }
+
+  return `divider:${item.label || item.class || "divider"}`
+}
+
+const { renderedSidebarItems } = await useSidebarItems()
 </script>
 
 <template>
@@ -19,8 +32,8 @@ const { renderedSidebarItems } = useSidebarItems()
           :aria-label="$t('layout.navigation.aria.docsSidebar')"
         >
           <template
-            v-for="(item, index) in renderedSidebarItems"
-            :key="index"
+            v-for="item in renderedSidebarItems"
+            :key="getSidebarItemKey(item)"
           >
             <BaseSidebarLink
               v-if="item.type === 'link'"

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue"
-import { LOCALE } from "@base/types/enums"
+import { LOCALE } from "@base/types"
 
 const props = defineProps<{
   page: any

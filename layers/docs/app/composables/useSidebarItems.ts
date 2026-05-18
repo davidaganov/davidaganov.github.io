@@ -4,14 +4,14 @@ import { getSectionById, getSectionIdByPath } from "@docs/utils/sections"
 import { DOCS_SECTIONS } from "@docs/constants"
 import type { SidebarCollectionItem, SidebarItem, SidebarLinkItem } from "@docs/types"
 
-export const useSidebarItems = () => {
+export const useSidebarItems = async () => {
   const route = useRoute()
   const { collection } = useContentCollection()
 
   const sectionId = computed(() => getSectionIdByPath(route.path))
   const section = computed(() => getSectionById(sectionId.value))
 
-  const { data: sectionRootPages } = useAsyncData(
+  const { data: sectionRootPages } = await useAsyncData(
     () => `sidebar:section-root:${collection.value}:${sectionId.value}`,
     async () => {
       if (!sectionId.value) return []

@@ -32,6 +32,6 @@ export const useHabrArticles = () => {
     habrArticles,
     siteArticles,
     habrCount: computed(() => habrArticles.value.length),
-    siteCount: computed(() => siteArticles.value.length)
+    siteCount: computed(() => siteArticles.value.length + habrArticles.value.length)
   }
 }

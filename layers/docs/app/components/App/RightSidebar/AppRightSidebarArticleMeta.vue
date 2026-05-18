@@ -3,7 +3,7 @@ import { formatDate } from "@base/utils/date"
 import { buildFiltersQuery } from "@docs/utils/indexFiltersQuery"
 import AppRightSidebarCard from "@docs/components/App/RightSidebar/AppRightSidebarCard.vue"
 import UiBadge from "@ui/components/UiBadge.vue"
-import { SORT_ORDER } from "@docs/types/enums"
+import { SORT_ORDER } from "@docs/types"
 
 const props = defineProps<{
   page: unknown

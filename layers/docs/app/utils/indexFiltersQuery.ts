@@ -1,4 +1,4 @@
-import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
+import { SORT_ORDER, SOURCE_FILTER } from "@docs/types"
 
 type QueryInput = string | null | (string | null)[] | undefined
 

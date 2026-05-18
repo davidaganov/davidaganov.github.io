@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SORT_ORDER, SOURCE_FILTER } from "@docs/types/enums"
+import { SORT_ORDER, SOURCE_FILTER } from "@docs/types"
 
 const props = withDefaults(
   defineProps<{

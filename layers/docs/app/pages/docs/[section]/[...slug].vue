@@ -7,22 +7,8 @@ import AppIndexPage from "@docs/components/App/AppIndexPage.vue"
 import AppRightSidebar from "@docs/components/App/RightSidebar/AppRightSidebar.vue"
 import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
 
-const {
-  section,
-  docsPath,
-  parentCollectionItem,
-  collectionItem,
-  page,
-  getCollectionPathPrefix,
-  ensureValidRoute,
-  redirectCollectionWithoutIndex,
-  redirectMissingPage
-} = useDocsRoute()
-
-if (await ensureValidRoute()) {
-  await redirectCollectionWithoutIndex()
-  await redirectMissingPage()
-}
+const { section, docsPath, parentCollectionItem, collectionItem, page, getCollectionPathPrefix } =
+  await useDocsRoute()
 
 const { breadcrumbs, pageType } = useDocsSeo({
   section,
@@ -42,19 +28,19 @@ const { breadcrumbs, pageType } = useDocsSeo({
       <BaseViewCounter v-if="!collectionItem" />
     </div>
 
-    <template v-if="collectionItem">
-      <AppIndexPage
-        :title-key="collectionItem.titleKey"
-        :subtitle-key="collectionItem.subtitleKey"
-        :empty-key="collectionItem.emptyKey"
-        :path-prefix="getCollectionPathPrefix(collectionItem.source)"
-        :show-source-tabs="collectionItem.showSourceTabs ?? false"
-      />
-      <AppRightSidebar
-        main
-        :type="pageType"
-      />
-    </template>
+    <AppIndexPage
+      v-if="collectionItem"
+      :title-key="collectionItem.titleKey"
+      :subtitle-key="collectionItem.subtitleKey"
+      :empty-key="collectionItem.emptyKey"
+      :path-prefix="getCollectionPathPrefix(collectionItem.source)"
+      :show-source-tabs="collectionItem.showSourceTabs ?? false"
+    />
+    <AppRightSidebar
+      v-if="collectionItem"
+      main
+      :type="pageType"
+    />
 
     <template v-else-if="page">
       <AppArticleTranslationWarning :page="page" />

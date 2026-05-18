@@ -1,5 +1,5 @@
 import { useContentCollection } from "@docs/composables/content/useContentCollection"
-import { hasArchiveAtSync, loadArchiveIndex } from "@docs/utils/archiveManifest"
+import { loadArchiveIndex } from "@docs/utils/archiveManifest"
 import { filterByTags, sortByPublishedAt } from "@docs/utils/content/listFilters"
 import { toContentPrefix, toRelativeContentPath } from "@docs/utils/content/paths"
 import {
@@ -8,12 +8,29 @@ import {
   parseSourceFromQuery,
   parseTagsFromQuery
 } from "@docs/utils/indexFiltersQuery"
+import { joinPublicDocsPath } from "@docs/utils/path/joinPublicPath"
 import { type ArticleMeta, type ContentListItem, SORT_ORDER, SOURCE_FILTER } from "@docs/types"
 
 export interface UseContentListFiltersOptions {
   publicPathPrefix: Ref<string> | string
   showSourceTabs?: Ref<boolean> | boolean
   syncQuery?: boolean
+}
+
+const hasArchiveAtSync = (
+  keys: Set<string>,
+  publicPathPrefix: string,
+  relativePath: string
+): boolean => {
+  const key = archiveKeyFromPaths(publicPathPrefix, relativePath)
+  return Boolean(key && keys.has(key))
+}
+
+const archiveKeyFromPaths = (publicPathPrefix: string, relativePath: string): string => {
+  const prefix = toContentPrefix(publicPathPrefix).replace(/^\/+|\/+$/g, "")
+  const relative = String(relativePath || "").replace(/^\/+|\/+$/g, "")
+  if (!prefix || !relative) return ""
+  return `${prefix}/${relative}`
 }
 
 export const useContentListFilters = (options: UseContentListFiltersOptions) => {
@@ -55,7 +72,7 @@ export const useContentListFilters = (options: UseContentListFiltersOptions) => 
         return {
           title: String(entry.title || ""),
           description: String(entry.description || ""),
-          path: `${prefixRef.value}${relativePath}`,
+          path: joinPublicDocsPath(prefixRef.value, relativePath),
           meta: {
             ...(entryMeta || {}),
             hasArchive

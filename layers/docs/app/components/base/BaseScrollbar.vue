@@ -70,9 +70,7 @@ const checkScrollbarVisibility = () => {
       clientHeight.value = wrapper.clientHeight
     }
 
-    const verticalTrack = element.querySelector(
-      ".simplebar-track.simplebar-vertical"
-    ) as HTMLElement
+    const verticalTrack = element.querySelector(".simplebar-track.simplebar-vertical")
 
     if (verticalTrack) {
       isVerticalScrollbarVisible.value = verticalTrack.style.visibility !== "hidden"
@@ -91,9 +89,7 @@ onMounted(async () => {
   checkScrollbarVisibility()
 
   const wrapper = element.querySelector(".simplebar-content-wrapper")
-  if (wrapper) {
-    wrapper.addEventListener("scroll", updateScrollState)
-  }
+  if (wrapper) wrapper.addEventListener("scroll", updateScrollState)
 
   observer.value = new MutationObserver(checkScrollbarVisibility)
 
@@ -111,9 +107,7 @@ onUnmounted(() => {
   const element = scrollBlockRef.value?.$el || scrollBlockRef.value
   if (element && typeof element.querySelector === "function") {
     const wrapper = element.querySelector(".simplebar-content-wrapper")
-    if (wrapper) {
-      wrapper.removeEventListener("scroll", updateScrollState)
-    }
+    if (wrapper) wrapper.removeEventListener("scroll", updateScrollState)
   }
 
   if (observer.value) {
@@ -125,13 +119,13 @@ onUnmounted(() => {
 
 <template>
   <Simplebar
+    ref="scrollBlockRef"
     :style="{
       width,
       height,
       maskImage,
       webkitMaskImage: maskImage
     }"
-    ref="scrollBlockRef"
   >
     <slot />
   </Simplebar>
@@ -188,7 +182,6 @@ onUnmounted(() => {
   outline: none;
 }
 
-/* Dark mode support */
 :root.dark :deep(.simplebar-track .simplebar-scrollbar::before) {
   background-color: #a78bfa;
 }

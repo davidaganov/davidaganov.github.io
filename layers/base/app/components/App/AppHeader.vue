@@ -16,7 +16,7 @@ import UiLink from "@ui/components/UiLink.vue"
 import UiLogo from "@ui/components/UiLogo.vue"
 import UiSearchTrigger from "@ui/components/UiSearchTrigger.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
-import { ROUTE_PATH } from "@base/types/enums"
+import { ROUTE_PATH } from "@base/types"
 
 const CHANGELOG_SECTION_ID = "changelog" as const
 

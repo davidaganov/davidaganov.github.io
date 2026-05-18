@@ -14,9 +14,9 @@ const route = useRoute()
 const { toggle, close } = useCommandPalette()
 const { light } = useDocsLayoutTransition()
 
-const hideDocsRightColumn = computed(
-  () => isChangelogDocsPath(route.path) || isGraphDocsPath(route.path)
-)
+const hideDocsRightColumn = computed(() => {
+  return isChangelogDocsPath(route.path) || isGraphDocsPath(route.path)
+})
 
 const isGraphPage = computed(() => isGraphDocsPath(route.path))
 
@@ -45,7 +45,7 @@ defineShortcuts({
         :class="{ 'min-h-[calc(100dvh-7.5rem)]': isGraphPage }"
       >
         <AppLeftSidebar
-          v-if="!isGraphPage"
+          v-show="!isGraphPage"
           class="hidden lg:block"
         />
         <main
@@ -62,7 +62,7 @@ defineShortcuts({
           </AppContentPanel>
 
           <aside
-            v-if="!hideDocsRightColumn"
+            v-show="!hideDocsRightColumn"
             v-motion="'sidebar-right'"
             class="hidden shrink-0 lg:block lg:w-[300px] lg:pl-6"
             :initial="{ opacity: 0, x: 20 }"

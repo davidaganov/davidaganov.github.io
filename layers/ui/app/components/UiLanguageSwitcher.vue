@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AVAILABLE_LOCALES } from "@base/constants"
-import { LOCALE } from "@base/types/enums"
+import { LOCALE } from "@base/types"
 
 const props = withDefaults(
   defineProps<{

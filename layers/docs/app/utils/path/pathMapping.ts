@@ -1,4 +1,6 @@
+import { docsPathFromContentPath, joinPublicDocsPath } from "@docs/utils/path/joinPublicPath"
 import { DOCS_SECTIONS } from "@docs/constants"
+import { ROUTE_PATH } from "@base/types"
 import type { ContentMapping, SidebarCollectionItem } from "@docs/types"
 
 export const findContentMapping = (contentPath: string): ContentMapping | null => {
@@ -49,14 +51,19 @@ export const buildUrlFromMapping = (mapping: ContentMapping): string => {
   if (mapping.isCollectionItem && mapping.collectionSource) {
     const sectionScopedPrefix = `/${mapping.sectionId}/${mapping.collectionSource}`
 
-    if (mapping.path.startsWith(sectionScopedPrefix)) return `/docs${mapping.path}`
+    if (mapping.path.startsWith(sectionScopedPrefix)) {
+      return docsPathFromContentPath(mapping.path)
+    }
 
     const flatPrefix = `/${mapping.collectionSource}`
     const suffix = mapping.path.startsWith(flatPrefix)
       ? mapping.path.slice(flatPrefix.length)
       : mapping.path
 
-    return `/docs/${mapping.sectionId}/${mapping.collectionSource}${suffix}`
+    return joinPublicDocsPath(
+      ROUTE_PATH.DOCS,
+      `${mapping.sectionId}/${mapping.collectionSource}${suffix}`
+    )
   }
-  return `/docs${mapping.path}`
+  return docsPathFromContentPath(mapping.path)
 }
