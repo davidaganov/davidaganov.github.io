@@ -1,9 +1,13 @@
 import { execSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
+import {
+  getNuxtDefaultLocale,
+  getNuxtI18nLocales,
+  getPrerenderRouteRules,
+  getPrerenderRoutes,
+  getSitemapUrls
+} from "./app/config"
 import { normalizeSiteUrl } from "./app/utils/seo"
-import { getNuxtDefaultLocale, getNuxtI18nLocales } from "./config/locales"
-import { getPrerenderRouteRules, getPrerenderRoutes } from "./config/prerender"
-import { getSitemapUrls } from "./config/sitemap"
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url))
 const siteUrl = normalizeSiteUrl(process.env.NUXT_PUBLIC_SITE_URL)

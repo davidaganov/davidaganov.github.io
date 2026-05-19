@@ -1,5 +1,5 @@
 import { defineCollection, defineContentConfig } from "@nuxt/content"
-import { getLocaleCodes } from "./config/locales"
+import { getLocaleCodes } from "./app/config"
 
 const collections = Object.fromEntries(
   getLocaleCodes().map((locale) => [

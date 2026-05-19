@@ -1,13 +1,13 @@
 import { existsSync, readdirSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { DEFAULT_LOCALE } from "../app/utils/seo"
+import { DEFAULT_LOCALE } from "../utils/seo"
 
 interface SiteLocale {
   code: string
   file: string
 }
 
-const projectRoot = fileURLToPath(new URL("../", import.meta.url))
+const projectRoot = fileURLToPath(new URL("../../", import.meta.url))
 const localesDir = `${projectRoot}/i18n/locales`
 
 export const getSiteLocales = (): SiteLocale[] => {

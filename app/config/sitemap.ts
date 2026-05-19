@@ -1,10 +1,10 @@
 import type { SitemapUrlInput } from "@nuxtjs/sitemap"
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { absoluteUrl, localizedPath, normalizeSiteUrl, normalizeUrlPath } from "@app/utils/seo"
+import { absoluteUrl, localizedPath, normalizeSiteUrl, normalizeUrlPath } from "../utils/seo"
 import { getLocaleCodes } from "./locales"
 
-const contentRoot = fileURLToPath(new URL("../content", import.meta.url))
+const contentRoot = fileURLToPath(new URL("../../content", import.meta.url))
 
 interface SitemapEntry {
   loc: string

@@ -1,9 +1,9 @@
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { localePathPrefix } from "../app/utils/seo"
+import { localePathPrefix } from "../utils/seo"
 import { getLocaleCodes } from "./locales"
 
-const contentRoot = fileURLToPath(new URL("../content", import.meta.url))
+const contentRoot = fileURLToPath(new URL("../../content", import.meta.url))
 
 const normalizePath = (path: string): string => path.replace(/\\/g, "/")
 
