@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { useSidebarItems } from "@docs/composables/useSidebarItems"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.vue"
 import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
 import type { SidebarItem } from "@docs/types"
+
+defineProps<{
+  items: SidebarItem[]
+}>()
 
 const getSidebarItemKey = (item: SidebarItem): string => {
   if (item.type === "link") {
@@ -17,8 +20,6 @@ const getSidebarItemKey = (item: SidebarItem): string => {
 
   return `divider:${item.label || item.class || "divider"}`
 }
-
-const { renderedSidebarItems } = await useSidebarItems()
 </script>
 
 <template>
@@ -30,7 +31,7 @@ const { renderedSidebarItems } = await useSidebarItems()
           :aria-label="$t('layout.navigation.aria.docsSidebar')"
         >
           <template
-            v-for="item in renderedSidebarItems"
+            v-for="item in items"
             :key="getSidebarItemKey(item)"
           >
             <BaseSidebarLink

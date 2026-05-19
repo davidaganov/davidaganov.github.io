@@ -15,6 +15,8 @@ export const useDocsRoute = async () => {
   const route = useRoute()
   const { collection } = useContentCollection()
 
+  const getCollectionPathPrefix = (source: string) => `/docs/${sectionParam.value}/${source}`
+
   const sectionParam = computed(() => String(route.params.section || ""))
 
   const slugParam = computed(() => {
@@ -38,7 +40,25 @@ export const useDocsRoute = async () => {
     return slugParam.value.length === 1 ? parentCollectionItem.value : undefined
   })
 
-  const getCollectionPathPrefix = (source: string) => `/docs/${sectionParam.value}/${source}`
+  const pageQuery = useContentPage(docsPath)
+
+  const page = computed(() => pageQuery.data.value)
+
+  const isPagePending = computed(
+    () => !collectionItem.value && pageQuery.status.value === "pending"
+  )
+
+  const waitForPage = async () => {
+    if (collectionItem.value) return
+
+    if (pageQuery.status.value === "idle") {
+      await pageQuery.refresh()
+    }
+
+    if (pageQuery.status.value === "pending") {
+      await until(pageQuery.status).not.toBe("pending")
+    }
+  }
 
   const ensureValidRoute = async () => {
     if (!section.value) {
@@ -68,33 +88,22 @@ export const useDocsRoute = async () => {
     }
   }
 
-  const pageQuery = useContentPage(docsPath)
-
-  const page = computed(() => pageQuery.data.value)
-
-  const waitForPage = async () => {
-    if (collectionItem.value) return
-    if (pageQuery.status.value === "pending") {
-      await until(pageQuery.status).not.toBe("pending")
-    }
-  }
-
   const redirectMissingPage = async () => {
     await waitForPage()
     if (page.value || collectionItem.value) return
     const targetPath = getFirstPathForSection(section.value)
     if (targetPath && targetPath !== docsPath.value) {
-      ;(await localePath(targetPath), { replace: true })
+      await navigateTo(localePath(targetPath), { replace: true })
     }
   }
 
+  await waitForPage()
+
   if (await ensureValidRoute()) {
     await redirectCollectionWithoutIndex()
-    await redirectMissingPage()
     await waitForPage()
+    await redirectMissingPage()
   }
-
-  await pageQuery
 
   return {
     section,
@@ -104,6 +113,7 @@ export const useDocsRoute = async () => {
     parentCollectionItem,
     collectionItem,
     page,
+    isPagePending,
     getCollectionPathPrefix
   }
 }

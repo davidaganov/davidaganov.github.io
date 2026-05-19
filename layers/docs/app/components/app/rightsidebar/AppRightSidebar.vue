@@ -38,17 +38,20 @@ const syncTarget = () => {
 const hideSidebar = computed(() => isChangelogDocsPath(route.path))
 const useTeleport = computed(() => isLg.value && hasTarget.value)
 
-watch(
-  () => route.path,
-  async () => {
-    await nextTick()
-    syncTarget()
-  }
-)
-
-onMounted(async () => {
+const refreshTarget = async () => {
   await nextTick()
   syncTarget()
+  if (!hasTarget.value) {
+    requestAnimationFrame(() => syncTarget())
+  }
+}
+
+watch(() => route.path, refreshTarget, { flush: "post" })
+
+watch(isLg, refreshTarget)
+
+onMounted(() => {
+  void refreshTarget()
 })
 </script>
 

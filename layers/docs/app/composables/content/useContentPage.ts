@@ -26,7 +26,8 @@ export const useContentPage = (publicPath: Ref<string> | string) => {
       return await queryCollection(collection.value).path(contentPath).first()
     },
     {
-      watch: [pathRef, collection]
+      watch: [pathRef, collection],
+      server: true
     }
   )
 }

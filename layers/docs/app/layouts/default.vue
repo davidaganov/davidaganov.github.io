@@ -2,6 +2,7 @@
 import { defineShortcuts } from "@nuxt/ui/composables"
 import { useCommandPalette } from "@base/composables/useCommandPalette"
 import { useDocsLayoutTransition } from "@docs/composables/docs/useDocsLayoutTransition"
+import { useSidebarItems } from "@docs/composables/useSidebarItems"
 import { isChangelogDocsPath, isGraphDocsPath } from "@docs/utils/sections"
 import AppFooter from "@base/components/app/AppFooter.vue"
 import AppHeader from "@base/components/app/AppHeader.vue"
@@ -11,6 +12,7 @@ import BaseLight from "@docs/components/base/BaseLight.vue"
 
 const route = useRoute()
 
+const { renderedSidebarItems } = await useSidebarItems()
 const { toggle, close } = useCommandPalette()
 const { light } = useDocsLayoutTransition()
 
@@ -47,6 +49,7 @@ defineShortcuts({
         <AppLeftSidebar
           v-show="!isGraphPage"
           class="hidden lg:block"
+          :items="renderedSidebarItems"
         />
         <main
           tabindex="-1"
@@ -63,14 +66,7 @@ defineShortcuts({
 
           <aside
             v-show="!hideDocsRightColumn"
-            v-motion="'sidebar-right'"
             class="hidden shrink-0 lg:block lg:w-[300px] lg:pl-6"
-            :initial="{ opacity: 0, x: 20 }"
-            :enter="{
-              opacity: 1,
-              x: 0,
-              transition: { duration: 600, ease: [0.16, 1, 0.3, 1], delay: 200 }
-            }"
             id="app-right-sidebar-root"
           />
         </main>
