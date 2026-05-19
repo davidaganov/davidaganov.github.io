@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { getLocaleCodes, localePathPrefix } from "./locales"
+import { localePathPrefix } from "../app/utils/seo"
+import { getLocaleCodes } from "./locales"
 
 const contentRoot = fileURLToPath(new URL("../content", import.meta.url))
 
@@ -72,15 +73,18 @@ const commonRoutesForLocale = (locale: string): string[] => {
   return [`${prefix || "/"}`, `${prefix}/docs`, `${prefix}/docs/graph`]
 }
 
+const seoRoutes = ["/sitemap_index.xml", "/robots.txt"]
+
 export const getPrerenderRoutes = (): string[] => {
   return Array.from(
-    new Set(
-      getLocaleCodes().flatMap((locale) => [
+    new Set([
+      ...seoRoutes,
+      ...getLocaleCodes().flatMap((locale) => [
         ...commonRoutesForLocale(locale),
         ...collectionIndexRoutesForLocale(locale),
         ...markdownRoutesForLocale(locale)
       ])
-    )
+    ])
   )
 }
 

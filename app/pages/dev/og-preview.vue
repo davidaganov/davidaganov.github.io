@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import OgImage from "../../components/OgImage/DocsPage.vue"
+import OgImage from "@app/components/OgImage/DocsPage.satori.vue"
 
 definePageMeta({
   layout: "clean"

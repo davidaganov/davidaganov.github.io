@@ -1,6 +1,6 @@
 import { request } from "@api/services/request"
 import { routes } from "@api/services/requests/links/routes"
-import type { LinksGistContent } from "@api/types/links"
+import type { LinksGistContent } from "@api/types"
 
 type GithubGistResponse = {
   files: Record<

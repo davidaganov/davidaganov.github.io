@@ -12,9 +12,7 @@ const props = withDefaults(
 </script>
 
 <template>
-  <div
-    class="relative flex h-screen w-full bg-[#0b0b0b] text-center font-[Inter,Segoe_UI,Arial,sans-serif] text-slate-50"
-  >
+  <div class="relative flex h-screen w-full bg-[#0b0b0b] text-center font-[Inter] text-slate-50">
     <div class="absolute top-0 left-0 flex h-screen w-full">
       <svg
         width="1200"
@@ -103,7 +101,7 @@ const props = withDefaults(
         <div
           class="mb-8 flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-base font-medium text-slate-300"
         >
-          <span class="mr-2.5 h-3 w-3 rounded-full bg-[#b87eef]" />
+          <span class="bg-primary-500 mr-2.5 h-3 w-3 rounded-full" />
           aganov.dev
         </div>
         <div class="flex text-8xl leading-tight font-bold tracking-tight">

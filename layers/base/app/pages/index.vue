@@ -24,7 +24,7 @@ useSeoMeta({
   twitterCard: "summary_large_image"
 })
 
-defineOgImageComponent("HomePage", {
+defineOgImage("HomePage", {
   title: homeTitle.value,
   description: homeDescription.value
 })

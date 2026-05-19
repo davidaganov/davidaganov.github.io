@@ -1,3 +1,4 @@
+import { absoluteUrl } from "@app/utils/seo"
 import { type DocsBreadcrumbItem, type DocsPageMeta, TYPE_PAGE } from "@docs/types"
 
 interface StructuredDataOptions {
@@ -21,17 +22,18 @@ const buildBreadcrumbSchema = (
   currentPath: string,
   siteUrl: string
 ) => ({
-  "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [...breadcrumbs, { label: pageTitle, to: currentPath }].map((item, index) => ({
     "@type": "ListItem",
     position: index + 1,
     name: item.label,
-    item: `${siteUrl}${item.to || currentPath}`
+    item: absoluteUrl(siteUrl, item.to || currentPath)
   }))
 })
 
-export const buildStructuredData = (opts: StructuredDataOptions): string => {
+export const buildStructuredDataNodes = (
+  opts: StructuredDataOptions
+): Record<string, unknown>[] => {
   const breadcrumbSchema = buildBreadcrumbSchema(
     opts.breadcrumbs,
     opts.pageTitle,
@@ -41,32 +43,44 @@ export const buildStructuredData = (opts: StructuredDataOptions): string => {
 
   if (opts.isCollectionPage) {
     const schema = {
-      "@context": "https://schema.org",
       "@type": "CollectionPage",
+      "@id": `${opts.canonicalUrl}#webpage`,
       name: opts.pageTitle,
       description: opts.pageDescription,
       url: opts.canonicalUrl,
-      inLanguage: opts.language
+      inLanguage: opts.language,
+      isPartOf: {
+        "@id": `${opts.siteUrl}/#website`
+      }
     }
-    return JSON.stringify([schema, breadcrumbSchema])
+    return [schema, breadcrumbSchema]
   }
 
   if (opts.pageType === TYPE_PAGE.PROJECT) {
     const schema = {
-      "@context": "https://schema.org",
       "@type": "SoftwareSourceCode",
+      "@id": `${opts.canonicalUrl}#software-source-code`,
       name: opts.pageTitle,
       description: opts.pageDescription,
       url: opts.canonicalUrl,
       codeRepository: opts.meta.githubUrl,
-      inLanguage: opts.language
+      inLanguage: opts.language,
+      author: {
+        "@id": `${opts.siteUrl}/#person`
+      },
+      isPartOf: {
+        "@id": `${opts.siteUrl}/#website`
+      }
     }
-    return JSON.stringify([schema, breadcrumbSchema])
+    return [schema, breadcrumbSchema]
   }
 
   const schema = {
-    "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${opts.canonicalUrl}#article`,
+    mainEntityOfPage: {
+      "@id": `${opts.canonicalUrl}#webpage`
+    },
     headline: opts.pageTitle,
     description: opts.pageDescription,
     url: opts.canonicalUrl,
@@ -74,9 +88,13 @@ export const buildStructuredData = (opts: StructuredDataOptions): string => {
     datePublished: opts.meta.publishedAt,
     inLanguage: opts.language,
     author: {
+      "@id": `${opts.siteUrl}/#person`,
       "@type": "Person",
       name: opts.authorName
+    },
+    isPartOf: {
+      "@id": `${opts.siteUrl}/#website`
     }
   }
-  return JSON.stringify([schema, breadcrumbSchema])
+  return [schema, breadcrumbSchema]
 }

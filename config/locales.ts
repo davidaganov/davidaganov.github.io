@@ -1,12 +1,11 @@
 import { existsSync, readdirSync } from "node:fs"
 import { fileURLToPath } from "node:url"
+import { DEFAULT_LOCALE } from "../app/utils/seo"
 
 interface SiteLocale {
   code: string
   file: string
 }
-
-const DEFAULT_LOCALE = process.env.NUXT_DEFAULT_LOCALE || "ru"
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url))
 const localesDir = `${projectRoot}/i18n/locales`
@@ -38,11 +37,5 @@ export const getSiteLocales = (): SiteLocale[] => {
 }
 
 export const getLocaleCodes = (): string[] => getSiteLocales().map((locale) => locale.code)
-
 export const getNuxtI18nLocales = (): never => getSiteLocales() as never
-
 export const getNuxtDefaultLocale = (): never => DEFAULT_LOCALE as never
-
-export const localePathPrefix = (locale: string): string => {
-  return locale === DEFAULT_LOCALE ? "" : `/${locale}`
-}

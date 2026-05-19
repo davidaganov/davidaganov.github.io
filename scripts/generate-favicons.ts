@@ -18,10 +18,10 @@ const dest = "public/favicons" // Output directory
 
 const configuration = {
   path: "/favicons/", // Path for icons in the manifest/html
-  appName: "Aganov. Frontend Developer",
+  appName: "David Aganov - Frontend Developer",
   appShortName: "Aganov",
   appDescription:
-    "I’m frontend developer. I like to learn new technologies and try new things in every possible way.",
+    "Frontend developer building fast, scalable, and user-friendly web applications for e-commerce and B2B.",
   developerName: "David Aganov",
   developerURL: "https://aganov.dev/",
   start_url: "https://aganov.dev/",

@@ -1,6 +1,6 @@
 import { request } from "@api/services/request"
 import { routes } from "@api/services/requests/npm/routes"
-import type { NpmDownloadsData, NpmPackageData } from "@api/types/npm"
+import type { NpmDownloadsData, NpmPackageData } from "@api/types"
 
 export const getPackage = async (packageName: string): Promise<NpmPackageData | null> => {
   try {

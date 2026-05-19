@@ -7,6 +7,7 @@ import HomeLoader from "@base/components/pages/home/HomeLoader.vue"
 import BaseLight from "@docs/components/base/BaseLight.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
+import { ROUTE_PATH } from "@base/types"
 
 const { frontendYears } = useExperience()
 
@@ -22,7 +23,7 @@ const { toggle } = useCommandPalette()
 const animationEnabled = useCookie<boolean>("animation_enabled", {
   default: () => false,
   sameSite: "lax",
-  path: "/"
+  path: ROUTE_PATH.HOME
 })
 
 const isLoading = ref(true)

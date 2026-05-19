@@ -1,5 +1,5 @@
 import { ApiClient } from "@api/services/client"
-import type { LinksGistContent } from "@/types/links"
+import type { LinksGistContent } from "@api/types"
 
 export const useLinksGistClient = () => {
   const links = ref<LinksGistContent>({ professional: [], personal: [] })

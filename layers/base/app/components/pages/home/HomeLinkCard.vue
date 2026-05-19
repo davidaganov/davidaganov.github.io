@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import type { Link } from "@base/types/links"
+import type { StyleValue } from "vue"
 
-interface LocalizedLink extends Link {
+interface LocalizedLink {
+  url: string
+  icon: string
+  customStyle?: StyleValue
   localizedName: string | undefined
   localizedDescription: string | undefined
   isCta: boolean

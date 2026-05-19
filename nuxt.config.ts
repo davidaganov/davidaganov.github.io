@@ -1,9 +1,12 @@
 import { execSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
+import { normalizeSiteUrl } from "./app/utils/seo"
 import { getNuxtDefaultLocale, getNuxtI18nLocales } from "./config/locales"
 import { getPrerenderRouteRules, getPrerenderRoutes } from "./config/prerender"
+import { getSitemapUrls } from "./config/sitemap"
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url))
+const siteUrl = normalizeSiteUrl(process.env.NUXT_PUBLIC_SITE_URL)
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -13,8 +16,40 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "@pinia/nuxt",
     "@vueuse/motion/nuxt",
-    "nuxt-og-image"
+    "@nuxtjs/seo",
+    "@nuxt/fonts"
   ],
+
+  site: {
+    url: siteUrl,
+    name: "Aganov.dev"
+  },
+
+  sitemap: {
+    urls: () => getSitemapUrls(siteUrl),
+    excludeAppSources: true,
+    autoLastmod: false,
+    xsl: false,
+    credits: false,
+    zeroRuntime: true
+  },
+
+  robots: {
+    sitemap: ["/sitemap_index.xml"],
+    mergeWithRobotsTxtPath: false,
+    credits: false
+  },
+
+  linkChecker: {
+    runOnBuild: true,
+    failOnError: false,
+    fetchRemoteUrls: false,
+    excludeLinks: ["/api/**", "/__og-image__/**"]
+  },
+
+  schemaOrg: {
+    defaults: false
+  },
 
   ogImage: {
     debug: process.env.NODE_ENV !== "production"

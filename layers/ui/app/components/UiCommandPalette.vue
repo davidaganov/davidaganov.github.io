@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCommandPalette } from "@base/composables/useCommandPalette"
 import { useDocsSearch } from "@docs/composables/docs/useDocsSearch"
+import { ROUTE_PATH } from "@base/types"
 import { type DocsSearchResult, TYPE_PAGE } from "@docs/types"
 
 const { t } = useI18n()
@@ -67,7 +68,7 @@ const selectResult = (result: DocsSearchResult) => {
 }
 
 const openDocsGraph = () => {
-  router.push(localePath("/docs/graph"))
+  router.push(localePath(ROUTE_PATH.DOCS_GRAPH))
   close()
 }
 

@@ -1,42 +1,54 @@
 <script setup lang="ts">
+import { absoluteUrl, canonicalPathForLocale, normalizeDefaultLocalePath } from "@app/utils/seo"
+import { GITHUB_LINK, HABR_LINK, SOCIAL_LINKS } from "@base/constants"
 import AppSkipLink from "@base/components/app/AppSkipLink.vue"
 import UiCommandPalette from "@ui/components/UiCommandPalette.vue"
 
 const { locale, t } = useI18n()
 
 const route = useRoute()
-const switchLocalePath = useSwitchLocalePath()
 const runtimeConfig = useRuntimeConfig()
 const colorMode = useColorMode()
+
+const switchLocalePath = useSwitchLocalePath()
 
 const siteUrl = computed(() => {
   const value = String(runtimeConfig.public.siteUrl || "").trim()
   return value.endsWith("/") ? value.slice(0, -1) : value
 })
 
-const canonicalUrl = computed(() => `${siteUrl.value}${route.path || "/"}`)
-const ruUrl = computed(() => `${siteUrl.value}${switchLocalePath("ru") || "/ru"}`)
+const canonicalPath = computed(() => {
+  const path = route.path || "/"
+  return canonicalPathForLocale(locale.value, path)
+})
+
+const canonicalUrl = computed(() => `${siteUrl.value}${canonicalPath.value}`)
+const ruUrl = computed(
+  () => `${siteUrl.value}${normalizeDefaultLocalePath(switchLocalePath("ru") || "/")}`
+)
 const enUrl = computed(() => `${siteUrl.value}${switchLocalePath("en") || "/en"}`)
 
-const websiteJsonLd = computed(() =>
-  JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
+useSchemaOrg([
+  defineWebSite({
+    "@id": () => `${siteUrl.value}/#website`,
     name: "Aganov.dev",
-    url: siteUrl.value,
-    inLanguage: locale.value === "ru" ? "ru-RU" : "en-US"
+    url: () => absoluteUrl(siteUrl.value, "/")
+  }),
+  definePerson({
+    "@id": () => `${siteUrl.value}/#person`,
+    name: () => t("global.name"),
+    url: () => absoluteUrl(siteUrl.value, "/"),
+    jobTitle: "Frontend Developer",
+    email: "mailto:davidaganov21@gmail.com",
+    knowsAbout: ["Vue", "Nuxt", "TypeScript", "Tailwind CSS", "Frontend Architecture"],
+    sameAs: [
+      GITHUB_LINK,
+      HABR_LINK,
+      "https://www.npmjs.com/~davidaganov",
+      ...SOCIAL_LINKS.map((link) => link.href).filter((href) => href.startsWith("https://"))
+    ]
   })
-)
-
-const personJsonLd = computed(() =>
-  JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: t("global.name"),
-    url: siteUrl.value,
-    sameAs: ["https://github.com/davidaganov", "https://www.npmjs.com/~davidaganov"]
-  })
-)
+])
 
 useHead({
   titleTemplate: (title?: string) => {
@@ -54,19 +66,7 @@ useHead({
       locale.value === "ru" ? "ru" : locale.value === "en" ? "en" : locale.value
     ),
     class: () => (colorMode.value === "dark" ? "dark" : "")
-  },
-  script: [
-    {
-      key: "ld-website",
-      type: "application/ld+json",
-      innerHTML: websiteJsonLd
-    },
-    {
-      key: "ld-person",
-      type: "application/ld+json",
-      innerHTML: personJsonLd
-    }
-  ]
+  }
 })
 
 useSeoMeta({
@@ -74,8 +74,8 @@ useSeoMeta({
   ogType: "website",
   twitterCard: "summary_large_image",
   ogUrl: () => canonicalUrl.value,
-  ogImage: () => `${siteUrl.value}/android-chrome-512x512.png`,
-  twitterImage: () => `${siteUrl.value}/android-chrome-512x512.png`
+  ogImage: () => `${siteUrl.value}/favicons/android-chrome-512x512.png`,
+  twitterImage: () => `${siteUrl.value}/favicons/android-chrome-512x512.png`
 })
 </script>
 

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
-import type { ContentLocale } from "@docs/constants"
+import type { ContentLocale } from "@docs/types"
 
 const cache = new Map<ContentLocale, Record<string, unknown>>()
 

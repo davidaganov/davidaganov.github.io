@@ -10,7 +10,8 @@ definePageMeta({
 
 useSeoMeta({
   title: () => t("docs.graph.seoTitle"),
-  description: () => t("docs.graph.seoDescription")
+  description: () => t("docs.graph.seoDescription"),
+  robots: "noindex, nofollow"
 })
 
 const { data, error, pending } = await useAsyncData(

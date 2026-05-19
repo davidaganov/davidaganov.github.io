@@ -1,6 +1,6 @@
 import { request } from "@api/services/request"
 import { routes } from "@api/services/requests/github/routes"
-import type { GitHubLanguages, GitHubRepoData, GitHubUserData } from "@api/types/github"
+import type { GitHubLanguages, GitHubRepoData, GitHubUserData } from "@api/types"
 
 export const getRepo = async (repo: string): Promise<GitHubRepoData | null> => {
   try {

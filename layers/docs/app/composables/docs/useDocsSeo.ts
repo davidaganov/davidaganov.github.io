@@ -1,5 +1,6 @@
+import { canonicalPathForLocale } from "@app/utils/seo"
 import { getFirstPathForSection } from "@docs/utils/sections"
-import { buildStructuredData } from "@docs/utils/structuredData"
+import { buildStructuredDataNodes } from "@docs/utils/structuredData"
 import { type DocsPageData, type DocsSeoOptions, TYPE_PAGE } from "@docs/types"
 
 export const useDocsSeo = ({
@@ -53,7 +54,12 @@ export const useDocsSeo = ({
     return trimTrailingSlash(configured || origin || "https://aganov.dev")
   })
 
-  const canonicalUrl = computed(() => `${siteUrl.value}${route.path || "/"}`)
+  const canonicalPath = computed(() => {
+    const path = route.path || "/"
+    return canonicalPathForLocale(locale.value, path)
+  })
+
+  const canonicalUrl = computed(() => `${siteUrl.value}${canonicalPath.value}`)
 
   const breadcrumbs = computed(() => {
     const currentSection = section.value
@@ -103,11 +109,11 @@ export const useDocsSeo = ({
     }
   })
 
-  const structuredDataJson = computed<string | undefined>(() => {
+  const structuredDataNodes = computed<Record<string, unknown>[]>(() => {
     const pageTitle = seoTitle.value
-    if (!pageTitle) return undefined
+    if (!pageTitle) return []
 
-    return buildStructuredData({
+    return buildStructuredDataNodes({
       pageTitle,
       pageDescription: seoDescription.value,
       canonicalUrl: canonicalUrl.value,
@@ -118,15 +124,15 @@ export const useDocsSeo = ({
       isCollectionPage: !!collectionItem.value,
       meta: typedPage.value?.meta ?? {},
       breadcrumbs: breadcrumbs.value,
-      currentPath: route.path || "/",
+      currentPath: canonicalPath.value,
       authorName: t("global.name")
     })
   })
 
-  if (seoImageOverride.value) {
-    defineOgImage({ url: seoImageOverride.value, alt: seoTitle.value })
-  } else {
-    defineOgImageComponent("DocsPage", {
+  useSchemaOrg(() => structuredDataNodes.value)
+
+  if (!seoImageOverride.value) {
+    defineOgImage("DocsPage", {
       title: seoTitle.value || t("docs.seo.defaultTitle"),
       description: seoDescription.value || t("docs.seo.defaultDescription"),
       section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
@@ -149,16 +155,6 @@ export const useDocsSeo = ({
     twitterDescription: () => seoDescription.value,
     twitterImage: () => seoImage.value,
     twitterCard: "summary_large_image"
-  })
-
-  useHead({
-    script: [
-      {
-        key: "ld-docs-page",
-        type: "application/ld+json",
-        innerHTML: structuredDataJson
-      }
-    ]
   })
 
   return {
