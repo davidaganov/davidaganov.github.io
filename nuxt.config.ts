@@ -1,5 +1,9 @@
 import { execSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
+import { getNuxtDefaultLocale, getNuxtI18nLocales } from "./config/locales"
+import { getPrerenderRouteRules, getPrerenderRoutes } from "./config/prerender"
+
+const rootDir = fileURLToPath(new URL(".", import.meta.url))
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -34,11 +38,8 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    locales: [
-      { code: "ru", iso: "ru-RU", file: "ru.json" },
-      { code: "en", iso: "en-US", file: "en.json" }
-    ],
-    defaultLocale: "ru",
+    locales: getNuxtI18nLocales(),
+    defaultLocale: getNuxtDefaultLocale(),
     langDir: "locales",
     strategy: "prefix_and_default",
     detectBrowserLanguage: {
@@ -63,9 +64,8 @@ export default defineNuxtConfig({
 
   hooks: {
     "build:done": () => {
-      const root = fileURLToPath(new URL(".", import.meta.url))
       execSync("npx tsx scripts/build-docs-assets.ts", {
-        cwd: root,
+        cwd: rootDir,
         stdio: "inherit",
         env: process.env
       })
@@ -116,12 +116,14 @@ export default defineNuxtConfig({
     storesDirs: ["./stores/**", "./layers/*/stores/**"]
   },
 
-  routeRules: {
-    "/**": { isr: 21600 }
-  },
+  routeRules: getPrerenderRouteRules(),
 
   nitro: {
-    preset: "vercel"
+    preset: "vercel",
+    prerender: {
+      crawlLinks: false,
+      routes: getPrerenderRoutes()
+    }
   },
 
   ssr: true,

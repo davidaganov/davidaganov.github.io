@@ -1,20 +1,19 @@
 import { defineCollection, defineContentConfig } from "@nuxt/content"
+import { getLocaleCodes } from "./config/locales"
 
-export default defineContentConfig({
-  collections: {
-    content_ru: defineCollection({
+const collections = Object.fromEntries(
+  getLocaleCodes().map((locale) => [
+    `content_${locale}`,
+    defineCollection({
       type: "page",
       source: {
-        include: "ru/**",
-        prefix: ""
-      }
-    }),
-    content_en: defineCollection({
-      type: "page",
-      source: {
-        include: "en/**",
+        include: `${locale}/**`,
         prefix: ""
       }
     })
-  }
+  ])
+)
+
+export default defineContentConfig({
+  collections
 })
