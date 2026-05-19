@@ -11,6 +11,8 @@ dist
 .agents
 .cursor
 .windsurf
+.lean-ctx
+.cursorrules
 
 # Node dependencies
 node_modules
@@ -29,4 +31,5 @@ logs
 .env.*
 !.env.example
 
+# Vercel
 .vercel

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useMediaQuery } from "@vueuse/core"
 import { useLinksGistClient } from "@api/composables/useLinksGistClient"
 import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
 import HomeLinkCard from "@base/components/pages/home/HomeLinkCard.vue"
@@ -10,7 +11,7 @@ const { t, locale } = useI18n()
 const { localizedPath: aboutEntryPath } = useDocsSectionEntry("about")
 
 const mode = ref<VIEW_MODE>(VIEW_MODE.PROFESSIONAL)
-const isMobile = ref(false)
+const isMobile = useMediaQuery("(max-width: 767px)", { ssrWidth: 768 })
 
 const { links, error } = useLinksGistClient()
 
@@ -56,19 +57,6 @@ const getLocalizedText = (value?: { ru: string; en: string }): string | undefine
   if (!value) return undefined
   return value[locale.value as keyof typeof value] || value.en
 }
-
-const checkMobile = () => {
-  isMobile.value = window.innerWidth < 768
-}
-
-onMounted(() => {
-  checkMobile()
-  window.addEventListener("resize", checkMobile)
-})
-
-onUnmounted(() => {
-  window.removeEventListener("resize", checkMobile)
-})
 </script>
 
 <template>

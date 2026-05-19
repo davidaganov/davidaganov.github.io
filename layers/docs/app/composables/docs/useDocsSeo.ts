@@ -1,4 +1,4 @@
-import { canonicalPathForRequest } from "@app/utils/seo"
+import { absoluteUrl, canonicalPathForRequest } from "@app/utils/seo"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { buildStructuredDataNodes } from "@docs/utils/structuredData"
 import { type DocsPageData, type DocsSeoOptions, TYPE_PAGE } from "@docs/types"
@@ -59,7 +59,7 @@ export const useDocsSeo = ({
     return canonicalPathForRequest(path)
   })
 
-  const canonicalUrl = computed(() => `${siteUrl.value}${canonicalPath.value}`)
+  const canonicalUrl = computed(() => absoluteUrl(siteUrl.value, canonicalPath.value))
 
   const breadcrumbs = computed(() => {
     const currentSection = section.value

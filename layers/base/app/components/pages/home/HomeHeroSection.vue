@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useScrollLock } from "@vueuse/core"
+import { useMediaQuery, useScrollLock } from "@vueuse/core"
 import { useCommandPalette } from "@base/composables/useCommandPalette"
 import { useExperience } from "@base/composables/useExperience"
 import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
@@ -11,7 +11,7 @@ import { ROUTE_PATH } from "@base/types"
 
 const { frontendYears } = useExperience()
 
-const isDesktop = ref(false)
+const isDesktop = useMediaQuery("(min-width: 768px)", { ssrWidth: 768 })
 
 const FaultyTerminal = defineAsyncComponent(() => import("@ui/components/bits/FaultyTerminal.vue"))
 const TextType = defineAsyncComponent(() => import("@ui/components/bits/TextType.vue"))
@@ -115,14 +115,7 @@ watch(showAnimation, (anim, wasAnim) => {
   }
 })
 
-const syncDesktop = () => {
-  isDesktop.value = window.matchMedia("(min-width: 768px)").matches
-}
-
 onMounted(() => {
-  syncDesktop()
-  window.addEventListener("resize", syncDesktop)
-
   noiseAmp.value = 0.3 + Math.random() * 0.3
 
   const initBackground = () => {
@@ -146,7 +139,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener("resize", syncDesktop)
   if (unmountTimer) clearTimeout(unmountTimer)
 })
 </script>

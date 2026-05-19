@@ -175,6 +175,10 @@ export default defineNuxtConfig({
     payloadExtraction: true
   },
 
+  sourcemap: {
+    client: true
+  },
+
   icon: {
     provider: "iconify",
     clientBundle: {

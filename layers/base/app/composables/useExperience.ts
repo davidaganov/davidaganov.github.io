@@ -12,8 +12,12 @@ const calcYears = (start: Date, step: number): number => {
 }
 
 export const useExperience = () => {
-  const frontendYears = computed(() => calcYears(new Date(2021, 4, 1), 1)) // May 2021, step 1yr
-  const backendYears = computed(() => calcYears(new Date(2025, 0, 1), 0.5)) // Jan 2025, step 0.5yr
+  const frontendYears = useState("experience-frontend-years", () =>
+    calcYears(new Date(2021, 4, 1), 1)
+  )
+  const backendYears = useState("experience-backend-years", () =>
+    calcYears(new Date(2025, 0, 1), 0.5)
+  )
 
   return { frontendYears, backendYears }
 }
