@@ -61,7 +61,7 @@ const buildGraphForLocale = (locale: string): DocsGraphFile => {
   const rows = db
     .prepare(`SELECT path, title, body FROM ${table}`)
     .all()
-    .map((row) => row as GraphRow)
+    .map((row: unknown) => row as GraphRow)
   db.close()
 
   const descriptors = getDocsCollectionDescriptors()
@@ -215,14 +215,18 @@ const main = (): void => {
   }
 
   mkdirSync(publicDir, { recursive: true })
+  const serverAssetsDir = resolve(root, "server/assets")
+  mkdirSync(serverAssetsDir, { recursive: true })
 
   const archiveKeys = buildArchiveIndex()
   const archivePath = resolve(publicDir, "archive-index.json")
-  writeFileSync(
-    archivePath,
-    JSON.stringify({ keys: archiveKeys, builtAt: new Date().toISOString() })
+  const archiveContent = JSON.stringify({ keys: archiveKeys, builtAt: new Date().toISOString() })
+
+  writeFileSync(archivePath, archiveContent)
+  writeFileSync(resolve(serverAssetsDir, "archive-index.json"), archiveContent)
+  console.info(
+    `build-docs-assets: wrote ${archivePath} and server assets copy (${archiveKeys.length} archive roots)`
   )
-  console.info(`build-docs-assets: wrote ${archivePath} (${archiveKeys.length} archive roots)`)
 
   if (!existsSync(sqlitePath)) {
     console.warn(
@@ -240,10 +244,16 @@ const main = (): void => {
 
   for (const locale of CONTENT_LOCALES) {
     const data = buildGraphForLocale(locale)
+    const dataStr = JSON.stringify(data)
+
     const outPath = resolve(publicDir, `graph-${locale}.json`)
-    writeFileSync(outPath, JSON.stringify(data), "utf8")
+    writeFileSync(outPath, dataStr, "utf8")
+
+    const serverOutPath = resolve(serverAssetsDir, `graph-${locale}.json`)
+    writeFileSync(serverOutPath, dataStr, "utf8")
+
     console.info(
-      `build-docs-assets: wrote ${outPath} (${data.nodes.length} nodes, ${data.links.length} links)`
+      `build-docs-assets: wrote ${outPath} and ${serverOutPath} (${data.nodes.length} nodes, ${data.links.length} links)`
     )
   }
 }

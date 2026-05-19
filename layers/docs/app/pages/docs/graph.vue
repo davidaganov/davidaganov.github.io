@@ -28,7 +28,7 @@ const graphFile = computed(() => data.value)
       v-if="error"
       color="warning"
       variant="subtle"
-      class="shrink-0 px-2 pt-2 sm:px-0"
+      class="shrink-0 px-4 pt-4"
       :title="$t('global.status.error')"
       :description="$t('docs.graph.missingJson')"
     />
