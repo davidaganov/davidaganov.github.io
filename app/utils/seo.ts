@@ -47,6 +47,10 @@ export const canonicalPathForLocale = (
     : normalizeUrlPath(path)
 }
 
+export const canonicalPathForRequest = (path: string, defaultLocale = DEFAULT_LOCALE): string => {
+  return normalizeDefaultLocalePath(path, defaultLocale)
+}
+
 export const absoluteUrl = (siteUrl: string, path: string): string => {
   const normalizedSiteUrl = normalizeSiteUrl(siteUrl)
   const normalizedPath = normalizeUrlPath(path)

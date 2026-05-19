@@ -125,6 +125,11 @@
       "disableAnimation": "Disable animation",
       "scrollDown": "Scroll down",
       "ctaDesc": "Go to user guide",
+      "viewMode": {
+        "label": "Links view mode",
+        "professional": "Professional links",
+        "personal": "Personal links"
+      },
       "fallback": {
         "title": "Links temporarily unavailable",
         "description": "Failed to load links list, but you can go to documentation.",

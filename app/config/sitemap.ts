@@ -1,7 +1,13 @@
 import type { SitemapUrlInput } from "@nuxtjs/sitemap"
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { absoluteUrl, localizedPath, normalizeSiteUrl, normalizeUrlPath } from "../utils/seo"
+import {
+  absoluteUrl,
+  DEFAULT_LOCALE,
+  localizedPath,
+  normalizeSiteUrl,
+  normalizeUrlPath
+} from "../utils/seo"
 import { getLocaleCodes } from "./locales"
 
 const contentRoot = fileURLToPath(new URL("../../content", import.meta.url))
@@ -127,7 +133,7 @@ export const getSitemapUrls = (siteUrlValue?: string): SitemapUrlInput[] => {
     .sort((a, b) => a.loc.localeCompare(b.loc))
     .map((entry) => {
       const alternatives = alternatesByRouteKey.get(entry.routeKey) ?? new Map<string, string>()
-      const defaultLocalePath = alternatives.get("ru")
+      const defaultLocalePath = alternatives.get(DEFAULT_LOCALE)
 
       return {
         loc: entry.loc,

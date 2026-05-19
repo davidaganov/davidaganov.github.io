@@ -1,4 +1,4 @@
-import { canonicalPathForLocale } from "@app/utils/seo"
+import { canonicalPathForRequest } from "@app/utils/seo"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { buildStructuredDataNodes } from "@docs/utils/structuredData"
 import { type DocsPageData, type DocsSeoOptions, TYPE_PAGE } from "@docs/types"
@@ -56,7 +56,7 @@ export const useDocsSeo = ({
 
   const canonicalPath = computed(() => {
     const path = route.path || "/"
-    return canonicalPathForLocale(locale.value, path)
+    return canonicalPathForRequest(path)
   })
 
   const canonicalUrl = computed(() => `${siteUrl.value}${canonicalPath.value}`)

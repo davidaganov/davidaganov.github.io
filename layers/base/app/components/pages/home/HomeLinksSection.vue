@@ -17,11 +17,13 @@ const { links, error } = useLinksGistClient()
 const viewModeItems = computed(() => [
   {
     value: VIEW_MODE.PROFESSIONAL,
-    icon: "i-lucide-briefcase"
+    icon: "i-lucide-briefcase",
+    label: t("pages.home.viewMode.professional")
   },
   {
     value: VIEW_MODE.PERSONAL,
-    icon: "i-lucide-user"
+    icon: "i-lucide-user",
+    label: t("pages.home.viewMode.personal")
   }
 ])
 
@@ -80,17 +82,34 @@ onUnmounted(() => {
           <h2 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {{ $t("layout.navigation.menu.contacts") }}
           </h2>
-          <UTabs
-            v-model="mode"
-            :items="viewModeItems"
-            :content="false"
-            :ui="{
-              list: 'rounded-full border border-black/10 bg-black/5 p-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5',
-              trigger:
-                'rounded-full px-4 py-2 text-sm font-medium data-[state=active]:text-primary-600 dark:data-[state=active]:text-white data-[state=inactive]:text-gray-500 dark:data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-primary-700 dark:data-[state=inactive]:hover:text-white',
-              indicator: 'rounded-[18px] bg-black/10 dark:bg-white/10'
-            }"
-          />
+          <div
+            class="flex rounded-full border border-black/10 bg-black/5 p-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5"
+            role="tablist"
+            :aria-label="$t('pages.home.viewMode.label')"
+          >
+            <button
+              v-for="item in viewModeItems"
+              type="button"
+              role="tab"
+              class="rounded-full px-4 py-2 text-sm font-medium transition-colors"
+              :class="
+                mode === item.value
+                  ? 'text-primary-600 bg-black/10 dark:bg-white/10 dark:text-white'
+                  : 'hover:text-primary-700 text-gray-500 dark:text-gray-400 dark:hover:text-white'
+              "
+              :aria-label="item.label"
+              :aria-selected="mode === item.value"
+              :title="item.label"
+              :key="item.value"
+              @click="mode = item.value"
+            >
+              <UIcon
+                class="size-4"
+                aria-hidden="true"
+                :name="item.icon"
+              />
+            </button>
+          </div>
         </div>
       </div>
 

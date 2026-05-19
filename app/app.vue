@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { absoluteUrl, canonicalPathForLocale, normalizeDefaultLocalePath } from "@app/utils/seo"
+import { absoluteUrl, canonicalPathForRequest, normalizeDefaultLocalePath } from "@app/utils/seo"
 import { GITHUB_LINK, HABR_LINK, SOCIAL_LINKS } from "@base/constants"
 import AppSkipLink from "@base/components/app/AppSkipLink.vue"
 import UiCommandPalette from "@ui/components/UiCommandPalette.vue"
@@ -19,7 +19,7 @@ const siteUrl = computed(() => {
 
 const canonicalPath = computed(() => {
   const path = route.path || "/"
-  return canonicalPathForLocale(locale.value, path)
+  return canonicalPathForRequest(path)
 })
 
 const canonicalUrl = computed(() => `${siteUrl.value}${canonicalPath.value}`)
