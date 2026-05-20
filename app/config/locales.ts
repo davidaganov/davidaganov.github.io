@@ -37,5 +37,7 @@ export const getSiteLocales = (): SiteLocale[] => {
 }
 
 export const getLocaleCodes = (): string[] => getSiteLocales().map((locale) => locale.code)
+
 export const getNuxtI18nLocales = (): never => getSiteLocales() as never
+
 export const getNuxtDefaultLocale = (): never => DEFAULT_LOCALE as never

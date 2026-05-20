@@ -99,6 +99,7 @@
       }
     },
     "footer": {
+      "resume": "Resume",
       "main": "Main",
       "docSections": "Sections",
       "repository": "GitHub Repository",
@@ -116,6 +117,27 @@
     }
   },
   "pages": {
+    "resume": {
+      "seoTitle": "Resume",
+      "seoDescription": "Concise resume: experience, stack, contacts, and key competencies in one place.",
+      "backToSite": "Back to site",
+      "employmentFormat": "Work format",
+      "employmentType": "Employment",
+      "experienceFrontend": "Frontend experience",
+      "experienceBackend": "Backend experience",
+      "years": "{count} years",
+      "stack": "Stack",
+      "sections": {
+        "summary": "Summary",
+        "experience": "Work experience",
+        "skills": "Technologies"
+      },
+      "skillTags": {
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "tooling": "Tooling"
+      }
+    },
     "home": {
       "badge": "Available for hire",
       "description": "Frontend Developer — {frontendYears} years of commercial experience.",

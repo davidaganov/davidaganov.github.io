@@ -1,0 +1,202 @@
+{
+  "contacts": {
+    "telegram": "@davidaganov",
+    "telegramUrl": "https://t.me/davidaganov",
+    "email": "davidaganov21@gmail.com",
+    "github": "https://github.com/davidaganov",
+    "habr": "https://habr.com/ru/users/davidaganov",
+    "npm": "https://www.npmjs.com/~davidaganov",
+    "site": "https://aganov.dev/resume"
+  },
+  "employment": {
+    "format": { "ru": "Удалённо", "en": "Remote" },
+    "type": { "ru": "Полная или проектная", "en": "Full-time or project-based" }
+  },
+  "experience": [
+    {
+      "company": { "ru": "NDA", "en": "NDA" },
+      "role": "Lead Frontend / Fullstack Developer",
+      "dates": { "start": "2024-09", "end": null },
+      "location": { "ru": "Турция", "en": "Turkey" },
+      "intro": {
+        "ru": "<strong>Агрегатор в сфере бизнеса аренды автомобилей.</strong><br/>Веду разработку фронтенда, определяю технический стек и архитектуру. Помогаю команде планировать фичи, а также пишу микросервисы на бэкенде под нужды интерфейса.",
+        "en": "<strong>Aggregator in the car rental business.</strong><br/>Responsible for product architecture, task breakdown, and alignment with the team. Also contributing on the backend."
+      },
+      "items": [
+        {
+          "ru": "<strong>Клиентская часть (B2C):</strong> Разработка интерфейса для поиска, сравнения и бронирования автомобилей от различных арендодателей.",
+          "en": "<strong>Consumer app (B2C):</strong> Building the interface for searching, comparing, and booking cars from multiple rental providers."
+        },
+        {
+          "ru": "<strong>Панель управления (B2B):</strong> Создание личного кабинета для владельцев бизнеса: управление резервациями, статистика и аналитика, загрузка авто, интеграция AI, учет страховок и операционные сценарии.",
+          "en": "<strong>Admin dashboard (B2B):</strong> Building owner dashboards for business owners: reservations, analytics, vehicle onboarding, AI integration, insurance tracking, and operational workflows."
+        },
+        {
+          "ru": "<strong>Backend:</strong> Разработка и поддержка микросервисов на NestJS и BFF-слоя для оптимизации контрактов с фронтендом; написание тестов.",
+          "en": "<strong>Backend:</strong> Developing and maintaining NestJS microservices and a BFF layer to optimize frontend contracts; writing tests."
+        }
+      ],
+      "stack": "Vue 3, Nuxt, TypeScript, Tailwind, Vuetify, NestJS"
+    },
+    {
+      "company": { "ru": "Фриланс", "en": "Freelance" },
+      "role": "Frontend Developer",
+      "dates": { "start": "2023-11", "end": null },
+      "location": { "ru": "Удалённо", "en": "Remote" },
+      "intro": {
+        "ru": "Проектирую и создаю веб-приложения под ключ. Успешно интегрируюсь в команды, но так же могу работать самостоятельно: глубоко погружаюсь в бизнес-логику, предлагаю технические решения и довожу сложные фичи до продакшена.",
+        "en": "Deliver end-to-end web applications. Seamlessly embed into teams and work independently: deeply analyze domain logic, propose technical solutions, and drive complex features to release."
+      },
+      "projects": [
+        {
+          "name": { "ru": "ПроектыПлюс", "en": "ProjectsPlus" },
+          "subtitle": {
+            "ru": "Фриланс-биржа для специалистов широкого профиля",
+            "en": "Freelance marketplace for specialists in various fields"
+          },
+          "items": [
+            {
+              "ru": "Спроектировал и реализовал с нуля ключевые пользовательские сценарии, кастомные профили, real-time чат между заказчиком и исполнителем.",
+              "en": "Designed and developed core user flows from scratch, custom profiles, and a real-time client–freelancer chat."
+            }
+          ],
+          "stack": "Nuxt 3, TypeScript, Tailwind CSS, Pinia"
+        },
+        {
+          "name": { "ru": "NDA", "en": "NDA" },
+          "subtitle": {
+            "ru": "Образовательная платформа для преподавателей",
+            "en": "EdTech platform for educators"
+          },
+          "items": [
+            {
+              "ru": "Разработал SPA-приложение для преподавателей: интерактивное расписание, модули уроков и систему видеоконференций на базе Zoom API.",
+              "en": "Developed the SPA application for teachers: interactive scheduling, lesson modules, and a video conferencing system via the Zoom API."
+            }
+          ],
+          "stack": "Vue 3, TypeScript, Pinia, Tailwind CSS"
+        }
+      ]
+    },
+    {
+      "company": { "ru": "Softlex", "en": "Softlex" },
+      "role": "Frontend Developer",
+      "dates": { "start": "2023-07", "end": "2023-11" },
+      "location": { "ru": "Россия", "en": "Russia" },
+      "projects": [
+        {
+          "name": { "ru": "WAQF", "en": "WAQF" },
+          "subtitle": {
+            "ru": "Краудфандинговая платформа",
+            "en": "Crowdfunding platform"
+          },
+          "items": [
+            {
+              "ru": "Успешно провёл миграцию продукта с React на Next.js (SSR), заложил масштабируемую архитектуру для новых модулей и вывел приложение в стабильный релиз без потери текущей аудитории.",
+              "en": "Successfully migrated the product from React to Next.js (SSR), established a scalable architecture for incoming modules, and shipped a stable release with zero downtime."
+            }
+          ],
+          "stack": "Next.js, TypeScript, SCSS"
+        },
+        {
+          "name": { "ru": "JetUnity", "en": "JetUnity" },
+          "subtitle": {
+            "ru": "B2B-сервис для организации частной авиации",
+            "en": "Private aviation management service"
+          },
+          "items": [
+            {
+              "ru": "Провёл глубокий рефакторинг legacy-кода и UI-паттернов, внедрив новый бизнес-функционал параллельно с поддержкой стабильной работы критически важных систем клиента.",
+              "en": "Executed a deep refactor of legacy code and UI patterns, delivering new business features while ensuring the absolute stability of the client's critical operations."
+            }
+          ],
+          "stack": "Nuxt 2, Pug, Stylus, SCSS"
+        }
+      ]
+    },
+    {
+      "company": { "ru": "SAB Games", "en": "SAB Games" },
+      "role": { "ru": "Frontend Developer", "en": "Frontend Developer" },
+      "dates": { "start": "2021-05", "end": "2023-05" },
+      "location": { "ru": "Ташкент", "en": "Tashkent" },
+      "intro": {
+        "ru": "Начал свой путь в большой продуктовой команде. За два года вырос от разработки креативных лэндингов для мобильных игр до создания крупных e-commerce решений.",
+        "en": "Started my career journey within a large product team. Over two years, progressed from building interactive mobile game promo sites to developing large-scale e-commerce solutions."
+      },
+      "projects": [
+        {
+          "name": { "ru": "NDA", "en": "NDA" },
+          "subtitle": {
+            "ru": "Крупная e-commerce платформа",
+            "en": "Large e-commerce platform"
+          },
+          "items": [
+            {
+              "ru": "Разрабатывал интерфейсы для высоконагруженных разделов маркетплейса на Nuxt 2, интегрируя их с REST API.",
+              "en": "Developed high-traffic marketplace interfaces using Nuxt 2, integrating them with REST APIs."
+            }
+          ],
+          "stack": "Nuxt 2, TypeScript, SCSS, REST API"
+        },
+        {
+          "name": { "ru": "Креативные лендинги", "en": "Creative Landing Pages" },
+          "subtitle": {
+            "ru": "Интерактивные лендинги для мобильных игр",
+            "en": "Interactive landing pages for mobile games"
+          },
+          "items": [
+            {
+              "ru": "Создал десятки уникальных, визуально сложных лендингов для рекламных кампаний наших игр с фокусом на высокую конверсию и перформанс.",
+              "en": "Built dozens of unique, visually rich landing pages for game ad campaigns, focusing on high conversion rates and smooth web performance."
+            }
+          ],
+          "stack": "JavaScript, HTML5, CSS3/SCSS, Animation libraries"
+        }
+      ]
+    }
+  ],
+  "skills": [
+    { "name": "TypeScript", "tags": ["frontend"] },
+    { "name": "JavaScript", "tags": ["frontend"] },
+    { "name": "Vue 3", "tags": ["frontend"] },
+    { "name": "Nuxt 3 / 4", "tags": ["frontend"] },
+    { "name": "React / Next.js", "tags": ["frontend"] },
+    { "name": "Pinia", "tags": ["frontend"] },
+    { "name": "Tailwind CSS", "tags": ["frontend"] },
+    { "name": "SCSS", "tags": ["frontend"] },
+    { "name": "HTML5", "tags": ["frontend"] },
+    { "name": "CSS3", "tags": ["frontend"] },
+    { "name": "GSAP", "tags": ["frontend"] },
+    { "name": "Nuxt UI", "tags": ["frontend"] },
+    { "name": "Vuetify", "tags": ["frontend"] },
+    { "name": "Shadcn", "tags": ["frontend"] },
+    { "name": "PWA", "tags": ["frontend"] },
+    { "name": "SSR / SSG", "tags": ["frontend"] },
+    { "name": "Astro", "tags": ["frontend"] },
+    { "name": "Vite", "tags": ["frontend", "tooling"] },
+    { "name": "NestJS", "tags": ["backend"] },
+    { "name": "Fastify", "tags": ["backend"] },
+    { "name": "REST API", "tags": ["backend"] },
+    { "name": "OpenAPI / Swagger", "tags": ["backend"] },
+    { "name": "Supabase", "tags": ["backend"] },
+    { "name": "SQLite", "tags": ["backend"] },
+    { "name": "Vitest", "tags": ["tooling"] },
+    { "name": "Playwright", "tags": ["tooling"] },
+    { "name": "Jest", "tags": ["tooling"] },
+    { "name": "Git", "tags": ["tooling"] },
+    { "name": "Docker", "tags": ["backend"] },
+    { "name": "Figma", "tags": ["tooling"] },
+    { "name": "Cursor", "tags": ["tooling"] },
+    { "name": "Claude", "tags": ["tooling"] }
+  ],
+  "ru": {
+    "role": "Software Engineer / Vue, Nuxt, TypeScript",
+    "summary": "Software Engineer с коммерческим опытом в E-commerce и B2B. Создаю быстрые, масштабируемые и удобные веб-приложения с фокусом на строгую типизацию, продуманную архитектуру и чистую вёрстку. Комфортно работаю в команде и самостоятельно. Большой опыт работы с незнакомым кодом, легко адаптируюсь к новым технологиям и сложным задачам.",
+    "copyText": "Давид Аганов — Software Engineer / Vue, Nuxt, TypeScript\nФормат: удалённо · Занятость: полная или проектная\nОпыт: {{frontendYears}} лет (frontend)\nКонтакты: @davidaganov · davidaganov21@gmail.com\nСайт: https://aganov.dev/resume\n\nSoftware Engineer с опытом в E-commerce и B2B.\n\nСтек: Vue 3, Nuxt 3/4, TypeScript, JavaScript, Pinia, React, Tailwind CSS, Node.js, NestJS, Vitest, Playwright, Git, Docker, Vercel"
+  },
+  "en": {
+    "role": "Software Engineer / Vue, Nuxt, TypeScript",
+    "summary": "Software Engineer with commercial experience in E-commerce and B2B. I build fast, scalable, user-friendly web apps with strict typing, thoughtful architecture, and clean UI. I work well in teams and independently: diving into unfamiliar codebases, easily adapting to new technologies and complex tasks.",
+    "copyText": "David Aganov — Software Engineer / Vue, Nuxt, TypeScript\nFormat: remote · Employment: full-time or project-based\nExperience: {{frontendYears}} years (frontend)\nContact: @davidaganov · davidaganov21@gmail.com\nSite: https://aganov.dev/en/resume\n\nSoftware Engineer with E-commerce and B2B experience.\n\nStack: Vue 3, Nuxt 3/4, TypeScript, JavaScript, Pinia, React, Tailwind CSS, NestJS, Vitest, Playwright, Git, Docker, Vercel"
+  }
+}

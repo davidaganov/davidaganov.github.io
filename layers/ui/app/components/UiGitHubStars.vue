@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import { ApiClient } from "@api/services/client"
+import { useGitHubRepoStars } from "@api/composables/useGitHubRepoStars"
 import { GITHUB_REPO } from "@base/constants"
 
 const githubUrl = `https://github.com/${GITHUB_REPO}`
 
 const { t } = useI18n()
 
-const { data: starsCount, status } = await useAsyncData(
-  `github-stars-${GITHUB_REPO}`,
-  () => ApiClient.github.getStars(GITHUB_REPO),
-  {
-    default: () => 0,
-    lazy: true,
-    server: true
-  }
-)
+const { data: starsCount, status } = await useGitHubRepoStars(GITHUB_REPO)
 
-const loading = computed(() => status.value === "pending")
-const stars = computed(() => starsCount.value || 0)
+const loading = computed(() => status.value === "pending" || starsCount.value === null)
+const stars = computed(() => starsCount.value ?? 0)
 
 const ariaLabel = computed(() =>
   loading.value ? t("global.status.loading") : t("layout.a11y.githubStars", { count: stars.value })
@@ -53,13 +45,13 @@ const formatStars = (count: number): string => {
       />
       <span
         v-if="!loading"
-        class="text-sm font-medium"
+        class="text-sm font-medium tabular-nums"
       >
         {{ formatStars(stars) }}
       </span>
       <span
         v-else
-        class="text-sm"
+        class="text-sm tabular-nums"
       >
         —
       </span>

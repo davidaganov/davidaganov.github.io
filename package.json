@@ -76,7 +76,8 @@
     "tsx": "^4.19.4",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.1.1",
-    "vue-tsc": "^3.2.5"
+    "vue-tsc": "^3.2.5",
+    "zod": "^4.4.3"
   },
   "lint-staged": {
     "*.{vue,ts,js,mjs}": "eslint --fix",

@@ -6,8 +6,12 @@ import AppSkipLink from "@base/components/app/AppSkipLink.vue"
 import UiCommandPalette from "@ui/components/UiCommandPalette.vue"
 import { ROUTE_PATH } from "@base/types"
 
+const route = useRoute()
+
 const { t } = useI18n()
 const { siteUrl, canonicalUrl, i18nHeadLinks, htmlLang } = useSiteI18nHead()
+
+const showCommandPalette = computed(() => !route.path.includes("/resume"))
 
 useSchemaOrg([
   defineWebSite({
@@ -57,7 +61,7 @@ useSeoMeta({
     <AppSkipLink />
     <NuxtLayout>
       <NuxtPage />
-      <UiCommandPalette />
+      <UiCommandPalette v-if="showCommandPalette" />
     </NuxtLayout>
   </UApp>
 </template>

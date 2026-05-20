@@ -17,10 +17,11 @@ const alignClass = computed(() =>
 </script>
 
 <template>
-  <NuxtLink
-    class="group flex flex-col rounded-xl border border-black/10 bg-black/3 px-5 py-4 transition-colors hover:border-black/20 hover:bg-black/5 dark:border-white/10 dark:bg-white/3 dark:hover:border-white/20 dark:hover:bg-white/5"
+  <UiSpotlightCard
+    variant="article"
+    content-class="flex flex-col justify-between"
     :to="page.path"
-    :class="alignClass"
+    :class="`h-full w-full ${alignClass}`"
   >
     <span
       class="mb-1 text-xs text-gray-600 transition-colors group-hover:text-gray-800 dark:text-gray-400 dark:group-hover:text-gray-200"
@@ -43,5 +44,5 @@ const alignClass = computed(() =>
         class="group-hover:text-primary-700 dark:group-hover:text-primary-400 size-4 shrink-0 text-gray-500 transition-colors dark:text-gray-400"
       />
     </span>
-  </NuxtLink>
+  </UiSpotlightCard>
 </template>

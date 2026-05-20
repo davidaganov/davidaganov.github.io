@@ -99,6 +99,7 @@
       }
     },
     "footer": {
+      "resume": "Резюме",
       "main": "Главное",
       "docSections": "Разделы",
       "repository": "Репозиторий на GitHub",
@@ -116,6 +117,27 @@
     }
   },
   "pages": {
+    "resume": {
+      "seoTitle": "Резюме",
+      "seoDescription": "Краткое резюме: опыт, стек, контакты и ключевые компетенции — всё в одном месте.",
+      "backToSite": "На сайт",
+      "employmentFormat": "Формат работы",
+      "employmentType": "Занятость",
+      "experienceFrontend": "Frontend опыт",
+      "experienceBackend": "Backend опыт",
+      "years": "{count} лет",
+      "stack": "Стек",
+      "sections": {
+        "summary": "О себе",
+        "experience": "Опыт работы",
+        "skills": "Технологии"
+      },
+      "skillTags": {
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "tooling": "Инструменты"
+      }
+    },
     "home": {
       "badge": "Доступен для найма",
       "description": "Фронтенд-разработчик — {frontendYears} лет коммерческого опыта.",

@@ -53,7 +53,7 @@ const { prevPage, nextPage, githubMdUrl } = useDocsFlatNav(docsPath)
     <ClientOnly>
       <div
         v-if="prevPage || nextPage"
-        class="grid gap-4 md:grid-cols-2"
+        class="grid items-stretch gap-4 md:grid-cols-2"
       >
         <BaseArticleNavigateButton
           v-if="prevPage"

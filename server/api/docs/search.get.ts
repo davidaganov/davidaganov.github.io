@@ -1,3 +1,4 @@
+import { queryCollection } from "@nuxt/content/server"
 import type { H3Event } from "h3"
 import { mapSearchResults } from "@docs/utils/mapSearchResults"
 import { isContentLocale } from "@docs/constants"
@@ -15,7 +16,7 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   const collection = `content_${locale}` as const
-  const pages = await queryCollection(collection)
+  const pages = await queryCollection(event, collection)
     .select("title", "description", "path", "body", "meta")
     .all()
 

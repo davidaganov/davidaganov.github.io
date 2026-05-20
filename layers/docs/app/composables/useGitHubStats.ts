@@ -7,8 +7,9 @@ export const useGitHubStats = () => {
     status,
     error
   } = useAsyncData(`github-user-${USERNAME}`, () => ApiClient.github.getUser(USERNAME), {
-    lazy: true,
-    server: true
+    server: true,
+    lazy: false,
+    default: () => null
   })
 
   const loading = computed(() => status.value === "pending")

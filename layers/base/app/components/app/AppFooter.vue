@@ -6,23 +6,23 @@ import { DOCS_SECTIONS } from "@docs/constants"
 import UiLogo from "@ui/components/UiLogo.vue"
 import { ROUTE_PATH } from "@base/types"
 
-const repoUrl = `https://github.com/${GITHUB_REPO}`
+const PROJECTS_LIMIT = 3
+const REPO_URL = `https://github.com/${GITHUB_REPO}`
 
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const { projects } = await useProjectsTop(3)
+const { projects, loading } = await useProjectsTop(PROJECTS_LIMIT)
 
 const projectList = computed(() => projects.value ?? [])
 
 const year = computed(() => new Date().getFullYear())
-const aboutSection = computed(() => DOCS_SECTIONS.find((section) => section.id === "about"))
 
-const docLinks = computed(() => [
+const links = computed(() => [
   {
-    label: t("layout.navigation.sections.overview"),
-    to: getFirstPathForSection(aboutSection.value),
-    icon: "i-lucide-house"
+    label: t("layout.footer.resume"),
+    to: ROUTE_PATH.RESUME,
+    icon: "i-lucide-file-text"
   },
   {
     label: t("layout.navigation.menu.projects"),
@@ -46,9 +46,9 @@ const docsSectionsPreview = computed(() =>
   }))
 )
 
-const repositoryLinkTitle = computed(
-  () => `${t("layout.footer.repository")} — ${t("layout.footer.repositoryHint")}`
-)
+const repositoryLinkTitle = computed(() => {
+  return `${t("layout.footer.repository")} — ${t("layout.footer.repositoryHint")}`
+})
 </script>
 
 <template>
@@ -65,7 +65,7 @@ const repositoryLinkTitle = computed(
           </h3>
           <ul class="flex flex-col gap-2.5">
             <li
-              v-for="item in docLinks"
+              v-for="item in links"
               :key="item.to"
             >
               <NuxtLink
@@ -116,51 +116,36 @@ const repositoryLinkTitle = computed(
           >
             {{ $t("layout.navigation.menu.projects") }}
           </h3>
-          <ClientOnly>
-            <ul class="flex flex-col gap-2.5">
-              <li
-                v-for="slotIdx in 3"
-                :key="slotIdx"
+          <ul class="flex flex-col gap-2.5">
+            <li
+              v-for="slotIdx in PROJECTS_LIMIT"
+              :key="slotIdx"
+            >
+              <NuxtLink
+                v-if="projectList[slotIdx - 1]"
+                class="group flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
+                :to="localePath(projectList[slotIdx - 1]!.to)"
               >
-                <NuxtLink
-                  v-if="projectList[slotIdx - 1]"
-                  class="group flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
-                  :to="localePath(projectList[slotIdx - 1]!.to)"
-                >
-                  <span class="truncate">{{ projectList[slotIdx - 1]!.title }}</span>
-                  <div
-                    class="flex min-w-8 shrink-0 items-center gap-0.5 text-[10px] text-amber-700 tabular-nums dark:text-amber-400/90"
-                    :class="{ invisible: !projectList[slotIdx - 1]!.stars }"
-                  >
-                    <UIcon
-                      name="i-heroicons-star-20-solid"
-                      aria-hidden="true"
-                      class="size-3"
-                    />
-                    <span class="font-bold">{{ projectList[slotIdx - 1]!.stars }}</span>
-                  </div>
-                </NuxtLink>
+                <span class="truncate">{{ projectList[slotIdx - 1]!.title }}</span>
                 <div
-                  v-else
-                  class="min-h-8"
-                  aria-hidden="true"
-                />
-              </li>
-            </ul>
-            <template #fallback>
-              <ul class="flex flex-col gap-2.5">
-                <li
-                  v-for="slotIdx in 3"
-                  :key="slotIdx"
+                  class="flex min-w-8 shrink-0 items-center gap-0.5 text-[10px] text-amber-700 tabular-nums dark:text-amber-400/90"
+                  :class="{ invisible: loading }"
                 >
-                  <div
-                    class="min-h-8"
+                  <UIcon
+                    name="i-heroicons-star-20-solid"
                     aria-hidden="true"
+                    class="size-3"
                   />
-                </li>
-              </ul>
-            </template>
-          </ClientOnly>
+                  <span class="font-bold">{{ projectList[slotIdx - 1]!.stars }}</span>
+                </div>
+              </NuxtLink>
+              <div
+                v-else
+                class="min-h-8"
+                aria-hidden="true"
+              />
+            </li>
+          </ul>
         </div>
 
         <div class="space-y-4">
@@ -210,7 +195,7 @@ const repositoryLinkTitle = computed(
           class="group inline-flex min-h-11 items-center gap-2 rounded-full border border-black/8 bg-black/5 px-4 py-2 text-sm font-bold text-gray-700 transition-colors hover:border-black/15 hover:bg-black/10 hover:text-gray-950 dark:border-white/12 dark:bg-white/6 dark:text-gray-200 dark:hover:border-white/22 dark:hover:bg-white/12 dark:hover:text-white"
           target="_blank"
           rel="noopener noreferrer"
-          :href="repoUrl"
+          :href="REPO_URL"
           :title="repositoryLinkTitle"
         >
           <UIcon

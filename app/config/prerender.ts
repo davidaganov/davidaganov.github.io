@@ -6,7 +6,6 @@ import { getLocaleCodes } from "./locales"
 const contentRoot = fileURLToPath(new URL("../../content", import.meta.url))
 
 const normalizePath = (path: string): string => path.replace(/\\/g, "/")
-
 const localeContentDir = (locale: string): string => `${contentRoot}/${locale}`
 
 const markdownRoutesForLocale = (locale: string): string[] => {
@@ -70,7 +69,7 @@ const collectionIndexRoutesForLocale = (locale: string): string[] => {
 
 const commonRoutesForLocale = (locale: string): string[] => {
   const prefix = localePathPrefix(locale)
-  return [`${prefix || "/"}`, `${prefix}/docs`, `${prefix}/docs/graph`]
+  return [`${prefix || "/"}`, `${prefix}/resume`, `${prefix}/docs`, `${prefix}/docs/graph`]
 }
 
 const seoRoutes = ["/sitemap_index.xml", "/robots.txt"]
@@ -94,6 +93,7 @@ export const getPrerenderRouteRules = (): Record<string, { prerender: true }> =>
       const prefix = localePathPrefix(locale)
       return [
         [prefix || "/", { prerender: true }],
+        [`${prefix}/resume`, { prerender: true }],
         [`${prefix}/docs/**`, { prerender: true }]
       ]
     })

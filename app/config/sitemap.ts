@@ -1,6 +1,7 @@
 import type { SitemapUrlInput } from "@nuxtjs/sitemap"
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
+import { ROUTE_PATH } from "../../layers/base/app/types"
 import {
   absoluteUrl,
   DEFAULT_LOCALE,
@@ -84,9 +85,15 @@ export const getSitemapUrls = (siteUrlValue?: string): SitemapUrlInput[] => {
 
   for (const locale of getLocaleCodes()) {
     addEntry(entries, alternatesByRouteKey, {
-      loc: localizedPath(locale, "/"),
+      loc: localizedPath(locale, ROUTE_PATH.HOME),
       locale,
-      routeKey: "/"
+      routeKey: ROUTE_PATH.HOME
+    })
+
+    addEntry(entries, alternatesByRouteKey, {
+      loc: localizedPath(locale, ROUTE_PATH.RESUME),
+      locale,
+      routeKey: ROUTE_PATH.RESUME
     })
 
     const contentDir = localeContentDir(locale)

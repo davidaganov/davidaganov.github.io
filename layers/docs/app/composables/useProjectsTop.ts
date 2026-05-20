@@ -1,5 +1,5 @@
+import { fetchGitHubStarsMap } from "@api/composables/useGitHubRepoStars"
 import { useContentCollection } from "@docs/composables/content/useContentCollection"
-import { ApiClient } from "@api/services/client"
 import { toContentPrefix } from "@docs/utils/content/paths"
 import { contentPathToPublicPath } from "@docs/utils/path/publicPath"
 import { ROUTE_PATH } from "@base/types"
@@ -18,32 +18,33 @@ export const useProjectsTop = async (limit = DEFAULT_LIMIT) => {
         .select("title", "description", "meta", "path")
         .all()
 
-      const withStars = await Promise.all(
-        rows
-          .filter((row) => row.meta?.githubRepo)
-          .map(async (row) => {
-            const githubRepo = String(row.meta?.githubRepo || "")
-            const stars = await ApiClient.github.getStars(githubRepo)
-            const slug =
-              String(row.path || "")
-                .split("/")
-                .filter(Boolean)
-                .at(-1) || ""
+      const repoRows = rows.filter((row) => row.meta?.githubRepo)
+      const repos = repoRows.map((row) => String(row.meta?.githubRepo || ""))
+      const starsMap = await fetchGitHubStarsMap(repos)
 
-            return {
-              title: String(row.title || ""),
-              description: String(row.description || ""),
-              to: contentPathToPublicPath(`${contentPrefix}/${slug}`),
-              githubRepo,
-              stars
-            }
-          })
-      )
+      const withStars = repoRows.map((row) => {
+        const githubRepo = String(row.meta?.githubRepo || "")
+        const slug =
+          String(row.path || "")
+            .split("/")
+            .filter(Boolean)
+            .at(-1) || ""
+
+        return {
+          title: String(row.title || ""),
+          description: String(row.description || ""),
+          to: contentPathToPublicPath(`${contentPrefix}/${slug}`),
+          githubRepo,
+          stars: starsMap[githubRepo] ?? 0
+        }
+      })
 
       return withStars.sort((a, b) => b.stars - a.stars).slice(0, limit)
     },
     {
       watch: [collection],
+      lazy: false,
+      server: true,
       default: () => []
     }
   )
