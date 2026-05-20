@@ -11,6 +11,7 @@ import { normalizeSiteUrl } from "./app/utils/seo"
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url))
 const siteUrl = normalizeSiteUrl(process.env.NUXT_PUBLIC_SITE_URL)
+const ogImageSecret = process.env.NUXT_OG_IMAGE_SECRET
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -56,7 +57,13 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    debug: process.env.NODE_ENV !== "production"
+    debug: process.env.NODE_ENV !== "production",
+    security: {
+      ...(ogImageSecret ? { secret: ogImageSecret } : {}),
+      strict: Boolean(ogImageSecret),
+      restrictRuntimeImagesToOrigin: true,
+      maxQueryParamSize: 2048
+    }
   },
 
   extends: ["./layers/ui", "./layers/api", "./layers/docs", "./layers/base"],
@@ -77,6 +84,7 @@ export default defineNuxtConfig({
   },
 
   i18n: {
+    baseUrl: siteUrl,
     locales: getNuxtI18nLocales(),
     defaultLocale: getNuxtDefaultLocale(),
     langDir: "locales",

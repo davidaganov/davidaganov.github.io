@@ -38,10 +38,12 @@ useDocsForceGraph(
 </script>
 
 <template>
-  <div class="relative h-[calc(100dvh-var(--ui-header-height,7rem))] min-h-0 min-w-0 flex-1">
+  <div
+    class="relative flex min-h-0 min-w-0 flex-col overflow-hidden max-lg:h-[calc(100dvh-var(--ui-header-height,7rem)-env(safe-area-inset-bottom,0))] max-lg:max-h-[calc(100dvh-var(--ui-header-height,7rem)-env(safe-area-inset-bottom,0))] max-lg:flex-none lg:h-[calc(100dvh-var(--ui-header-height,7rem))] lg:flex-1"
+  >
     <div
       ref="containerRef"
-      class="force-graph-root h-full w-full overflow-hidden"
+      class="force-graph-root min-h-0 w-full flex-1 overflow-hidden"
     />
 
     <AppGraphSettings

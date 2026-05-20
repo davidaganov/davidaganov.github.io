@@ -35,9 +35,11 @@ const displayModels = {
 </script>
 
 <template>
-  <div class="pointer-events-none absolute inset-0">
+  <div
+    class="max-lg:mx-3 max-lg:mb-3 max-lg:max-h-[40dvh] max-lg:min-h-0 max-lg:shrink-0 lg:pointer-events-none lg:absolute lg:inset-0 lg:z-20"
+  >
     <div
-      class="pointer-events-auto absolute right-3 bottom-3 left-3 z-20 max-h-[min(40dvh,calc(100%-1.5rem))] w-auto overflow-x-hidden overflow-y-auto rounded-xl border border-black/15 bg-(--ui-bg)/92 shadow-lg backdrop-blur-md sm:top-5 sm:right-5 sm:bottom-auto sm:left-auto sm:max-h-[calc(100%-2.5rem)] sm:w-[min(18rem,calc(100%-1.5rem))] sm:bg-(--ui-bg)/88 dark:border-white/12 dark:bg-(--ui-bg)/80"
+      class="pointer-events-auto w-auto overflow-x-hidden overflow-y-auto rounded-xl border border-black/15 bg-(--ui-bg)/92 shadow-lg backdrop-blur-md max-lg:max-h-full lg:absolute lg:inset-x-auto lg:top-5 lg:right-5 lg:bottom-auto lg:left-auto lg:max-h-[min(50dvh,calc(100%-2.5rem))] lg:w-[min(18rem,calc(100%-1.5rem))] lg:bg-(--ui-bg)/88 dark:border-white/12 dark:bg-(--ui-bg)/80"
     >
       <UCollapsible
         class="px-2 py-3"

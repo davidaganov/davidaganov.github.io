@@ -3,10 +3,9 @@ import { useMediaQuery, useScrollLock } from "@vueuse/core"
 import { useCommandPalette } from "@base/composables/useCommandPalette"
 import { useExperience } from "@base/composables/useExperience"
 import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
+import AppMenuTrigger from "@base/components/app/AppMenuTrigger.vue"
 import HomeLoader from "@base/components/pages/home/HomeLoader.vue"
 import BaseLight from "@docs/components/base/BaseLight.vue"
-import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
-import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 import { ROUTE_PATH } from "@base/types"
 
 const { frontendYears } = useExperience()
@@ -153,7 +152,7 @@ onUnmounted(() => {
       @hidden="handleLoaderHidden"
     />
 
-    <div class="absolute top-6 right-6 z-20 flex items-center gap-3">
+    <div class="absolute top-6 right-6 z-20 flex items-center gap-2">
       <div
         v-if="isDesktop"
         class="flex items-center gap-2"
@@ -173,11 +172,7 @@ onUnmounted(() => {
           :name="animationEnabled ? 'i-lucide-zap' : 'i-lucide-zap-off'"
         />
       </div>
-      <UiThemeToggle
-        class="hidden lg:flex"
-        :blur="true"
-      />
-      <UiLanguageSwitcher :blur="true" />
+      <AppMenuTrigger />
     </div>
 
     <div

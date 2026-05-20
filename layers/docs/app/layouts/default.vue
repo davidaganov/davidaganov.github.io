@@ -44,7 +44,10 @@ defineShortcuts({
     <div :class="isGraphPage ? 'w-full max-w-none' : 'container'">
       <div
         class="flex"
-        :class="{ 'min-h-[calc(100dvh-7.5rem)]': isGraphPage }"
+        :class="{
+          'min-h-[calc(100dvh-7.5rem)] max-lg:h-[calc(100dvh-var(--ui-header-height,7rem))] max-lg:max-h-[calc(100dvh-var(--ui-header-height,7rem))] max-lg:min-h-0 max-lg:overflow-hidden':
+            isGraphPage
+        }"
       >
         <AppLeftSidebar
           v-show="!isGraphPage"
@@ -53,9 +56,9 @@ defineShortcuts({
         />
         <main
           tabindex="-1"
+          id="main-content"
           class="flex min-w-0 flex-1 outline-none"
           :class="isGraphPage ? '' : 'lg:border-l lg:border-black/5 dark:lg:border-white/5'"
-          id="main-content"
         >
           <AppContentPanel
             :bare="isGraphPage"

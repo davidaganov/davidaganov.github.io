@@ -51,6 +51,34 @@ export const canonicalPathForRequest = (path: string, defaultLocale = DEFAULT_LO
   return normalizeDefaultLocalePath(path, defaultLocale)
 }
 
+export const localeNeutralPath = (
+  path: string,
+  localeCodes: readonly string[],
+  defaultLocale = DEFAULT_LOCALE
+): string => {
+  const normalized = normalizeUrlPath(path)
+
+  for (const code of localeCodes) {
+    if (code === defaultLocale) continue
+
+    const prefix = `/${code}`
+    if (normalized === prefix) return "/"
+    if (normalized.startsWith(`${prefix}/`)) {
+      return normalizeUrlPath(normalized.slice(prefix.length) || "/")
+    }
+  }
+
+  return normalizeDefaultLocalePath(normalized, defaultLocale)
+}
+
+export const localizedCanonicalPath = (
+  locale: string,
+  path: string,
+  localeCodes: readonly string[],
+  defaultLocale = DEFAULT_LOCALE
+): string =>
+  localizedPath(locale, localeNeutralPath(path, localeCodes, defaultLocale), defaultLocale)
+
 export const absoluteUrl = (siteUrl: string, path: string): string => {
   const normalizedSiteUrl = normalizeSiteUrl(siteUrl)
   const normalizedPath = normalizeUrlPath(path)

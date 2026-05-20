@@ -1,25 +1,11 @@
 <script setup lang="ts">
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
-import BaseSidebarCollection from "@docs/components/base/BaseSidebarCollection.vue"
-import BaseSidebarDivider from "@docs/components/base/BaseSidebarDivider.vue"
-import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
+import BaseSidebarNavList from "@docs/components/base/BaseSidebarNavList.vue"
 import type { SidebarItem } from "@docs/types"
 
 defineProps<{
   items: SidebarItem[]
 }>()
-
-const getSidebarItemKey = (item: SidebarItem): string => {
-  if (item.type === "link") {
-    return `link:${item.name || item.to || item.href || item.label || "unknown"}`
-  }
-
-  if (item.type === "collection") {
-    return `collection:${item.source}`
-  }
-
-  return `divider:${item.label || item.class || "divider"}`
-}
 </script>
 
 <template>
@@ -30,23 +16,7 @@ const getSidebarItemKey = (item: SidebarItem): string => {
           class="flex flex-col gap-1 p-1"
           :aria-label="$t('layout.navigation.aria.docsSidebar')"
         >
-          <template
-            v-for="item in items"
-            :key="getSidebarItemKey(item)"
-          >
-            <BaseSidebarLink
-              v-if="item.type === 'link'"
-              :item="item"
-            />
-            <BaseSidebarDivider
-              v-else-if="item.type === 'divider'"
-              :item="item"
-            />
-            <BaseSidebarCollection
-              v-else-if="item.type === 'collection'"
-              :item="item"
-            />
-          </template>
+          <BaseSidebarNavList :items="items" />
         </nav>
       </div>
     </BaseScrollbar>

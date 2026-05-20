@@ -1,6 +1,6 @@
 {
   "locale": "ru",
-  "builtAt": "2026-05-19T22:02:23.514Z",
+  "builtAt": "2026-05-20T00:24:46.197Z",
   "nodes": [
     {
       "id": "/docs/about/getting-started",
@@ -129,6 +129,7 @@
   "links": [
     { "source": "/docs/about/getting-started", "target": "/docs/about/projects" },
     { "source": "/docs/about/getting-started", "target": "/docs/guides/articles" },
+    { "source": "/docs/about/getting-started", "target": "/docs/tools/calculators" },
     { "source": "/docs/about/projects/stack", "target": "/docs/guides/starters" },
     { "source": "/docs/guides/articles/architecture", "target": "/docs/guides/articles/services" },
     {

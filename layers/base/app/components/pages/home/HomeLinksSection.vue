@@ -70,8 +70,9 @@ const getLocalizedText = (value?: { ru: string; en: string }): string | undefine
           <h2 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
             {{ $t("layout.navigation.menu.contacts") }}
           </h2>
+
           <div
-            class="flex rounded-full border border-black/10 bg-black/5 p-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5"
+            class="flex max-h-10 rounded-full border border-black/10 bg-black/5 p-1 backdrop-blur-md dark:border-white/10 dark:bg-white/5"
             role="tablist"
             :aria-label="$t('pages.home.viewMode.label')"
           >

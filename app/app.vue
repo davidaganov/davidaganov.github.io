@@ -38,7 +38,7 @@ useHead({
   },
   link: i18nHeadLinks,
   htmlAttrs: {
-    lang: htmlLang
+    lang: () => htmlLang.value
   }
 })
 

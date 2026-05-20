@@ -93,7 +93,6 @@
       },
       "aria": {
         "title": "Navigation",
-        "description": "Documentation navigation",
         "docsSidebar": "Sections in documentation",
         "articlesGuides": "Articles in Guides",
         "articlesAbout": "Articles in About"
@@ -107,8 +106,7 @@
     },
     "a11y": {
       "skipToContent": "Skip to main content",
-      "openMobileMenu": "Open site navigation menu",
-      "closeMobileMenu": "Close menu",
+      "openMenu": "Open site navigation menu",
       "docsPrimaryNav": "Documentation topics",
       "openSearchPalette": "Open search and navigation (Ctrl K or Cmd K)",
       "languageSelect": "Interface language",

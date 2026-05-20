@@ -81,7 +81,6 @@ export const useSidebarCollection = async (item: SidebarCollectionItem) => {
     items,
     isOpen,
     submenuPanelId,
-    submenuLabel,
     expandableLabel,
     submenuVisible,
     isIndexActive,

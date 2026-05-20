@@ -89,7 +89,7 @@ const {
       :class="submenuVisible ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
       :id="submenuPanelId"
     >
-      <div class="ml-2 min-h-0 space-y-0.5 overflow-hidden p-1">
+      <div class="ml-4 min-h-0 space-y-0.5 overflow-hidden lg:ml-2 lg:p-1">
         <BaseSidebarLink
           v-for="subItem in items"
           :item="subItem"

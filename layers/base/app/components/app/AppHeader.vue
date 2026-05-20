@@ -2,15 +2,13 @@
 import { useUiHeaderHeight } from "@base/composables/useUiHeaderHeight"
 import { useDocsHeaderNav } from "@docs/composables/useDocsHeaderNav"
 import AppHeaderNavLink from "@base/components/app/AppHeaderNavLink.vue"
-import AppMobileMenu from "@base/components/app/AppMobileMenu.vue"
+import AppMenuTrigger from "@base/components/app/AppMenuTrigger.vue"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import UiGitHubStars from "@ui/components/UiGitHubStars.vue"
 import UiLanguageSwitcher from "@ui/components/UiLanguageSwitcher.vue"
 import UiLogo from "@ui/components/UiLogo.vue"
 import UiSearchTrigger from "@ui/components/UiSearchTrigger.vue"
-import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 
-const isMobileMenuOpen = ref(false)
 const headerRef = ref<HTMLElement | null>(null)
 
 useUiHeaderHeight(headerRef)
@@ -30,19 +28,8 @@ const { isDocsRoute, primaryTabs, trailingActions, mobileInlineTrailingTabs, act
 
       <div class="flex items-center gap-2">
         <UiGitHubStars class="hidden sm:flex" />
-        <UiThemeToggle class="hidden lg:flex" />
         <UiLanguageSwitcher class="hidden lg:flex" />
-        <UButton
-          class="size-8 lg:hidden"
-          variant="ghost"
-          size="sm"
-          type="button"
-          icon="i-lucide-menu"
-          aria-controls="site-mobile-nav"
-          :aria-expanded="isMobileMenuOpen"
-          :aria-label="$t('layout.a11y.openMobileMenu')"
-          @click="isMobileMenuOpen = true"
-        />
+        <AppMenuTrigger />
       </div>
     </div>
 
@@ -90,9 +77,4 @@ const { isDocsRoute, primaryTabs, trailingActions, mobileInlineTrailingTabs, act
       </div>
     </div>
   </header>
-
-  <AppMobileMenu
-    :open="isMobileMenuOpen"
-    @close="isMobileMenuOpen = false"
-  />
 </template>

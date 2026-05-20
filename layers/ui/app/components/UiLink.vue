@@ -51,7 +51,7 @@ const componentProps = computed(() => {
  */
 const classes = computed(() => {
   return [
-    "group cursor-pointer  inline-flex items-center transition-all duration-200 rounded-lg text-sm font-medium whitespace-nowrap",
+    "group cursor-pointer inline-flex items-center transition-all duration-200 rounded-lg text-sm font-medium whitespace-nowrap",
     // Layout variant
     props.isIcon ? "size-9 justify-center shrink-0" : "px-3 py-2 gap-3",
     // State variant

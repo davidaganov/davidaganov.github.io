@@ -1,4 +1,4 @@
-import { absoluteUrl, canonicalPathForRequest } from "@app/utils/seo"
+import { absoluteUrl, localizedCanonicalPath } from "@app/utils/seo"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { buildStructuredDataNodes } from "@docs/utils/structuredData"
 import { type DocsPageData, type DocsSeoOptions, TYPE_PAGE } from "@docs/types"
@@ -9,7 +9,7 @@ export const useDocsSeo = ({
   parentCollectionItem,
   page
 }: DocsSeoOptions) => {
-  const { locale, t } = useI18n()
+  const { locale, locales, defaultLocale, t } = useI18n()
   const route = useRoute()
   const requestUrl = useRequestURL()
   const localePath = useLocalePath()
@@ -54,10 +54,20 @@ export const useDocsSeo = ({
     return trimTrailingSlash(configured || origin || "https://aganov.dev")
   })
 
-  const canonicalPath = computed(() => {
-    const path = route.path || "/"
-    return canonicalPathForRequest(path)
-  })
+  const localeCodes = computed(() =>
+    locales.value.map((entry) => (typeof entry === "string" ? entry : entry.code))
+  )
+
+  const defaultLocaleCode = computed(() => String(defaultLocale))
+
+  const canonicalPath = computed(() =>
+    localizedCanonicalPath(
+      String(locale.value),
+      route.path || "/",
+      localeCodes.value,
+      defaultLocaleCode.value
+    )
+  )
 
   const canonicalUrl = computed(() => absoluteUrl(siteUrl.value, canonicalPath.value))
 
@@ -88,14 +98,7 @@ export const useDocsSeo = ({
     () => nonEmptyString(pageSeo.value.ogImage) || nonEmptyString(pageSeo.value.image)
   )
 
-  const generatedOgImageUrl = computed(() => {
-    const pagePath = route.path || "/"
-    const normalizedPath = pagePath.startsWith("/") ? pagePath : `/${pagePath}`
-    const mode = import.meta.prerender ? "static" : "image"
-    return `${siteUrl.value}/__og-image__/${mode}${normalizedPath}/og.png`
-  })
-
-  const seoImage = computed(() => seoImageOverride.value ?? generatedOgImageUrl.value)
+  const seoImage = computed(() => seoImageOverride.value)
 
   const pageType = computed<TYPE_PAGE>(() => {
     const pt = parentCollectionItem.value?.pageType

@@ -78,7 +78,7 @@
       "layout.footer.repository": "Репозиторий на GitHub",
       "layout.footer.repositoryHint": "Исходный код этого портфолио.",
       "layout.a11y.skipToContent": "Перейти к основному содержимому",
-      "layout.a11y.openMobileMenu": "Открыть меню навигации",
+      "layout.a11y.openMenu": "Открыть меню навигации",
       "layout.a11y.closeMobileMenu": "Закрыть меню",
       "layout.a11y.docsPrimaryNav": "Темы документации",
       "layout.a11y.openSearchPalette": "Открыть поиск и навигацию (Ctrl K или Cmd K)",
