@@ -117,6 +117,14 @@
     }
   },
   "pages": {
+    "error": {
+      "notFoundTitle": "Page not found",
+      "notFoundDescription": "The link may be outdated or the address was entered incorrectly.",
+      "genericTitle": "Something went wrong",
+      "genericDescription": "Try again later or return to a safe page.",
+      "backHome": "Back to home",
+      "backDocs": "Go to documentation"
+    },
     "resume": {
       "seoTitle": "Resume",
       "seoDescription": "Concise resume: experience, stack, contacts, and key competencies in one place.",

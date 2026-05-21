@@ -11,9 +11,14 @@ import {
 import type { SidebarCollectionItem } from "@docs/types"
 
 export const useDocsRoute = async () => {
+  const nuxtApp = useNuxtApp()
   const localePath = useLocalePath()
   const route = useRoute()
   const { collection } = useContentCollection()
+
+  const redirectTo = (path: string) => {
+    return nuxtApp.runWithContext(() => navigateTo(localePath(path), { replace: true }))
+  }
 
   const getCollectionPathPrefix = (source: string) => `/docs/${sectionParam.value}/${source}`
 
@@ -62,11 +67,11 @@ export const useDocsRoute = async () => {
 
   const ensureValidRoute = async () => {
     if (!section.value) {
-      await navigateTo(localePath(getFirstPathForFirstSection()), { replace: true })
+      await redirectTo(getFirstPathForFirstSection())
       return false
     }
     if (!slugParam.value.length) {
-      await navigateTo(localePath(getFirstPathForSection(section.value)), { replace: true })
+      await redirectTo(getFirstPathForSection(section.value))
       return false
     }
     return true
@@ -84,17 +89,19 @@ export const useDocsRoute = async () => {
 
     if (firstChild?.path) {
       const relativePath = toRelativeContentPath(String(firstChild.path), queryPrefix)
-      await navigateTo(localePath(joinPublicDocsPath(pathPrefix, relativePath)), { replace: true })
+      await redirectTo(joinPublicDocsPath(pathPrefix, relativePath))
     }
   }
 
   const redirectMissingPage = async () => {
     await waitForPage()
     if (page.value || collectionItem.value) return
-    const targetPath = getFirstPathForSection(section.value)
-    if (targetPath && targetPath !== docsPath.value) {
-      await navigateTo(localePath(targetPath), { replace: true })
-    }
+
+    throw createError({
+      statusCode: 404,
+      fatal: false,
+      statusMessage: "Page Not Found"
+    })
   }
 
   await waitForPage()
