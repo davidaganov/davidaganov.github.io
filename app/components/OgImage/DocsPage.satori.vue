@@ -137,7 +137,7 @@ const props = withDefaults(
         <div
           class="mb-6 flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-300"
         >
-          <span class="bg-primary-500 mr-2 h-2.5 w-2.5 rounded-full" />
+          <span class="mr-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#b87eef]" />
           aganov.dev
         </div>
         <div class="flex text-7xl leading-tight font-bold">

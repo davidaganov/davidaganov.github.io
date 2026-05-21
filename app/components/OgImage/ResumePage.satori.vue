@@ -56,18 +56,18 @@ const props = withDefaults(
           </radialGradient>
 
           <radialGradient
-            cx="100%"
-            cy="100%"
-            r="70%"
-            id="resumeGlow"
+            cx="0%"
+            cy="0%"
+            r="80%"
+            id="homeGlow"
           >
             <stop
               offset="0%"
-              stop-color="rgba(16, 185, 129, 0.18)"
+              stop-color="rgba(184, 126, 239, 0.25)"
             />
             <stop
               offset="100%"
-              stop-color="rgba(16, 185, 129, 0)"
+              stop-color="rgba(184, 126, 239, 0)"
             />
           </radialGradient>
         </defs>
@@ -87,7 +87,7 @@ const props = withDefaults(
         <rect
           width="1200"
           height="630"
-          fill="url(#resumeGlow)"
+          fill="url(#homeGlow)"
         />
       </svg>
     </div>
@@ -101,9 +101,9 @@ const props = withDefaults(
         style="margin-top: -50px"
       >
         <div
-          class="mb-8 flex items-center rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-2 text-base font-medium text-emerald-200"
+          class="mb-8 flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-base font-medium text-slate-300"
         >
-          <span class="mr-2.5 h-3 w-3 rounded-full bg-emerald-400" />
+          <span class="mr-2.5 h-3 w-3 shrink-0 rounded-full bg-[#b87eef]" />
           aganov.dev
         </div>
         <div class="flex text-8xl leading-tight font-bold tracking-tight">
