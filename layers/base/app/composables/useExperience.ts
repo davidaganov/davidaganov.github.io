@@ -1,22 +1,31 @@
-/**
- * Composable for dynamically calculating years of professional experience.
- *
- * Frontend: started May 2021, step = 1 year, rounded up
- * Backend: started January 2025, step = 0.5 years, rounded up
- */
+const FRONTEND_START = new Date(2021, 4, 1)
+const BACKEND_START = new Date(2025, 0, 1)
 
-const calcYears = (start: Date, step: number): number => {
-  const now = new Date()
-  const diff = (now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 365.25)
-  return Math.ceil(diff / step) * step
+const MS_PER_YEAR = 1000 * 60 * 60 * 24 * 365.25
+const EXPERIENCE_YEAR_STEP = 0.5
+
+const elapsedYearsSince = (start: Date, now = new Date()): number => {
+  return (now.getTime() - start.getTime()) / MS_PER_YEAR
+}
+
+/** Rounds to nearest 0.5 (5, 5.5, 6, …) instead of always rounding up. */
+const roundExperienceYears = (
+  start: Date,
+  step = EXPERIENCE_YEAR_STEP,
+  now = new Date()
+): number => {
+  const years = elapsedYearsSince(start, now)
+  const rounded = Math.round(years / step) * step
+  return Number.isInteger(rounded) ? rounded : Math.round(rounded * 10) / 10
 }
 
 export const useExperience = () => {
   const frontendYears = useState("experience-frontend-years", () =>
-    calcYears(new Date(2021, 4, 1), 1)
+    roundExperienceYears(FRONTEND_START)
   )
+
   const backendYears = useState("experience-backend-years", () =>
-    calcYears(new Date(2025, 0, 1), 0.5)
+    roundExperienceYears(BACKEND_START)
   )
 
   return { frontendYears, backendYears }

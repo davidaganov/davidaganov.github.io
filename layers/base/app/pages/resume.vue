@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useSiteI18nHead } from "@app/composables/useSiteI18nHead"
+import { useResumeData } from "@base/composables/useResumeData"
 import ResumePage from "@base/components/pages/resume/ResumePage.vue"
 
-const { t } = useI18n()
-const { canonicalUrl } = useSiteI18nHead()
+const { t, locale } = useI18n()
+const { siteUrl, canonicalUrl } = useSiteI18nHead()
+const { content } = useResumeData()
 
 definePageMeta({
   layout: "clean",
@@ -19,12 +21,30 @@ useSeoMeta({
   description: () => seoDescription.value,
   ogTitle: () => seoTitle.value,
   ogDescription: () => seoDescription.value,
+  ogUrl: () => canonicalUrl.value,
+  ogType: "profile",
   twitterTitle: () => seoTitle.value,
   twitterDescription: () => seoDescription.value,
-  twitterCard: "summary",
-  robots: "index, follow",
-  ogUrl: () => canonicalUrl.value
+  twitterCard: "summary_large_image",
+  robots: "index, follow"
 })
+
+defineOgImage("ResumePage", {
+  title: seoTitle.value,
+  description: seoDescription.value,
+  role: content.value.role
+})
+
+useSchemaOrg([
+  defineWebPage({
+    "@type": "ProfilePage",
+    name: () => seoTitle.value,
+    description: () => seoDescription.value,
+    url: () => canonicalUrl.value,
+    inLanguage: locale.value === "ru" ? "ru-RU" : "en-US",
+    mainEntity: { "@id": `${siteUrl.value}/#person` }
+  })
+])
 </script>
 
 <template>
