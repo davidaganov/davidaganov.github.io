@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs"
 import { createRequire } from "node:module"
 import { join } from "node:path"
 import { joinURL } from "ufo"
+import type { ArticleMeta } from "@docs/types"
 import { ROUTE_PATH } from "../../layers/base/app/types"
 import { getLocaleCodes } from "../config/locales"
 import type {
@@ -58,6 +59,27 @@ const getBuildOgImageUrl = (): BuildOgImageUrlFn => {
 
   return buildOgImageUrl
 }
+
+const parseJsonColumn = <T>(value: unknown): T | null => {
+  if (value == null || value === "") return null
+  if (typeof value === "object") return value as T
+  if (typeof value !== "string") return null
+
+  try {
+    const parsed = JSON.parse(value) as T
+    return parsed && typeof parsed === "object" ? parsed : null
+  } catch {
+    return null
+  }
+}
+
+const mapSqliteRssEntry = (row: Record<string, unknown>): ContentRssEntry => ({
+  title: row.title as string | null | undefined,
+  description: row.description as string | null | undefined,
+  path: row.path as string | null | undefined,
+  meta: parseJsonColumn<ArticleMeta>(row.meta),
+  seo: parseJsonColumn<ContentRssEntry["seo"]>(row.seo)
+})
 
 const nonEmptyString = (value: unknown): string | undefined => {
   if (typeof value !== "string") return undefined
@@ -204,7 +226,8 @@ const loadRssItemsFromSqlite = (locale: string, siteUrl: string): RssPostItem[] 
 
   const entries = db
     .prepare(`SELECT title, description, path, meta, seo FROM ${table}`)
-    .all() as ContentRssEntry[]
+    .all()
+    .map((row) => mapSqliteRssEntry(row as Record<string, unknown>))
   db.close()
 
   return contentEntriesToRssItems(entries, locale, siteUrl, loadTranslator(locale))
