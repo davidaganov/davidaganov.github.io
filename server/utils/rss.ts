@@ -1,11 +1,7 @@
 import { queryCollection } from "@nuxt/content/server"
 import type { H3Event } from "h3"
-import {
-  buildRssXml,
-  contentEntriesToRssItems,
-  getHomeRssOgImageUrl,
-  getRssSiteLinks
-} from "@app/utils/rss"
+import { buildRssXml, getRssSiteLinks } from "@app/utils/rss"
+import { contentEntriesToRssItems, getHomeRssOgImageUrl } from "@app/utils/rss.server"
 import { DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "@app/utils/seo"
 import type { ContentRssEntry, ServeRssFeedOptions } from "@app/types"
 import { ROUTE_PATH } from "@base/types"

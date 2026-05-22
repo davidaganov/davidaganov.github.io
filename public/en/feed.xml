@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Aganov.dev — articles &amp; guides</title>
+    <link>https://aganov.dev/en/docs</link>
+    <description>New articles, projects, starters, and site materials.</description>
+    <language>en</language>
+    <lastBuildDate>Fri, 22 May 2026 19:43:46 GMT</lastBuildDate>
+    <atom:link href="https://aganov.dev/en/feed.xml" rel="self" type="application/rss+xml" />
+    <image>
+      <url>https://aganov.dev/_og/s/c_HomePage,w_1200,h_630,title_~QWdhbm92LmRldiDigJQgYXJ0aWNsZXMgJiBndWlkZXM,description_~TmV3IGFydGljbGVzLCBwcm9qZWN0cywgc3RhcnRlcnMsIGFuZCBzaXRlIG1hdGVyaWFscy4,p_Ii9lbiI.png</url>
+      <title>Aganov.dev — articles &amp; guides</title>
+      <link>https://aganov.dev/en/docs</link>
+      <width>1200</width>
+      <height>630</height>
+    </image>
+
+  </channel>
+</rss>

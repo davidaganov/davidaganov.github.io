@@ -1,8 +1,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
-import { resolve } from "node:path"
+import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { getLocaleCodes } from "../app/config/locales"
-import { buildRssFeedXml, getRssFeedPublicPath } from "../app/utils/rss"
+import { getRssFeedPublicPath } from "../app/utils/rss"
+import { buildRssFeedXml } from "../app/utils/rss.server"
 import { DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "../app/utils/seo"
 
 const root = resolve(fileURLToPath(new URL(".", import.meta.url)), "..")
@@ -52,8 +53,8 @@ const main = (): void => {
     const fileName = feedPath.startsWith("/") ? feedPath.slice(1) : feedPath
 
     for (const dir of outputTargets()) {
-      mkdirSync(dir, { recursive: true })
       const outPath = resolve(dir, fileName)
+      mkdirSync(dirname(outPath), { recursive: true })
       writeFileSync(outPath, xml, "utf8")
       console.info(`write-rss-feeds: wrote ${outPath}`)
     }

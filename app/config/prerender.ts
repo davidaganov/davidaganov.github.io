@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { getRssOgPrerenderRoutes } from "../utils/rss"
+import { getRssOgPrerenderRoutes } from "../utils/rss.server"
 import { localePathPrefix } from "../utils/seo"
 import { getLocaleCodes } from "./locales"
 
