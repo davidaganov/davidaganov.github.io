@@ -10,7 +10,7 @@
   },
   "employment": {
     "format": { "ru": "Удалённо", "en": "Remote" },
-    "type": { "ru": "Полная или проектная", "en": "Full-time or project-based" }
+    "type": { "ru": "Полная / Проектная", "en": "Full-time / Project-based" }
   },
   "experience": [
     {
@@ -51,8 +51,8 @@
         {
           "name": { "ru": "ПроектыПлюс", "en": "ProjectsPlus" },
           "subtitle": {
-            "ru": "Фриланс-биржа для специалистов широкого профиля",
-            "en": "Freelance marketplace for specialists in various fields"
+            "ru": "Фриланс-биржа",
+            "en": "Freelance marketplace"
           },
           "items": [
             {
@@ -191,12 +191,10 @@
   ],
   "ru": {
     "role": "Software Engineer / Vue, Nuxt, TypeScript",
-    "summary": "Software Engineer с коммерческим опытом в E-commerce и B2B. Создаю быстрые, масштабируемые и удобные веб-приложения с фокусом на строгую типизацию, продуманную архитектуру и чистую вёрстку. Комфортно работаю в команде и самостоятельно. Большой опыт работы с незнакомым кодом, легко адаптируюсь к новым технологиям и сложным задачам.",
-    "copyText": "Давид Аганов — Software Engineer / Vue, Nuxt, TypeScript\nФормат: удалённо · Занятость: полная или проектная\nОпыт: {{frontendYears}} лет (frontend)\nКонтакты: @davidaganov · davidaganov21@gmail.com\nСайт: https://aganov.dev/resume\n\nSoftware Engineer с опытом в E-commerce и B2B.\n\nСтек: Vue 3, Nuxt 3/4, TypeScript, JavaScript, Pinia, React, Tailwind CSS, Node.js, NestJS, Vitest, Playwright, Git, Docker, Vercel"
+    "summary": "Software Engineer с коммерческим опытом в E-commerce и B2B. Создаю быстрые, масштабируемые и удобные веб-приложения с фокусом на строгую типизацию, продуманную архитектуру и чистую вёрстку. Комфортно работаю в команде и самостоятельно. Большой опыт работы с незнакомым кодом, легко адаптируюсь к новым технологиям и сложным задачам."
   },
   "en": {
     "role": "Software Engineer / Vue, Nuxt, TypeScript",
-    "summary": "Software Engineer with commercial experience in E-commerce and B2B. I build fast, scalable, user-friendly web apps with strict typing, thoughtful architecture, and clean UI. I work well in teams and independently: diving into unfamiliar codebases, easily adapting to new technologies and complex tasks.",
-    "copyText": "David Aganov — Software Engineer / Vue, Nuxt, TypeScript\nFormat: remote · Employment: full-time or project-based\nExperience: {{frontendYears}} years (frontend)\nContact: @davidaganov · davidaganov21@gmail.com\nSite: https://aganov.dev/en/resume\n\nSoftware Engineer with E-commerce and B2B experience.\n\nStack: Vue 3, Nuxt 3/4, TypeScript, JavaScript, Pinia, React, Tailwind CSS, NestJS, Vitest, Playwright, Git, Docker, Vercel"
+    "summary": "Software Engineer with commercial experience in E-commerce and B2B. I build fast, scalable, user-friendly web apps with strict typing, thoughtful architecture, and clean UI. I work well in teams and independently: diving into unfamiliar codebases, easily adapting to new technologies and complex tasks."
   }
 }

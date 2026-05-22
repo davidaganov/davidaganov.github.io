@@ -1,29 +1,14 @@
 <script setup lang="ts">
 import { useExperience } from "@base/composables/useExperience"
 import { useResumeData } from "@base/composables/useResumeData"
+import { useResumePdf } from "@base/composables/useResumePdf"
 import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
 import { ROUTE_PATH } from "@base/types"
 
-const { t } = useI18n()
 const localePath = useLocalePath()
 const { frontendYears, backendYears } = useExperience()
 const { content, employmentFormat, employmentType, contacts } = useResumeData()
-
-const copyDone = ref(false)
-
-const copyResumeText = async () => {
-  const text = content.value.copyText.replace(/\{\{frontendYears\}\}/g, String(frontendYears.value))
-
-  try {
-    await navigator.clipboard.writeText(text)
-    copyDone.value = true
-    setTimeout(() => {
-      copyDone.value = false
-    }, 2000)
-  } catch {
-    copyDone.value = false
-  }
-}
+const { isGenerating, downloadPdf } = useResumePdf()
 
 const contactLinks = computed(() => [
   { label: "GitHub", href: contacts.github, icon: "i-simple-icons-github" },
@@ -111,9 +96,11 @@ const contactLinks = computed(() => [
         size="lg"
         color="neutral"
         variant="outline"
-        icon="i-lucide-copy"
-        :label="copyDone ? t('global.actions.copied') : t('global.actions.copy')"
-        @click="copyResumeText"
+        icon="i-lucide-download"
+        :loading="isGenerating"
+        :disabled="isGenerating"
+        :label="isGenerating ? $t('pages.resume.generatingPdf') : $t('global.actions.download')"
+        @click="downloadPdf"
       />
     </div>
 

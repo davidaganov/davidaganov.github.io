@@ -7,8 +7,7 @@ const skillTagSchema = z.enum(RESUME_SKILL_TAGS)
 
 const localeContentSchema = z.object({
   role: z.string().min(1),
-  summary: z.string().min(1),
-  copyText: z.string().min(1)
+  summary: z.string().min(1)
 })
 
 const localeContentsShape = Object.fromEntries(

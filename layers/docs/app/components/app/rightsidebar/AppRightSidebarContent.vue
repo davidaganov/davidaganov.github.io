@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useWindowScroll } from "@vueuse/core"
+import { getRssFeedPublicPath } from "@app/utils/rssFeed"
 import { SOCIAL_LINKS } from "@base/constants"
 import AppRightSidebarArchiveDownload from "@docs/components/app/rightsidebar/AppRightSidebarArchiveDownload.vue"
 import AppRightSidebarArticleMeta from "@docs/components/app/rightsidebar/AppRightSidebarArticleMeta.vue"
@@ -26,9 +27,31 @@ const props = withDefaults(
   }
 )
 
+const { locale, t } = useI18n()
+const runtimeConfig = useRuntimeConfig()
 const { y } = useWindowScroll()
 
+const rssCopied = ref(false)
+
+const feedUrl = computed(() => {
+  const siteUrl = String(runtimeConfig.public.siteUrl || "").replace(/\/+$/, "")
+  return `${siteUrl}${getRssFeedPublicPath(locale.value)}`
+})
+
+const rssIcon = computed(() => (rssCopied.value ? "i-lucide-check" : "i-lucide-rss"))
 const isScrollShown = computed(() => !import.meta.server && y.value >= SCROLL_TOP_THRESHOLD_PX)
+
+const copyRssFeedUrl = async () => {
+  try {
+    await navigator.clipboard.writeText(feedUrl.value)
+    rssCopied.value = true
+    setTimeout(() => {
+      rssCopied.value = false
+    }, 2000)
+  } catch {
+    rssCopied.value = false
+  }
+}
 
 const scrollToTop = () => {
   window.scrollTo({
@@ -124,6 +147,20 @@ const scrollToTop = () => {
             :name="item.icon"
           />
         </a>
+
+        <button
+          type="button"
+          class="text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-white"
+          :title="t('layout.rss.copyAction')"
+          :class="rssCopied ? 'text-emerald-600 dark:text-emerald-400' : ''"
+          :aria-label="rssCopied ? t('global.actions.copied') : t('layout.rss.copyAction')"
+          @click="copyRssFeedUrl"
+        >
+          <UIcon
+            class="size-5"
+            :name="rssIcon"
+          />
+        </button>
 
         <button
           v-if="isScrollShown"

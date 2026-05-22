@@ -100,10 +100,16 @@
     },
     "footer": {
       "resume": "Resume",
+      "rss": "RSS",
       "main": "Main",
       "docSections": "Sections",
       "repository": "GitHub Repository",
       "repositoryHint": "Source code of this portfolio."
+    },
+    "rss": {
+      "feedTitle": "Aganov.dev — articles & guides",
+      "feedDescription": "New articles, projects, starters, and site materials.",
+      "copyAction": "Copy RSS feed URL"
     },
     "a11y": {
       "skipToContent": "Skip to main content",
@@ -135,6 +141,7 @@
       "experienceBackend": "Backend experience",
       "years": "{count} years",
       "stack": "Stack",
+      "generatingPdf": "Downloading...",
       "sections": {
         "summary": "Summary",
         "experience": "Work experience",

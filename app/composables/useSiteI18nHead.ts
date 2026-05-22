@@ -1,3 +1,4 @@
+import { getRssFeedPublicPath } from "@app/utils/rssFeed"
 import { absoluteUrl, localizedCanonicalPath, normalizeSiteUrl } from "@app/utils/seo"
 import { ROUTE_PATH } from "@base/types"
 
@@ -7,7 +8,7 @@ const resolveLocaleCode = (entry: string | { code: string }): string =>
 export const useSiteI18nHead = () => {
   const route = useRoute()
   const runtimeConfig = useRuntimeConfig()
-  const { locale, locales, defaultLocale } = useI18n()
+  const { locale, locales, defaultLocale, t } = useI18n()
 
   const siteUrl = computed(() => normalizeSiteUrl(runtimeConfig.public.siteUrl))
   const localeCodes = computed(() => locales.value.map(resolveLocaleCode))
@@ -27,8 +28,18 @@ export const useSiteI18nHead = () => {
 
   const localeAlternateUrl = (code: string) => absoluteUrl(siteUrl.value, pathForLocale(code))
 
+  const rssFeedUrl = computed(() =>
+    absoluteUrl(siteUrl.value, getRssFeedPublicPath(String(locale.value), defaultLocaleCode.value))
+  )
+
   const i18nHeadLinks = computed(() => [
     { rel: "canonical" as const, href: canonicalUrl.value },
+    {
+      rel: "alternate" as const,
+      type: "application/rss+xml",
+      title: t("layout.rss.feedTitle"),
+      href: rssFeedUrl.value
+    },
     ...localeCodes.value.map((code) => ({
       rel: "alternate" as const,
       hreflang: code,

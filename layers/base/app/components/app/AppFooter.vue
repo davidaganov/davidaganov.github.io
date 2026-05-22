@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useProjectsTop } from "@docs/composables/useProjectsTop"
+import { getRssFeedPublicPath } from "@app/utils/rssFeed"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { GITHUB_REPO, SOCIAL_LINKS } from "@base/constants"
 import { DOCS_SECTIONS } from "@docs/constants"
@@ -10,12 +11,11 @@ const PROJECTS_LIMIT = 3
 const REPO_URL = `https://github.com/${GITHUB_REPO}`
 
 const localePath = useLocalePath()
-const { t } = useI18n()
+const { locale, t } = useI18n()
 
 const { projects, loading } = await useProjectsTop(PROJECTS_LIMIT)
 
 const projectList = computed(() => projects.value ?? [])
-
 const year = computed(() => new Date().getFullYear())
 
 const links = computed(() => [
@@ -25,15 +25,17 @@ const links = computed(() => [
     icon: "i-lucide-file-text"
   },
   {
-    label: t("layout.navigation.menu.projects"),
-    to: ROUTE_PATH.ABOUT_PROJECTS,
-    icon: "i-lucide-folder-kanban"
-  },
-  {
     label: t("layout.navigation.menu.articles"),
     ariaLabel: t("layout.navigation.aria.articlesAbout"),
     to: ROUTE_PATH.ABOUT_ARTICLES,
     icon: "i-lucide-newspaper"
+  },
+  {
+    label: t("layout.footer.rss"),
+    title: t("layout.rss.copyAction"),
+    to: getRssFeedPublicPath(locale.value),
+    icon: "i-lucide-rss",
+    external: true
   }
 ])
 
@@ -66,11 +68,13 @@ const repositoryLinkTitle = computed(() => {
           <ul class="flex flex-col gap-2.5">
             <li
               v-for="item in links"
-              :key="item.to"
+              :key="item.label"
             >
               <NuxtLink
+                v-if="!item.external"
                 class="group inline-flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
                 :to="localePath(item.to)"
+                :title="item.title"
                 :aria-label="item.ariaLabel"
               >
                 <UIcon
@@ -80,6 +84,21 @@ const repositoryLinkTitle = computed(() => {
                 />
                 {{ item.label }}
               </NuxtLink>
+              <a
+                v-else
+                class="group inline-flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+                :title="item.title"
+                :href="item.to"
+              >
+                <UIcon
+                  aria-hidden="true"
+                  class="size-3.5 opacity-55 transition-opacity group-hover:opacity-100"
+                  :name="item.icon"
+                />
+                {{ item.label }}
+              </a>
             </li>
           </ul>
         </div>

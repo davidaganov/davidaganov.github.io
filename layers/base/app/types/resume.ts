@@ -47,6 +47,13 @@ export interface ResumeExperienceEntry {
   projects?: ResumeExperienceProject[]
 }
 
+export interface ResumeExperienceProjectView {
+  name?: string
+  subtitle?: string
+  items: string[]
+  stack?: string
+}
+
 export interface ResumeExperienceView {
   company: string
   role: string
@@ -56,18 +63,42 @@ export interface ResumeExperienceView {
   intro?: string
   items: string[]
   stack?: string
-  projects: Array<{
-    name?: string
-    subtitle?: string
-    items: string[]
-    stack?: string
-  }>
+  projects: ResumeExperienceProjectView[]
+}
+
+export interface ResumePdfSkillGroup {
+  label: string
+  items: string[]
+}
+
+export interface ResumePdfLabels {
+  skills: string
+  summary: string
+  experience: string
+}
+
+export interface ResumePdfInput {
+  name: string
+  role: string
+  summary: string
+  employmentFormat: string
+  employmentType: string
+  frontendYearsLabel: string
+  backendYearsLabel: string
+  contacts: ResumeContacts
+  skillGroups: ResumePdfSkillGroup[]
+  experience: ResumeExperienceView[]
+  labels: ResumePdfLabels
+}
+
+export interface PdfMakeVfsModule {
+  pdfMake?: { vfs: Record<string, string> }
+  default?: { pdfMake?: { vfs: Record<string, string> } }
 }
 
 export interface ResumeLocaleContent {
   role: string
   summary: string
-  copyText: string
 }
 
 export type ResumeLocaleContents = Record<string, ResumeLocaleContent>

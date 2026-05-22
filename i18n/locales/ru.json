@@ -100,10 +100,16 @@
     },
     "footer": {
       "resume": "Резюме",
+      "rss": "RSS",
       "main": "Главное",
       "docSections": "Разделы",
       "repository": "Репозиторий на GitHub",
       "repositoryHint": "Исходный код этого портфолио."
+    },
+    "rss": {
+      "feedTitle": "Aganov.dev — статьи и гайды",
+      "feedDescription": "Новые статьи, проекты, шаблоны и материалы с сайта.",
+      "copyAction": "Скопировать ссылку на RSS-ленту"
     },
     "a11y": {
       "skipToContent": "Перейти к основному содержимому",
@@ -135,6 +141,7 @@
       "experienceBackend": "Backend опыт",
       "years": "{count} лет",
       "stack": "Стек",
+      "generatingPdf": "Загрузка...",
       "sections": {
         "summary": "О себе",
         "experience": "Опыт работы",
