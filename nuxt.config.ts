@@ -111,6 +111,15 @@ export default defineNuxtConfig({
   },
 
   hooks: {
+    ready(nuxt) {
+      if (!nuxt.options.dev) return
+
+      execSync("npx tsx scripts/build-docs-assets.ts", {
+        cwd: rootDir,
+        stdio: "inherit",
+        env: process.env
+      })
+    },
     "build:done": () => {
       execSync("npx tsx scripts/build-docs-assets.ts", {
         cwd: rootDir,

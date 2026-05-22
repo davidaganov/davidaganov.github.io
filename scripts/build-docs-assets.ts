@@ -1,4 +1,5 @@
 import Database from "better-sqlite3"
+import { createHash } from "node:crypto"
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import { join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -23,11 +24,99 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url))
 const root = resolve(__dirname, "..")
 const sqlitePath = resolve(root, ".data/content/contents.sqlite")
 const publicDir = resolve(root, "public")
-const contentDir = resolve(root, "layers/docs/app/content")
+const serverAssetsDir = resolve(root, "server/assets")
+const markdownContentDir = resolve(root, "content")
+const archiveContentDir = resolve(root, "layers/docs/app/content")
+const contentInputRoots = [markdownContentDir, archiveContentDir]
 
 type GraphRow = { path: string; title: string | null; body: string | null }
 
 const undirectedKey = (a: string, b: string): string => (a < b ? `${a}::${b}` : `${b}::${a}`)
+
+const hashPayload = (payload: unknown): string =>
+  createHash("sha256").update(JSON.stringify(payload)).digest("hex")
+
+const latestMtimeMs = (paths: string[]): number => {
+  let latest = 0
+
+  const visit = (targetPath: string): void => {
+    if (!existsSync(targetPath)) return
+
+    let stat
+    try {
+      stat = statSync(targetPath)
+    } catch {
+      return
+    }
+
+    latest = Math.max(latest, stat.mtimeMs)
+    if (!stat.isDirectory()) return
+
+    for (const entry of readdirSync(targetPath, { withFileTypes: true })) {
+      if (entry.name.startsWith(".")) continue
+      visit(join(targetPath, entry.name))
+    }
+  }
+
+  for (const path of paths) visit(path)
+  return latest
+}
+
+const oldestMtimeMs = (paths: string[]): number | null => {
+  const existing = paths.filter((path) => existsSync(path))
+  if (!existing.length) return null
+
+  return Math.min(
+    ...existing.map((path) => {
+      try {
+        return statSync(path).mtimeMs
+      } catch {
+        return 0
+      }
+    })
+  )
+}
+
+const readStableHash = (path: string, toStable: (parsed: unknown) => unknown): string | null => {
+  try {
+    const parsed = JSON.parse(readFileSync(path, "utf8")) as unknown
+    return hashPayload(toStable(parsed))
+  } catch {
+    return null
+  }
+}
+
+const writeJsonIfChanged = (
+  path: string,
+  stablePayload: unknown,
+  filePayload: unknown
+): boolean => {
+  const nextHash = hashPayload(stablePayload)
+  const previousHash = readStableHash(path, () => stablePayload)
+
+  if (previousHash === nextHash) return false
+
+  writeFileSync(path, `${JSON.stringify(filePayload)}\n`, "utf8")
+  return true
+}
+
+const writeMirroredJsonIfChanged = (
+  publicPath: string,
+  serverPath: string,
+  stablePayload: unknown,
+  filePayload: unknown
+): boolean => {
+  const serialized = `${JSON.stringify(filePayload)}\n`
+  const nextHash = hashPayload(stablePayload)
+  const publicHash = readStableHash(publicPath, () => stablePayload)
+  const serverHash = readStableHash(serverPath, () => stablePayload)
+
+  if (publicHash === nextHash && serverHash === nextHash) return false
+
+  writeFileSync(publicPath, serialized, "utf8")
+  writeFileSync(serverPath, serialized, "utf8")
+  return true
+}
 
 const buildHueIndexMap = (keys: Iterable<string>): Map<string, number> => {
   const sorted = [...new Set(keys)].sort()
@@ -39,7 +128,7 @@ const isExcludedGraphPath = (collectionKey: string, contentPath: string): boolea
     return collectionKey === exc || contentPath === `/${exc}` || contentPath.startsWith(`/${exc}/`)
   })
 
-const buildGraphForLocale = (locale: string): DocsGraphFile => {
+const buildGraphForLocale = (locale: string): Omit<DocsGraphFile, "builtAt"> => {
   const db = new Database(sqlitePath, { readonly: true })
   const table = `_content_content_${locale}`
 
@@ -52,7 +141,6 @@ const buildGraphForLocale = (locale: string): DocsGraphFile => {
     console.warn(`build-docs-assets: table ${table} missing, writing empty graph`)
     return {
       locale,
-      builtAt: new Date().toISOString(),
       nodes: [],
       links: []
     }
@@ -157,7 +245,6 @@ const buildGraphForLocale = (locale: string): DocsGraphFile => {
 
   return {
     locale,
-    builtAt: new Date().toISOString(),
     nodes,
     links
   }
@@ -173,7 +260,11 @@ const hasFilesInTree = (dir: string): boolean => {
   return false
 }
 
-const collectArchiveKeysForSection = (section: string, keys: Set<string>): void => {
+const collectArchiveKeysForSection = (
+  section: string,
+  keys: Set<string>,
+  contentDir: string
+): void => {
   const sectionDir = join(contentDir, section)
   if (!existsSync(sectionDir)) return
 
@@ -196,15 +287,23 @@ const collectArchiveKeysForSection = (section: string, keys: Set<string>): void 
 
 const buildArchiveIndex = (): string[] => {
   const keys = new Set<string>()
-  if (!existsSync(contentDir)) return []
+  if (!existsSync(archiveContentDir)) return []
 
-  for (const entry of readdirSync(contentDir, { withFileTypes: true })) {
+  for (const entry of readdirSync(archiveContentDir, { withFileTypes: true })) {
     if (!entry.isDirectory() || entry.name.startsWith(".")) continue
-    collectArchiveKeysForSection(entry.name, keys)
+    collectArchiveKeysForSection(entry.name, keys, archiveContentDir)
   }
 
   return [...keys].sort()
 }
+
+const getTrackedOutputPaths = (): string[] => [
+  resolve(publicDir, "archive-index.json"),
+  ...CONTENT_LOCALES.flatMap((locale) => [
+    resolve(publicDir, `graph-${locale}.json`),
+    resolve(serverAssetsDir, `graph-${locale}.json`)
+  ])
+]
 
 const main = (): void => {
   try {
@@ -215,23 +314,38 @@ const main = (): void => {
   }
 
   mkdirSync(publicDir, { recursive: true })
-  const serverAssetsDir = resolve(root, "server/assets")
   mkdirSync(serverAssetsDir, { recursive: true })
 
-  const archiveKeys = buildArchiveIndex()
-  const archivePath = resolve(publicDir, "archive-index.json")
-  const archiveContent = JSON.stringify({ keys: archiveKeys, builtAt: new Date().toISOString() })
+  const outputPaths = getTrackedOutputPaths()
+  const inputSources = [...contentInputRoots, sqlitePath]
+  const inputMtime = latestMtimeMs(inputSources)
+  const outputMtime = oldestMtimeMs(outputPaths)
 
-  writeFileSync(archivePath, archiveContent)
-  writeFileSync(resolve(serverAssetsDir, "archive-index.json"), archiveContent)
-  console.info(
-    `build-docs-assets: wrote ${archivePath} and server assets copy (${archiveKeys.length} archive roots)`
-  )
+  if (outputMtime !== null && inputMtime <= outputMtime) {
+    console.info("build-docs-assets: up to date (content inputs unchanged)")
+    return
+  }
+
+  let wroteAny = false
+
+  const archiveKeys = buildArchiveIndex()
+  const archiveStable = { keys: archiveKeys }
+  const archivePath = resolve(publicDir, "archive-index.json")
+  const archiveChanged = writeJsonIfChanged(archivePath, archiveStable, {
+    keys: archiveKeys,
+    builtAt: new Date().toISOString()
+  })
+
+  if (archiveChanged) {
+    wroteAny = true
+    console.info(`build-docs-assets: wrote ${archivePath} (${archiveKeys.length} archive roots)`)
+  }
 
   if (!existsSync(sqlitePath)) {
     console.warn(
       "build-docs-assets: skip graph (no content database). Run `nuxt prepare` or `nuxt dev` first."
     )
+    if (!wroteAny) console.info("build-docs-assets: no file changes")
     return
   }
 
@@ -239,23 +353,35 @@ const main = (): void => {
     statSync(sqlitePath)
   } catch {
     console.warn("build-docs-assets: skip graph (cannot read sqlite file)")
+    if (!wroteAny) console.info("build-docs-assets: no file changes")
     return
   }
 
   for (const locale of CONTENT_LOCALES) {
-    const data = buildGraphForLocale(locale)
-    const dataStr = JSON.stringify(data)
+    const graphData = buildGraphForLocale(locale)
+    const graphStable = {
+      locale: graphData.locale,
+      nodes: graphData.nodes,
+      links: graphData.links
+    }
+    const graphFile = {
+      ...graphData,
+      builtAt: new Date().toISOString()
+    }
 
-    const outPath = resolve(publicDir, `graph-${locale}.json`)
-    writeFileSync(outPath, dataStr, "utf8")
+    const publicPath = resolve(publicDir, `graph-${locale}.json`)
+    const serverPath = resolve(serverAssetsDir, `graph-${locale}.json`)
+    const graphChanged = writeMirroredJsonIfChanged(publicPath, serverPath, graphStable, graphFile)
 
-    const serverOutPath = resolve(serverAssetsDir, `graph-${locale}.json`)
-    writeFileSync(serverOutPath, dataStr, "utf8")
-
-    console.info(
-      `build-docs-assets: wrote ${outPath} and ${serverOutPath} (${data.nodes.length} nodes, ${data.links.length} links)`
-    )
+    if (graphChanged) {
+      wroteAny = true
+      console.info(
+        `build-docs-assets: wrote ${publicPath} and ${serverPath} (${graphData.nodes.length} nodes, ${graphData.links.length} links)`
+      )
+    }
   }
+
+  if (!wroteAny) console.info("build-docs-assets: no file changes")
 }
 
 main()
