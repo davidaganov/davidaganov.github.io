@@ -2,5 +2,5 @@ export enum TYPE_PAGE {
   PROJECT = "project",
   ARTICLE = "article",
   DOCS = "docs",
-  STARTER = "starter"
+  TEMPLATE = "template"
 }

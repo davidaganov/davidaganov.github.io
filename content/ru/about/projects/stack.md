@@ -25,7 +25,7 @@ tags:
 - **Vue Lynx** — [`vue-lynx-template`](https://github.com/davidaganov/vue-lynx-template)
 - **Astro Clean** — [`astro-clean-template`](https://github.com/davidaganov/astro-clean-template)
 
-Подробнее про каждый — в разделе [Шаблоны](/docs/guides/starters).
+Подробнее про каждый — в разделе [Шаблоны](/docs/guides/templates).
 
 ## Как устроено
 

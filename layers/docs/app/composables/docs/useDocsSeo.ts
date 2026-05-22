@@ -105,8 +105,8 @@ export const useDocsSeo = ({
     switch (pt) {
       case TYPE_PAGE.PROJECT:
         return TYPE_PAGE.PROJECT
-      case TYPE_PAGE.STARTER:
-        return TYPE_PAGE.STARTER
+      case TYPE_PAGE.TEMPLATE:
+        return TYPE_PAGE.TEMPLATE
       default:
         return TYPE_PAGE.ARTICLE
     }

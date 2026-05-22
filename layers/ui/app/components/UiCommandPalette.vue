@@ -22,14 +22,14 @@ const categoryLabels: Record<TYPE_PAGE, string> = {
   [TYPE_PAGE.DOCS]: t("layout.navigation.sections.docs"),
   [TYPE_PAGE.ARTICLE]: t("layout.navigation.menu.articles"),
   [TYPE_PAGE.PROJECT]: t("layout.navigation.menu.projects"),
-  [TYPE_PAGE.STARTER]: t("layout.navigation.menu.starters")
+  [TYPE_PAGE.TEMPLATE]: t("layout.navigation.menu.templates")
 }
 
 const categoryOrder = [
   TYPE_PAGE.DOCS,
   TYPE_PAGE.ARTICLE,
   TYPE_PAGE.PROJECT,
-  TYPE_PAGE.STARTER
+  TYPE_PAGE.TEMPLATE
 ] as const
 
 const inputRef = ref<HTMLInputElement | null>(null)

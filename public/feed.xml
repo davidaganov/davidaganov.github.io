@@ -5,7 +5,7 @@
     <link>https://aganov.dev/docs</link>
     <description>Новые статьи, проекты, шаблоны и материалы с сайта.</description>
     <language>ru</language>
-    <lastBuildDate>Fri, 22 May 2026 20:14:46 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 22 May 2026 20:40:30 GMT</lastBuildDate>
     <atom:link href="https://aganov.dev/feed.xml" rel="self" type="application/rss+xml" />
     <image>
       <url>https://aganov.dev/_og/s/o_my2d4s.png</url>
@@ -19,140 +19,110 @@
       <link>https://aganov.dev/docs/guides/articles/architecture</link>
       <guid isPermaLink="true">https://aganov.dev/docs/guides/articles/architecture</guid>
       <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Как я организую структуру папок, компоненты, стор, роутинг, валидацию — и почему именно так.</p><p><em>10 мин</em></p>]]></description>
+      <description><![CDATA[Как я организую структуру папок, компоненты, стор, роутинг, валидацию — и почему именно так. (10 мин)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_cdddrs.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_cdddrs.png" />
       <category>Гайды / Статьи</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_cdddrs.png" alt="Архитектура проекта" width="1200" height="630" /></figure>
-<p>Как я организую структуру папок, компоненты, стор, роутинг, валидацию — и почему именно так.</p><p><em>10 мин</em></p>
-<p><span>#Frontend</span> <span>#Vue 3</span> <span>#Архитектура</span></p>
-<p><a href="https://aganov.dev/docs/guides/articles/architecture">Архитектура проекта</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_cdddrs.png" alt="Архитектура проекта" width="1200" height="630" /></p><p>Как я организую структуру папок, компоненты, стор, роутинг, валидацию — и почему именно так.</p><p><em>10 мин</em></p><p>#Frontend #Vue 3 #Архитектура</p><p><a href="https://aganov.dev/docs/guides/articles/architecture">Архитектура проекта</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Stack</title>
       <link>https://aganov.dev/docs/about/projects/stack</link>
       <guid isPermaLink="true">https://aganov.dev/docs/about/projects/stack</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>CLI для генерации проектов из моих шаблонов — выбираешь что нужно, получаешь чистый результат без лишнего.</p>]]></description>
+      <description><![CDATA[CLI для генерации проектов из моих шаблонов — выбираешь что нужно, получаешь чистый результат без лишнего.]]></description>
       <media:content url="https://aganov.dev/_og/s/o_7nu3cj.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_7nu3cj.png" />
       <category>Обо мне / Проекты</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_7nu3cj.png" alt="Stack" width="1200" height="630" /></figure>
-<p>CLI для генерации проектов из моих шаблонов — выбираешь что нужно, получаешь чистый результат без лишнего.</p>
-<p><span>#CLI</span> <span>#Инструменты</span> <span>#Фронтенд</span> <span>#DX</span></p>
-<p><a href="https://aganov.dev/docs/about/projects/stack">Stack</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_7nu3cj.png" alt="Stack" width="1200" height="630" /></p><p>CLI для генерации проектов из моих шаблонов — выбираешь что нужно, получаешь чистый результат без лишнего.</p><p>#CLI #Инструменты #Фронтенд #DX</p><p><a href="https://aganov.dev/docs/about/projects/stack">Stack</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Vue Lynx Template</title>
-      <link>https://aganov.dev/docs/guides/starters/vue-lynx-template</link>
-      <guid isPermaLink="true">https://aganov.dev/docs/guides/starters/vue-lynx-template</guid>
+      <link>https://aganov.dev/docs/guides/templates/vue-lynx-template</link>
+      <guid isPermaLink="true">https://aganov.dev/docs/guides/templates/vue-lynx-template</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Шаблон для мобильных приложений на Vue 3 + Lynx. Привычный Vue 3, а на выходе — нативное Android-приложение.</p>]]></description>
+      <description><![CDATA[Шаблон для мобильных приложений на Vue 3 + Lynx. Привычный Vue 3, а на выходе — нативное Android-приложение.]]></description>
       <media:content url="https://aganov.dev/_og/s/o_yqqptv.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_yqqptv.png" />
       <category>Гайды / Шаблоны</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_yqqptv.png" alt="Vue Lynx Template" width="1200" height="630" /></figure>
-<p>Шаблон для мобильных приложений на Vue 3 + Lynx. Привычный Vue 3, а на выходе — нативное Android-приложение.</p>
-<p><span>#Vue</span> <span>#Mobile</span> <span>#Lynx</span> <span>#Frontend</span> <span>#Tools</span></p>
-<p><a href="https://aganov.dev/docs/guides/starters/vue-lynx-template">Vue Lynx Template</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_yqqptv.png" alt="Vue Lynx Template" width="1200" height="630" /></p><p>Шаблон для мобильных приложений на Vue 3 + Lynx. Привычный Vue 3, а на выходе — нативное Android-приложение.</p><p>#Vue #Mobile #Lynx #Frontend #Tools</p><p><a href="https://aganov.dev/docs/guides/templates/vue-lynx-template">Vue Lynx Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Vue Modern Template</title>
-      <link>https://aganov.dev/docs/guides/starters/vue-modern-template</link>
-      <guid isPermaLink="true">https://aganov.dev/docs/guides/starters/vue-modern-template</guid>
+      <link>https://aganov.dev/docs/guides/templates/vue-modern-template</link>
+      <guid isPermaLink="true">https://aganov.dev/docs/guides/templates/vue-modern-template</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Чистый шаблон для Vue 3 приложений. TypeScript, Tailwind и стабильная архитектура.</p>]]></description>
+      <description><![CDATA[Чистый шаблон для Vue 3 приложений. TypeScript, Tailwind и стабильная архитектура.]]></description>
       <media:content url="https://aganov.dev/_og/s/o_o17wzd.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_o17wzd.png" />
       <category>Гайды / Шаблоны</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_o17wzd.png" alt="Vue Modern Template" width="1200" height="630" /></figure>
-<p>Чистый шаблон для Vue 3 приложений. TypeScript, Tailwind и стабильная архитектура.</p>
-<p><span>#Vue</span> <span>#Frontend</span></p>
-<p><a href="https://aganov.dev/docs/guides/starters/vue-modern-template">Vue Modern Template</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_o17wzd.png" alt="Vue Modern Template" width="1200" height="630" /></p><p>Чистый шаблон для Vue 3 приложений. TypeScript, Tailwind и стабильная архитектура.</p><p>#Vue #Frontend</p><p><a href="https://aganov.dev/docs/guides/templates/vue-modern-template">Vue Modern Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Vue PWA Template</title>
-      <link>https://aganov.dev/docs/guides/starters/vue-pwa-template</link>
-      <guid isPermaLink="true">https://aganov.dev/docs/guides/starters/vue-pwa-template</guid>
+      <link>https://aganov.dev/docs/guides/templates/vue-pwa-template</link>
+      <guid isPermaLink="true">https://aganov.dev/docs/guides/templates/vue-pwa-template</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Шаблон для Progressive Web App на Vue 3 + Vite. Offline-режим из коробки, Tailwind, TypeScript — и минимум лишнего в базовой сборке.</p>]]></description>
+      <description><![CDATA[Шаблон для Progressive Web App на Vue 3 + Vite. Offline-режим из коробки, Tailwind, TypeScript — и минимум лишнего в базовой сборке.]]></description>
       <media:content url="https://aganov.dev/_og/s/o_gy41za.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_gy41za.png" />
       <category>Гайды / Шаблоны</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_gy41za.png" alt="Vue PWA Template" width="1200" height="630" /></figure>
-<p>Шаблон для Progressive Web App на Vue 3 + Vite. Offline-режим из коробки, Tailwind, TypeScript — и минимум лишнего в базовой сборке.</p>
-<p><span>#Vue</span> <span>#PWA</span> <span>#Frontend</span> <span>#Tools</span></p>
-<p><a href="https://aganov.dev/docs/guides/starters/vue-pwa-template">Vue PWA Template</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_gy41za.png" alt="Vue PWA Template" width="1200" height="630" /></p><p>Шаблон для Progressive Web App на Vue 3 + Vite. Offline-режим из коробки, Tailwind, TypeScript — и минимум лишнего в базовой сборке.</p><p>#Vue #PWA #Frontend #Tools</p><p><a href="https://aganov.dev/docs/guides/templates/vue-pwa-template">Vue PWA Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Astro Clean Template</title>
-      <link>https://aganov.dev/docs/guides/starters/astro-clean-template</link>
-      <guid isPermaLink="true">https://aganov.dev/docs/guides/starters/astro-clean-template</guid>
+      <link>https://aganov.dev/docs/guides/templates/astro-clean-template</link>
+      <guid isPermaLink="true">https://aganov.dev/docs/guides/templates/astro-clean-template</guid>
       <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Стартер для статических сайтов на Astro. Собирает компоненты в предсказуемые HTML/CSS/JS-файлы — без лишних зависимостей, без бандлера для клиентского кода, без магии.</p>]]></description>
-      <media:content url="https://aganov.dev/_og/s/o_6s1jvj.png" medium="image" type="image/png" />
-      <media:thumbnail url="https://aganov.dev/_og/s/o_6s1jvj.png" />
+      <description><![CDATA[Шаблон для статических сайтов на Astro. Собирает компоненты в предсказуемые HTML/CSS/JS-файлы — без лишних зависимостей, без бандлера для клиентского кода, без магии.]]></description>
+      <media:content url="https://aganov.dev/_og/s/o_tkga88.png" medium="image" type="image/png" />
+      <media:thumbnail url="https://aganov.dev/_og/s/o_tkga88.png" />
       <category>Гайды / Шаблоны</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_6s1jvj.png" alt="Astro Clean Template" width="1200" height="630" /></figure>
-<p>Стартер для статических сайтов на Astro. Собирает компоненты в предсказуемые HTML/CSS/JS-файлы — без лишних зависимостей, без бандлера для клиентского кода, без магии.</p>
-<p><span>#Astro</span> <span>#Frontend</span> <span>#Tools</span></p>
-<p><a href="https://aganov.dev/docs/guides/starters/astro-clean-template">Astro Clean Template</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_tkga88.png" alt="Astro Clean Template" width="1200" height="630" /></p><p>Шаблон для статических сайтов на Astro. Собирает компоненты в предсказуемые HTML/CSS/JS-файлы — без лишних зависимостей, без бандлера для клиентского кода, без магии.</p><p>#Astro #Frontend #Tools</p><p><a href="https://aganov.dev/docs/guides/templates/astro-clean-template">Astro Clean Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Чистый API-клиент</title>
       <link>https://aganov.dev/docs/guides/articles/services</link>
       <guid isPermaLink="true">https://aganov.dev/docs/guides/articles/services</guid>
       <pubDate>Fri, 20 Feb 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Архитектура request-слоя, которая избавит компоненты от дублирования кода.</p><p><em>5 мин</em></p>]]></description>
+      <description><![CDATA[Архитектура request-слоя, которая избавит компоненты от дублирования кода. (5 мин)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_c9es38.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_c9es38.png" />
       <category>Гайды / Статьи</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_c9es38.png" alt="Чистый API-клиент" width="1200" height="630" /></figure>
-<p>Архитектура request-слоя, которая избавит компоненты от дублирования кода.</p><p><em>5 мин</em></p>
-<p><span>#Frontend</span> <span>#Архитектура</span> <span>#API</span></p>
-<p><a href="https://aganov.dev/docs/guides/articles/services">Чистый API-клиент</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_c9es38.png" alt="Чистый API-клиент" width="1200" height="630" /></p><p>Архитектура request-слоя, которая избавит компоненты от дублирования кода.</p><p><em>5 мин</em></p><p>#Frontend #Архитектура #API</p><p><a href="https://aganov.dev/docs/guides/articles/services">Чистый API-клиент</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Осознанный вайб-кодинг</title>
       <link>https://aganov.dev/docs/guides/articles/vibecoding</link>
       <guid isPermaLink="true">https://aganov.dev/docs/guides/articles/vibecoding</guid>
       <pubDate>Fri, 02 Jan 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Статья о том, как я использую ИИ в своей работе и почему не считаю его заменой разработчикам.</p><p><em>6 мин</em></p>]]></description>
+      <description><![CDATA[Статья о том, как я использую ИИ в своей работе и почему не считаю его заменой разработчикам. (6 мин)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_3yxogb.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_3yxogb.png" />
       <category>Гайды / Статьи</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_3yxogb.png" alt="Осознанный вайб-кодинг" width="1200" height="630" /></figure>
-<p>Статья о том, как я использую ИИ в своей работе и почему не считаю его заменой разработчикам.</p><p><em>6 мин</em></p>
-<p><span>#Искусственный интеллект</span> <span>#Разработка</span></p>
-<p><a href="https://aganov.dev/docs/guides/articles/vibecoding">Осознанный вайб-кодинг</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_3yxogb.png" alt="Осознанный вайб-кодинг" width="1200" height="630" /></p><p>Статья о том, как я использую ИИ в своей работе и почему не считаю его заменой разработчикам.</p><p><em>6 мин</em></p><p>#Искусственный интеллект #Разработка</p><p><a href="https://aganov.dev/docs/guides/articles/vibecoding">Осознанный вайб-кодинг</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Polyglot Keeper</title>
       <link>https://aganov.dev/docs/about/projects/polyglot-keeper</link>
       <guid isPermaLink="true">https://aganov.dev/docs/about/projects/polyglot-keeper</guid>
       <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>AI‑инструмент синхронизации i18n, который автоматически переводит недостающие ключи и поддерживает идеальную структуру переводов — в JSON и Markdown файлах.</p>]]></description>
+      <description><![CDATA[AI‑инструмент синхронизации i18n, который автоматически переводит недостающие ключи и поддерживает идеальную структуру переводов — в JSON и Markdown файлах.]]></description>
       <media:content url="https://aganov.dev/_og/s/o_9nhnyj.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_9nhnyj.png" />
       <category>Обо мне / Проекты</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_9nhnyj.png" alt="Polyglot Keeper" width="1200" height="630" /></figure>
-<p>AI‑инструмент синхронизации i18n, который автоматически переводит недостающие ключи и поддерживает идеальную структуру переводов — в JSON и Markdown файлах.</p>
-<p><span>#CLI</span> <span>#i18n</span> <span>#AI</span> <span>#Node.js</span></p>
-<p><a href="https://aganov.dev/docs/about/projects/polyglot-keeper">Polyglot Keeper</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_9nhnyj.png" alt="Polyglot Keeper" width="1200" height="630" /></p><p>AI‑инструмент синхронизации i18n, который автоматически переводит недостающие ключи и поддерживает идеальную структуру переводов — в JSON и Markdown файлах.</p><p>#CLI #i18n #AI #Node.js</p><p><a href="https://aganov.dev/docs/about/projects/polyglot-keeper">Polyglot Keeper</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Работа со слоями в Nuxt 3</title>
       <link>https://aganov.dev/docs/guides/articles/nuxt-layers</link>
       <guid isPermaLink="true">https://aganov.dev/docs/guides/articles/nuxt-layers</guid>
       <pubDate>Thu, 24 Jul 2025 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Использование Layers в Nuxt 3 для структурирования проекта и разделения сайтов</p><p><em>3 мин</em></p>]]></description>
+      <description><![CDATA[Использование Layers в Nuxt 3 для структурирования проекта и разделения сайтов (3 мин)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_9yhg2t.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_9yhg2t.png" />
       <category>Гайды / Статьи</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_9yhg2t.png" alt="Работа со слоями в Nuxt 3" width="1200" height="630" /></figure>
-<p>Использование Layers в Nuxt 3 для структурирования проекта и разделения сайтов</p><p><em>3 мин</em></p>
-<p><span>#Nuxt</span> <span>#Frontend</span></p>
-<p><a href="https://aganov.dev/docs/guides/articles/nuxt-layers">Работа со слоями в Nuxt 3</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_9yhg2t.png" alt="Работа со слоями в Nuxt 3" width="1200" height="630" /></p><p>Использование Layers в Nuxt 3 для структурирования проекта и разделения сайтов</p><p><em>3 мин</em></p><p>#Nuxt #Frontend</p><p><a href="https://aganov.dev/docs/guides/articles/nuxt-layers">Работа со слоями в Nuxt 3</a></p>]]></content:encoded>
     </item>
   </channel>
 </rss>

@@ -75,7 +75,7 @@
         "guides": "Guides",
         "tools": "Tools",
         "articles": "Articles",
-        "starters": "Starters",
+        "templates": "Templates",
         "projects": "Projects",
         "contacts": "Contacts"
       },
@@ -108,7 +108,7 @@
     },
     "rss": {
       "feedTitle": "Aganov.dev — articles & guides",
-      "feedDescription": "New articles, projects, starters, and site materials.",
+      "feedDescription": "New articles, projects, templates, and site materials.",
       "copyAction": "Copy RSS feed URL"
     },
     "a11y": {
@@ -204,9 +204,9 @@
         "views": "Views:"
       }
     },
-    "starters": {
-      "empty": "No starters yet.",
-      "indexNote": "Ready-made templates for quickly bootstrapping projects on different stacks. Each starter is a minimal but thought-out starting point."
+    "templates": {
+      "empty": "No templates yet.",
+      "indexNote": "Ready-made templates for quickly bootstrapping projects on different stacks. Each template is a minimal but thought-out starting point."
     },
     "profile": {
       "myProfile": "My profile",

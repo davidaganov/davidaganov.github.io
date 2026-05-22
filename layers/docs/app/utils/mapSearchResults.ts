@@ -25,7 +25,7 @@ const categoryFromMapping = (mapping: ContentMapping): TYPE_PAGE => {
   if (!mapping.isCollectionItem) return TYPE_PAGE.DOCS
   if (mapping.collectionSource === "articles") return TYPE_PAGE.ARTICLE
   if (mapping.collectionSource === "projects") return TYPE_PAGE.PROJECT
-  if (mapping.collectionSource === "starters") return TYPE_PAGE.STARTER
+  if (mapping.collectionSource === "templates") return TYPE_PAGE.TEMPLATE
   return TYPE_PAGE.DOCS
 }
 
@@ -58,7 +58,7 @@ const iconFromPage = (page: SearchablePage, mapping: ContentMapping): string => 
   const category = categoryFromMapping(mapping)
   if (category === TYPE_PAGE.ARTICLE) return "i-lucide-newspaper"
   if (category === TYPE_PAGE.PROJECT) return "i-lucide-folder-git-2"
-  if (category === TYPE_PAGE.STARTER) return "i-lucide-rocket"
+  if (category === TYPE_PAGE.TEMPLATE) return "i-lucide-rocket"
   return "i-lucide-file-text"
 }
 

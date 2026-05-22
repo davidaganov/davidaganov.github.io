@@ -14,7 +14,7 @@ tags:
 
 # Vue PWA Template
 
-> Starter for SPAs with PWA support: installable on devices, works offline, updates in the background.
+> Template for SPAs with PWA support: installable on devices, works offline, updates in the background.
 
 ## Setup
 

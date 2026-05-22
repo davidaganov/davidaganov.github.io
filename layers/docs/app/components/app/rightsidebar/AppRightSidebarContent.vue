@@ -84,7 +84,7 @@ const scrollToTop = () => {
         }"
       />
       <AppRightSidebarGitHubProfile
-        v-else-if="props.type === TYPE_PAGE.PROJECT || props.type === TYPE_PAGE.STARTER"
+        v-else-if="props.type === TYPE_PAGE.PROJECT || props.type === TYPE_PAGE.TEMPLATE"
         v-motion
         :initial="{ opacity: 0 }"
         :enter="{
@@ -108,7 +108,7 @@ const scrollToTop = () => {
           :page="props.page"
         />
         <AppRightSidebarProjectMeta
-          v-else-if="props.type === TYPE_PAGE.PROJECT || props.type === TYPE_PAGE.STARTER"
+          v-else-if="props.type === TYPE_PAGE.PROJECT || props.type === TYPE_PAGE.TEMPLATE"
           :page="props.page"
         />
         <AppRightSidebarArchiveDownload />

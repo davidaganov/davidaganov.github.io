@@ -3,12 +3,12 @@
   <channel>
     <title>Aganov.dev — articles &amp; guides</title>
     <link>https://aganov.dev/en/docs</link>
-    <description>New articles, projects, starters, and site materials.</description>
+    <description>New articles, projects, templates, and site materials.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 22 May 2026 20:14:46 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 22 May 2026 20:40:30 GMT</lastBuildDate>
     <atom:link href="https://aganov.dev/en/feed.xml" rel="self" type="application/rss+xml" />
     <image>
-      <url>https://aganov.dev/_og/s/c_HomePage,w_1200,h_630,title_~QWdhbm92LmRldiDigJQgYXJ0aWNsZXMgJiBndWlkZXM,description_~TmV3IGFydGljbGVzLCBwcm9qZWN0cywgc3RhcnRlcnMsIGFuZCBzaXRlIG1hdGVyaWFscy4,p_Ii9lbiI.png</url>
+      <url>https://aganov.dev/_og/s/c_HomePage,w_1200,h_630,title_~QWdhbm92LmRldiDigJQgYXJ0aWNsZXMgJiBndWlkZXM,description_~TmV3IGFydGljbGVzLCBwcm9qZWN0cywgdGVtcGxhdGVzLCBhbmQgc2l0ZSBtYXRlcmlhbHMu,p_Ii9lbiI.png</url>
       <title>Aganov.dev — articles &amp; guides</title>
       <link>https://aganov.dev/en/docs</link>
       <width>1200</width>
@@ -19,140 +19,110 @@
       <link>https://aganov.dev/en/docs/guides/articles/architecture</link>
       <guid isPermaLink="true">https://aganov.dev/en/docs/guides/articles/architecture</guid>
       <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>How I organize folder structure, components, stores, routing, validation — and why.</p><p><em>10 min</em></p>]]></description>
+      <description><![CDATA[How I organize folder structure, components, stores, routing, validation — and why. (10 min)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_yazq8e.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_yazq8e.png" />
       <category>Guides / Articles</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_yazq8e.png" alt="Project architecture" width="1200" height="630" /></figure>
-<p>How I organize folder structure, components, stores, routing, validation — and why.</p><p><em>10 min</em></p>
-<p><span>#Frontend</span> <span>#Vue 3</span> <span>#Architecture</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/articles/architecture">Project architecture</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_yazq8e.png" alt="Project architecture" width="1200" height="630" /></p><p>How I organize folder structure, components, stores, routing, validation — and why.</p><p><em>10 min</em></p><p>#Frontend #Vue 3 #Architecture</p><p><a href="https://aganov.dev/en/docs/guides/articles/architecture">Project architecture</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Stack</title>
       <link>https://aganov.dev/en/docs/about/projects/stack</link>
       <guid isPermaLink="true">https://aganov.dev/en/docs/about/projects/stack</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>CLI to generate projects from my templates — pick what you need, get a clean result without cruft.</p>]]></description>
+      <description><![CDATA[CLI to generate projects from my templates — pick what you need, get a clean result without cruft.]]></description>
       <media:content url="https://aganov.dev/_og/s/o_a5bfn6.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_a5bfn6.png" />
       <category>About / Projects</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_a5bfn6.png" alt="Stack" width="1200" height="630" /></figure>
-<p>CLI to generate projects from my templates — pick what you need, get a clean result without cruft.</p>
-<p><span>#CLI</span> <span>#Tools</span> <span>#Frontend</span> <span>#DX</span></p>
-<p><a href="https://aganov.dev/en/docs/about/projects/stack">Stack</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_a5bfn6.png" alt="Stack" width="1200" height="630" /></p><p>CLI to generate projects from my templates — pick what you need, get a clean result without cruft.</p><p>#CLI #Tools #Frontend #DX</p><p><a href="https://aganov.dev/en/docs/about/projects/stack">Stack</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Vue Lynx Template</title>
-      <link>https://aganov.dev/en/docs/guides/starters/vue-lynx-template</link>
-      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/starters/vue-lynx-template</guid>
+      <link>https://aganov.dev/en/docs/guides/templates/vue-lynx-template</link>
+      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/templates/vue-lynx-template</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Template for mobile apps with Vue 3 + Lynx. Familiar Vue 3 on the inside, a native Android app on the outside.</p>]]></description>
-      <media:content url="https://aganov.dev/_og/s/o_q2jcw0.png" medium="image" type="image/png" />
-      <media:thumbnail url="https://aganov.dev/_og/s/o_q2jcw0.png" />
-      <category>Guides / Starters</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_q2jcw0.png" alt="Vue Lynx Template" width="1200" height="630" /></figure>
-<p>Template for mobile apps with Vue 3 + Lynx. Familiar Vue 3 on the inside, a native Android app on the outside.</p>
-<p><span>#Vue</span> <span>#Mobile</span> <span>#Lynx</span> <span>#Frontend</span> <span>#Tools</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/starters/vue-lynx-template">Vue Lynx Template</a></p>]]></content:encoded>
+      <description><![CDATA[Template for mobile apps with Vue 3 + Lynx. Familiar Vue 3 on the inside, a native Android app on the outside.]]></description>
+      <media:content url="https://aganov.dev/_og/s/o_7gardf.png" medium="image" type="image/png" />
+      <media:thumbnail url="https://aganov.dev/_og/s/o_7gardf.png" />
+      <category>Guides / Templates</category>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_7gardf.png" alt="Vue Lynx Template" width="1200" height="630" /></p><p>Template for mobile apps with Vue 3 + Lynx. Familiar Vue 3 on the inside, a native Android app on the outside.</p><p>#Vue #Mobile #Lynx #Frontend #Tools</p><p><a href="https://aganov.dev/en/docs/guides/templates/vue-lynx-template">Vue Lynx Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Vue Modern Template</title>
-      <link>https://aganov.dev/en/docs/guides/starters/vue-modern-template</link>
-      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/starters/vue-modern-template</guid>
+      <link>https://aganov.dev/en/docs/guides/templates/vue-modern-template</link>
+      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/templates/vue-modern-template</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>A lean Vue 3 app template. TypeScript, Tailwind, and a stable architecture.</p>]]></description>
-      <media:content url="https://aganov.dev/_og/s/o_p6pfiv.png" medium="image" type="image/png" />
-      <media:thumbnail url="https://aganov.dev/_og/s/o_p6pfiv.png" />
-      <category>Guides / Starters</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_p6pfiv.png" alt="Vue Modern Template" width="1200" height="630" /></figure>
-<p>A lean Vue 3 app template. TypeScript, Tailwind, and a stable architecture.</p>
-<p><span>#Vue</span> <span>#Frontend</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/starters/vue-modern-template">Vue Modern Template</a></p>]]></content:encoded>
+      <description><![CDATA[A lean Vue 3 app template. TypeScript, Tailwind, and a stable architecture.]]></description>
+      <media:content url="https://aganov.dev/_og/s/o_jygyxw.png" medium="image" type="image/png" />
+      <media:thumbnail url="https://aganov.dev/_og/s/o_jygyxw.png" />
+      <category>Guides / Templates</category>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_jygyxw.png" alt="Vue Modern Template" width="1200" height="630" /></p><p>A lean Vue 3 app template. TypeScript, Tailwind, and a stable architecture.</p><p>#Vue #Frontend</p><p><a href="https://aganov.dev/en/docs/guides/templates/vue-modern-template">Vue Modern Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Vue PWA Template</title>
-      <link>https://aganov.dev/en/docs/guides/starters/vue-pwa-template</link>
-      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/starters/vue-pwa-template</guid>
+      <link>https://aganov.dev/en/docs/guides/templates/vue-pwa-template</link>
+      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/templates/vue-pwa-template</guid>
       <pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Progressive Web App template with Vue 3 + Vite. Offline mode out of the box, Tailwind, TypeScript — and little cruft in the base build.</p>]]></description>
-      <media:content url="https://aganov.dev/_og/s/o_ggcvf6.png" medium="image" type="image/png" />
-      <media:thumbnail url="https://aganov.dev/_og/s/o_ggcvf6.png" />
-      <category>Guides / Starters</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_ggcvf6.png" alt="Vue PWA Template" width="1200" height="630" /></figure>
-<p>Progressive Web App template with Vue 3 + Vite. Offline mode out of the box, Tailwind, TypeScript — and little cruft in the base build.</p>
-<p><span>#Vue</span> <span>#PWA</span> <span>#Frontend</span> <span>#Tools</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/starters/vue-pwa-template">Vue PWA Template</a></p>]]></content:encoded>
+      <description><![CDATA[Progressive Web App template with Vue 3 + Vite. Offline mode out of the box, Tailwind, TypeScript — and little cruft in the base build.]]></description>
+      <media:content url="https://aganov.dev/_og/s/o_w9feor.png" medium="image" type="image/png" />
+      <media:thumbnail url="https://aganov.dev/_og/s/o_w9feor.png" />
+      <category>Guides / Templates</category>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_w9feor.png" alt="Vue PWA Template" width="1200" height="630" /></p><p>Progressive Web App template with Vue 3 + Vite. Offline mode out of the box, Tailwind, TypeScript — and little cruft in the base build.</p><p>#Vue #PWA #Frontend #Tools</p><p><a href="https://aganov.dev/en/docs/guides/templates/vue-pwa-template">Vue PWA Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Astro Clean Template</title>
-      <link>https://aganov.dev/en/docs/guides/starters/astro-clean-template</link>
-      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/starters/astro-clean-template</guid>
+      <link>https://aganov.dev/en/docs/guides/templates/astro-clean-template</link>
+      <guid isPermaLink="true">https://aganov.dev/en/docs/guides/templates/astro-clean-template</guid>
       <pubDate>Tue, 24 Mar 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Starter for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic.</p>]]></description>
-      <media:content url="https://aganov.dev/_og/s/o_x0ri15.png" medium="image" type="image/png" />
-      <media:thumbnail url="https://aganov.dev/_og/s/o_x0ri15.png" />
-      <category>Guides / Starters</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_x0ri15.png" alt="Astro Clean Template" width="1200" height="630" /></figure>
-<p>Starter for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic.</p>
-<p><span>#Astro</span> <span>#Frontend</span> <span>#Tools</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/starters/astro-clean-template">Astro Clean Template</a></p>]]></content:encoded>
+      <description><![CDATA[Template for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic.]]></description>
+      <media:content url="https://aganov.dev/_og/s/o_jm9m2v.png" medium="image" type="image/png" />
+      <media:thumbnail url="https://aganov.dev/_og/s/o_jm9m2v.png" />
+      <category>Guides / Templates</category>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_jm9m2v.png" alt="Astro Clean Template" width="1200" height="630" /></p><p>Template for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic.</p><p>#Astro #Frontend #Tools</p><p><a href="https://aganov.dev/en/docs/guides/templates/astro-clean-template">Astro Clean Template</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Clean API Client</title>
       <link>https://aganov.dev/en/docs/guides/articles/services</link>
       <guid isPermaLink="true">https://aganov.dev/en/docs/guides/articles/services</guid>
       <pubDate>Fri, 20 Feb 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Request-layer architecture that eliminates code duplication in components.</p><p><em>5 min</em></p>]]></description>
+      <description><![CDATA[Request-layer architecture that eliminates code duplication in components. (5 min)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_9jpngv.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_9jpngv.png" />
       <category>Guides / Articles</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_9jpngv.png" alt="Clean API Client" width="1200" height="630" /></figure>
-<p>Request-layer architecture that eliminates code duplication in components.</p><p><em>5 min</em></p>
-<p><span>#Frontend</span> <span>#Architecture</span> <span>#API</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/articles/services">Clean API Client</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_9jpngv.png" alt="Clean API Client" width="1200" height="630" /></p><p>Request-layer architecture that eliminates code duplication in components.</p><p><em>5 min</em></p><p>#Frontend #Architecture #API</p><p><a href="https://aganov.dev/en/docs/guides/articles/services">Clean API Client</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Mindful Vibe Coding</title>
       <link>https://aganov.dev/en/docs/guides/articles/vibecoding</link>
       <guid isPermaLink="true">https://aganov.dev/en/docs/guides/articles/vibecoding</guid>
       <pubDate>Fri, 02 Jan 2026 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>An article about how I use AI in my work and why I don't consider it a replacement for developers.</p><p><em>6 min</em></p>]]></description>
+      <description><![CDATA[An article about how I use AI in my work and why I don't consider it a replacement for developers. (6 min)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_y04wn3.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_y04wn3.png" />
       <category>Guides / Articles</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_y04wn3.png" alt="Mindful Vibe Coding" width="1200" height="630" /></figure>
-<p>An article about how I use AI in my work and why I don't consider it a replacement for developers.</p><p><em>6 min</em></p>
-<p><span>#Artificial Intelligence</span> <span>#Development</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/articles/vibecoding">Mindful Vibe Coding</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_y04wn3.png" alt="Mindful Vibe Coding" width="1200" height="630" /></p><p>An article about how I use AI in my work and why I don't consider it a replacement for developers.</p><p><em>6 min</em></p><p>#Artificial Intelligence #Development</p><p><a href="https://aganov.dev/en/docs/guides/articles/vibecoding">Mindful Vibe Coding</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Polyglot Keeper</title>
       <link>https://aganov.dev/en/docs/about/projects/polyglot-keeper</link>
       <guid isPermaLink="true">https://aganov.dev/en/docs/about/projects/polyglot-keeper</guid>
       <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>AI-powered i18n synchronization tool that automatically translates missing keys and maintains perfect translation structure — in JSON and Markdown files.</p>]]></description>
+      <description><![CDATA[AI-powered i18n synchronization tool that automatically translates missing keys and maintains perfect translation structure — in JSON and Markdown files.]]></description>
       <media:content url="https://aganov.dev/_og/s/o_aaqjmc.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_aaqjmc.png" />
       <category>About / Projects</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_aaqjmc.png" alt="Polyglot Keeper" width="1200" height="630" /></figure>
-<p>AI-powered i18n synchronization tool that automatically translates missing keys and maintains perfect translation structure — in JSON and Markdown files.</p>
-<p><span>#CLI</span> <span>#i18n</span> <span>#AI</span> <span>#Node.js</span></p>
-<p><a href="https://aganov.dev/en/docs/about/projects/polyglot-keeper">Polyglot Keeper</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_aaqjmc.png" alt="Polyglot Keeper" width="1200" height="630" /></p><p>AI-powered i18n synchronization tool that automatically translates missing keys and maintains perfect translation structure — in JSON and Markdown files.</p><p>#CLI #i18n #AI #Node.js</p><p><a href="https://aganov.dev/en/docs/about/projects/polyglot-keeper">Polyglot Keeper</a></p>]]></content:encoded>
     </item>
     <item>
       <title>Working with Layers in Nuxt 3</title>
       <link>https://aganov.dev/en/docs/guides/articles/nuxt-layers</link>
       <guid isPermaLink="true">https://aganov.dev/en/docs/guides/articles/nuxt-layers</guid>
       <pubDate>Thu, 24 Jul 2025 00:00:00 GMT</pubDate>
-      <description><![CDATA[<p>Using Layers in Nuxt 3 for project structuring and site separation</p><p><em>3 min</em></p>]]></description>
+      <description><![CDATA[Using Layers in Nuxt 3 for project structuring and site separation (3 min)]]></description>
       <media:content url="https://aganov.dev/_og/s/o_9tuq9y.png" medium="image" type="image/png" />
       <media:thumbnail url="https://aganov.dev/_og/s/o_9tuq9y.png" />
       <category>Guides / Articles</category>
-      <content:encoded><![CDATA[<figure><img src="https://aganov.dev/_og/s/o_9tuq9y.png" alt="Working with Layers in Nuxt 3" width="1200" height="630" /></figure>
-<p>Using Layers in Nuxt 3 for project structuring and site separation</p><p><em>3 min</em></p>
-<p><span>#Nuxt</span> <span>#Frontend</span></p>
-<p><a href="https://aganov.dev/en/docs/guides/articles/nuxt-layers">Working with Layers in Nuxt 3</a></p>]]></content:encoded>
+      <content:encoded><![CDATA[<p><img src="https://aganov.dev/_og/s/o_9tuq9y.png" alt="Working with Layers in Nuxt 3" width="1200" height="630" /></p><p>Using Layers in Nuxt 3 for project structuring and site separation</p><p><em>3 min</em></p><p>#Nuxt #Frontend</p><p><a href="https://aganov.dev/en/docs/guides/articles/nuxt-layers">Working with Layers in Nuxt 3</a></p>]]></content:encoded>
     </item>
   </channel>
 </rss>

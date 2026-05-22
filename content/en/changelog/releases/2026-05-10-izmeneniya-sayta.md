@@ -9,17 +9,11 @@ meta:
 
 First entry in the site update log: a new docs section, a fresh article, and a noticeably faster home page.
 
-## Highlights
-
-- Added the **Changelog** section — a log of portfolio updates.
-- Published **[Project architecture](/docs/guides/articles/architecture)**.
-- The home page loads faster thanks to hero animation optimizations.
-
 ## Added
 
 ### Changelog section
 
-A dedicated tab for site updates. I’ll post everything that changes here: new content, fixes, and the like.
+A dedicated tab for site updates. I'll post everything that changes here: new content, fixes, and the like.
 
 ### “Project architecture” article
 

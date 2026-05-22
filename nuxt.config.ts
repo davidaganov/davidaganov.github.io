@@ -11,8 +11,6 @@ import { normalizeSiteUrl } from "./app/utils/seo"
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url))
 const siteUrl = normalizeSiteUrl(process.env.NUXT_PUBLIC_SITE_URL)
-const ogImageSecret = process.env.NUXT_OG_IMAGE_SECRET
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -58,9 +56,9 @@ export default defineNuxtConfig({
 
   ogImage: {
     debug: process.env.NODE_ENV !== "production",
+    buildCache: true,
     security: {
-      ...(ogImageSecret ? { secret: ogImageSecret } : {}),
-      strict: Boolean(ogImageSecret),
+      strict: false,
       restrictRuntimeImagesToOrigin: true,
       maxQueryParamSize: 2048
     }
@@ -111,6 +109,9 @@ export default defineNuxtConfig({
   },
 
   hooks: {
+    "build:before"() {
+      delete process.env.NUXT_OG_IMAGE_SECRET
+    },
     ready(nuxt) {
       if (!nuxt.options.dev) return
 
@@ -122,6 +123,11 @@ export default defineNuxtConfig({
     },
     "build:done": () => {
       execSync("npx tsx scripts/build-docs-assets.ts", {
+        cwd: rootDir,
+        stdio: "inherit",
+        env: process.env
+      })
+      execSync("npx tsx scripts/materialize-og-images.ts", {
         cwd: rootDir,
         stdio: "inherit",
         env: process.env

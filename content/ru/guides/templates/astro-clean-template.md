@@ -1,6 +1,6 @@
 ---
 title: Astro Clean Template
-description: Стартер для статических сайтов на Astro. Собирает компоненты в предсказуемые HTML/CSS/JS-файлы — без лишних зависимостей, без бандлера для клиентского кода, без магии.
+description: Шаблон для статических сайтов на Astro. Собирает компоненты в предсказуемые HTML/CSS/JS-файлы — без лишних зависимостей, без бандлера для клиентского кода, без магии.
 icon: i-simple-icons-astro
 githubRepo: davidaganov/astro-clean-template
 githubUrl: https://github.com/davidaganov/astro-clean-template

@@ -9,12 +9,6 @@ meta:
 
 A link graph across documentation pages, a refreshed footer, and noticeable improvements on phones and tablets.
 
-## Highlights
-
-- Added an **interactive graph** — visualization of links between documentation pages.
-- Updated the **footer design** — layout, grid, and section styling.
-- Improved **mobile adaptation** — home page, graph, and header navigation.
-
 ## Added
 
 ### Documentation link graph

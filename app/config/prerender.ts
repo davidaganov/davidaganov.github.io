@@ -76,17 +76,13 @@ const commonRoutesForLocale = (locale: string): string[] => {
 const seoRoutes = ["/sitemap_index.xml", "/robots.txt"]
 
 export const getPrerenderRoutes = (): string[] => {
-  return Array.from(
-    new Set([
-      ...seoRoutes,
-      ...getRssOgPrerenderRoutes(),
-      ...getLocaleCodes().flatMap((locale) => [
-        ...commonRoutesForLocale(locale),
-        ...collectionIndexRoutesForLocale(locale),
-        ...markdownRoutesForLocale(locale)
-      ])
-    ])
-  )
+  const contentRoutes = getLocaleCodes().flatMap((locale) => [
+    ...commonRoutesForLocale(locale),
+    ...collectionIndexRoutesForLocale(locale),
+    ...markdownRoutesForLocale(locale)
+  ])
+
+  return Array.from(new Set([...seoRoutes, ...contentRoutes, ...getRssOgPrerenderRoutes()]))
 }
 
 export const getPrerenderRouteRules = (): Record<string, { prerender: true }> =>

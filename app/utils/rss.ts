@@ -59,14 +59,14 @@ const escapeHtml = (value: string): string => {
     .replace(/"/g, "&quot;")
 }
 
-export const buildRssItemSummaryHtml = (item: RssPostItem): string => {
-  const parts = [`<p>${escapeHtml(item.description)}</p>`]
+export const buildRssItemPlainDescription = (item: RssPostItem): string => {
+  const parts = [item.description.trim()]
 
   if (item.readingTime) {
-    parts.push(`<p><em>${escapeHtml(item.readingTime)}</em></p>`)
+    parts.push(`(${item.readingTime})`)
   }
 
-  return parts.join("")
+  return parts.filter(Boolean).join(" ")
 }
 
 export const buildRssItemContentHtml = (item: RssPostItem): string => {
@@ -74,19 +74,23 @@ export const buildRssItemContentHtml = (item: RssPostItem): string => {
 
   if (item.imageUrl) {
     parts.push(
-      `<figure><img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" width="1200" height="630" /></figure>`
+      `<p><img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" width="1200" height="630" /></p>`
     )
   }
 
-  parts.push(buildRssItemSummaryHtml(item))
+  parts.push(`<p>${escapeHtml(item.description)}</p>`)
+
+  if (item.readingTime) {
+    parts.push(`<p><em>${escapeHtml(item.readingTime)}</em></p>`)
+  }
 
   if (item.tags?.length) {
-    parts.push(`<p>${item.tags.map((tag) => `<span>#${escapeHtml(tag)}</span>`).join(" ")}</p>`)
+    parts.push(`<p>${item.tags.map((tag) => `#${escapeHtml(tag)}`).join(" ")}</p>`)
   }
 
   parts.push(`<p><a href="${escapeHtml(item.link)}">${escapeHtml(item.title)}</a></p>`)
 
-  return parts.join("\n")
+  return parts.join("")
 }
 
 export const toRfc822Date = (value: string): string => {
@@ -96,7 +100,7 @@ export const toRfc822Date = (value: string): string => {
 }
 
 const buildRssItemXml = (item: RssPostItem): string => {
-  const summaryHtml = buildRssItemSummaryHtml(item)
+  const plainDescription = buildRssItemPlainDescription(item)
   const contentHtml = item.contentHtml || buildRssItemContentHtml(item)
   const mediaBlock = item.imageUrl
     ? `      <media:content url="${escapeXml(item.imageUrl)}" medium="image" type="image/png" />
@@ -111,7 +115,7 @@ const buildRssItemXml = (item: RssPostItem): string => {
       <link>${escapeXml(item.link)}</link>
       <guid isPermaLink="true">${escapeXml(item.guid)}</guid>
       <pubDate>${item.pubDate}</pubDate>
-      <description><![CDATA[${summaryHtml}]]></description>
+      <description><![CDATA[${plainDescription}]]></description>
 ${mediaBlock}
 ${categoryBlock}
       <content:encoded><![CDATA[${contentHtml}]]></content:encoded>

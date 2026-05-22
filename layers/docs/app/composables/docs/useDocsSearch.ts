@@ -33,7 +33,7 @@ export const useDocsSearch = (query: Ref<string>) => {
       [TYPE_PAGE.DOCS]: [],
       [TYPE_PAGE.ARTICLE]: [],
       [TYPE_PAGE.PROJECT]: [],
-      [TYPE_PAGE.STARTER]: []
+      [TYPE_PAGE.TEMPLATE]: []
     }
     for (const item of results.value || []) {
       groups[item.category].push(item)
@@ -45,7 +45,7 @@ export const useDocsSearch = (query: Ref<string>) => {
     ...grouped.value[TYPE_PAGE.DOCS],
     ...grouped.value[TYPE_PAGE.ARTICLE],
     ...grouped.value[TYPE_PAGE.PROJECT],
-    ...grouped.value[TYPE_PAGE.STARTER]
+    ...grouped.value[TYPE_PAGE.TEMPLATE]
   ])
 
   return {

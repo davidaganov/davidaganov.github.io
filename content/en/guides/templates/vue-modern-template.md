@@ -12,7 +12,7 @@ tags:
 
 # Vue Modern Template
 
-> My default starter for new Vue 3 projects. No bloat; everything you need is a couple of toggles away at generation time.
+> My default template for new Vue 3 projects. No bloat; everything you need is a couple of toggles away at generation time.
 
 ## Setup
 

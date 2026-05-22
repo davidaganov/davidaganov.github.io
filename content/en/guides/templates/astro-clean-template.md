@@ -1,6 +1,6 @@
 ---
 title: Astro Clean Template
-description: Starter for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic.
+description: Template for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic.
 icon: i-simple-icons-astro
 githubRepo: davidaganov/astro-clean-template
 githubUrl: https://github.com/davidaganov/astro-clean-template

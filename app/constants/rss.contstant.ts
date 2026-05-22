@@ -2,7 +2,7 @@ export const RSS_FEED_FILENAME = "feed.xml"
 export const RSS_CONTENT_PATH_PREFIXES = [
   "/about/projects/",
   "/guides/articles/",
-  "/guides/starters/"
+  "/guides/templates/"
 ] as const
 
 export const RSS_EXCLUDED_PATH_SEGMENT = "/changelog/"
@@ -19,8 +19,8 @@ export const RSS_COLLECTION_LABEL_KEYS: Record<
     sectionLabelKey: "layout.navigation.menu.guides",
     collectionLabelKey: "layout.navigation.menu.articles"
   },
-  "guides/starters": {
+  "guides/templates": {
     sectionLabelKey: "layout.navigation.menu.guides",
-    collectionLabelKey: "layout.navigation.menu.starters"
+    collectionLabelKey: "layout.navigation.menu.templates"
   }
 }
