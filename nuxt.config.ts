@@ -109,9 +109,6 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    "build:before"() {
-      delete process.env.NUXT_OG_IMAGE_SECRET
-    },
     ready(nuxt) {
       if (!nuxt.options.dev) return
 
