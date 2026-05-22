@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWindowScroll } from "@vueuse/core"
-import { getRssFeedPublicPath } from "@app/utils/rssFeed"
+import { getRssFeedPublicPath } from "@app/utils/rss"
 import { SOCIAL_LINKS } from "@base/constants"
 import AppRightSidebarArchiveDownload from "@docs/components/app/rightsidebar/AppRightSidebarArchiveDownload.vue"
 import AppRightSidebarArticleMeta from "@docs/components/app/rightsidebar/AppRightSidebarArticleMeta.vue"

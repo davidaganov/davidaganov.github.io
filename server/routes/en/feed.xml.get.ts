@@ -1,5 +1,5 @@
 import { createDocsTranslator } from "../../utils/docsI18n"
-import { serveRssFeed } from "../../utils/rssPosts"
+import { serveRssFeed } from "../../utils/rss"
 
 export default defineEventHandler(async (event) => {
   const t = createDocsTranslator("en")

@@ -1,4 +1,4 @@
-import { getRssFeedPublicPath } from "@app/utils/rssFeed"
+import { getRssFeedPublicPath } from "@app/utils/rss"
 import { absoluteUrl, localizedCanonicalPath, normalizeSiteUrl } from "@app/utils/seo"
 import { ROUTE_PATH } from "@base/types"
 

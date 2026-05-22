@@ -126,6 +126,11 @@ export default defineNuxtConfig({
         stdio: "inherit",
         env: process.env
       })
+      execSync("npx tsx scripts/write-rss-feeds.ts", {
+        cwd: rootDir,
+        stdio: "inherit",
+        env: process.env
+      })
     }
   },
 

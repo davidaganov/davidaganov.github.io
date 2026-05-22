@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Aganov.dev — статьи и гайды</title>
+    <link>https://aganov.dev/docs</link>
+    <description>Новые статьи, проекты, шаблоны и материалы с сайта.</description>
+    <language>ru</language>
+    <lastBuildDate>Fri, 22 May 2026 19:14:26 GMT</lastBuildDate>
+    <atom:link href="https://aganov.dev/feed.xml" rel="self" type="application/rss+xml" />
+    <image>
+      <url>https://aganov.dev/_og/s/o_my2d4s.png</url>
+      <title>Aganov.dev — статьи и гайды</title>
+      <link>https://aganov.dev/docs</link>
+      <width>1200</width>
+      <height>630</height>
+    </image>
+
+  </channel>
+</rss>

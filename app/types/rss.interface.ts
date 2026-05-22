@@ -58,3 +58,16 @@ export interface DocsRssOgImageInput {
   section: string
   collection: string
 }
+
+export interface BuildRssFeedFileOptions {
+  locale: string
+  siteUrl?: string
+  channelTitle: string
+  channelDescription: string
+}
+
+export interface ContentRssPrerenderRow {
+  path: string
+  title: string | null
+  description: string | null
+}
