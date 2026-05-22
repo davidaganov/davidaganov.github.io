@@ -1,10 +1,10 @@
-import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "@app/utils/seo"
 import {
   RSS_CONTENT_PATH_PREFIXES,
   RSS_EXCLUDED_PATH_SEGMENT,
   RSS_FEED_FILENAME
-} from "@app/constants/rss.contstant"
-import type { RssChannelMeta, RssPostItem, RssSiteLinks } from "@app/types"
+} from "../constants/rss.contstant"
+import type { RssChannelMeta, RssPostItem, RssSiteLinks } from "../types"
+import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
 
 export const getRssFeedPublicPath = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
   const path = `/${RSS_FEED_FILENAME}`
