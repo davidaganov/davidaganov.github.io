@@ -131,7 +131,7 @@ export const contentEntriesToRssItems = (
     })
 }
 
-const loadRssItemsFromSqlite = (locale: string, siteUrl: string): RssPostItem[] => {
+export const loadRssContentEntriesFromSqlite = (locale: string): ContentRssEntry[] => {
   if (!existsSync(sqlitePath)) return []
 
   const db = new Database(sqlitePath, { readonly: true })
@@ -151,6 +151,11 @@ const loadRssItemsFromSqlite = (locale: string, siteUrl: string): RssPostItem[] 
     .map((row) => mapSqliteRssEntry(row as Record<string, unknown>))
   db.close()
 
+  return entries
+}
+
+const loadRssItemsFromSqlite = (locale: string, siteUrl: string): RssPostItem[] => {
+  const entries = loadRssContentEntriesFromSqlite(locale)
   return contentEntriesToRssItems(entries, locale, siteUrl, loadTranslator(locale))
 }
 

@@ -3,6 +3,7 @@ import { createHash } from "node:crypto"
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import { join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
+import { loadRssContentEntriesFromSqlite } from "../app/utils/rss.server"
 import { CONTENT_LOCALES } from "../layers/docs/app/constants/content.constant"
 import { GRAPH_EXCLUDED_CATEGORIES } from "../layers/docs/app/constants/graph.constant"
 import type {
@@ -301,7 +302,9 @@ const getTrackedOutputPaths = (): string[] => [
   resolve(publicDir, "archive-index.json"),
   ...CONTENT_LOCALES.flatMap((locale) => [
     resolve(publicDir, `graph-${locale}.json`),
-    resolve(serverAssetsDir, `graph-${locale}.json`)
+    resolve(serverAssetsDir, `graph-${locale}.json`),
+    resolve(publicDir, `rss-${locale}.json`),
+    resolve(serverAssetsDir, `rss-${locale}.json`)
   ])
 ]
 
@@ -377,6 +380,23 @@ const main = (): void => {
       wroteAny = true
       console.info(
         `build-docs-assets: wrote ${publicPath} and ${serverPath} (${graphData.nodes.length} nodes, ${graphData.links.length} links)`
+      )
+    }
+
+    const rssEntries = loadRssContentEntriesFromSqlite(locale)
+    const rssStable = { entries: rssEntries }
+    const rssFile = {
+      entries: rssEntries,
+      builtAt: new Date().toISOString()
+    }
+    const rssPublicPath = resolve(publicDir, `rss-${locale}.json`)
+    const rssServerPath = resolve(serverAssetsDir, `rss-${locale}.json`)
+    const rssChanged = writeMirroredJsonIfChanged(rssPublicPath, rssServerPath, rssStable, rssFile)
+
+    if (rssChanged) {
+      wroteAny = true
+      console.info(
+        `build-docs-assets: wrote ${rssPublicPath} and ${rssServerPath} (${rssEntries.length} RSS entries)`
       )
     }
   }
