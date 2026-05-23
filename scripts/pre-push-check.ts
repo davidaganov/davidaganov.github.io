@@ -1,4 +1,5 @@
 import { execFileSync, execSync } from "child_process"
+import { existsSync } from "node:fs"
 import readline from "readline"
 
 interface PushRef {
@@ -10,6 +11,7 @@ const NULL_SHA = "0000000000000000000000000000000000000000"
 
 const CHECKED_EXTENSIONS = [".vue", ".ts", ".js", ".mjs", ".json", ".css", ".md", ".yml", ".yaml"]
 const LINTED_EXTENSIONS = [".vue", ".ts", ".js", ".mjs"]
+const IGNORED_PATH_PREFIXES = ["server/assets/"]
 
 const gitExec = (...args: string[]): string =>
   execFileSync("git", args, { encoding: "utf8" }).trim()
@@ -121,7 +123,12 @@ const runTranslateSync = (): void => {
 const main = async (): Promise<void> => {
   try {
     const allFiles = await resolveChangedFiles()
-    const files = allFiles.filter((f) => CHECKED_EXTENSIONS.some((ext) => f.endsWith(ext)))
+    const files = allFiles.filter(
+      (file) =>
+        CHECKED_EXTENSIONS.some((ext) => file.endsWith(ext)) &&
+        existsSync(file) &&
+        !IGNORED_PATH_PREFIXES.some((prefix) => file.startsWith(prefix))
+    )
 
     if (files.length === 0) {
       console.log("No relevant files changed. Skipping checks.")
