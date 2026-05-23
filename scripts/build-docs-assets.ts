@@ -3,6 +3,10 @@ import { createHash } from "node:crypto"
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import { join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
+import type { ContentRssEntry, RssAssetChannel, RssAssetFile } from "../app/types/rss.interface"
+import { createTranslator } from "../app/utils/i18n-messages"
+import { isRssEligibleContentPath } from "../app/utils/rss"
+import { resolveRssEntryCategories } from "../app/utils/rss-labels"
 import { loadRssContentEntriesFromSqlite } from "../app/utils/rss.server"
 import { CONTENT_LOCALES } from "../layers/docs/app/constants/content.constant"
 import { GRAPH_EXCLUDED_CATEGORIES } from "../layers/docs/app/constants/graph.constant"
@@ -28,14 +32,16 @@ const publicDir = resolve(root, "public")
 const serverAssetsDir = resolve(root, "server/assets")
 const markdownContentDir = resolve(root, "content")
 const archiveContentDir = resolve(root, "layers/docs/app/content")
-const contentInputRoots = [markdownContentDir, archiveContentDir]
+const localesDir = resolve(root, "i18n/locales")
+const contentInputRoots = [markdownContentDir, archiveContentDir, localesDir]
 
 type GraphRow = { path: string; title: string | null; body: string | null }
 
 const undirectedKey = (a: string, b: string): string => (a < b ? `${a}::${b}` : `${b}::${a}`)
 
-const hashPayload = (payload: unknown): string =>
-  createHash("sha256").update(JSON.stringify(payload)).digest("hex")
+const hashPayload = (payload: unknown): string => {
+  return createHash("sha256").update(JSON.stringify(payload)).digest("hex")
+}
 
 const latestMtimeMs = (paths: string[]): number => {
   let latest = 0
@@ -298,6 +304,27 @@ const buildArchiveIndex = (): string[] => {
   return [...keys].sort()
 }
 
+const buildRssAssetForLocale = (locale: string, entries: ContentRssEntry[]): RssAssetFile => {
+  const t = createTranslator(locale)
+  const channel: RssAssetChannel = {
+    title: t("layout.rss.feedTitle"),
+    description: t("layout.rss.feedDescription"),
+    creator: t("global.name")
+  }
+
+  const enrichedEntries = entries.map((entry) => {
+    const path = String(entry.path || "")
+    if (!isRssEligibleContentPath(path) || !entry.meta?.publishedAt) return entry
+
+    return {
+      ...entry,
+      rssCategories: resolveRssEntryCategories(entry, t)
+    }
+  })
+
+  return { channel, entries: enrichedEntries }
+}
+
 const getTrackedOutputPaths = (): string[] => [
   resolve(publicDir, "archive-index.json"),
   ...CONTENT_LOCALES.flatMap((locale) => [
@@ -384,9 +411,10 @@ const main = (): void => {
     }
 
     const rssEntries = loadRssContentEntriesFromSqlite(locale)
-    const rssStable = { entries: rssEntries }
+    const rssAsset = buildRssAssetForLocale(locale, rssEntries)
+    const rssStable = { channel: rssAsset.channel, entries: rssAsset.entries }
     const rssFile = {
-      entries: rssEntries,
+      ...rssStable,
       builtAt: new Date().toISOString()
     }
     const rssPublicPath = resolve(publicDir, `rss-${locale}.json`)

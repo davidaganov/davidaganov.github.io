@@ -1,4 +1,9 @@
 {
+  "channel": {
+    "title": "Aganov.dev — articles & guides",
+    "description": "New articles, projects, templates, and site materials.",
+    "creator": "David Aganov"
+  },
   "entries": [
     {
       "title": "About Me",
@@ -23,7 +28,8 @@
       "seo": {
         "title": "Polyglot Keeper",
         "description": "AI-powered i18n synchronization tool that automatically translates missing keys and maintains perfect translation structure — in JSON and Markdown files."
-      }
+      },
+      "rssCategories": ["About", "Projects", "CLI", "i18n", "AI", "Node.js"]
     },
     {
       "title": "Stack",
@@ -41,7 +47,8 @@
       "seo": {
         "title": "Stack",
         "description": "CLI to generate projects from my templates — pick what you need, get a clean result without cruft."
-      }
+      },
+      "rssCategories": ["About", "Projects", "CLI", "Tools", "Frontend", "DX"]
     },
     {
       "title": "05.10.2026 — Site updates",
@@ -87,7 +94,8 @@
       "seo": {
         "title": "Project architecture",
         "description": "How I organize folder structure, components, stores, routing, validation — and why."
-      }
+      },
+      "rssCategories": ["Guides", "Articles", "Frontend", "Vue 3", "Architecture"]
     },
     {
       "title": "Working with Layers in Nuxt 3",
@@ -104,7 +112,8 @@
       "seo": {
         "title": "Working with Layers in Nuxt 3",
         "description": "Using Layers in Nuxt 3 for project structuring and site separation"
-      }
+      },
+      "rssCategories": ["Guides", "Articles", "Nuxt", "Frontend"]
     },
     {
       "title": "Clean API Client",
@@ -120,7 +129,8 @@
       "seo": {
         "title": "Clean API Client",
         "description": "Request-layer architecture that eliminates code duplication in components."
-      }
+      },
+      "rssCategories": ["Guides", "Articles", "Frontend", "Architecture", "API"]
     },
     {
       "title": "Mindful Vibe Coding",
@@ -137,7 +147,8 @@
       "seo": {
         "title": "Mindful Vibe Coding",
         "description": "An article about how I use AI in my work and why I don't consider it a replacement for developers."
-      }
+      },
+      "rssCategories": ["Guides", "Articles", "Artificial Intelligence", "Development"]
     },
     {
       "title": "Astro Clean Template",
@@ -153,7 +164,8 @@
       "seo": {
         "title": "Astro Clean Template",
         "description": "Template for static sites with Astro. Compiles components into predictable HTML/CSS/JS files — no extra dependencies, no client bundler magic."
-      }
+      },
+      "rssCategories": ["Guides", "Templates", "Astro", "Frontend", "Tools"]
     },
     {
       "title": "Vue Lynx Template",
@@ -169,7 +181,8 @@
       "seo": {
         "title": "Vue Lynx Template",
         "description": "Template for mobile apps with Vue 3 + Lynx. Familiar Vue 3 on the inside, a native Android app on the outside."
-      }
+      },
+      "rssCategories": ["Guides", "Templates", "Vue", "Mobile", "Lynx", "Frontend", "Tools"]
     },
     {
       "title": "Vue Modern Template",
@@ -185,7 +198,8 @@
       "seo": {
         "title": "Vue Modern Template",
         "description": "A lean Vue 3 app template. TypeScript, Tailwind, and a stable architecture."
-      }
+      },
+      "rssCategories": ["Guides", "Templates", "Vue", "Frontend"]
     },
     {
       "title": "Vue PWA Template",
@@ -201,7 +215,8 @@
       "seo": {
         "title": "Vue PWA Template",
         "description": "Progressive Web App template with Vue 3 + Vite. Offline mode out of the box, Tailwind, TypeScript — and little cruft in the base build."
-      }
+      },
+      "rssCategories": ["Guides", "Templates", "Vue", "PWA", "Frontend", "Tools"]
     },
     {
       "title": "Date Calculator",
@@ -232,5 +247,5 @@
       }
     }
   ],
-  "builtAt": "2026-05-23T13:01:42.147Z"
+  "builtAt": "2026-05-23T17:43:13.725Z"
 }

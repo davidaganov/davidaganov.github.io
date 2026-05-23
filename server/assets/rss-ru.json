@@ -1,4 +1,9 @@
 {
+  "channel": {
+    "title": "Aganov.dev — статьи и гайды",
+    "description": "Новые статьи, проекты, шаблоны и материалы с сайта.",
+    "creator": "Давид Аганов"
+  },
   "entries": [
     {
       "title": "Обо мне",
@@ -23,7 +28,8 @@
       "seo": {
         "title": "Polyglot Keeper",
         "description": "AI‑инструмент синхронизации i18n, который автоматически переводит недостающие ключи и поддерживает идеальную структуру переводов — в JSON и Markdown файлах."
-      }
+      },
+      "rssCategories": ["Обо мне", "Проекты", "CLI", "i18n", "AI", "Node.js"]
     },
     {
       "title": "Stack",
@@ -41,7 +47,8 @@
       "seo": {
         "title": "Stack",
         "description": "CLI для генерации проектов из моих шаблонов — выбираешь что нужно, получаешь чистый результат без лишнего."
-      }
+      },
+      "rssCategories": ["Обо мне", "Проекты", "CLI", "Инструменты", "Фронтенд", "DX"]
     },
     {
       "title": "05.10.2026 — Изменения на сайте",
@@ -87,7 +94,8 @@
       "seo": {
         "title": "Архитектура проекта",
         "description": "Как я организую структуру папок, компоненты, стор, роутинг, валидацию — и почему именно так."
-      }
+      },
+      "rssCategories": ["Гайды", "Статьи", "Frontend", "Vue 3", "Архитектура"]
     },
     {
       "title": "Работа со слоями в Nuxt 3",
@@ -104,7 +112,8 @@
       "seo": {
         "title": "Работа со слоями в Nuxt 3",
         "description": "Использование Layers в Nuxt 3 для структурирования проекта и разделения сайтов"
-      }
+      },
+      "rssCategories": ["Гайды", "Статьи", "Nuxt", "Frontend"]
     },
     {
       "title": "Чистый API-клиент",
@@ -120,7 +129,8 @@
       "seo": {
         "title": "Чистый API-клиент",
         "description": "Архитектура request-слоя, которая избавит компоненты от дублирования кода."
-      }
+      },
+      "rssCategories": ["Гайды", "Статьи", "Frontend", "Архитектура", "API"]
     },
     {
       "title": "Осознанный вайб-кодинг",
@@ -137,7 +147,8 @@
       "seo": {
         "title": "Осознанный вайб-кодинг",
         "description": "Статья о том, как я использую ИИ в своей работе и почему не считаю его заменой разработчикам."
-      }
+      },
+      "rssCategories": ["Гайды", "Статьи", "Искусственный интеллект", "Разработка"]
     },
     {
       "title": "Astro Clean Template",
@@ -153,7 +164,8 @@
       "seo": {
         "title": "Astro Clean Template",
         "description": "Шаблон для статических сайтов на Astro. Собирает компоненты в предсказуемые HTML/CSS/JS-файлы — без лишних зависимостей, без бандлера для клиентского кода, без магии."
-      }
+      },
+      "rssCategories": ["Гайды", "Шаблоны", "Astro", "Frontend", "Tools"]
     },
     {
       "title": "Vue Lynx Template",
@@ -169,7 +181,8 @@
       "seo": {
         "title": "Vue Lynx Template",
         "description": "Шаблон для мобильных приложений на Vue 3 + Lynx. Привычный Vue 3, а на выходе — нативное Android-приложение."
-      }
+      },
+      "rssCategories": ["Гайды", "Шаблоны", "Vue", "Mobile", "Lynx", "Frontend", "Tools"]
     },
     {
       "title": "Vue Modern Template",
@@ -185,7 +198,8 @@
       "seo": {
         "title": "Vue Modern Template",
         "description": "Чистый шаблон для Vue 3 приложений. TypeScript, Tailwind и стабильная архитектура."
-      }
+      },
+      "rssCategories": ["Гайды", "Шаблоны", "Vue", "Frontend"]
     },
     {
       "title": "Vue PWA Template",
@@ -201,7 +215,8 @@
       "seo": {
         "title": "Vue PWA Template",
         "description": "Шаблон для Progressive Web App на Vue 3 + Vite. Offline-режим из коробки, Tailwind, TypeScript — и минимум лишнего в базовой сборке."
-      }
+      },
+      "rssCategories": ["Гайды", "Шаблоны", "Vue", "PWA", "Frontend", "Tools"]
     },
     {
       "title": "Калькулятор дат",
@@ -232,5 +247,5 @@
       }
     }
   ],
-  "builtAt": "2026-05-23T13:01:42.125Z"
+  "builtAt": "2026-05-23T17:43:13.685Z"
 }

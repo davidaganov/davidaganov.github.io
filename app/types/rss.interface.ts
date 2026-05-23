@@ -28,6 +28,12 @@ export interface RssSiteLinks {
   articlesIndexUrl: string
 }
 
+export interface RssAssetChannel {
+  title: string
+  description: string
+  creator: string
+}
+
 export interface ContentRssEntry {
   title?: string | null
   description?: string | null
@@ -37,6 +43,12 @@ export interface ContentRssEntry {
     ogImage?: string
     image?: string
   } | null
+  rssCategories?: string[]
+}
+
+export interface RssAssetFile {
+  channel: RssAssetChannel
+  entries: ContentRssEntry[]
 }
 
 export interface ServeRssFeedOptions {

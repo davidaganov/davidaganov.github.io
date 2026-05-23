@@ -6,29 +6,13 @@ import {
   buildRssItemContentHtml,
   getDocsOgImagePublicPath,
   getFeedChannelOgImagePublicPath,
-  getRssContentPathMeta,
   isRssEligibleContentPath,
   toRfc822Date
 } from "./rss"
+import { resolveRssEntryCategories } from "./rss-labels"
 import { absoluteUrl, DEFAULT_LOCALE, localizedPath } from "./seo"
 
 const sqlitePath = `${process.cwd()}/.data/content/contents.sqlite`
-
-const uniqueLabels = (labels: string[]): string[] => {
-  const seen = new Set<string>()
-  const result: string[] = []
-
-  for (const label of labels) {
-    const trimmed = label.trim()
-    if (!trimmed) continue
-    const key = trimmed.toLocaleLowerCase()
-    if (seen.has(key)) continue
-    seen.add(key)
-    result.push(trimmed)
-  }
-
-  return result
-}
 
 const parseJsonColumn = <T>(value: unknown): T | null => {
   if (value == null || value === "") return null
@@ -72,8 +56,8 @@ export const contentEntriesToRssItems = (
   entries: ContentRssEntry[],
   locale: string,
   siteUrl: string,
-  t: (key: string) => string,
-  creator: string
+  creator: string,
+  translate?: (key: string) => string
 ): RssPostItem[] => {
   return entries
     .filter((entry) => {
@@ -95,15 +79,12 @@ export const contentEntriesToRssItems = (
       const link = absoluteUrl(siteUrl, localizedPublicPath)
       const title = String(entry.title || "")
       const description = String(entry.description || "")
-      const pathMeta = getRssContentPathMeta(contentPath)
-      const sectionLabel = pathMeta ? t(pathMeta.sectionLabelKey) : t("docs.seo.defaultSection")
-      const collectionLabel = pathMeta ? t(pathMeta.collectionLabelKey) : ""
       const tagLabels = entry.meta?.tags?.map((tag) => tag.trim()).filter(Boolean) ?? []
-      const categories = uniqueLabels(
-        collectionLabel
-          ? [sectionLabel, collectionLabel, ...tagLabels]
-          : [sectionLabel, ...tagLabels]
-      )
+      const categories = entry.rssCategories?.length
+        ? entry.rssCategories
+        : translate
+          ? resolveRssEntryCategories(entry, translate)
+          : []
       const seoImageOverride =
         nonEmptyString(entry.seo?.ogImage) || nonEmptyString(entry.seo?.image)
       const imageUrl = seoImageOverride || getDocsRssOgImageUrl(siteUrl, locale, contentPath)
