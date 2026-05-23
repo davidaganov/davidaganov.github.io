@@ -35,13 +35,8 @@ export const getFeedChannelOgImagePublicPath = (locale: string): string => {
     : joinURL(NUXT_SEO_OG_STATIC_PREFIX, "og.png")
 }
 
-export const getRssFeedFilename = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
-  if (locale === defaultLocale) return RSS_FEED_FILENAME
-  return `feed.${locale}.xml`
-}
-
 export const getRssFeedPublicPath = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
-  return `/${getRssFeedFilename(locale, defaultLocale)}`
+  return localizedPath(locale, `/${RSS_FEED_FILENAME}`, defaultLocale)
 }
 
 export const isRssEligibleContentPath = (contentPath: string): boolean => {

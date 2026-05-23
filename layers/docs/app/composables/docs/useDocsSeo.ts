@@ -134,28 +134,39 @@ export const useDocsSeo = ({
 
   useSchemaOrg(() => structuredDataNodes.value)
 
+  const resolvedOgTitle = computed(() => seoTitle.value || t("docs.seo.defaultTitle"))
+  const resolvedOgDescription = computed(
+    () => seoDescription.value || t("docs.seo.defaultDescription")
+  )
+
   useSeoMeta({
-    title: () => seoTitle.value,
-    description: () => seoDescription.value,
-    ogTitle: () => seoTitle.value,
-    ogDescription: () => seoDescription.value,
+    title: () => resolvedOgTitle.value,
+    description: () => resolvedOgDescription.value,
+    ogTitle: () => resolvedOgTitle.value,
+    ogDescription: () => resolvedOgDescription.value,
     ogUrl: () => canonicalUrl.value,
     ogImage: () => seoImage.value,
-    twitterTitle: () => seoTitle.value,
-    twitterDescription: () => seoDescription.value,
+    twitterTitle: () => resolvedOgTitle.value,
+    twitterDescription: () => resolvedOgDescription.value,
     twitterImage: () => seoImage.value,
     twitterCard: "summary_large_image"
   })
 
   if (!seoImageOverride.value) {
-    defineOgImage("DocsPage", {
-      section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
-      collection: parentCollectionItem.value
-        ? t(parentCollectionItem.value.label)
-        : collectionItem.value
-          ? t(collectionItem.value.label)
-          : ""
-    })
+    defineOgImage(
+      "DocsPage",
+      {
+        title: resolvedOgTitle.value,
+        description: resolvedOgDescription.value,
+        section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
+        collection: parentCollectionItem.value
+          ? t(parentCollectionItem.value.label)
+          : collectionItem.value
+            ? t(collectionItem.value.label)
+            : ""
+      },
+      { cacheKey: canonicalPath.value }
+    )
   }
 
   return {

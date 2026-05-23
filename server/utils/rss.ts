@@ -39,41 +39,53 @@ export const serveRssFeed = async (
   event: H3Event,
   options: ServeRssFeedOptions
 ): Promise<string> => {
-  const localeCodes = getLocaleCodes()
+  try {
+    const localeCodes = getLocaleCodes()
 
-  if (!localeCodes.includes(options.locale)) {
-    throw createError({ statusCode: 404, statusMessage: "Feed not found" })
-  }
+    if (!localeCodes.includes(options.locale)) {
+      throw createError({ statusCode: 404, statusMessage: "Feed not found" })
+    }
 
-  const rssAsset = await loadRssAsset(options.locale)
-  if (!rssAsset) {
+    const rssAsset = await loadRssAsset(options.locale)
+    if (!rssAsset) {
+      throw createError({
+        statusCode: 503,
+        statusMessage: "RSS feed is not built yet. Run npm run build:docs-assets."
+      })
+    }
+
+    const runtimeConfig = useRuntimeConfig()
+    const siteUrl = normalizeSiteUrl(String(runtimeConfig.public.siteUrl || ""))
+    const { feedUrl, articlesIndexUrl } = getRssSiteLinks(siteUrl, options.locale, DEFAULT_LOCALE)
+    const { channel, entries } = rssAsset
+    const items = contentEntriesToRssItems(entries, options.locale, siteUrl, channel.creator)
+    const channelImageUrl = getHomeRssOgImageUrl(siteUrl, options.locale)
+
+    const xml = buildRssXml(
+      {
+        title: channel.title,
+        description: channel.description,
+        link: articlesIndexUrl,
+        language: options.locale,
+        feedUrl,
+        imageUrl: channelImageUrl
+      },
+      items
+    )
+
+    setResponseHeader(event, "Content-Type", "application/rss+xml; charset=utf-8")
+    setResponseHeader(event, "Cache-Control", "public, max-age=3600, s-maxage=3600")
+
+    return xml
+  } catch (error) {
+    if (error && typeof error === "object" && "statusCode" in error) {
+      throw error
+    }
+
+    console.error(`rss: failed to serve feed (${options.locale}):`, error)
     throw createError({
-      statusCode: 503,
-      statusMessage: "RSS feed is not built yet. Run npm run build:docs-assets."
+      statusCode: 500,
+      statusMessage: "RSS feed failed to generate"
     })
   }
-
-  const runtimeConfig = useRuntimeConfig()
-  const siteUrl = normalizeSiteUrl(String(runtimeConfig.public.siteUrl || ""))
-  const { feedUrl, articlesIndexUrl } = getRssSiteLinks(siteUrl, options.locale, DEFAULT_LOCALE)
-  const { channel, entries } = rssAsset
-  const items = contentEntriesToRssItems(entries, options.locale, siteUrl, channel.creator)
-  const channelImageUrl = getHomeRssOgImageUrl(siteUrl, options.locale)
-
-  const xml = buildRssXml(
-    {
-      title: channel.title,
-      description: channel.description,
-      link: articlesIndexUrl,
-      language: options.locale,
-      feedUrl,
-      imageUrl: channelImageUrl
-    },
-    items
-  )
-
-  setResponseHeader(event, "Content-Type", "application/rss+xml; charset=utf-8")
-  setResponseHeader(event, "Cache-Control", "public, max-age=3600, s-maxage=3600")
-
-  return xml
 }
