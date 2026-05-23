@@ -1,6 +1,4 @@
 import type { H3Event } from "h3"
-import { readFile } from "node:fs/promises"
-import { join } from "node:path"
 import { getLocaleCodes } from "@app/config/locales"
 import { buildRssXml, getRssSiteLinks } from "@app/utils/rss"
 import { contentEntriesToRssItems, getHomeRssOgImageUrl } from "@app/utils/rss.server"
@@ -30,16 +28,9 @@ const parseRssAssetPayload = (data: unknown): RssAssetFile | null => {
 const loadRssAsset = async (locale: string): Promise<RssAssetFile | null> => {
   try {
     const data = await useStorage("assets:server").getItem(`rss-${locale}.json`)
-    const asset = parseRssAssetPayload(data)
-    if (asset) return asset
+    return parseRssAssetPayload(data)
   } catch (error) {
     console.error("rss: error reading from server assets:", error)
-  }
-
-  try {
-    const raw = await readFile(join(process.cwd(), "public", `rss-${locale}.json`), "utf8")
-    return parseRssAssetPayload(JSON.parse(raw) as unknown)
-  } catch {
     return null
   }
 }

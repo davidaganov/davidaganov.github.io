@@ -117,6 +117,13 @@ export default defineNuxtConfig({
         stdio: "inherit",
         env: process.env
       })
+    },
+    "nitro:build:before"() {
+      execSync("npx tsx scripts/build-docs-assets.ts", {
+        cwd: rootDir,
+        stdio: "inherit",
+        env: process.env
+      })
     }
   },
 

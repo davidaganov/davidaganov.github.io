@@ -4,8 +4,6 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "prebuild": "npm run build:docs-assets",
-    "postbuild": "npm run build:docs-assets",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "prepare": "husky",

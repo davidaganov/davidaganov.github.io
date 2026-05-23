@@ -3,7 +3,7 @@ let cachedKeys: Set<string> | null = null
 export const loadArchiveIndex = async (): Promise<Set<string>> => {
   if (cachedKeys) return cachedKeys
   try {
-    const response = await fetch("/archive-index.json", {
+    const response = await fetch("/api/docs/archive-index", {
       headers: { Accept: "application/json" }
     })
 

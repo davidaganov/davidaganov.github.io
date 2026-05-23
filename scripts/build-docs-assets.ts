@@ -28,7 +28,6 @@ import {
 const __dirname = fileURLToPath(new URL(".", import.meta.url))
 const root = resolve(__dirname, "..")
 const sqlitePath = resolve(root, ".data/content/contents.sqlite")
-const publicDir = resolve(root, "public")
 const serverAssetsDir = resolve(root, "server/assets")
 const markdownContentDir = resolve(root, "content")
 const archiveContentDir = resolve(root, "layers/docs/app/content")
@@ -104,24 +103,6 @@ const writeJsonIfChanged = (
   if (previousHash === nextHash) return false
 
   writeFileSync(path, `${JSON.stringify(filePayload)}\n`, "utf8")
-  return true
-}
-
-const writeMirroredJsonIfChanged = (
-  publicPath: string,
-  serverPath: string,
-  stablePayload: unknown,
-  filePayload: unknown
-): boolean => {
-  const serialized = `${JSON.stringify(filePayload)}\n`
-  const nextHash = hashPayload(stablePayload)
-  const publicHash = readStableHash(publicPath, () => stablePayload)
-  const serverHash = readStableHash(serverPath, () => stablePayload)
-
-  if (publicHash === nextHash && serverHash === nextHash) return false
-
-  writeFileSync(publicPath, serialized, "utf8")
-  writeFileSync(serverPath, serialized, "utf8")
   return true
 }
 
@@ -326,11 +307,9 @@ const buildRssAssetForLocale = (locale: string, entries: ContentRssEntry[]): Rss
 }
 
 const getTrackedOutputPaths = (): string[] => [
-  resolve(publicDir, "archive-index.json"),
+  resolve(serverAssetsDir, "archive-index.json"),
   ...CONTENT_LOCALES.flatMap((locale) => [
-    resolve(publicDir, `graph-${locale}.json`),
     resolve(serverAssetsDir, `graph-${locale}.json`),
-    resolve(publicDir, `rss-${locale}.json`),
     resolve(serverAssetsDir, `rss-${locale}.json`)
   ])
 ]
@@ -343,7 +322,6 @@ const main = (): void => {
     process.exit(1)
   }
 
-  mkdirSync(publicDir, { recursive: true })
   mkdirSync(serverAssetsDir, { recursive: true })
 
   const outputPaths = getTrackedOutputPaths()
@@ -360,7 +338,7 @@ const main = (): void => {
 
   const archiveKeys = buildArchiveIndex()
   const archiveStable = { keys: archiveKeys }
-  const archivePath = resolve(publicDir, "archive-index.json")
+  const archivePath = resolve(serverAssetsDir, "archive-index.json")
   const archiveChanged = writeJsonIfChanged(archivePath, archiveStable, {
     keys: archiveKeys,
     builtAt: new Date().toISOString()
@@ -399,14 +377,13 @@ const main = (): void => {
       builtAt: new Date().toISOString()
     }
 
-    const publicPath = resolve(publicDir, `graph-${locale}.json`)
-    const serverPath = resolve(serverAssetsDir, `graph-${locale}.json`)
-    const graphChanged = writeMirroredJsonIfChanged(publicPath, serverPath, graphStable, graphFile)
+    const graphPath = resolve(serverAssetsDir, `graph-${locale}.json`)
+    const graphChanged = writeJsonIfChanged(graphPath, graphStable, graphFile)
 
     if (graphChanged) {
       wroteAny = true
       console.info(
-        `build-docs-assets: wrote ${publicPath} and ${serverPath} (${graphData.nodes.length} nodes, ${graphData.links.length} links)`
+        `build-docs-assets: wrote ${graphPath} (${graphData.nodes.length} nodes, ${graphData.links.length} links)`
       )
     }
 
@@ -417,15 +394,12 @@ const main = (): void => {
       ...rssStable,
       builtAt: new Date().toISOString()
     }
-    const rssPublicPath = resolve(publicDir, `rss-${locale}.json`)
-    const rssServerPath = resolve(serverAssetsDir, `rss-${locale}.json`)
-    const rssChanged = writeMirroredJsonIfChanged(rssPublicPath, rssServerPath, rssStable, rssFile)
+    const rssPath = resolve(serverAssetsDir, `rss-${locale}.json`)
+    const rssChanged = writeJsonIfChanged(rssPath, rssStable, rssFile)
 
     if (rssChanged) {
       wroteAny = true
-      console.info(
-        `build-docs-assets: wrote ${rssPublicPath} and ${rssServerPath} (${rssEntries.length} RSS entries)`
-      )
+      console.info(`build-docs-assets: wrote ${rssPath} (${rssEntries.length} RSS entries)`)
     }
   }
 
