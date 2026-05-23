@@ -33,8 +33,3 @@ logs
 
 # Vercel
 .vercel
-
-# RSS
-public/__og-image__
-public/**/feed.xml
-public/feed.xml

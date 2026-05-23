@@ -117,23 +117,6 @@ export default defineNuxtConfig({
         stdio: "inherit",
         env: process.env
       })
-    },
-    "build:done": () => {
-      execSync("npx tsx scripts/build-docs-assets.ts", {
-        cwd: rootDir,
-        stdio: "inherit",
-        env: process.env
-      })
-      execSync("npx tsx scripts/generate-rss-og-images.ts", {
-        cwd: rootDir,
-        stdio: "inherit",
-        env: process.env
-      })
-      execSync("npx tsx scripts/write-rss-feeds.ts", {
-        cwd: rootDir,
-        stdio: "inherit",
-        env: process.env
-      })
     }
   },
 

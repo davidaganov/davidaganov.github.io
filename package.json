@@ -5,9 +5,8 @@
   "scripts": {
     "build": "nuxt build",
     "prebuild": "npm run build:docs-assets",
+    "postbuild": "npm run build:docs-assets && npm run rss:og",
     "dev": "nuxt dev",
-    "pregenerate": "npm run build:docs-assets",
-    "generate": "nuxt generate",
     "preview": "nuxt preview",
     "prepare": "husky",
     "postinstall": "nuxt prepare",
@@ -22,7 +21,7 @@
     "translate:init": "npx polyglot-keeper init",
     "generate:favicons": "tsx scripts/generate-favicons.ts",
     "build:docs-assets": "tsx scripts/build-docs-assets.ts",
-    "rss:og": "tsx scripts/generate-rss-og-images.ts"
+    "rss:og": "tsx scripts/ensure-rss-og-images.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
