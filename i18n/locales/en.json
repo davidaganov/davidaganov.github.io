@@ -107,8 +107,8 @@
       "repositoryHint": "Source code of this portfolio."
     },
     "rss": {
-      "feedTitle": "Frontend, Architecture and tools | aganov.dev",
-      "feedDescription": "Articles on web development, project architecture, and building custom tools.",
+      "feedTitle": "Frontend, architecture and tools | aganov.dev",
+      "feedDescription": "Articles about web development, project architecture and creating your own tools.",
       "copyAction": "Copy RSS feed URL"
     },
     "a11y": {
