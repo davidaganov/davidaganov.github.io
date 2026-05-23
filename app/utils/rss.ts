@@ -40,10 +40,9 @@ const toBase64Url = (value: string): string => {
 const encodeOgImageValue = (value: string): string => {
   const escaped = value.startsWith("~") ? `~${value}` : value
   const encoded = encodeURIComponent(escaped.replace(/_/g, "__")).replace(/%20/g, "+")
+  const hasNonAscii = [...value].some((char) => char.charCodeAt(0) > 127)
 
-  return encoded.includes("%") || /[^\u0000-\u007F]/.test(value)
-    ? `~${toBase64Url(value)}`
-    : encoded
+  return encoded.includes("%") || hasNonAscii ? `~${toBase64Url(value)}` : encoded
 }
 
 const getOgImagePublicPath = (options: OgImageUrlOptions): string => {
