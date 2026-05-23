@@ -7,6 +7,7 @@ import { getRssOgImageSpecs } from "../app/utils/rss.server"
 const root = resolve(fileURLToPath(new URL(".", import.meta.url)), "..")
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
 const OG_STATIC_PREFIX = "__og-image__/static/"
+const OG_DYNAMIC_PREFIX = "_og/"
 const FAVICON_FINGERPRINTS = [
   resolve(root, "public/favicons/android-chrome-512x512.png"),
   resolve(root, "public/favicon.src.png")
@@ -141,11 +142,19 @@ const main = (): void => {
   let copied = 0
   let replaced = 0
   let missing = 0
+  let skipped = 0
 
   console.info(`ensure-rss-og-images: ${staticDir}`)
 
   for (const spec of specs) {
-    const targetPath = join(staticDir, spec.publicPath.replace(/^\//, ""))
+    const relativePath = spec.publicPath.replace(/^\//, "")
+
+    if (relativePath.startsWith(OG_DYNAMIC_PREFIX)) {
+      skipped++
+      continue
+    }
+
+    const targetPath = join(staticDir, relativePath)
 
     if (existsSync(targetPath)) {
       const existing = readFileSync(targetPath)
@@ -174,7 +183,7 @@ const main = (): void => {
   }
 
   console.info(
-    `ensure-rss-og-images: present ${present}, copied ${copied}, replaced ${replaced}, missing ${missing}`
+    `ensure-rss-og-images: present ${present}, copied ${copied}, replaced ${replaced}, skipped ${skipped}, missing ${missing}`
   )
 
   if (missing > 0) {

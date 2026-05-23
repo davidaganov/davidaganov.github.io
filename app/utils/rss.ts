@@ -16,7 +16,7 @@ import {
   normalizeSiteUrl
 } from "./seo"
 
-const NUXT_SEO_OG_STATIC_PREFIX = "/__og-image__/static"
+const NUXT_SEO_OG_STATIC_PREFIX = "/_og/d"
 
 export const getDocsOgImagePublicPath = (locale: string, contentPath: string): string => {
   const normalized = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
