@@ -7,14 +7,60 @@ import { getRssOgImageSpecs } from "../app/utils/rss.server"
 const root = resolve(fileURLToPath(new URL(".", import.meta.url)), "..")
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
 const OG_STATIC_PREFIX = "__og-image__/static/"
-
-const fallbackSources = [
+const FAVICON_FINGERPRINTS = [
   resolve(root, "public/favicons/android-chrome-512x512.png"),
   resolve(root, "public/favicon.src.png")
 ]
 
 const isValidPng = (buffer: Buffer): boolean => {
   return buffer.length > 1024 && buffer.subarray(0, 8).equals(PNG_SIGNATURE)
+}
+
+const readPngDimensions = (buffer: Buffer): { width: number; height: number } | null => {
+  if (!isValidPng(buffer) || buffer.length < 24) return null
+
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20)
+  }
+}
+
+const isOgImageDimensions = (buffer: Buffer): boolean => {
+  const dimensions = readPngDimensions(buffer)
+  if (!dimensions) return false
+
+  return (
+    dimensions.width >= 1000 && dimensions.height >= 500 && dimensions.width > dimensions.height
+  )
+}
+
+const fingerprintCache = new Map<string, Buffer>()
+
+const fileFingerprint = (filePath: string): Buffer | null => {
+  const cached = fingerprintCache.get(filePath)
+  if (cached) return cached
+
+  if (!existsSync(filePath) || !statSync(filePath).isFile()) return null
+
+  const buffer = readFileSync(filePath)
+  if (!isValidPng(buffer)) return null
+
+  fingerprintCache.set(filePath, buffer)
+  return buffer
+}
+
+const isKnownFaviconClone = (buffer: Buffer): boolean => {
+  for (const faviconPath of FAVICON_FINGERPRINTS) {
+    const favicon = fileFingerprint(faviconPath)
+    if (!favicon) continue
+    if (favicon.length === buffer.length && favicon.equals(buffer)) return true
+  }
+
+  return false
+}
+
+const isAcceptableOgImage = (buffer: Buffer): boolean => {
+  return isValidPng(buffer) && isOgImageDimensions(buffer) && !isKnownFaviconClone(buffer)
 }
 
 const getVercelStaticDir = (root: string): string => {
@@ -79,20 +125,10 @@ const sourcePathCandidates = (publicPath: string): string[] => {
 const findSourcePng = (staticDir: string, publicPath: string): string | null => {
   for (const relativePath of sourcePathCandidates(publicPath)) {
     const candidate = join(staticDir, relativePath)
-    if (existsSync(candidate) && statSync(candidate).isFile()) {
-      return candidate
-    }
-  }
-
-  return null
-}
-
-const findFallbackSource = (): string | null => {
-  for (const candidate of fallbackSources) {
     if (!existsSync(candidate) || !statSync(candidate).isFile()) continue
 
     const buffer = readFileSync(candidate)
-    if (isValidPng(buffer)) return candidate
+    if (isAcceptableOgImage(buffer)) return candidate
   }
 
   return null
@@ -101,10 +137,9 @@ const findFallbackSource = (): string | null => {
 const main = (): void => {
   const staticDir = getStaticOutputDir(root)
   const specs = getRssOgImageSpecs()
-  const fallbackSource = findFallbackSource()
   let present = 0
   let copied = 0
-  let fallbackCopied = 0
+  let replaced = 0
   let missing = 0
 
   console.info(`ensure-rss-og-images: ${staticDir}`)
@@ -112,18 +147,20 @@ const main = (): void => {
   for (const spec of specs) {
     const targetPath = join(staticDir, spec.publicPath.replace(/^\//, ""))
 
-    if (existsSync(targetPath) && isValidPng(readFileSync(targetPath))) {
-      present++
-      continue
+    if (existsSync(targetPath)) {
+      const existing = readFileSync(targetPath)
+      if (isAcceptableOgImage(existing)) {
+        present++
+        continue
+      }
+
+      replaced++
+      console.warn(
+        `ensure-rss-og-images: replace invalid ${spec.publicPath} (${readPngDimensions(existing)?.width ?? "?"}x${readPngDimensions(existing)?.height ?? "?"})`
+      )
     }
 
-    let sourcePath = findSourcePng(staticDir, spec.publicPath)
-    let usedFallback = false
-
-    if (!sourcePath && fallbackSource) {
-      sourcePath = fallbackSource
-      usedFallback = true
-    }
+    const sourcePath = findSourcePng(staticDir, spec.publicPath)
 
     if (!sourcePath) {
       missing++
@@ -131,26 +168,13 @@ const main = (): void => {
       continue
     }
 
-    const buffer = readFileSync(sourcePath)
-    if (!isValidPng(buffer)) {
-      missing++
-      console.warn(`ensure-rss-og-images: invalid ${sourcePath}`)
-      continue
-    }
-
     mkdirSync(dirname(targetPath), { recursive: true })
     copyFileSync(sourcePath, targetPath)
-
-    if (usedFallback) {
-      fallbackCopied++
-      console.warn(`ensure-rss-og-images: fallback ${spec.publicPath}`)
-    } else {
-      copied++
-    }
+    copied++
   }
 
   console.info(
-    `ensure-rss-og-images: present ${present}, copied ${copied}, fallback ${fallbackCopied}, missing ${missing}`
+    `ensure-rss-og-images: present ${present}, copied ${copied}, replaced ${replaced}, missing ${missing}`
   )
 
   if (missing > 0) {
