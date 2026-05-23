@@ -1,9 +1,9 @@
 import { queryCollection } from "@nuxt/content/server"
 import type { H3Event } from "h3"
+import { loadTranslator } from "@app/utils/rss.server"
 import { mapSearchResults } from "@docs/utils/mapSearchResults"
 import { isContentLocale } from "@docs/constants"
 import type { ContentLocale } from "@docs/types"
-import { createDocsTranslator } from "../../utils/docsI18n"
 
 export default defineEventHandler(async (event: H3Event) => {
   const query = getQuery(event)
@@ -20,6 +20,6 @@ export default defineEventHandler(async (event: H3Event) => {
     .select("title", "description", "path", "body", "meta")
     .all()
 
-  const t = createDocsTranslator(locale as ContentLocale)
+  const t = loadTranslator(locale as ContentLocale)
   return mapSearchResults(pages, q, t)
 })

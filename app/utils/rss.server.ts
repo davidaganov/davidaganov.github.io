@@ -1,24 +1,16 @@
 import Database from "better-sqlite3"
 import { existsSync, readFileSync } from "node:fs"
 import type { ArticleMeta } from "@docs/types"
-import { getLocaleCodes } from "../config/locales"
-import type {
-  BuildRssFeedFileOptions,
-  ContentRssEntry,
-  RssOgImageSpec,
-  RssPostItem
-} from "../types"
+import type { ContentRssEntry, RssPostItem } from "../types"
 import {
   buildRssItemContentHtml,
-  buildRssXml,
   getDocsOgImagePublicPath,
   getFeedChannelOgImagePublicPath,
   getRssContentPathMeta,
-  getRssSiteLinks,
   isRssEligibleContentPath,
   toRfc822Date
 } from "./rss"
-import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
+import { absoluteUrl, DEFAULT_LOCALE, localizedPath } from "./seo"
 
 const sqlitePath = `${process.cwd()}/.data/content/contents.sqlite`
 const i18nDir = `${process.cwd()}/i18n/locales`
@@ -60,7 +52,7 @@ const resolveKey = (messages: Record<string, unknown>, key: string): string => {
   return typeof value === "string" ? value : key
 }
 
-const loadTranslator = (locale: string): ((key: string) => string) => {
+export const loadTranslator = (locale: string): ((key: string) => string) => {
   const messages = JSON.parse(readFileSync(`${i18nDir}/${locale}.json`, "utf8")) as Record<
     string,
     unknown
@@ -152,60 +144,4 @@ export const loadRssContentEntriesFromSqlite = (locale: string): ContentRssEntry
   db.close()
 
   return entries
-}
-
-const loadRssItemsFromSqlite = (locale: string, siteUrl: string): RssPostItem[] => {
-  const entries = loadRssContentEntriesFromSqlite(locale)
-  return contentEntriesToRssItems(entries, locale, siteUrl, loadTranslator(locale))
-}
-
-export const buildRssFeedXml = (options: BuildRssFeedFileOptions): string => {
-  const siteUrl = normalizeSiteUrl(options.siteUrl)
-  const { feedUrl, articlesIndexUrl } = getRssSiteLinks(siteUrl, options.locale, DEFAULT_LOCALE)
-  const items = loadRssItemsFromSqlite(options.locale, siteUrl)
-  const channelImageUrl = getHomeRssOgImageUrl(siteUrl, options.locale)
-
-  return buildRssXml(
-    {
-      title: options.channelTitle,
-      description: options.channelDescription,
-      link: articlesIndexUrl,
-      language: options.locale,
-      feedUrl,
-      imageUrl: channelImageUrl
-    },
-    items
-  )
-}
-
-export const getRssOgImageSpecs = (): RssOgImageSpec[] => {
-  if (!existsSync(sqlitePath)) return []
-
-  const paths = new Set<string>()
-
-  for (const locale of getLocaleCodes()) {
-    const db = new Database(sqlitePath, { readonly: true })
-    const table = `_content_content_${locale}`
-    const tableExists = db
-      .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=?")
-      .get(table)
-
-    if (!tableExists) {
-      db.close()
-      continue
-    }
-
-    const rows = db.prepare(`SELECT path FROM ${table}`).all() as { path: string | null }[]
-    db.close()
-
-    for (const row of rows) {
-      const contentPath = String(row.path || "")
-      if (!isRssEligibleContentPath(contentPath)) continue
-      paths.add(getDocsOgImagePublicPath(locale, contentPath))
-    }
-
-    paths.add(getFeedChannelOgImagePublicPath(locale))
-  }
-
-  return [...paths].map((publicPath) => ({ publicPath }))
 }

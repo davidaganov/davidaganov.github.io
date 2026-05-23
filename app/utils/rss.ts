@@ -131,8 +131,7 @@ const buildRssItemXml = (item: RssPostItem): string => {
   const plainDescription = buildRssItemPlainDescription(item)
   const contentHtml = item.contentHtml || buildRssItemContentHtml(item)
   const mediaBlock = item.imageUrl
-    ? `      <media:content url="${escapeXml(item.imageUrl)}" medium="image" type="image/png" />
-      <media:thumbnail url="${escapeXml(item.imageUrl)}" />`
+    ? `      <media:content url="${escapeXml(item.imageUrl)}" medium="image" type="image/png" />`
     : ""
   const categoryBlock = item.category
     ? `      <category>${escapeXml(item.category)}</category>`
