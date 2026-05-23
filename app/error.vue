@@ -6,7 +6,7 @@ import {
   getSectionById,
   getSectionIdByPath
 } from "@docs/utils/sections"
-import { getSiteLocaleCodes } from "@base/constants/siteLocaleCodes"
+import { isSiteLocaleCode } from "@app/constants/siteLocaleCodes"
 import ErrorPage from "@base/components/pages/error/ErrorPage.vue"
 
 const props = defineProps<{
@@ -38,7 +38,7 @@ const stripLocalePathPrefix = (path: string): string => {
   const segments = normalized.split("/").filter(Boolean)
   const first = segments[0]
 
-  if (first && getSiteLocaleCodes().includes(first) && first !== DEFAULT_LOCALE) {
+  if (first && isSiteLocaleCode(first) && first !== DEFAULT_LOCALE) {
     return `/${segments.slice(1).join("/")}`
   }
 

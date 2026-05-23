@@ -1,9 +1,16 @@
 import { DEFAULT_LOCALE } from "@app/utils/seo"
-import { getSiteLocaleCodes } from "@base/constants/siteLocaleCodes"
+import {
+  isSiteLocaleCode,
+  SITE_LOCALE_CODES,
+  type SiteLocaleCode
+} from "@app/constants/siteLocaleCodes"
 
-export const normalizeSiteLocale = (code: string): string => {
-  const codes = getSiteLocaleCodes()
-  return codes.includes(code) ? code : DEFAULT_LOCALE
+const defaultSiteLocale: SiteLocaleCode = isSiteLocaleCode(DEFAULT_LOCALE)
+  ? DEFAULT_LOCALE
+  : SITE_LOCALE_CODES[0]
+
+export const normalizeSiteLocale = (code: string): SiteLocaleCode => {
+  return isSiteLocaleCode(code) ? code : defaultSiteLocale
 }
 
 const usesRussianFormatting = (locale: string): boolean => locale === "ru"

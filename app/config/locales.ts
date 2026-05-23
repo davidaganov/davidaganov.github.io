@@ -1,5 +1,6 @@
-import { existsSync, readdirSync } from "node:fs"
+import { existsSync } from "node:fs"
 import { fileURLToPath } from "node:url"
+import { getSiteLocaleCodes, SITE_LOCALE_CODES } from "../constants/siteLocaleCodes"
 import { DEFAULT_LOCALE } from "../utils/seo"
 
 interface SiteLocale {
@@ -11,32 +12,15 @@ const projectRoot = fileURLToPath(new URL("../../", import.meta.url))
 const localesDir = `${projectRoot}/i18n/locales`
 
 export const getSiteLocales = (): SiteLocale[] => {
-  if (!existsSync(localesDir)) {
-    return [{ code: DEFAULT_LOCALE, file: `${DEFAULT_LOCALE}.json` }]
-  }
-
-  const seen = new Set<string>()
-  const locales = readdirSync(localesDir)
-    .filter((entry) => entry.endsWith(".json"))
-    .map((file) => ({
-      code: file.replace(/\.json$/, ""),
-      file
-    }))
-    .filter((locale) => {
-      if (!locale.code || seen.has(locale.code)) return false
-      seen.add(locale.code)
-      return true
-    })
-    .sort((a, b) => {
-      if (a.code === DEFAULT_LOCALE) return -1
-      if (b.code === DEFAULT_LOCALE) return 1
-      return a.code.localeCompare(b.code)
-    })
+  const locales = SITE_LOCALE_CODES.map((code) => ({
+    code,
+    file: `${code}.json`
+  })).filter((locale) => existsSync(`${localesDir}/${locale.file}`))
 
   return locales.length ? locales : [{ code: DEFAULT_LOCALE, file: `${DEFAULT_LOCALE}.json` }]
 }
 
-export const getLocaleCodes = (): string[] => getSiteLocales().map((locale) => locale.code)
+export const getLocaleCodes = (): string[] => getSiteLocaleCodes()
 
 export const getNuxtI18nLocales = (): never => getSiteLocales() as never
 

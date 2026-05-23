@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { DEFAULT_LOCALE } from "@app/utils/seo"
 import { normalizeSiteLocale } from "@base/utils/siteLocale"
-import { getSiteLocaleCodes } from "@base/constants/siteLocaleCodes"
+import { getSiteLocaleCodes, isSiteLocaleCode } from "@app/constants/siteLocaleCodes"
 import type { LocalizedFlexible, LocalizedRecord } from "@base/types"
 
 const localeString = z.string().min(1)
@@ -17,7 +17,7 @@ const hasEveryLocaleValue = (value: Record<string, string>): boolean => {
 }
 
 const onlyStrictLocaleKeys = (value: Record<string, string>): boolean => {
-  return Object.keys(value).every((key) => getSiteLocaleCodes().includes(key))
+  return Object.keys(value).every(isSiteLocaleCode)
 }
 
 const onlyLocaleLikeKeys = (value: Record<string, string>): boolean => {
@@ -68,8 +68,9 @@ export const resolveLocalized = (locale: string, value: LocalizedFlexible): stri
   return pickFromRecord(normalizeSiteLocale(locale), value)
 }
 
-export const pickLocalized = (locale: string, value: LocalizedRecord): string =>
-  pickFromRecord(normalizeSiteLocale(locale), value)
+export const pickLocalized = (locale: string, value: LocalizedRecord): string => {
+  return pickFromRecord(normalizeSiteLocale(locale), value)
+}
 
 export const pickRecordByLocale = <T>(locale: string, record: Record<string, T | undefined>): T => {
   const code = normalizeSiteLocale(locale)

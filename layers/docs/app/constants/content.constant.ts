@@ -1,7 +1,9 @@
-import { getSiteLocaleCodes } from "@base/constants/siteLocaleCodes"
+import {
+  getSiteLocaleCodes,
+  isSiteLocaleCode,
+  type SiteLocaleCode
+} from "@app/constants/siteLocaleCodes"
 
 export const CONTENT_LOCALES = getSiteLocaleCodes()
 
-export const isContentLocale = (value: string): value is string => {
-  return CONTENT_LOCALES.includes(value)
-}
+export const isContentLocale = (value: string): value is SiteLocaleCode => isSiteLocaleCode(value)

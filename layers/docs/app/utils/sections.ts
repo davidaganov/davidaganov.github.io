@@ -1,5 +1,5 @@
 import { LOCALE_PREFIX_RE } from "@base/constants"
-import { DOCS_SECTIONS } from "@docs/constants"
+import { DOCS_SECTIONS } from "@docs/constants/sections.constant"
 import { ROUTE_PATH } from "@base/types"
 import type { DocsSection, SidebarItem } from "@docs/types"
 

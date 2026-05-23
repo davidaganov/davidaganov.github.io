@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { localizedFlexibleSchema, localizedRecordSchema } from "@base/utils/localizedRecord"
-import { getSiteLocaleCodes } from "@base/constants/siteLocaleCodes"
+import { getSiteLocaleCodes } from "@app/constants/siteLocaleCodes"
 import { RESUME_SKILL_TAGS, type ResumeData } from "@base/types"
 
 const skillTagSchema = z.enum(RESUME_SKILL_TAGS)
