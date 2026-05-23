@@ -168,6 +168,9 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: "vercel",
+    externals: {
+      traceInclude: ["./i18n/locales/*.json"]
+    },
     prerender: {
       crawlLinks: false,
       routes: getPrerenderRoutes()

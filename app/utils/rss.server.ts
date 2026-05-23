@@ -41,25 +41,6 @@ const nonEmptyString = (value: unknown): string | undefined => {
   return value.trim().length ? value : undefined
 }
 
-const resolveKey = (messages: Record<string, unknown>, key: string): string => {
-  const value = key.split(".").reduce<unknown>((node, part) => {
-    if (node && typeof node === "object" && part in (node as Record<string, unknown>)) {
-      return (node as Record<string, unknown>)[part]
-    }
-    return undefined
-  }, messages)
-
-  return typeof value === "string" ? value : key
-}
-
-export const loadTranslator = (locale: string): ((key: string) => string) => {
-  const messages = JSON.parse(readFileSync(`${i18nDir}/${locale}.json`, "utf8")) as Record<
-    string,
-    unknown
-  >
-  return (key: string) => resolveKey(messages, key)
-}
-
 export const getDocsRssOgImageUrl = (
   siteUrl: string,
   locale: string,

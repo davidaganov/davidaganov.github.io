@@ -1,9 +1,9 @@
 import { queryCollection } from "@nuxt/content/server"
 import type { H3Event } from "h3"
-import { loadTranslator } from "@app/utils/rss.server"
 import { mapSearchResults } from "@docs/utils/mapSearchResults"
 import { isContentLocale } from "@docs/constants"
 import type { ContentLocale } from "@docs/types"
+import { loadTranslator } from "../../utils/rss"
 
 export default defineEventHandler(async (event: H3Event) => {
   const query = getQuery(event)
