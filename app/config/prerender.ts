@@ -1,6 +1,5 @@
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { getRssOgPrerenderRoutes } from "../utils/rss.server"
 import { localePathPrefix } from "../utils/seo"
 import { getLocaleCodes } from "./locales"
 
@@ -82,7 +81,7 @@ export const getPrerenderRoutes = (): string[] => {
     ...markdownRoutesForLocale(locale)
   ])
 
-  return Array.from(new Set([...seoRoutes, ...contentRoutes, ...getRssOgPrerenderRoutes()]))
+  return Array.from(new Set([...seoRoutes, ...contentRoutes]))
 }
 
 export const getPrerenderRouteRules = (): Record<string, { prerender: true }> =>
@@ -92,8 +91,7 @@ export const getPrerenderRouteRules = (): Record<string, { prerender: true }> =>
       return [
         [prefix || "/", { prerender: true }],
         [`${prefix}/resume`, { prerender: true }],
-        [`${prefix}/docs/**`, { prerender: true }],
-        ["/_og/s/**", { prerender: true }]
+        [`${prefix}/docs/**`, { prerender: true }]
       ]
     })
   )

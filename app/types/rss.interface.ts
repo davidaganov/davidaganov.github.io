@@ -51,14 +51,6 @@ export interface RssContentPathMeta {
   collectionLabelKey: string
 }
 
-export interface DocsRssOgImageInput {
-  pagePath: string
-  title: string
-  description: string
-  section: string
-  collection: string
-}
-
 export interface BuildRssFeedFileOptions {
   locale: string
   siteUrl?: string
@@ -70,4 +62,8 @@ export interface ContentRssPrerenderRow {
   path: string
   title: string | null
   description: string | null
+}
+
+export interface RssOgImageSpec {
+  publicPath: string
 }

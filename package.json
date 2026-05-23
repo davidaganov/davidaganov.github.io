@@ -21,7 +21,8 @@
     "translate:md": "npx polyglot-keeper sync --md",
     "translate:init": "npx polyglot-keeper init",
     "generate:favicons": "tsx scripts/generate-favicons.ts",
-    "build:docs-assets": "tsx scripts/build-docs-assets.ts"
+    "build:docs-assets": "tsx scripts/build-docs-assets.ts",
+    "rss:og": "tsx scripts/generate-rss-og-images.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

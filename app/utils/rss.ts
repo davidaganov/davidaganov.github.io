@@ -1,11 +1,39 @@
+import { joinURL } from "ufo"
 import {
+  RSS_CHANNEL_IMAGE_HEIGHT,
+  RSS_CHANNEL_IMAGE_WIDTH,
   RSS_COLLECTION_LABEL_KEYS,
   RSS_CONTENT_PATH_PREFIXES,
   RSS_EXCLUDED_PATH_SEGMENT,
   RSS_FEED_FILENAME
 } from "../constants/rss.contstant"
 import type { RssChannelMeta, RssContentPathMeta, RssPostItem, RssSiteLinks } from "../types"
-import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
+import {
+  absoluteUrl,
+  DEFAULT_LOCALE,
+  localePathPrefix,
+  localizedPath,
+  normalizeSiteUrl
+} from "./seo"
+
+const NUXT_SEO_OG_STATIC_PREFIX = "/__og-image__/static"
+
+export const getDocsOgImagePublicPath = (locale: string, contentPath: string): string => {
+  const normalized = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
+  const localizedDocsPath = localizedPath(locale, `/docs${normalized}`, DEFAULT_LOCALE).replace(
+    /^\//,
+    ""
+  )
+
+  return joinURL(NUXT_SEO_OG_STATIC_PREFIX, localizedDocsPath, "og.png")
+}
+
+export const getFeedChannelOgImagePublicPath = (locale: string): string => {
+  const prefix = localePathPrefix(locale).replace(/^\//, "")
+  return prefix
+    ? joinURL(NUXT_SEO_OG_STATIC_PREFIX, prefix, "og.png")
+    : joinURL(NUXT_SEO_OG_STATIC_PREFIX, "og.png")
+}
 
 export const getRssFeedPublicPath = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
   const path = `/${RSS_FEED_FILENAME}`
@@ -129,8 +157,8 @@ export const buildRssXml = (channel: RssChannelMeta, items: RssPostItem[]): stri
       <url>${escapeXml(channel.imageUrl)}</url>
       <title>${escapeXml(channel.title)}</title>
       <link>${escapeXml(channel.link)}</link>
-      <width>1200</width>
-      <height>630</height>
+      <width>${RSS_CHANNEL_IMAGE_WIDTH}</width>
+      <height>${RSS_CHANNEL_IMAGE_HEIGHT}</height>
     </image>`
     : ""
 

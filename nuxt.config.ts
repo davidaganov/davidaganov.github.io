@@ -124,7 +124,7 @@ export default defineNuxtConfig({
         stdio: "inherit",
         env: process.env
       })
-      execSync("npx tsx scripts/materialize-og-images.ts", {
+      execSync("npx tsx scripts/generate-rss-og-images.ts", {
         cwd: rootDir,
         stdio: "inherit",
         env: process.env

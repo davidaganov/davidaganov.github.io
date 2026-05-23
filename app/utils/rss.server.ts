@@ -1,64 +1,27 @@
 import Database from "better-sqlite3"
 import { existsSync, readFileSync } from "node:fs"
-import { createRequire } from "node:module"
-import { join } from "node:path"
-import { joinURL } from "ufo"
 import type { ArticleMeta } from "@docs/types"
-import { ROUTE_PATH } from "../../layers/base/app/types"
 import { getLocaleCodes } from "../config/locales"
 import type {
   BuildRssFeedFileOptions,
   ContentRssEntry,
-  ContentRssPrerenderRow,
-  DocsRssOgImageInput,
+  RssOgImageSpec,
   RssPostItem
 } from "../types"
 import {
   buildRssItemContentHtml,
   buildRssXml,
+  getDocsOgImagePublicPath,
+  getFeedChannelOgImagePublicPath,
   getRssContentPathMeta,
   getRssSiteLinks,
   isRssEligibleContentPath,
   toRfc822Date
 } from "./rss"
-import {
-  absoluteUrl,
-  DEFAULT_LOCALE,
-  localePathPrefix,
-  localizedPath,
-  normalizeSiteUrl
-} from "./seo"
+import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
 
 const sqlitePath = `${process.cwd()}/.data/content/contents.sqlite`
 const i18nDir = `${process.cwd()}/i18n/locales`
-
-interface OgImageUrlResult {
-  url: string
-  hash?: string
-}
-
-type BuildOgImageUrlFn = (
-  options: Record<string, unknown>,
-  extension?: string,
-  isStatic?: boolean,
-  defaults?: Record<string, unknown>,
-  secret?: string
-) => OgImageUrlResult
-
-let buildOgImageUrl: BuildOgImageUrlFn | null = null
-
-const getBuildOgImageUrl = (): BuildOgImageUrlFn => {
-  if (!buildOgImageUrl) {
-    const require = createRequire(join(process.cwd(), "package.json"))
-    buildOgImageUrl = (
-      require(
-        join(process.cwd(), "node_modules/nuxt-og-image/dist/runtime/shared/urlEncoding.js")
-      ) as { buildOgImageUrl: BuildOgImageUrlFn }
-    ).buildOgImageUrl
-  }
-
-  return buildOgImageUrl
-}
 
 const parseJsonColumn = <T>(value: unknown): T | null => {
   if (value == null || value === "") return null
@@ -105,50 +68,16 @@ const loadTranslator = (locale: string): ((key: string) => string) => {
   return (key: string) => resolveKey(messages, key)
 }
 
-const toPublicArticlePath = (contentPath: string): string => {
-  const normalized = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
-  return `${ROUTE_PATH.DOCS}${normalized}`
-}
-
-export const getStaticOgImagePath = (
-  pagePath: string,
-  options: Record<string, unknown>
-): string => {
-  const result = getBuildOgImageUrl()({ ...options, _path: pagePath }, "png", true, {}, undefined)
-  return joinURL("/", result.url)
-}
-
-export const getDocsRssOgImageUrl = (siteUrl: string, input: DocsRssOgImageInput): string => {
-  const path = getStaticOgImagePath(input.pagePath, {
-    component: "DocsPage",
-    extension: "png",
-    width: 1200,
-    height: 630,
-    title: input.title,
-    description: input.description,
-    section: input.section,
-    collection: input.collection
-  })
-
-  return absoluteUrl(siteUrl, path)
-}
-
-export const getHomeRssOgImageUrl = (
+export const getDocsRssOgImageUrl = (
   siteUrl: string,
-  pagePath: string,
-  title: string,
-  description: string
+  locale: string,
+  contentPath: string
 ): string => {
-  const path = getStaticOgImagePath(pagePath, {
-    component: "HomePage",
-    extension: "png",
-    width: 1200,
-    height: 630,
-    title,
-    description
-  })
+  return absoluteUrl(siteUrl, getDocsOgImagePublicPath(locale, contentPath))
+}
 
-  return absoluteUrl(siteUrl, path)
+export const getHomeRssOgImageUrl = (siteUrl: string, locale: string): string => {
+  return absoluteUrl(siteUrl, getFeedChannelOgImagePublicPath(locale))
 }
 
 export const contentEntriesToRssItems = (
@@ -171,7 +100,7 @@ export const contentEntriesToRssItems = (
       const contentPath = String(entry.path || "")
       const localizedPublicPath = localizedPath(
         locale,
-        toPublicArticlePath(contentPath),
+        `/docs${contentPath.startsWith("/") ? contentPath : `/${contentPath}`}`,
         DEFAULT_LOCALE
       )
       const link = absoluteUrl(siteUrl, localizedPublicPath)
@@ -183,15 +112,7 @@ export const contentEntriesToRssItems = (
       const category = collectionLabel ? `${sectionLabel} / ${collectionLabel}` : sectionLabel
       const seoImageOverride =
         nonEmptyString(entry.seo?.ogImage) || nonEmptyString(entry.seo?.image)
-      const imageUrl =
-        seoImageOverride ||
-        getDocsRssOgImageUrl(siteUrl, {
-          pagePath: localizedPublicPath,
-          title,
-          description,
-          section: sectionLabel,
-          collection: collectionLabel
-        })
+      const imageUrl = seoImageOverride || getDocsRssOgImageUrl(siteUrl, locale, contentPath)
 
       const item: RssPostItem = {
         title,
@@ -237,12 +158,7 @@ export const buildRssFeedXml = (options: BuildRssFeedFileOptions): string => {
   const siteUrl = normalizeSiteUrl(options.siteUrl)
   const { feedUrl, articlesIndexUrl } = getRssSiteLinks(siteUrl, options.locale, DEFAULT_LOCALE)
   const items = loadRssItemsFromSqlite(options.locale, siteUrl)
-  const channelImageUrl = getHomeRssOgImageUrl(
-    siteUrl,
-    localizedPath(options.locale, ROUTE_PATH.HOME, DEFAULT_LOCALE),
-    options.channelTitle,
-    options.channelDescription
-  )
+  const channelImageUrl = getHomeRssOgImageUrl(siteUrl, options.locale)
 
   return buildRssXml(
     {
@@ -257,68 +173,34 @@ export const buildRssFeedXml = (options: BuildRssFeedFileOptions): string => {
   )
 }
 
-const ogPathsForLocale = (locale: string): string[] => {
+export const getRssOgImageSpecs = (): RssOgImageSpec[] => {
   if (!existsSync(sqlitePath)) return []
 
-  const db = new Database(sqlitePath, { readonly: true })
-  const table = `_content_content_${locale}`
-  const tableExists = db
-    .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=?")
-    .get(table)
-
-  if (!tableExists) {
-    db.close()
-    return []
-  }
-
-  const rows = db
-    .prepare(`SELECT path, title, description FROM ${table}`)
-    .all() as ContentRssPrerenderRow[]
-  db.close()
-
-  const t = loadTranslator(locale)
   const paths = new Set<string>()
 
-  for (const row of rows) {
-    const contentPath = String(row.path || "")
-    if (!isRssEligibleContentPath(contentPath)) continue
+  for (const locale of getLocaleCodes()) {
+    const db = new Database(sqlitePath, { readonly: true })
+    const table = `_content_content_${locale}`
+    const tableExists = db
+      .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=?")
+      .get(table)
 
-    const pathMeta = getRssContentPathMeta(contentPath)
-    const publicPath = localizedPath(locale, toPublicArticlePath(contentPath), DEFAULT_LOCALE)
-    const sectionLabel = pathMeta ? t(pathMeta.sectionLabelKey) : t("docs.seo.defaultSection")
-    const collectionLabel = pathMeta ? t(pathMeta.collectionLabelKey) : ""
+    if (!tableExists) {
+      db.close()
+      continue
+    }
 
-    paths.add(
-      getStaticOgImagePath(publicPath, {
-        component: "DocsPage",
-        extension: "png",
-        width: 1200,
-        height: 630,
-        title: String(row.title || ""),
-        description: String(row.description || ""),
-        section: sectionLabel,
-        collection: collectionLabel
-      })
-    )
+    const rows = db.prepare(`SELECT path FROM ${table}`).all() as { path: string | null }[]
+    db.close()
+
+    for (const row of rows) {
+      const contentPath = String(row.path || "")
+      if (!isRssEligibleContentPath(contentPath)) continue
+      paths.add(getDocsOgImagePublicPath(locale, contentPath))
+    }
+
+    paths.add(getFeedChannelOgImagePublicPath(locale))
   }
 
-  const prefix = localePathPrefix(locale)
-  paths.add(
-    getStaticOgImagePath(prefix || "/", {
-      component: "HomePage",
-      extension: "png",
-      width: 1200,
-      height: 630,
-      title: t("layout.rss.feedTitle"),
-      description: t("layout.rss.feedDescription")
-    })
-  )
-
-  return [...paths]
-}
-
-export const getRssOgPrerenderRoutes = (): string[] => {
-  if (!existsSync(sqlitePath)) return []
-
-  return Array.from(new Set(getLocaleCodes().flatMap((locale) => ogPathsForLocale(locale))))
+  return [...paths].map((publicPath) => ({ publicPath }))
 }

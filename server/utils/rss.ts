@@ -2,9 +2,8 @@ import { queryCollection } from "@nuxt/content/server"
 import type { H3Event } from "h3"
 import { buildRssXml, getRssSiteLinks } from "@app/utils/rss"
 import { contentEntriesToRssItems, getHomeRssOgImageUrl } from "@app/utils/rss.server"
-import { DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "@app/utils/seo"
+import { DEFAULT_LOCALE, normalizeSiteUrl } from "@app/utils/seo"
 import type { ContentRssEntry, ServeRssFeedOptions } from "@app/types"
-import { ROUTE_PATH } from "@base/types"
 import { createDocsTranslator } from "./docsI18n"
 
 export const fetchRssPostItems = async (
@@ -30,12 +29,7 @@ export const serveRssFeed = async (
   const { feedUrl, articlesIndexUrl } = getRssSiteLinks(siteUrl, options.locale, DEFAULT_LOCALE)
   const t = createDocsTranslator(options.locale as "ru" | "en")
   const items = await fetchRssPostItems(event, options.locale, siteUrl, t)
-  const channelImageUrl = getHomeRssOgImageUrl(
-    siteUrl,
-    localizedPath(options.locale, ROUTE_PATH.HOME, DEFAULT_LOCALE),
-    options.channelTitle,
-    options.channelDescription
-  )
+  const channelImageUrl = getHomeRssOgImageUrl(siteUrl, options.locale)
 
   const xml = buildRssXml(
     {

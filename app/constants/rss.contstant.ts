@@ -1,4 +1,6 @@
 export const RSS_FEED_FILENAME = "feed.xml"
+export const RSS_CHANNEL_IMAGE_WIDTH = 144
+export const RSS_CHANNEL_IMAGE_HEIGHT = 75
 export const RSS_CONTENT_PATH_PREFIXES = [
   "/about/projects/",
   "/guides/articles/",
