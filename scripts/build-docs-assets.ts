@@ -314,7 +314,7 @@ const getTrackedOutputPaths = (): string[] => [
   ])
 ]
 
-const main = (): void => {
+const main = async (): Promise<void> => {
   try {
     readFileSync(resolve(root, "package.json"), "utf8")
   } catch {
@@ -406,4 +406,7 @@ const main = (): void => {
   if (!wroteAny) console.info("build-docs-assets: no file changes")
 }
 
-main()
+main().catch((error: unknown) => {
+  console.error("build-docs-assets:", error)
+  process.exit(1)
+})

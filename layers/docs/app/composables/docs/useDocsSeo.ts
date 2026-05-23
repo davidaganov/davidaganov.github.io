@@ -134,19 +134,6 @@ export const useDocsSeo = ({
 
   useSchemaOrg(() => structuredDataNodes.value)
 
-  if (!seoImageOverride.value) {
-    defineOgImage("DocsPage", {
-      title: seoTitle.value || t("docs.seo.defaultTitle"),
-      description: seoDescription.value || t("docs.seo.defaultDescription"),
-      section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
-      collection: parentCollectionItem.value
-        ? t(parentCollectionItem.value.label)
-        : collectionItem.value
-          ? t(collectionItem.value.label)
-          : ""
-    })
-  }
-
   useSeoMeta({
     title: () => seoTitle.value,
     description: () => seoDescription.value,
@@ -159,6 +146,17 @@ export const useDocsSeo = ({
     twitterImage: () => seoImage.value,
     twitterCard: "summary_large_image"
   })
+
+  if (!seoImageOverride.value) {
+    defineOgImage("DocsPage", {
+      section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
+      collection: parentCollectionItem.value
+        ? t(parentCollectionItem.value.label)
+        : collectionItem.value
+          ? t(collectionItem.value.label)
+          : ""
+    })
+  }
 
   return {
     breadcrumbs,
