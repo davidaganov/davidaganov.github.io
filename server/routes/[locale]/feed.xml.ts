@@ -1,0 +1,7 @@
+import { serveRssFeed } from "../../utils/rss"
+
+export default defineEventHandler((event) => {
+  const locale = String(getRouterParam(event, "locale") || "")
+
+  return serveRssFeed(event, { locale })
+})

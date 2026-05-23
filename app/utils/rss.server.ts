@@ -42,16 +42,30 @@ const nonEmptyString = (value: unknown): string | undefined => {
   return value.trim().length ? value : undefined
 }
 
-export const getDocsRssOgImageUrl = (
-  siteUrl: string,
-  locale: string,
-  contentPath: string
-): string => {
-  return absoluteUrl(siteUrl, getDocsOgImagePublicPath(locale, contentPath))
+const absoluteImageUrl = (siteUrl: string, value: string): string => {
+  return /^https?:\/\//i.test(value) ? value : absoluteUrl(siteUrl, value)
 }
 
-export const getHomeRssOgImageUrl = (siteUrl: string, locale: string): string => {
-  return absoluteUrl(siteUrl, getFeedChannelOgImagePublicPath(locale))
+export const getDocsRssOgImageUrl = (
+  siteUrl: string,
+  options: {
+    title: string
+    description: string
+    section: string
+    collection?: string
+  }
+): string => {
+  return absoluteUrl(siteUrl, getDocsOgImagePublicPath(options))
+}
+
+export const getHomeRssOgImageUrl = (
+  siteUrl: string,
+  options: {
+    title: string
+    description: string
+  }
+): string => {
+  return absoluteUrl(siteUrl, getFeedChannelOgImagePublicPath(options))
 }
 
 export const contentEntriesToRssItems = (
@@ -87,9 +101,17 @@ export const contentEntriesToRssItems = (
         : translate
           ? resolveRssEntryCategories(entry, translate)
           : []
+      const [section, collection] = categories
       const seoImageOverride =
         nonEmptyString(entry.seo?.ogImage) || nonEmptyString(entry.seo?.image)
-      const imageUrl = seoImageOverride || getDocsRssOgImageUrl(siteUrl, locale, contentPath)
+      const imageUrl = seoImageOverride
+        ? absoluteImageUrl(siteUrl, seoImageOverride)
+        : getDocsRssOgImageUrl(siteUrl, {
+            title,
+            description,
+            section: section || "",
+            collection
+          })
 
       const item: RssPostItem = {
         title,
@@ -156,7 +178,10 @@ export const buildRssFeedXml = (locale: string, siteUrl: string, asset: RssAsset
   const base = normalizeSiteUrl(siteUrl)
   const { feedUrl, articlesIndexUrl } = getRssSiteLinks(base, locale, DEFAULT_LOCALE)
   const items = contentEntriesToRssItems(asset.entries, locale, base, asset.channel.creator)
-  const channelImageUrl = getHomeRssOgImageUrl(base, locale)
+  const channelImageUrl = getHomeRssOgImageUrl(base, {
+    title: asset.channel.title,
+    description: asset.channel.description
+  })
 
   return buildRssXml(
     {

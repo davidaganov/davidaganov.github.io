@@ -1,6 +1,7 @@
 import { DEFAULT_LOCALE } from "@app/utils/seo"
 
-const localeFiles = import.meta.glob("../../../../i18n/locales/*.json")
+const localeFiles =
+  typeof import.meta.glob === "function" ? import.meta.glob("../../../../i18n/locales/*.json") : {}
 
 const parseLocaleCode = (path: string): string | null => {
   const match = path.match(/[/\\]([^/\\]+)\.json$/)

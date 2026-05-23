@@ -8,31 +8,80 @@ import {
   RSS_FEED_FILENAME
 } from "../constants/rss.contstant"
 import type { RssChannelMeta, RssContentPathMeta, RssPostItem, RssSiteLinks } from "../types"
-import {
-  absoluteUrl,
-  DEFAULT_LOCALE,
-  localePathPrefix,
-  localizedPath,
-  normalizeSiteUrl
-} from "./seo"
+import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
 
 const NUXT_SEO_OG_STATIC_PREFIX = "/_og/d"
+const OG_IMAGE_COMPONENT_DOCS_PAGE = "DocsPage"
+const OG_IMAGE_COMPONENT_HOME_PAGE = "HomePage"
 
-export const getDocsOgImagePublicPath = (locale: string, contentPath: string): string => {
-  const normalized = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
-  const localizedDocsPath = localizedPath(locale, `/docs${normalized}`, DEFAULT_LOCALE).replace(
-    /^\//,
-    ""
-  )
-
-  return joinURL(NUXT_SEO_OG_STATIC_PREFIX, localizedDocsPath, "og.png")
+interface OgImageUrlOptions {
+  component: string
+  title?: string
+  description?: string
+  section?: string
+  collection?: string
 }
 
-export const getFeedChannelOgImagePublicPath = (locale: string): string => {
-  const prefix = localePathPrefix(locale).replace(/^\//, "")
-  return prefix
-    ? joinURL(NUXT_SEO_OG_STATIC_PREFIX, prefix, "og.png")
-    : joinURL(NUXT_SEO_OG_STATIC_PREFIX, "og.png")
+const OG_IMAGE_PARAM_ALIASES: Record<string, string> = {
+  component: "c"
+}
+
+const toBase64Url = (value: string): string => {
+  const bytes = new TextEncoder().encode(value)
+  let binary = ""
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte)
+  }
+
+  return btoa(binary).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "~")
+}
+
+const encodeOgImageValue = (value: string): string => {
+  const escaped = value.startsWith("~") ? `~${value}` : value
+  const encoded = encodeURIComponent(escaped.replace(/_/g, "__")).replace(/%20/g, "+")
+
+  return encoded.includes("%") || /[^\u0000-\u007F]/.test(value)
+    ? `~${toBase64Url(value)}`
+    : encoded
+}
+
+const getOgImagePublicPath = (options: OgImageUrlOptions): string => {
+  const params = Object.entries(options)
+    .filter(([, value]) => typeof value === "string" && value.trim().length)
+    .map(([key, value]) => {
+      const alias = OG_IMAGE_PARAM_ALIASES[key] || key
+      return `${alias}_${encodeOgImageValue(String(value))}`
+    })
+    .join(",")
+
+  return joinURL(NUXT_SEO_OG_STATIC_PREFIX, `${params || "default"}.png`)
+}
+
+export const getDocsOgImagePublicPath = (options: {
+  title: string
+  description: string
+  section: string
+  collection?: string
+}): string => {
+  return getOgImagePublicPath({
+    component: OG_IMAGE_COMPONENT_DOCS_PAGE,
+    title: options.title,
+    description: options.description,
+    section: options.section,
+    collection: options.collection
+  })
+}
+
+export const getFeedChannelOgImagePublicPath = (options: {
+  title: string
+  description: string
+}): string => {
+  return getOgImagePublicPath({
+    component: OG_IMAGE_COMPONENT_HOME_PAGE,
+    title: options.title,
+    description: options.description
+  })
 }
 
 export const getRssFeedPublicPath = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
@@ -97,7 +146,13 @@ export const buildRssItemPlainDescription = (item: RssPostItem): string => {
 }
 
 export const buildRssItemContentHtml = (item: RssPostItem): string => {
-  const parts: string[] = [`<p>${escapeHtml(item.description)}</p>`]
+  const parts: string[] = []
+
+  if (item.imageUrl) {
+    parts.push(`<p><img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" /></p>`)
+  }
+
+  parts.push(`<p>${escapeHtml(item.description)}</p>`)
 
   if (item.readingTime) {
     parts.push(`<p><em>${escapeHtml(item.readingTime)}</em></p>`)
@@ -141,7 +196,8 @@ const buildRssItemXml = (item: RssPostItem): string => {
   const plainDescription = buildRssItemPlainDescription(item)
   const contentHtml = item.contentHtml || buildRssItemContentHtml(item)
   const mediaBlock = item.imageUrl
-    ? `      <media:content url="${escapeXml(item.imageUrl)}" medium="image" type="image/png" />`
+    ? `      <media:content url="${escapeXml(item.imageUrl)}" medium="image" type="image/png" />
+      <media:thumbnail url="${escapeXml(item.imageUrl)}" />`
     : ""
   const categoryBlocks = (item.categories ?? [])
     .map((category) => `      <category>${escapeXml(category)}</category>`)

@@ -1,5 +1,4 @@
 import type { H3Event } from "h3"
-import { getLocaleCodes } from "@app/config/locales"
 import { buildRssFeedXml, parseRssAssetPayload } from "@app/utils/rss.server"
 import { normalizeSiteUrl } from "@app/utils/seo"
 import type { RssAssetFile, ServeRssFeedOptions } from "@app/types"
@@ -19,18 +18,9 @@ export const serveRssFeed = async (
   options: ServeRssFeedOptions
 ): Promise<string> => {
   try {
-    const localeCodes = getLocaleCodes()
-
-    if (!localeCodes.includes(options.locale)) {
-      throw createError({ statusCode: 404, statusMessage: "Feed not found" })
-    }
-
     const rssAsset = await loadRssAsset(options.locale)
     if (!rssAsset) {
-      throw createError({
-        statusCode: 503,
-        statusMessage: "RSS feed is not built yet. Run npm run build:docs-assets."
-      })
+      throw createError({ statusCode: 404, statusMessage: "Feed not found" })
     }
 
     const runtimeConfig = useRuntimeConfig()

@@ -1,7 +1,7 @@
-import type { ContentLocale } from "@docs/types"
+import { getSiteLocaleCodes } from "@base/constants/siteLocaleCodes"
 
-export const CONTENT_LOCALES = ["ru", "en"] as const
+export const CONTENT_LOCALES = getSiteLocaleCodes()
 
-export const isContentLocale = (value: string): value is ContentLocale => {
-  return (CONTENT_LOCALES as readonly string[]).includes(value)
+export const isContentLocale = (value: string): value is string => {
+  return CONTENT_LOCALES.includes(value)
 }

@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
+import { getRssFeedPublicPath } from "../utils/rss"
 import { localePathPrefix } from "../utils/seo"
 import { getLocaleCodes } from "./locales"
 
@@ -73,6 +74,7 @@ const commonRoutesForLocale = (locale: string): string[] => {
 }
 
 const seoRoutes = ["/sitemap_index.xml", "/robots.txt"]
+const feedRoutes = (): string[] => getLocaleCodes().map((locale) => getRssFeedPublicPath(locale))
 
 export const getPrerenderRoutes = (): string[] => {
   const contentRoutes = getLocaleCodes().flatMap((locale) => [
@@ -81,7 +83,7 @@ export const getPrerenderRoutes = (): string[] => {
     ...markdownRoutesForLocale(locale)
   ])
 
-  return Array.from(new Set([...seoRoutes, ...contentRoutes]))
+  return Array.from(new Set([...seoRoutes, ...feedRoutes(), ...contentRoutes]))
 }
 
 export const getPrerenderRouteRules = (): Record<string, { prerender: true }> =>

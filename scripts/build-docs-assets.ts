@@ -3,12 +3,12 @@ import { createHash } from "node:crypto"
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs"
 import { join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
+import { getLocaleCodes } from "../app/config/locales"
 import type { ContentRssEntry, RssAssetChannel, RssAssetFile } from "../app/types/rss.interface"
 import { createTranslator } from "../app/utils/i18n-messages"
 import { isRssEligibleContentPath } from "../app/utils/rss"
 import { resolveRssEntryCategories } from "../app/utils/rss-labels"
 import { loadRssContentEntriesFromSqlite } from "../app/utils/rss.server"
-import { CONTENT_LOCALES } from "../layers/docs/app/constants/content.constant"
 import { GRAPH_EXCLUDED_CATEGORIES } from "../layers/docs/app/constants/graph.constant"
 import type {
   DocsGraphFile,
@@ -308,7 +308,7 @@ const buildRssAssetForLocale = (locale: string, entries: ContentRssEntry[]): Rss
 
 const getTrackedOutputPaths = (): string[] => [
   resolve(serverAssetsDir, "archive-index.json"),
-  ...CONTENT_LOCALES.flatMap((locale) => [
+  ...getLocaleCodes().flatMap((locale) => [
     resolve(serverAssetsDir, `graph-${locale}.json`),
     resolve(serverAssetsDir, `rss-${locale}.json`)
   ])
@@ -365,7 +365,7 @@ const main = async (): Promise<void> => {
     return
   }
 
-  for (const locale of CONTENT_LOCALES) {
+  for (const locale of getLocaleCodes()) {
     const graphData = buildGraphForLocale(locale)
     const graphStable = {
       locale: graphData.locale,

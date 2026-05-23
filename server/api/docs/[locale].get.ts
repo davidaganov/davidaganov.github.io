@@ -1,9 +1,9 @@
-import { isContentLocale } from "@docs/constants"
+import { getLocaleCodes } from "@app/config/locales"
 import type { DocsGraphFile } from "@docs/types"
 
 export default defineEventHandler(async (event) => {
   const locale = getRouterParam(event, "locale")
-  if (!locale || !isContentLocale(locale)) {
+  if (!locale || !getLocaleCodes().includes(locale)) {
     throw createError({ statusCode: 404, statusMessage: "Not found" })
   }
 

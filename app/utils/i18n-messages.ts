@@ -1,8 +1,7 @@
 import { existsSync, readFileSync } from "node:fs"
 import { join } from "node:path"
-import { fileURLToPath } from "node:url"
 
-const projectRoot = fileURLToPath(new URL("../../", import.meta.url))
+const projectRoot = process.cwd()
 const localesDir = join(projectRoot, "i18n", "locales")
 const messagesCache = new Map<string, Record<string, unknown>>()
 
