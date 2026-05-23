@@ -1,35 +1,12 @@
 import type { H3Event } from "h3"
-import { readFileSync } from "node:fs"
 import { readFile } from "node:fs/promises"
 import { join } from "node:path"
 import { getLocaleCodes } from "@app/config/locales"
+import { createTranslator } from "@app/utils/i18n-messages"
 import { buildRssXml, getRssSiteLinks } from "@app/utils/rss"
 import { contentEntriesToRssItems, getHomeRssOgImageUrl } from "@app/utils/rss.server"
 import { DEFAULT_LOCALE, normalizeSiteUrl } from "@app/utils/seo"
 import type { ContentRssEntry, ServeRssFeedOptions } from "@app/types"
-
-const resolveKey = (messages: Record<string, unknown>, key: string): string => {
-  const value = key.split(".").reduce<unknown>((node, part) => {
-    if (node && typeof node === "object" && part in (node as Record<string, unknown>)) {
-      return (node as Record<string, unknown>)[part]
-    }
-    return undefined
-  }, messages)
-
-  return typeof value === "string" ? value : key
-}
-
-const i18nDir = join(process.cwd(), "i18n", "locales")
-
-export const loadTranslator = (locale: string): ((key: string) => string) => {
-  try {
-    const fileContent = readFileSync(join(i18nDir, `${locale}.json`), "utf8")
-    const messages = JSON.parse(fileContent) as Record<string, unknown>
-    return (key: string) => resolveKey(messages, key)
-  } catch (e) {
-    return (key: string) => key
-  }
-}
 
 const parseRssAssetPayload = (data: unknown): ContentRssEntry[] => {
   if (Array.isArray(data)) return data as ContentRssEntry[]
@@ -69,9 +46,9 @@ export const serveRssFeed = async (
   const runtimeConfig = useRuntimeConfig()
   const siteUrl = normalizeSiteUrl(String(runtimeConfig.public.siteUrl || ""))
   const { feedUrl, articlesIndexUrl } = getRssSiteLinks(siteUrl, options.locale, DEFAULT_LOCALE)
-  const t = loadTranslator(options.locale)
+  const t = createTranslator(options.locale)
   const entries = await loadRssEntries(options.locale)
-  const items = contentEntriesToRssItems(entries, options.locale, siteUrl, t)
+  const items = contentEntriesToRssItems(entries, options.locale, siteUrl, t, t("global.name"))
   const channelImageUrl = getHomeRssOgImageUrl(siteUrl, options.locale)
 
   const xml = buildRssXml(

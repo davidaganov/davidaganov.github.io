@@ -16,7 +16,8 @@ export interface RssPostItem {
   pubDate: string
   guid: string
   imageUrl?: string
-  category?: string
+  categories?: string[]
+  creator?: string
   readingTime?: string
   tags?: string[]
   contentHtml?: string

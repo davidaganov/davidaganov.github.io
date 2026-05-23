@@ -1,5 +1,5 @@
 import Database from "better-sqlite3"
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync } from "node:fs"
 import type { ArticleMeta } from "@docs/types"
 import type { ContentRssEntry, RssPostItem } from "../types"
 import {
@@ -13,7 +13,22 @@ import {
 import { absoluteUrl, DEFAULT_LOCALE, localizedPath } from "./seo"
 
 const sqlitePath = `${process.cwd()}/.data/content/contents.sqlite`
-const i18nDir = `${process.cwd()}/i18n/locales`
+
+const uniqueLabels = (labels: string[]): string[] => {
+  const seen = new Set<string>()
+  const result: string[] = []
+
+  for (const label of labels) {
+    const trimmed = label.trim()
+    if (!trimmed) continue
+    const key = trimmed.toLocaleLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    result.push(trimmed)
+  }
+
+  return result
+}
 
 const parseJsonColumn = <T>(value: unknown): T | null => {
   if (value == null || value === "") return null
@@ -57,7 +72,8 @@ export const contentEntriesToRssItems = (
   entries: ContentRssEntry[],
   locale: string,
   siteUrl: string,
-  t: (key: string) => string
+  t: (key: string) => string,
+  creator: string
 ): RssPostItem[] => {
   return entries
     .filter((entry) => {
@@ -82,7 +98,12 @@ export const contentEntriesToRssItems = (
       const pathMeta = getRssContentPathMeta(contentPath)
       const sectionLabel = pathMeta ? t(pathMeta.sectionLabelKey) : t("docs.seo.defaultSection")
       const collectionLabel = pathMeta ? t(pathMeta.collectionLabelKey) : ""
-      const category = collectionLabel ? `${sectionLabel} / ${collectionLabel}` : sectionLabel
+      const tagLabels = entry.meta?.tags?.map((tag) => tag.trim()).filter(Boolean) ?? []
+      const categories = uniqueLabels(
+        collectionLabel
+          ? [sectionLabel, collectionLabel, ...tagLabels]
+          : [sectionLabel, ...tagLabels]
+      )
       const seoImageOverride =
         nonEmptyString(entry.seo?.ogImage) || nonEmptyString(entry.seo?.image)
       const imageUrl = seoImageOverride || getDocsRssOgImageUrl(siteUrl, locale, contentPath)
@@ -91,12 +112,13 @@ export const contentEntriesToRssItems = (
         title,
         description,
         link,
-        pubDate: toRfc822Date(String(entry.meta?.publishedAt)),
+        pubDate: toRfc822Date(String(entry.meta?.publishedAt), contentPath),
         guid: link,
         imageUrl,
-        category,
+        categories,
+        creator,
         readingTime: nonEmptyString(entry.meta?.readingTime),
-        tags: entry.meta?.tags?.filter((tag) => Boolean(tag?.trim()))
+        tags: tagLabels.length ? tagLabels : undefined
       }
 
       item.contentHtml = buildRssItemContentHtml(item)

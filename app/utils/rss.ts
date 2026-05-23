@@ -98,22 +98,10 @@ export const buildRssItemPlainDescription = (item: RssPostItem): string => {
 }
 
 export const buildRssItemContentHtml = (item: RssPostItem): string => {
-  const parts: string[] = []
-
-  if (item.imageUrl) {
-    parts.push(
-      `<p><img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.title)}" width="1200" height="630" /></p>`
-    )
-  }
-
-  parts.push(`<p>${escapeHtml(item.description)}</p>`)
+  const parts: string[] = [`<p>${escapeHtml(item.description)}</p>`]
 
   if (item.readingTime) {
     parts.push(`<p><em>${escapeHtml(item.readingTime)}</em></p>`)
-  }
-
-  if (item.tags?.length) {
-    parts.push(`<p>${item.tags.map((tag) => `#${escapeHtml(tag)}`).join(" ")}</p>`)
   }
 
   parts.push(`<p><a href="${escapeHtml(item.link)}">${escapeHtml(item.title)}</a></p>`)
@@ -121,8 +109,31 @@ export const buildRssItemContentHtml = (item: RssPostItem): string => {
   return parts.join("")
 }
 
-export const toRfc822Date = (value: string): string => {
-  const date = new Date(value)
+const DATE_ONLY_PATTERN = /^\d{4}-\d{2}-\d{2}$/
+
+const stableMinutesFromSeed = (seed: string): number => {
+  let hash = 0
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0
+  }
+  return (hash % (24 * 60 - 1)) + 1
+}
+
+export const toRfc822Date = (value: string, stableSeed?: string): string => {
+  const trimmed = value.trim()
+  let date: Date
+
+  if (DATE_ONLY_PATTERN.test(trimmed)) {
+    date = new Date(`${trimmed}T00:00:00.000Z`)
+    if (stableSeed) {
+      date.setUTCMinutes(stableMinutesFromSeed(stableSeed))
+    } else {
+      date.setUTCHours(12)
+    }
+  } else {
+    date = new Date(trimmed)
+  }
+
   if (Number.isNaN(date.getTime())) return new Date().toUTCString()
   return date.toUTCString()
 }
@@ -133,8 +144,11 @@ const buildRssItemXml = (item: RssPostItem): string => {
   const mediaBlock = item.imageUrl
     ? `      <media:content url="${escapeXml(item.imageUrl)}" medium="image" type="image/png" />`
     : ""
-  const categoryBlock = item.category
-    ? `      <category>${escapeXml(item.category)}</category>`
+  const categoryBlocks = (item.categories ?? [])
+    .map((category) => `      <category>${escapeXml(category)}</category>`)
+    .join("\n")
+  const creatorBlock = item.creator
+    ? `      <dc:creator><![CDATA[${item.creator}]]></dc:creator>`
     : ""
 
   return `    <item>
@@ -144,7 +158,8 @@ const buildRssItemXml = (item: RssPostItem): string => {
       <pubDate>${item.pubDate}</pubDate>
       <description><![CDATA[${plainDescription}]]></description>
 ${mediaBlock}
-${categoryBlock}
+${categoryBlocks}
+${creatorBlock}
       <content:encoded><![CDATA[${contentHtml}]]></content:encoded>
     </item>`
 }
@@ -162,7 +177,7 @@ export const buildRssXml = (channel: RssChannelMeta, items: RssPostItem[]): stri
     : ""
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>${escapeXml(channel.title)}</title>
     <link>${escapeXml(channel.link)}</link>
