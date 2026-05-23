@@ -1,18 +1,10 @@
-import { readFileSync } from "node:fs"
-import { join } from "node:path"
 import type { ContentLocale } from "@docs/types"
+import en from "../../i18n/locales/en.json"
+import ru from "../../i18n/locales/ru.json"
 
-const cache = new Map<ContentLocale, Record<string, unknown>>()
-
-const loadLocale = (locale: ContentLocale): Record<string, unknown> => {
-  const cached = cache.get(locale)
-  if (cached) return cached
-
-  const filePath = join(process.cwd(), "i18n", "locales", `${locale}.json`)
-  const raw = readFileSync(filePath, "utf8")
-  const parsed = JSON.parse(raw) as Record<string, unknown>
-  cache.set(locale, parsed)
-  return parsed
+const messagesByLocale: Record<ContentLocale, Record<string, unknown>> = {
+  ru,
+  en
 }
 
 const resolveKey = (messages: Record<string, unknown>, key: string): string => {
@@ -27,6 +19,6 @@ const resolveKey = (messages: Record<string, unknown>, key: string): string => {
 }
 
 export const createDocsTranslator = (locale: ContentLocale): ((key: string) => string) => {
-  const messages = loadLocale(locale)
+  const messages = messagesByLocale[locale]
   return (key: string) => resolveKey(messages, key)
 }

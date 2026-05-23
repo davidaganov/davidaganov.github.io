@@ -1,12 +1,3 @@
-import { createDocsTranslator } from "../../utils/docsI18n"
 import { serveRssFeed } from "../../utils/rss"
 
-export default defineEventHandler(async (event) => {
-  const t = createDocsTranslator("en")
-
-  return serveRssFeed(event, {
-    locale: "en",
-    channelTitle: t("layout.rss.feedTitle"),
-    channelDescription: t("layout.rss.feedDescription")
-  })
-})
+export default defineEventHandler(async (event) => serveRssFeed(event, { locale: "en" }))

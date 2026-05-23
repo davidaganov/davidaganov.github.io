@@ -33,8 +33,8 @@ export const serveRssFeed = async (
 
   const xml = buildRssXml(
     {
-      title: options.channelTitle,
-      description: options.channelDescription,
+      title: t("layout.rss.feedTitle"),
+      description: t("layout.rss.feedDescription"),
       link: articlesIndexUrl,
       language: options.locale,
       feedUrl,

@@ -40,8 +40,6 @@ export interface ContentRssEntry {
 
 export interface ServeRssFeedOptions {
   locale: string
-  channelTitle: string
-  channelDescription: string
 }
 
 export interface RssContentPathMeta {
