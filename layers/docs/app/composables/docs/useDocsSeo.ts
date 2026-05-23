@@ -153,20 +153,16 @@ export const useDocsSeo = ({
   })
 
   if (!seoImageOverride.value) {
-    defineOgImage(
-      "DocsPage",
-      {
-        title: resolvedOgTitle.value,
-        description: resolvedOgDescription.value,
-        section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
-        collection: parentCollectionItem.value
-          ? t(parentCollectionItem.value.label)
-          : collectionItem.value
-            ? t(collectionItem.value.label)
-            : ""
-      },
-      { cacheKey: canonicalPath.value }
-    )
+    defineOgImage("DocsPage", {
+      title: resolvedOgTitle.value,
+      description: resolvedOgDescription.value,
+      section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
+      collection: parentCollectionItem.value
+        ? t(parentCollectionItem.value.label)
+        : collectionItem.value
+          ? t(collectionItem.value.label)
+          : ""
+    })
   }
 
   return {

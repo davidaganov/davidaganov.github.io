@@ -56,14 +56,21 @@ const tabItems = computed(() => [
       >
         <template #preview>
           <div class="mt-2">
-            <slot name="preview">
-              <div
-                v-if="!hasPreviewSlot"
-                class="text-muted text-sm"
-              >
-                {{ $t("components.playground.previewEmpty") }}
-              </div>
-            </slot>
+            <ClientOnly>
+              <slot name="preview">
+                <div
+                  v-if="!hasPreviewSlot"
+                  class="text-muted text-sm"
+                >
+                  {{ $t("components.playground.previewEmpty") }}
+                </div>
+              </slot>
+              <template #fallback>
+                <div class="text-muted text-sm">
+                  {{ $t("global.status.loading") }}
+                </div>
+              </template>
+            </ClientOnly>
           </div>
         </template>
 
