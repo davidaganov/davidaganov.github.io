@@ -7,10 +7,19 @@ import { DEFAULT_LOCALE, normalizeSiteUrl } from "@app/utils/seo"
 import type { ContentRssEntry, ServeRssFeedOptions } from "@app/types"
 import { createDocsTranslator } from "./docsI18n"
 
+const parseRssAssetPayload = (data: unknown): ContentRssEntry[] => {
+  if (Array.isArray(data)) return data as ContentRssEntry[]
+  if (data && typeof data === "object" && Array.isArray((data as { entries?: unknown }).entries)) {
+    return (data as { entries: ContentRssEntry[] }).entries
+  }
+  return []
+}
+
 const loadRssContentEntriesFromAssets = async (locale: string): Promise<ContentRssEntry[]> => {
   try {
     const data = await useStorage("assets:server").getItem(`rss-${locale}.json`)
-    if (Array.isArray(data)) return data as ContentRssEntry[]
+    const entries = parseRssAssetPayload(data)
+    if (entries.length) return entries
   } catch (error) {
     console.error("Error reading RSS from server assets:", error)
   }
@@ -19,8 +28,7 @@ const loadRssContentEntriesFromAssets = async (locale: string): Promise<ContentR
 
   try {
     const raw = await readFile(filePath, "utf8")
-    const parsed = JSON.parse(raw) as { entries?: ContentRssEntry[] } | ContentRssEntry[]
-    return Array.isArray(parsed) ? parsed : (parsed.entries ?? [])
+    return parseRssAssetPayload(JSON.parse(raw) as unknown)
   } catch {
     return []
   }
