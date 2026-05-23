@@ -1,16 +1,18 @@
 import Database from "better-sqlite3"
 import { existsSync } from "node:fs"
 import type { ArticleMeta } from "@docs/types"
-import type { ContentRssEntry, RssPostItem } from "../types"
+import type { ContentRssEntry, RssAssetChannel, RssAssetFile, RssPostItem } from "../types"
 import {
   buildRssItemContentHtml,
+  buildRssXml,
   getDocsOgImagePublicPath,
   getFeedChannelOgImagePublicPath,
+  getRssSiteLinks,
   isRssEligibleContentPath,
   toRfc822Date
 } from "./rss"
 import { resolveRssEntryCategories } from "./rss-labels"
-import { absoluteUrl, DEFAULT_LOCALE, localizedPath } from "./seo"
+import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
 
 const sqlitePath = `${process.cwd()}/.data/content/contents.sqlite`
 
@@ -128,4 +130,43 @@ export const loadRssContentEntriesFromSqlite = (locale: string): ContentRssEntry
   db.close()
 
   return entries
+}
+
+export const parseRssAssetPayload = (data: unknown): RssAssetFile | null => {
+  if (!data || typeof data !== "object") return null
+
+  const payload = data as Record<string, unknown>
+  const entries = Array.isArray(payload.entries) ? (payload.entries as ContentRssEntry[]) : null
+  const channel = payload.channel
+
+  if (!entries || !channel || typeof channel !== "object") return null
+
+  const { title, description, creator } = channel as Record<string, unknown>
+  if (typeof title !== "string" || typeof description !== "string" || typeof creator !== "string") {
+    return null
+  }
+
+  return {
+    channel: { title, description, creator } satisfies RssAssetChannel,
+    entries
+  }
+}
+
+export const buildRssFeedXml = (locale: string, siteUrl: string, asset: RssAssetFile): string => {
+  const base = normalizeSiteUrl(siteUrl)
+  const { feedUrl, articlesIndexUrl } = getRssSiteLinks(base, locale, DEFAULT_LOCALE)
+  const items = contentEntriesToRssItems(asset.entries, locale, base, asset.channel.creator)
+  const channelImageUrl = getHomeRssOgImageUrl(base, locale)
+
+  return buildRssXml(
+    {
+      title: asset.channel.title,
+      description: asset.channel.description,
+      link: articlesIndexUrl,
+      language: locale,
+      feedUrl,
+      imageUrl: channelImageUrl
+    },
+    items
+  )
 }

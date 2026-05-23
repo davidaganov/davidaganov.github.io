@@ -134,27 +134,48 @@ export const useDocsSeo = ({
 
   useSchemaOrg(() => structuredDataNodes.value)
 
-  const resolvedOgTitle = computed(() => seoTitle.value || t("docs.seo.defaultTitle"))
+  const slugTitleFallback = computed(() => {
+    const slug = route.params.slug
+    const segments = Array.isArray(slug)
+      ? slug.filter(Boolean).map(String)
+      : slug
+        ? [String(slug)]
+        : []
+    const leaf = segments.at(-1)
+    if (!leaf) return undefined
+
+    return leaf
+      .split("-")
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ")
+  })
+
+  const resolvedPageTitle = computed(
+    () => seoTitle.value || slugTitleFallback.value || t("docs.seo.defaultTitle")
+  )
   const resolvedOgDescription = computed(
     () => seoDescription.value || t("docs.seo.defaultDescription")
   )
 
   useSeoMeta({
-    title: () => resolvedOgTitle.value,
+    title: () => resolvedPageTitle.value,
     description: () => resolvedOgDescription.value,
-    ogTitle: () => resolvedOgTitle.value,
+    ogTitle: () => resolvedPageTitle.value,
     ogDescription: () => resolvedOgDescription.value,
     ogUrl: () => canonicalUrl.value,
     ogImage: () => seoImage.value,
-    twitterTitle: () => resolvedOgTitle.value,
+    twitterTitle: () => resolvedPageTitle.value,
     twitterDescription: () => resolvedOgDescription.value,
     twitterImage: () => seoImage.value,
     twitterCard: "summary_large_image"
   })
 
-  if (!seoImageOverride.value) {
+  const ogImageTitle = computed(() => seoTitle.value || slugTitleFallback.value)
+
+  if (!seoImageOverride.value && ogImageTitle.value) {
     defineOgImage("DocsPage", {
-      title: resolvedOgTitle.value,
+      title: ogImageTitle.value,
       description: resolvedOgDescription.value,
       section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
       collection: parentCollectionItem.value
