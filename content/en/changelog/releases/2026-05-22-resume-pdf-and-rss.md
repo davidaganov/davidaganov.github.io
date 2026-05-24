@@ -23,11 +23,6 @@ The resume page has a **Download PDF** button. The document is built in the brow
 
 ### RSS feed
 
-A subscription page at **`/feed`** (ru) and **`/en/feed`** (en): how RSS works, feed URL with copy, Feedly/Inoreader shortcuts, recent posts, and category filter.
+A subscription page at **[RSS](/en/feed)**: how RSS works, feed URL with copy, Feedly/Inoreader shortcuts, recent posts, and category filter.
 
-XML feeds at **`/feed.xml`** (ru) and **`/en/feed.xml`** (en) include published items from **Projects**, **Articles**, and **Templates** — title, description, date, category, and preview image (OG).
-
-Subscribe from the footer, docs sidebar, or directly:
-
-→ [RSS page (ru)](/feed) · [RSS page (en)](/en/feed)  
-→ [RSS XML (ru)](/feed.xml) · [RSS XML (en)](/en/feed.xml)
+XML feed at **[RSS XML](/en/feed.xml)** include published items from **Projects**, **Articles**, and **Templates** — title, description, date, category, and preview image (OG).
