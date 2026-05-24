@@ -1,53 +1,26 @@
 <script setup lang="ts">
-import { getRssFeedPublicPath } from "@app/utils/rss"
-import { parseRssFeedXml } from "@app/utils/rss-feed-page"
-import { normalizeSiteUrl } from "@app/utils/seo"
 import FeedPostCard from "@base/components/pages/feed/FeedPostCard.vue"
 import FeedSubscribePanel from "@base/components/pages/feed/FeedSubscribePanel.vue"
+import type { RssFeedPageData } from "@app/types"
 import { ROUTE_PATH } from "@base/types"
 
 const localePath = useLocalePath()
 const { locale } = useI18n()
-const runtimeConfig = useRuntimeConfig()
-const requestURL = useRequestURL()
 
 const selectedCategory = ref<string | null>(null)
 
-const feedPath = computed(() => getRssFeedPublicPath(locale.value))
-const siteUrl = computed(() => normalizeSiteUrl(String(runtimeConfig.public.siteUrl || "")))
-
-const resolveFeedXmlUrl = (): string => {
-  const path = feedPath.value
-  if (path.startsWith("http")) return path
-
-  return new URL(path, requestURL.origin).href
-}
-
-const loadFeedData = async () => {
-  const url = resolveFeedXmlUrl()
-  const response = await fetch(url, {
-    headers: { Accept: "application/rss+xml, application/xml, text/xml" }
-  })
-
-  if (!response.ok) {
-    throw new Error(`Feed request failed (${response.status})`)
-  }
-
-  const xml = await response.text()
-
-  if (!xml.includes("<rss")) {
-    throw new Error("Invalid RSS response")
-  }
-
-  return parseRssFeedXml(xml, locale.value, siteUrl.value)
-}
+const loadFeedData = (): Promise<RssFeedPageData> =>
+  $fetch<RssFeedPageData>(`/api/feed-page/${locale.value}`)
 
 const { data, pending, error } = await useAsyncData(
-  () => `feed-xml-${locale.value}`,
+  () => `feed-page-${locale.value}`,
   () => loadFeedData(),
   {
     watch: [() => locale.value],
-    default: () => null
+    getCachedData: (key, nuxtApp) => {
+      const cached = nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+      return cached && typeof cached === "object" ? (cached as RssFeedPageData) : undefined
+    }
   }
 )
 

@@ -1,6 +1,9 @@
-let cachedKeys: Set<string> | null = null
+let cachedKeys: string[] | null = null
 
-export const loadArchiveIndex = async (): Promise<Set<string>> => {
+export const toArchiveKeySet = (keys: string[] | null | undefined): Set<string> =>
+  new Set(keys ?? [])
+
+export const loadArchiveIndex = async (): Promise<string[]> => {
   if (cachedKeys) return cachedKeys
   try {
     const response = await fetch("/api/docs/archive-index", {
@@ -9,9 +12,9 @@ export const loadArchiveIndex = async (): Promise<Set<string>> => {
 
     if (!response.ok) throw new Error("archive index not found")
     const data = (await response.json()) as { keys: string[] }
-    cachedKeys = new Set(data.keys)
+    cachedKeys = data.keys
   } catch {
-    cachedKeys = new Set()
+    cachedKeys = []
   }
   return cachedKeys
 }

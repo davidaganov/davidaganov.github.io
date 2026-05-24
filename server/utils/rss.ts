@@ -1,9 +1,10 @@
 import type { H3Event } from "h3"
+import { parseRssFeedXml } from "@app/utils/rss-feed-page"
 import { buildRssFeedXml, parseRssAssetPayload } from "@app/utils/rss.server"
 import { normalizeSiteUrl } from "@app/utils/seo"
-import type { RssAssetFile, ServeRssFeedOptions } from "@app/types"
+import type { RssAssetFile, RssFeedPageData, ServeRssFeedOptions } from "@app/types"
 
-const loadRssAsset = async (locale: string): Promise<RssAssetFile | null> => {
+export const loadRssAsset = async (locale: string): Promise<RssAssetFile | null> => {
   try {
     const data = await useStorage("assets:server").getItem(`rss-${locale}.json`)
     return parseRssAssetPayload(data)
@@ -11,6 +12,19 @@ const loadRssAsset = async (locale: string): Promise<RssAssetFile | null> => {
     console.error("rss: error reading from server assets:", error)
     return null
   }
+}
+
+export const getFeedPageData = async (locale: string): Promise<RssFeedPageData> => {
+  const rssAsset = await loadRssAsset(locale)
+  if (!rssAsset) {
+    throw createError({ statusCode: 404, statusMessage: "Feed not found" })
+  }
+
+  const runtimeConfig = useRuntimeConfig()
+  const siteUrl = normalizeSiteUrl(String(runtimeConfig.public.siteUrl || ""))
+  const xml = buildRssFeedXml(locale, siteUrl, rssAsset)
+
+  return parseRssFeedXml(xml, locale, siteUrl)
 }
 
 export const serveRssFeed = async (

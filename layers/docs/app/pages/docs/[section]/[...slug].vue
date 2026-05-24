@@ -7,6 +7,10 @@ import AppIndexPage from "@docs/components/app/AppIndexPage.vue"
 import AppRightSidebar from "@docs/components/app/rightsidebar/AppRightSidebar.vue"
 import BaseViewCounter from "@docs/components/base/BaseViewCounter.vue"
 
+definePageMeta({
+  key: (route) => route.fullPath
+})
+
 const {
   section,
   docsPath,

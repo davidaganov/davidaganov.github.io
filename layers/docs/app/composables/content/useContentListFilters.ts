@@ -1,5 +1,5 @@
 import { useContentCollection } from "@docs/composables/content/useContentCollection"
-import { loadArchiveIndex } from "@docs/utils/archiveManifest"
+import { loadArchiveIndex, toArchiveKeySet } from "@docs/utils/archiveManifest"
 import { filterByTags, sortByPublishedAt } from "@docs/utils/content/listFilters"
 import { toContentPrefix, toRelativeContentPath } from "@docs/utils/content/paths"
 import {
@@ -22,6 +22,7 @@ const hasArchiveAtSync = (
   publicPathPrefix: string,
   relativePath: string
 ): boolean => {
+  if (!keys?.has) return false
   const key = archiveKeyFromPaths(publicPathPrefix, relativePath)
   return Boolean(key && keys.has(key))
 }
@@ -47,17 +48,21 @@ export const useContentListFilters = (options: UseContentListFiltersOptions) => 
   const selectedTags = ref<string[]>([])
   const isSyncingFromQuery = ref(false)
 
-  const { data: archiveKeys } = useAsyncData("docs-archive-index", () => loadArchiveIndex(), {
+  const { data: archiveKeyList } = useAsyncData("docs-archive-index", () => loadArchiveIndex(), {
     server: true,
     lazy: true,
-    default: () => new Set<string>()
+    default: () => [] as string[],
+    getCachedData: (key, nuxtApp) => {
+      const cached = nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+      return Array.isArray(cached) ? cached : undefined
+    }
   })
 
   const { data: items } = useAsyncData<ContentListItem[]>(
     () => `content-list-filters:${collection.value}:${prefixRef.value}`,
     async () => {
       const contentPrefix = toContentPrefix(prefixRef.value)
-      const keys = archiveKeys.value ?? (await loadArchiveIndex())
+      const keys = toArchiveKeySet(archiveKeyList.value ?? (await loadArchiveIndex()))
       const raw = await queryCollection(collection.value)
         .where("path", "LIKE", `${contentPrefix}%`)
         .select("title", "description", "meta", "path")
@@ -81,7 +86,7 @@ export const useContentListFilters = (options: UseContentListFiltersOptions) => 
       })
     },
     {
-      watch: [prefixRef, collection, archiveKeys]
+      watch: [prefixRef, collection, archiveKeyList]
     }
   )
 

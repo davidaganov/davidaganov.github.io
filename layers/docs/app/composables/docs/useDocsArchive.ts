@@ -1,4 +1,4 @@
-import { loadArchiveIndex } from "@docs/utils/archiveManifest"
+import { loadArchiveIndex, toArchiveKeySet } from "@docs/utils/archiveManifest"
 import type { DocsArchiveEntry } from "@docs/types"
 
 const contentModules = import.meta.glob("../content/**/*", {
@@ -11,7 +11,7 @@ const resolveArchiveKeyFromRoute = (
   section: string,
   slugSegments: string[]
 ): string => {
-  if (!section || !slugSegments.length) return ""
+  if (!keys?.has || !section || !slugSegments.length) return ""
 
   const candidates: string[] = []
   for (let depth = slugSegments.length; depth >= 1; depth -= 1) {
@@ -71,9 +71,15 @@ export const useDocsArchive = () => {
   const section = computed(() => normalizeSegment(route.params.section))
   const slugSegments = computed(() => toSlugSegments(route.params.slug))
 
-  const { data: archiveKeys } = useAsyncData("docs-archive-index", () => loadArchiveIndex(), {
-    default: () => new Set<string>()
+  const { data: archiveKeyList } = useAsyncData("docs-archive-index", () => loadArchiveIndex(), {
+    default: () => [] as string[],
+    getCachedData: (key, nuxtApp) => {
+      const cached = nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]
+      return Array.isArray(cached) ? cached : undefined
+    }
   })
+
+  const archiveKeys = computed(() => toArchiveKeySet(archiveKeyList.value))
 
   const archiveKey = computed(() => {
     return resolveArchiveKeyFromRoute(archiveKeys.value, section.value, slugSegments.value)

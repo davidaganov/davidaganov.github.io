@@ -54,11 +54,16 @@ export default defineNuxtConfig({
     defaults: false
   },
 
+  fonts: {
+    families: [{ name: "Inter", weights: [400, 500, 700], global: true }]
+  },
+
   ogImage: {
-    debug: process.env.NODE_ENV !== "production",
+    zeroRuntime: true,
+    debug: false,
     buildCache: true,
     security: {
-      strict: false,
+      strict: true,
       restrictRuntimeImagesToOrigin: true,
       maxQueryParamSize: 2048
     }
@@ -90,7 +95,7 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n_redirected",
-      redirectOn: "no prefix",
+      redirectOn: "root",
       fallbackLocale: getNuxtDefaultLocale()
     }
   },
@@ -175,8 +180,14 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: "vercel",
+    serverAssets: [
+      {
+        baseName: "server",
+        dir: "./server/assets"
+      }
+    ],
     externals: {
-      traceInclude: ["./i18n/locales/*.json"]
+      traceInclude: ["./i18n/locales/*.json", "./server/assets/*.json"]
     },
     prerender: {
       crawlLinks: false,
