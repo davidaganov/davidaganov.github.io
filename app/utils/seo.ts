@@ -1,5 +1,6 @@
 export const DEFAULT_LOCALE = process.env.NUXT_DEFAULT_LOCALE || "ru"
-export const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || "https://aganov.dev"
+
+const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || "https://aganov.dev"
 
 export const normalizeSiteUrl = (value: unknown = SITE_URL): string => {
   const str = String(value || "").trim()
@@ -37,21 +38,7 @@ export const localizedPath = (
   return `${prefix}${normalizedPath}`
 }
 
-export const canonicalPathForLocale = (
-  locale: string,
-  path: string,
-  defaultLocale = DEFAULT_LOCALE
-): string => {
-  return locale === defaultLocale
-    ? normalizeDefaultLocalePath(path, defaultLocale)
-    : normalizeUrlPath(path)
-}
-
-export const canonicalPathForRequest = (path: string, defaultLocale = DEFAULT_LOCALE): string => {
-  return normalizeDefaultLocalePath(path, defaultLocale)
-}
-
-export const localeNeutralPath = (
+const localeNeutralPath = (
   path: string,
   localeCodes: readonly string[],
   defaultLocale = DEFAULT_LOCALE

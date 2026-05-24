@@ -19,7 +19,7 @@ const getEndYearMonth = (end: string | null): { year: number; month: number } =>
   return parseYearMonth(end)
 }
 
-export const getExperienceMonths = (dates: ResumeExperienceDates): number => {
+const getExperienceMonths = (dates: ResumeExperienceDates): number => {
   const start = parseYearMonth(dates.start)
   const end = getEndYearMonth(dates.end)
   const months = (end.year - start.year) * 12 + (end.month - start.month)

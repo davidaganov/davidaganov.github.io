@@ -5,8 +5,8 @@ import type { ContentRssEntry, RssAssetChannel, RssAssetFile, RssPostItem } from
 import {
   buildRssItemContentHtml,
   buildRssXml,
-  getDocsOgImagePublicPath,
   getFeedChannelOgImagePublicPath,
+  getRssEntryOgImagePublicPath,
   getRssSiteLinks,
   isRssEligibleContentPath,
   toRfc822Date
@@ -50,29 +50,7 @@ const absoluteImageUrl = (siteUrl: string, value: string): string => {
   return /^https?:\/\//i.test(value) ? value : absoluteUrl(siteUrl, value)
 }
 
-export const getDocsRssOgImageUrl = (
-  siteUrl: string,
-  options: {
-    title: string
-    description: string
-    section: string
-    collection?: string
-  }
-): string => {
-  return absoluteUrl(siteUrl, getDocsOgImagePublicPath(options))
-}
-
-export const getHomeRssOgImageUrl = (
-  siteUrl: string,
-  options: {
-    title: string
-    description: string
-  }
-): string => {
-  return absoluteUrl(siteUrl, getFeedChannelOgImagePublicPath(options))
-}
-
-export const contentEntriesToRssItems = (
+const contentEntriesToRssItems = (
   entries: ContentRssEntry[],
   locale: string,
   siteUrl: string,
@@ -84,7 +62,7 @@ export const contentEntriesToRssItems = (
   return entries
     .filter((entry) => {
       const path = String(entry.path || "")
-      if (!Boolean(entry.meta?.publishedAt)) return false
+      if (!entry.meta?.publishedAt) return false
       return isRssEligibleContentPath(path)
     })
     .sort((a, b) => {
@@ -108,17 +86,16 @@ export const contentEntriesToRssItems = (
         : translate
           ? resolveRssEntryCategories(entry, translate)
           : []
-      const [section, collection] = categories
+      const generatedOgImagePath = getRssEntryOgImagePublicPath(entry, { categories, translate })
       const seoImageOverride =
         nonEmptyString(entry.seo?.ogImage) || nonEmptyString(entry.seo?.image)
       const imageUrl = seoImageOverride
         ? absoluteImageUrl(siteUrl, seoImageOverride)
-        : getDocsRssOgImageUrl(siteUrl, {
-            title,
-            description,
-            section: section || "",
-            collection
-          })
+        : entry.ogImagePath
+          ? absoluteUrl(siteUrl, entry.ogImagePath)
+          : generatedOgImagePath
+            ? absoluteUrl(siteUrl, generatedOgImagePath)
+            : undefined
 
       const publishedAt = String(entry.meta?.publishedAt || "")
 
@@ -188,10 +165,15 @@ export const buildRssFeedXml = (locale: string, siteUrl: string, asset: RssAsset
   const base = normalizeSiteUrl(siteUrl)
   const { feedUrl, articlesIndexUrl } = getRssSiteLinks(base, locale, DEFAULT_LOCALE)
   const items = contentEntriesToRssItems(asset.entries, locale, base, asset.channel.creator)
-  const channelImageUrl = getHomeRssOgImageUrl(base, {
-    title: asset.channel.title,
-    description: asset.channel.description
-  })
+  const channelImageUrl = asset.channel.ogImagePath
+    ? absoluteUrl(base, asset.channel.ogImagePath)
+    : absoluteUrl(
+        base,
+        getFeedChannelOgImagePublicPath({
+          title: asset.channel.title,
+          description: asset.channel.description
+        })
+      )
 
   return buildRssXml(
     {

@@ -1,3 +1,4 @@
+import { resolveOgImageFields } from "@app/utils/rss"
 import { absoluteUrl, localizedCanonicalPath } from "@app/utils/seo"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { buildStructuredDataNodes } from "@docs/utils/structuredData"
@@ -174,15 +175,27 @@ export const useDocsSeo = ({
   const ogImageTitle = computed(() => seoTitle.value || slugTitleFallback.value)
 
   if (!seoImageOverride.value && ogImageTitle.value) {
-    defineOgImage("DocsPage", {
+    const ogSection = section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection")
+    const ogCollection = parentCollectionItem.value
+      ? t(parentCollectionItem.value.label)
+      : collectionItem.value
+        ? t(collectionItem.value.label)
+        : ""
+
+    const ogFields = resolveOgImageFields({
+      component: "DocsPage",
       title: ogImageTitle.value,
       description: resolvedOgDescription.value,
-      section: section.value ? t(section.value.labelKey) : t("docs.seo.defaultSection"),
-      collection: parentCollectionItem.value
-        ? t(parentCollectionItem.value.label)
-        : collectionItem.value
-          ? t(collectionItem.value.label)
-          : ""
+      section: ogSection,
+      collection: ogCollection,
+      pagePath: canonicalPath.value
+    })
+
+    defineOgImage("DocsPage", {
+      title: ogFields.title,
+      description: ogFields.description,
+      section: ogSection,
+      collection: ogCollection
     })
   }
 

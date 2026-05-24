@@ -7,5 +7,3 @@ export const ApiClient = {
   github,
   npm
 }
-
-export default ApiClient

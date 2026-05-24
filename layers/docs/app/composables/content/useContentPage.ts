@@ -3,7 +3,7 @@ import { findContentMapping } from "@docs/utils/path/pathMapping"
 import { normalizePublicDocsPath } from "@docs/utils/path/publicPath"
 import { ROUTE_PATH } from "@base/types"
 
-export const publicPathToContentPath = (publicPath: string): string => {
+const publicPathToContentPath = (publicPath: string): string => {
   const normalized = normalizePublicDocsPath(publicPath)
   if (!normalized.startsWith(ROUTE_PATH.DOCS)) {
     return normalized.startsWith("/") ? normalized : `/${normalized}`

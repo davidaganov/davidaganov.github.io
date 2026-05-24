@@ -9,12 +9,14 @@ import {
   RSS_FEED_FILENAME
 } from "../constants/rss.contstant"
 import type {
+  ContentRssEntry,
   RssChannelMeta,
   RssContentPathMeta,
   RssFeedUrls,
   RssPostItem,
   RssSiteLinks
 } from "../types"
+import { resolveRssEntryCategories } from "./rss-labels"
 import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
 
 const NUXT_SEO_OG_STATIC_PREFIX = "/_og/d"
@@ -33,6 +35,19 @@ const OG_IMAGE_PARAM_ALIASES: Record<string, string> = {
   component: "c"
 }
 
+const MAX_OG_PUBLIC_PATH_LENGTH = 255
+const STRICT_OG_SIGNATURE_SUFFIX_LENGTH = 20
+
+const pathSegmentNormalized = (pagePath: string): string => {
+  return pagePath.startsWith("/") ? pagePath : `/${pagePath}`
+}
+
+const truncateText = (value: string, maxLength: number): string => {
+  const trimmed = value.trim()
+  if (trimmed.length <= maxLength) return trimmed
+  return `${trimmed.slice(0, Math.max(1, maxLength - 1)).trimEnd()}…`
+}
+
 const toBase64Url = (value: string): string => {
   const bytes = new TextEncoder().encode(value)
   let binary = ""
@@ -44,6 +59,14 @@ const toBase64Url = (value: string): string => {
   return btoa(binary).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "~")
 }
 
+const estimateStrictOgPathOverhead = (pagePath?: string): number => {
+  const pathSegment = pagePath?.trim()
+    ? `,p_${toBase64Url(JSON.stringify(pathSegmentNormalized(pagePath)))}`
+    : ""
+
+  return pathSegment.length + STRICT_OG_SIGNATURE_SUFFIX_LENGTH + 2
+}
+
 const encodeOgImageValue = (value: string): string => {
   const escaped = value.startsWith("~") ? `~${value}` : value
   const encoded = encodeURIComponent(escaped.replace(/_/g, "__")).replace(/%20/g, "+")
@@ -52,7 +75,7 @@ const encodeOgImageValue = (value: string): string => {
   return encoded.includes("%") || hasNonAscii ? `~${toBase64Url(value)}` : encoded
 }
 
-const getOgImagePublicPath = (options: OgImageUrlOptions): string => {
+const buildOgImagePublicPath = (options: OgImageUrlOptions): string => {
   const params = Object.entries(options)
     .filter(([, value]) => typeof value === "string" && value.trim().length)
     .map(([key, value]) => {
@@ -64,7 +87,105 @@ const getOgImagePublicPath = (options: OgImageUrlOptions): string => {
   return joinURL(NUXT_SEO_OG_STATIC_PREFIX, `${params || "default"}.png`)
 }
 
-export const getDocsOgImagePublicPath = (options: {
+const fitOgImagePublicPath = (options: OgImageUrlOptions): string => {
+  const path = buildOgImagePublicPath(options)
+  if (path.length <= MAX_OG_PUBLIC_PATH_LENGTH) return path
+
+  const description = options.description?.trim()
+  if (!description) return path
+
+  for (let maxLength = description.length - 1; maxLength > 0; maxLength -= 8) {
+    const candidate = buildOgImagePublicPath({
+      ...options,
+      description: truncateText(description, maxLength)
+    })
+    if (candidate.length <= MAX_OG_PUBLIC_PATH_LENGTH) return candidate
+  }
+
+  return buildOgImagePublicPath({ ...options, description: undefined })
+}
+
+const getOgImagePublicPath = (options: OgImageUrlOptions): string => fitOgImagePublicPath(options)
+
+const resolveOgImageDescription = (
+  description: string,
+  options: Omit<OgImageUrlOptions, "description"> & { pagePath?: string }
+): string => {
+  const trimmed = description.trim()
+  if (!trimmed) return trimmed
+
+  const maxPublicPathLength =
+    MAX_OG_PUBLIC_PATH_LENGTH - estimateStrictOgPathOverhead(options.pagePath)
+
+  for (let maxLength = trimmed.length; maxLength > 0; maxLength -= 8) {
+    const candidate = truncateText(trimmed, maxLength)
+    if (
+      buildOgImagePublicPath({ ...options, description: candidate }).length <= maxPublicPathLength
+    ) {
+      return candidate
+    }
+  }
+
+  return ""
+}
+
+export const resolveOgImageFields = (
+  fields: OgImageUrlOptions & { pagePath?: string }
+): Pick<OgImageUrlOptions, "title" | "description"> => {
+  const title = fields.title?.trim() || ""
+  const description = fields.description?.trim() || ""
+  const maxPublicPathLength =
+    MAX_OG_PUBLIC_PATH_LENGTH - estimateStrictOgPathOverhead(fields.pagePath)
+
+  const fits = (next: OgImageUrlOptions): boolean =>
+    buildOgImagePublicPath(next).length <= maxPublicPathLength
+
+  const fittedDescription = resolveOgImageDescription(description, {
+    component: fields.component,
+    title,
+    section: fields.section,
+    collection: fields.collection,
+    pagePath: fields.pagePath
+  })
+
+  if (
+    fits({
+      ...fields,
+      title,
+      description: fittedDescription
+    })
+  ) {
+    return { title, description: fittedDescription }
+  }
+
+  for (let titleLength = title.length; titleLength > 0; titleLength -= 4) {
+    const nextTitle = truncateText(title, titleLength)
+    const nextDescription = resolveOgImageDescription(description, {
+      component: fields.component,
+      title: nextTitle,
+      section: fields.section,
+      collection: fields.collection,
+      pagePath: fields.pagePath
+    })
+
+    if (
+      fits({
+        ...fields,
+        title: nextTitle,
+        description: nextDescription
+      })
+    ) {
+      return { title: nextTitle, description: nextDescription }
+    }
+  }
+
+  return {
+    title: truncateText(title, 24),
+    description: ""
+  }
+}
+
+const getDocsOgImagePublicPath = (options: {
   title: string
   description: string
   section: string
@@ -87,6 +208,50 @@ export const getFeedChannelOgImagePublicPath = (options: {
     component: OG_IMAGE_COMPONENT_HOME_PAGE,
     title: options.title,
     description: options.description
+  })
+}
+
+const rssEntryHasCustomImage = (entry: ContentRssEntry): boolean => {
+  const ogImage = entry.seo?.ogImage
+  const image = entry.seo?.image
+  return (
+    (typeof ogImage === "string" && ogImage.trim().length > 0) ||
+    (typeof image === "string" && image.trim().length > 0)
+  )
+}
+
+export const getRssEntryOgImagePublicPath = (
+  entry: ContentRssEntry,
+  options: {
+    categories?: string[]
+    translate?: (key: string) => string
+  } = {}
+): string | null => {
+  const path = String(entry.path || "")
+  if (!entry.meta?.publishedAt) return null
+  if (!isRssEligibleContentPath(path)) return null
+  if (rssEntryHasCustomImage(entry)) return null
+
+  const categories = options.categories?.length
+    ? options.categories
+    : options.translate
+      ? resolveRssEntryCategories(entry, options.translate)
+      : []
+  const [section, collection] = categories
+
+  const title = String(entry.title || "")
+  const description = String(entry.description || "")
+
+  return getDocsOgImagePublicPath({
+    title,
+    description: resolveOgImageDescription(description, {
+      component: OG_IMAGE_COMPONENT_DOCS_PAGE,
+      title,
+      section: section || "",
+      collection
+    }),
+    section: section || "",
+    collection
   })
 }
 

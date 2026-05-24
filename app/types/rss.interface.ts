@@ -47,6 +47,7 @@ export interface RssAssetChannel {
   title: string
   description: string
   creator: string
+  ogImagePath?: string
 }
 
 export interface ContentRssEntry {
@@ -59,6 +60,7 @@ export interface ContentRssEntry {
     image?: string
   } | null
   rssCategories?: string[]
+  ogImagePath?: string
 }
 
 export interface RssAssetFile {

@@ -12,6 +12,7 @@ import { normalizeSiteUrl } from "./app/utils/seo"
 
 const rootDir = fileURLToPath(new URL(".", import.meta.url))
 const siteUrl = normalizeSiteUrl(process.env.NUXT_PUBLIC_SITE_URL)
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -63,6 +64,9 @@ export default defineNuxtConfig({
     zeroRuntime: true,
     debug: false,
     buildCache: true,
+    defaults: {
+      timeout: 60000
+    },
     security: {
       strict: true,
       restrictRuntimeImagesToOrigin: true,
@@ -130,6 +134,14 @@ export default defineNuxtConfig({
         stdio: "inherit",
         env: process.env
       })
+    },
+    async "nitro:init"(nitro) {
+      nitro.hooks.hook("prerender:routes", async (routes) => {
+        const { getOgImagePrerenderRoutes } = await import("./app/config/og-prerender")
+        for (const route of getOgImagePrerenderRoutes()) {
+          routes.add(route)
+        }
+      })
     }
   },
 
@@ -179,7 +191,12 @@ export default defineNuxtConfig({
 
   routeRules: {
     ...getDocsIndexRedirectRules(),
-    ...getPrerenderRouteRules()
+    ...getPrerenderRouteRules(),
+    "/_og/**": {
+      headers: {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    }
   },
 
   nitro: {
@@ -189,6 +206,7 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: false,
+      concurrency: 2,
       routes: getPrerenderRoutes()
     }
   },

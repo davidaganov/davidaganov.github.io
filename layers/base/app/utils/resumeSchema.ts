@@ -44,7 +44,7 @@ const experienceEntrySchema = z
     message: "experience entry must have intro, items, or projects"
   })
 
-export const resumeDataSchema = z
+const resumeDataSchema = z
   .object({
     contacts: z.object({
       telegram: z.string().min(1),

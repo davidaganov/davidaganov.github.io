@@ -31,7 +31,7 @@ export const localizedRecordSchema: z.ZodType<LocalizedRecord> = z
     message: "localized record must include every site locale"
   })
 
-export const localizedPartialSchema = z
+const localizedPartialSchema = z
   .record(z.string(), localeString)
   .refine(onlyLocaleLikeKeys, { message: "localized value has invalid locale keys" })
   .refine(hasAnyLocaleValue, { message: "localized value needs at least one site locale" })

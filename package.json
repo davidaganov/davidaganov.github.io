@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt build && tsx scripts/sync-rss-og-images.ts && nuxt build",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
     "prepare": "husky",
