@@ -1,5 +1,5 @@
 import { joinURL } from "ufo"
-import { ROUTE_PATH } from "@base/types"
+import { ROUTE_PATH } from "../../layers/base/app/types"
 import {
   RSS_CHANNEL_IMAGE_HEIGHT,
   RSS_CHANNEL_IMAGE_WIDTH,
