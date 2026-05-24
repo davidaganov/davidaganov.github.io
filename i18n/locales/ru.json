@@ -83,7 +83,8 @@
         "overview": "Обзор",
         "stack": "Стек",
         "services": "Слой запросов",
-        "docs": "Документация"
+        "docs": "Документация",
+        "site": "Сайт"
       },
       "social": {
         "github": "GitHub",

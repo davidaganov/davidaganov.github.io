@@ -19,6 +19,7 @@ const LISTBOX_ID = "cmd-results-listbox"
 const RESULTS_REGION_ID = "cmd-results-panel"
 
 const categoryLabels: Record<TYPE_PAGE, string> = {
+  [TYPE_PAGE.SITE]: t("layout.navigation.sections.site"),
   [TYPE_PAGE.DOCS]: t("layout.navigation.sections.docs"),
   [TYPE_PAGE.ARTICLE]: t("layout.navigation.menu.articles"),
   [TYPE_PAGE.PROJECT]: t("layout.navigation.menu.projects"),
@@ -26,6 +27,7 @@ const categoryLabels: Record<TYPE_PAGE, string> = {
 }
 
 const categoryOrder = [
+  TYPE_PAGE.SITE,
   TYPE_PAGE.DOCS,
   TYPE_PAGE.ARTICLE,
   TYPE_PAGE.PROJECT,
@@ -211,7 +213,7 @@ watch(query, () => {
             >
               <div
                 v-if="!query.trim()"
-                class="flex min-h-48 flex-col items-center justify-center gap-3 p-6 text-center text-gray-600 dark:text-gray-400"
+                class="flex h-full min-h-48 flex-col items-center justify-center gap-3 p-6 text-center text-gray-600 dark:text-gray-400"
               >
                 <UIcon
                   name="i-lucide-command"

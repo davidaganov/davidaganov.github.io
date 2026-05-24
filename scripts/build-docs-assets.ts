@@ -9,6 +9,7 @@ import { createTranslator } from "../app/utils/i18n-messages"
 import { isRssEligibleContentPath } from "../app/utils/rss"
 import { resolveRssEntryCategories } from "../app/utils/rss-labels"
 import { loadRssContentEntriesFromSqlite } from "../app/utils/rss.server"
+import { buildSearchIndexPages } from "../app/utils/search-index.server"
 import { GRAPH_EXCLUDED_CATEGORIES } from "../layers/docs/app/constants/graph.constant"
 import type {
   DocsGraphFile,
@@ -310,7 +311,8 @@ const getTrackedOutputPaths = (): string[] => [
   resolve(serverAssetsDir, "archive-index.json"),
   ...getLocaleCodes().flatMap((locale) => [
     resolve(serverAssetsDir, `graph-${locale}.json`),
-    resolve(serverAssetsDir, `rss-${locale}.json`)
+    resolve(serverAssetsDir, `rss-${locale}.json`),
+    resolve(serverAssetsDir, `search-${locale}.json`)
   ])
 ]
 
@@ -400,6 +402,20 @@ const main = async (): Promise<void> => {
     if (rssChanged) {
       wroteAny = true
       console.info(`build-docs-assets: wrote ${rssPath} (${rssEntries.length} RSS entries)`)
+    }
+
+    const searchPages = buildSearchIndexPages(locale)
+    const searchStable = { locale, pages: searchPages }
+    const searchFile = {
+      ...searchStable,
+      builtAt: new Date().toISOString()
+    }
+    const searchPath = resolve(serverAssetsDir, `search-${locale}.json`)
+    const searchChanged = writeJsonIfChanged(searchPath, searchStable, searchFile)
+
+    if (searchChanged) {
+      wroteAny = true
+      console.info(`build-docs-assets: wrote ${searchPath} (${searchPages.length} search pages)`)
     }
   }
 

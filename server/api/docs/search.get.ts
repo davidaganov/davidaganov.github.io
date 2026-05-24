@@ -1,8 +1,7 @@
-import type { Collections } from "@nuxt/content"
-import { queryCollection } from "@nuxt/content/server"
 import type { H3Event } from "h3"
 import { getLocaleCodes } from "@app/config/locales"
 import { mapSearchResults } from "@docs/utils/mapSearchResults"
+import type { SearchIndexFile } from "@docs/types"
 import { createServerTranslator } from "../../utils/locale-messages"
 
 export default defineEventHandler(async (event: H3Event) => {
@@ -15,11 +14,18 @@ export default defineEventHandler(async (event: H3Event) => {
     throw createError({ statusCode: 400, statusMessage: "Invalid locale" })
   }
 
-  const collection = `content_${locale}` as keyof Collections
-  const pages = await queryCollection(event, collection)
-    .select("title", "description", "path", "body", "meta")
-    .all()
+  const data = await useStorage("assets:server").getItem(`search-${locale}.json`)
 
+  if (!data) {
+    throw createError({
+      statusCode: 503,
+      statusMessage: "Search index is not built yet. Run npm run build:docs-assets."
+    })
+  }
+
+  setResponseHeader(event, "Cache-Control", "public, max-age=300, s-maxage=300")
+
+  const index = data as SearchIndexFile
   const t = createServerTranslator(locale)
-  return mapSearchResults(pages, q, t)
+  return mapSearchResults(index.pages, q, t)
 })

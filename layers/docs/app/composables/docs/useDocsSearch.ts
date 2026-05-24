@@ -30,6 +30,7 @@ export const useDocsSearch = (query: Ref<string>) => {
 
   const grouped = computed(() => {
     const groups: Record<TYPE_PAGE, DocsSearchResult[]> = {
+      [TYPE_PAGE.SITE]: [],
       [TYPE_PAGE.DOCS]: [],
       [TYPE_PAGE.ARTICLE]: [],
       [TYPE_PAGE.PROJECT]: [],
@@ -42,6 +43,7 @@ export const useDocsSearch = (query: Ref<string>) => {
   })
 
   const flatResults = computed(() => [
+    ...grouped.value[TYPE_PAGE.SITE],
     ...grouped.value[TYPE_PAGE.DOCS],
     ...grouped.value[TYPE_PAGE.ARTICLE],
     ...grouped.value[TYPE_PAGE.PROJECT],

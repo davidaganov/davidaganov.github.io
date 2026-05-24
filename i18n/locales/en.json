@@ -83,7 +83,8 @@
         "overview": "Overview",
         "stack": "Stack",
         "services": "Query layer",
-        "docs": "Documentation"
+        "docs": "Documentation",
+        "site": "Site"
       },
       "social": {
         "github": "GitHub",

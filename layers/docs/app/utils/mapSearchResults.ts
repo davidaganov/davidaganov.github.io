@@ -1,3 +1,4 @@
+import { findSiteSearchPage } from "@app/config/site-search-pages"
 import { extractPlainText, snippetAroundQuery } from "@docs/utils/content/extractPlainText"
 import { buildUrlFromMapping, findContentMapping } from "@docs/utils/path/pathMapping"
 import { DOCS_SECTIONS } from "@docs/constants"
@@ -46,6 +47,7 @@ const breadcrumbFromMapping = (
 
   const sectionPrefixRe = new RegExp(`^/(?:${mapping.sectionId})?/`)
   const segments = mapping.path.replace(sectionPrefixRe, "").split("/").filter(Boolean)
+
   if (segments.length > 1) {
     return [sectionLabel, ...segments.slice(0, -1), title]
   }
@@ -53,12 +55,16 @@ const breadcrumbFromMapping = (
   return [sectionLabel, title]
 }
 
-const iconFromPage = (page: SearchablePage, mapping: ContentMapping): string => {
+const iconFromPage = (
+  page: SearchablePage,
+  mapping: ContentMapping | null,
+  category: TYPE_PAGE
+): string => {
   if (page.meta?.icon) return page.meta.icon
-  const category = categoryFromMapping(mapping)
   if (category === TYPE_PAGE.ARTICLE) return "i-lucide-newspaper"
   if (category === TYPE_PAGE.PROJECT) return "i-lucide-folder-git-2"
   if (category === TYPE_PAGE.TEMPLATE) return "i-lucide-rocket"
+  if (mapping) return "i-lucide-file-text"
   return "i-lucide-file-text"
 }
 
@@ -70,20 +76,46 @@ export const mapSearchResults = (
   const q = query.trim()
   if (!q) return []
 
-  return pages
-    .map((page) => ({ page, mapping: findContentMapping(page.path) }))
-    .filter((row): row is { page: SearchablePage; mapping: ContentMapping } => {
-      return Boolean(row.mapping && matchesQuery(row.page, q))
-    })
-    .map(({ page, mapping }) => {
-      const title = String(page.title || "")
-      return {
+  const siteSectionLabel = t("layout.navigation.sections.site")
+  const results: DocsSearchResult[] = []
+
+  for (const page of pages) {
+    if (!matchesQuery(page, q)) continue
+
+    const mapping = findContentMapping(page.path)
+    const site = findSiteSearchPage(page.path)
+    if (!mapping && !site) continue
+
+    const title = String(page.title || "")
+
+    if (site) {
+      results.push({
         title,
-        path: buildUrlFromMapping(mapping),
-        category: categoryFromMapping(mapping),
-        breadcrumb: breadcrumbFromMapping(mapping, title, t),
-        snippet: snippetAroundQuery(page.body, q),
-        icon: iconFromPage(page, mapping)
-      }
+        path: site.path,
+        category: TYPE_PAGE.SITE,
+        breadcrumb: [siteSectionLabel, title],
+        snippet:
+          snippetAroundQuery(page.body, q) ||
+          (page.description && page.description.toLowerCase().includes(q.toLowerCase())
+            ? page.description
+            : undefined),
+        icon: iconFromPage(page, null, TYPE_PAGE.SITE)
+      })
+      continue
+    }
+
+    if (!mapping) continue
+
+    const category = categoryFromMapping(mapping)
+    results.push({
+      title,
+      path: buildUrlFromMapping(mapping),
+      category,
+      breadcrumb: breadcrumbFromMapping(mapping, title, t),
+      snippet: snippetAroundQuery(page.body, q),
+      icon: iconFromPage(page, mapping, category)
     })
+  }
+
+  return results
 }
