@@ -1,8 +1,10 @@
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { getFeedPagePublicPath, getRssFeedPublicPath } from "../utils/rss"
-import { localePathPrefix } from "../utils/seo"
+import { localePathPrefix, localizedPath } from "../utils/seo"
 import { getLocaleCodes } from "./locales"
+
+const DOCS_INDEX_REDIRECT_TARGET = "/docs/about/getting-started"
 
 const contentRoot = fileURLToPath(new URL("../../content", import.meta.url))
 
@@ -74,10 +76,19 @@ const commonRoutesForLocale = (locale: string): string[] => {
     `${prefix || "/"}`,
     `${prefix}/resume`,
     getFeedPagePublicPath(locale),
-    `${prefix}/docs`,
     `${prefix}/docs/graph`
   ]
 }
+
+export const getDocsIndexRedirectRules = (): Record<string, { redirect: string }> =>
+  Object.fromEntries(
+    getLocaleCodes().map((locale) => {
+      const prefix = localePathPrefix(locale)
+      const docsRoot = prefix ? `${prefix}/docs` : "/docs"
+
+      return [docsRoot, { redirect: localizedPath(locale, DOCS_INDEX_REDIRECT_TARGET) }]
+    })
+  )
 
 const seoRoutes = ["/sitemap_index.xml", "/robots.txt"]
 

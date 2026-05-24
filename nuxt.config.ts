@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
 import {
+  getDocsIndexRedirectRules,
   getNuxtDefaultLocale,
   getNuxtI18nLocales,
   getPrerenderRouteRules,
@@ -176,7 +177,10 @@ export default defineNuxtConfig({
     storesDirs: ["./stores/**", "./layers/*/stores/**"]
   },
 
-  routeRules: getPrerenderRouteRules(),
+  routeRules: {
+    ...getDocsIndexRedirectRules(),
+    ...getPrerenderRouteRules()
+  },
 
   nitro: {
     preset: "vercel",
@@ -196,7 +200,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: true
+    payloadExtraction: false
   },
 
   sourcemap: {

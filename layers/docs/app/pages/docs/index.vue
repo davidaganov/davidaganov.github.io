@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { getFirstPathForFirstSection } from "@docs/utils/sections"
+import { ROUTE_PATH } from "@base/types"
+import { getFirstPathForFirstSection, normalizeDocsPath } from "@docs/utils/sections"
 
 const { t } = useI18n()
 
+const route = useRoute()
 const localePath = useLocalePath()
 const target = getFirstPathForFirstSection()
 
-if (import.meta.server || import.meta.client) {
+const isDocsRoot = computed(() => normalizeDocsPath(route.path) === ROUTE_PATH.DOCS)
+
+if (isDocsRoot.value) {
   await navigateTo(localePath(target), { replace: true })
 }
 

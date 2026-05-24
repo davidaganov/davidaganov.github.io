@@ -41,27 +41,19 @@ const selectCategory = (category: string | null) => {
 <template>
   <article class="mx-auto w-full max-w-3xl px-4 pb-10 sm:px-6 sm:pb-14 lg:pb-16">
     <header class="space-y-4 border-b border-black/10 pb-4 dark:border-white/10">
-      <div class="flex flex-col items-start gap-3">
-        <div class="flex items-center gap-3">
-          <div
-            class="flex size-11 shrink-0 items-center justify-center rounded-xl border border-orange-500/20 bg-orange-500/10 text-orange-600 dark:border-orange-400/25 dark:bg-orange-500/15 dark:text-orange-300"
-          >
-            <UIcon
-              name="i-lucide-rss"
-              aria-hidden="true"
-              class="size-5"
-            />
-          </div>
-          <h1 class="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
-            {{ $t("pages.feed.heading") }}
-          </h1>
-        </div>
-        <p
-          v-if="data?.channel.description"
-          class="text-base leading-relaxed text-gray-600 dark:text-gray-300"
+      <div class="flex items-center gap-3">
+        <div
+          class="flex size-11 shrink-0 items-center justify-center rounded-xl border border-orange-500/20 bg-orange-500/10 text-orange-600 dark:border-orange-400/25 dark:bg-orange-500/15 dark:text-orange-300"
         >
-          {{ data.channel.description }}
-        </p>
+          <UIcon
+            name="i-lucide-rss"
+            aria-hidden="true"
+            class="size-5"
+          />
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
+          {{ $t("pages.feed.heading") }}
+        </h1>
       </div>
     </header>
 
