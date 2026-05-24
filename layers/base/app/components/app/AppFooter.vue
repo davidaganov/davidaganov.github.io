@@ -10,7 +10,7 @@ const PROJECTS_LIMIT = 3
 const REPO_URL = `https://github.com/${GITHUB_REPO}`
 
 const localePath = useLocalePath()
-const { locale, t } = useI18n()
+const { t } = useI18n()
 
 const { projects, loading } = await useProjectsTop(PROJECTS_LIMIT)
 
