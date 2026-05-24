@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useWindowScroll } from "@vueuse/core"
 import { SOCIAL_LINKS } from "@base/constants"
-import { ROUTE_PATH } from "@base/types"
 import AppRightSidebarArchiveDownload from "@docs/components/app/rightsidebar/AppRightSidebarArchiveDownload.vue"
 import AppRightSidebarArticleMeta from "@docs/components/app/rightsidebar/AppRightSidebarArticleMeta.vue"
 import AppRightSidebarGitHubProfile from "@docs/components/app/rightsidebar/AppRightSidebarGitHubProfile.vue"
 import AppRightSidebarHabrProfile from "@docs/components/app/rightsidebar/AppRightSidebarHabrProfile.vue"
 import AppRightSidebarProjectMeta from "@docs/components/app/rightsidebar/AppRightSidebarProjectMeta.vue"
 import AppRightSidebarToc from "@docs/components/app/rightsidebar/AppRightSidebarToc.vue"
+import { ROUTE_PATH } from "@base/types"
 import { TYPE_PAGE } from "@docs/types"
 
 const SCROLL_TOP_THRESHOLD_PX = 300

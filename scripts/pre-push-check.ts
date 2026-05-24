@@ -87,14 +87,34 @@ const resolveChangedFiles = async (): Promise<string[]> => {
   return Array.from(filesSet)
 }
 
+const filesChangedSinceHead = (files: string[]): string[] => {
+  if (files.length === 0) return []
+
+  const unstaged = gitExec("diff", "--name-only", "HEAD", "--", ...files)
+    .split("\n")
+    .filter(Boolean)
+  const staged = gitExec("diff", "--cached", "--name-only", "HEAD", "--", ...files)
+    .split("\n")
+    .filter(Boolean)
+
+  return [...new Set([...unstaged, ...staged])]
+}
+
 const runPrettier = (files: string[]): void => {
-  console.log("✨ Running Prettier check...")
+  console.log("✨ Running Prettier...")
   try {
-    execFileSync("npx", ["prettier", "--check", ...files], { stdio: "inherit", shell: true })
+    execFileSync("npx", ["prettier", "--write", ...files], { stdio: "inherit", shell: true })
   } catch {
-    console.error("❌ Prettier failed. Fix formatting before pushing.")
+    console.error("❌ Prettier failed.")
     process.exit(1)
   }
+
+  const formatted = filesChangedSinceHead(files)
+  if (formatted.length === 0) return
+
+  console.log(`📝 Auto-formatted ${formatted.length} file(s), amending latest commit...`)
+  execFileSync("git", ["add", ...formatted], { stdio: "inherit" })
+  execFileSync("git", ["commit", "--amend", "--no-edit", "--no-verify"], { stdio: "inherit" })
 }
 
 const runEslint = (files: string[]): void => {
