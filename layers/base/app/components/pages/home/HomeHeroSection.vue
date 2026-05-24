@@ -283,12 +283,6 @@ onUnmounted(() => {
     />
 
     <div class="relative z-10 flex max-w-3xl flex-col items-center text-center">
-      <span
-        class="text-primary-800 dark:text-primary-300 mb-6 inline-block rounded-full border border-white/10 bg-white/25 px-3 py-1 text-xs font-medium tracking-wide backdrop-blur-md dark:border-white/10 dark:bg-white/5"
-      >
-        {{ $t("pages.home.badge") }}
-      </span>
-
       <TextType
         as="h1"
         class="mb-5 pb-2 text-4xl font-bold tracking-tight text-black sm:text-7xl lg:text-8xl dark:bg-linear-to-r dark:from-white dark:to-white/60 dark:bg-clip-text dark:text-transparent"

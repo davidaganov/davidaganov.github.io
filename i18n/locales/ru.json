@@ -109,7 +109,11 @@
     "rss": {
       "feedTitle": "Фронтенд, архитектура и инструменты | aganov.dev",
       "feedDescription": "Статьи о веб-разработке, архитектуре проектов и создании собственных инструментов.",
-      "copyAction": "Скопировать ссылку на RSS-ленту"
+      "copyAction": "Скопировать ссылку на RSS-ленту",
+      "footerLink": "RSS-лента и подписка"
+    },
+    "standalone": {
+      "backToSite": "На сайт"
     },
     "a11y": {
       "skipToContent": "Перейти к основному содержимому",
@@ -134,7 +138,6 @@
     "resume": {
       "seoTitle": "Резюме",
       "seoDescription": "Краткое резюме: опыт, стек, контакты и ключевые компетенции — всё в одном месте.",
-      "backToSite": "На сайт",
       "employmentFormat": "Формат работы",
       "employmentType": "Занятость",
       "experienceFrontend": "Frontend опыт",
@@ -153,8 +156,26 @@
         "tooling": "Инструменты"
       }
     },
+    "feed": {
+      "seoTitle": "RSS-лента",
+      "seoDescription": "Подпишитесь на обновления: статьи, шаблоны и проекты с aganov.dev.",
+      "heading": "RSS-лента",
+      "whatIsRss": "RSS — способ получать новые публикации в приложении для чтения. Добавьте адрес ленты в Feedly, Inoreader или другой ридер — без соцсетей и рассылок.",
+      "feedUrlLabel": "Адрес ленты (RSS 2.0)",
+      "copy": "Скопировать",
+      "openXml": "Открыть XML",
+      "addToReader": "Добавить в ридер",
+      "readers": {
+        "feedly": "Feedly",
+        "inoreader": "Inoreader"
+      },
+      "filterLabel": "Категория",
+      "recentPosts": "Последние публикации",
+      "viewAllDocs": "Вся документация",
+      "emptyFiltered": "В этой категории пока нет публикаций.",
+      "updatesNote": "Лента обновляется при публикации новых материалов в документации."
+    },
     "home": {
-      "badge": "Доступен для найма",
       "description": "Фронтенд-разработчик — {frontendYears} лет коммерческого опыта.",
       "getStarted": "Начать",
       "disableAnimation": "Без анимации",

@@ -2,6 +2,7 @@ export enum ROUTE_PATH {
   // Root
   HOME = "/",
   RESUME = "/resume",
+  FEED = "/feed",
 
   // Docs
   DOCS = "/docs",

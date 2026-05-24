@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
-import { getRssFeedPublicPath } from "../utils/rss"
+import { getFeedPagePublicPath, getRssFeedPublicPath } from "../utils/rss"
 import { localePathPrefix } from "../utils/seo"
 import { getLocaleCodes } from "./locales"
 
@@ -70,11 +70,20 @@ const collectionIndexRoutesForLocale = (locale: string): string[] => {
 
 const commonRoutesForLocale = (locale: string): string[] => {
   const prefix = localePathPrefix(locale)
-  return [`${prefix || "/"}`, `${prefix}/resume`, `${prefix}/docs`, `${prefix}/docs/graph`]
+  return [
+    `${prefix || "/"}`,
+    `${prefix}/resume`,
+    getFeedPagePublicPath(locale),
+    `${prefix}/docs`,
+    `${prefix}/docs/graph`
+  ]
 }
 
 const seoRoutes = ["/sitemap_index.xml", "/robots.txt"]
-const feedRoutes = (): string[] => getLocaleCodes().map((locale) => getRssFeedPublicPath(locale))
+
+const feedRoutes = (): string[] => {
+  return getLocaleCodes().map((locale) => getRssFeedPublicPath(locale))
+}
 
 export const getPrerenderRoutes = (): string[] => {
   const contentRoutes = getLocaleCodes().flatMap((locale) => [
@@ -93,6 +102,7 @@ export const getPrerenderRouteRules = (): Record<string, { prerender: true }> =>
       return [
         [prefix || "/", { prerender: true }],
         [`${prefix}/resume`, { prerender: true }],
+        [getFeedPagePublicPath(locale), { prerender: true }],
         [`${prefix}/docs/**`, { prerender: true }]
       ]
     })

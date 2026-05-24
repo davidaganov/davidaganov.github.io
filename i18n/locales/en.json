@@ -109,7 +109,11 @@
     "rss": {
       "feedTitle": "Frontend, architecture and tools | aganov.dev",
       "feedDescription": "Articles about web development, project architecture and creating your own tools.",
-      "copyAction": "Copy RSS feed URL"
+      "copyAction": "Copy RSS feed URL",
+      "footerLink": "RSS feed and subscription"
+    },
+    "standalone": {
+      "backToSite": "Back to site"
     },
     "a11y": {
       "skipToContent": "Skip to main content",
@@ -134,7 +138,6 @@
     "resume": {
       "seoTitle": "Resume",
       "seoDescription": "Concise resume: experience, stack, contacts, and key competencies in one place.",
-      "backToSite": "Back to site",
       "employmentFormat": "Work format",
       "employmentType": "Employment",
       "experienceFrontend": "Frontend experience",
@@ -152,6 +155,25 @@
         "backend": "Backend",
         "tooling": "Tooling"
       }
+    },
+    "feed": {
+      "seoTitle": "RSS feed",
+      "seoDescription": "Subscribe to updates: articles, templates, and projects from aganov.dev.",
+      "heading": "RSS feed",
+      "whatIsRss": "RSS lets you follow new posts in a feed reader. Add the feed URL to Feedly, Inoreader, or another reader — no social networks or newsletters required.",
+      "feedUrlLabel": "Feed URL (RSS 2.0)",
+      "copy": "Copy",
+      "openXml": "Open XML",
+      "addToReader": "Add to reader",
+      "readers": {
+        "feedly": "Feedly",
+        "inoreader": "Inoreader"
+      },
+      "filterLabel": "Category",
+      "recentPosts": "Recent posts",
+      "viewAllDocs": "All documentation",
+      "emptyFiltered": "No posts in this category yet.",
+      "updatesNote": "The feed updates when new documentation is published."
     },
     "home": {
       "badge": "Available for hire",

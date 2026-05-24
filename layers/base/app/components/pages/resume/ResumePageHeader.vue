@@ -2,10 +2,7 @@
 import { useExperience } from "@base/composables/useExperience"
 import { useResumeData } from "@base/composables/useResumeData"
 import { useResumePdf } from "@base/composables/useResumePdf"
-import UiThemeToggle from "@ui/components/UiThemeToggle.vue"
-import { ROUTE_PATH } from "@base/types"
 
-const localePath = useLocalePath()
 const { frontendYears, backendYears } = useExperience()
 const { content, employmentFormat, employmentType, contacts } = useResumeData()
 const { isGenerating, downloadPdf } = useResumePdf()
@@ -20,36 +17,13 @@ const contactLinks = computed(() => [
 
 <template>
   <header class="space-y-6 border-b border-black/10 pb-8 dark:border-white/10">
-    <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:flex-wrap">
-      <NuxtLink
-        class="-order-1 flex items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-800 sm:inline-flex dark:text-gray-400 dark:hover:text-gray-200"
-        :to="localePath(ROUTE_PATH.HOME)"
-      >
-        <UIcon
-          name="i-lucide-arrow-left"
-          aria-hidden="true"
-          class="size-5"
-        />
-        {{ $t("pages.resume.backToSite") }}
-      </NuxtLink>
-      <div>
-        <h1
-          class="mt-1 text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white"
-        >
-          {{ $t("global.name") }}
-        </h1>
-        <p class="mt-1 text-lg text-gray-600 dark:text-gray-300">
-          {{ content.role }}
-        </p>
-      </div>
-      <div class="-order-1 flex items-center gap-3">
-        <span
-          class="inline-flex h-8 items-center rounded-md border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-700 uppercase dark:border-emerald-400/30 dark:bg-emerald-500/15 dark:text-emerald-300"
-        >
-          {{ $t("pages.home.badge") }}
-        </span>
-        <UiThemeToggle />
-      </div>
+    <div class="space-y-3">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
+        {{ $t("global.name") }}
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-300">
+        {{ content.role }}
+      </p>
     </div>
 
     <dl class="grid max-w-96 gap-3 text-sm sm:grid-cols-2">

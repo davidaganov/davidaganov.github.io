@@ -10,5 +10,14 @@ declare module "#og-image/components" {
       section?: string
       collection?: string
     }
+    FeedPage: {
+      title?: string
+      description?: string
+    }
+    ResumePage: {
+      title?: string
+      description?: string
+      role?: string
+    }
   }
 }

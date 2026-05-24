@@ -1,4 +1,5 @@
 import { joinURL } from "ufo"
+import { ROUTE_PATH } from "@base/types"
 import {
   RSS_CHANNEL_IMAGE_HEIGHT,
   RSS_CHANNEL_IMAGE_WIDTH,
@@ -7,7 +8,13 @@ import {
   RSS_EXCLUDED_PATH_SEGMENT,
   RSS_FEED_FILENAME
 } from "../constants/rss.contstant"
-import type { RssChannelMeta, RssContentPathMeta, RssPostItem, RssSiteLinks } from "../types"
+import type {
+  RssChannelMeta,
+  RssContentPathMeta,
+  RssFeedUrls,
+  RssPostItem,
+  RssSiteLinks
+} from "../types"
 import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
 
 const NUXT_SEO_OG_STATIC_PREFIX = "/_og/d"
@@ -85,6 +92,10 @@ export const getFeedChannelOgImagePublicPath = (options: {
 
 export const getRssFeedPublicPath = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
   return localizedPath(locale, `/${RSS_FEED_FILENAME}`, defaultLocale)
+}
+
+export const getFeedPagePublicPath = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
+  return localizedPath(locale, ROUTE_PATH.FEED, defaultLocale)
 }
 
 export const isRssEligibleContentPath = (contentPath: string): boolean => {
@@ -236,8 +247,35 @@ export const getRssSiteLinks = (
   defaultLocale = DEFAULT_LOCALE
 ): RssSiteLinks => {
   const base = normalizeSiteUrl(siteUrl)
+
   return {
     feedUrl: absoluteUrl(base, getRssFeedPublicPath(locale, defaultLocale)),
     articlesIndexUrl: absoluteUrl(base, localizedPath(locale, "/docs", defaultLocale))
   }
+}
+
+export const getRssFeedUrls = (
+  siteUrl: string,
+  locale: string,
+  defaultLocale = DEFAULT_LOCALE
+): RssFeedUrls => {
+  const base = normalizeSiteUrl(siteUrl)
+
+  return {
+    page: absoluteUrl(base, getFeedPagePublicPath(locale, defaultLocale)),
+    rss: absoluteUrl(base, getRssFeedPublicPath(locale, defaultLocale))
+  }
+}
+
+export const getRssReaderSubscribeUrl = (
+  reader: "feedly" | "inoreader",
+  feedUrl: string
+): string => {
+  const encoded = encodeURIComponent(feedUrl)
+
+  if (reader === "feedly") {
+    return `https://feedly.com/i/subscription/feed/${encoded}`
+  }
+
+  return `https://www.inoreader.com/?add_feed=${encoded}`
 }

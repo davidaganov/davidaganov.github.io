@@ -111,7 +111,6 @@
       "pages.resume.skillTags.frontend": "Frontend",
       "pages.resume.skillTags.backend": "Backend",
       "pages.resume.skillTags.tooling": "Инструменты",
-      "pages.home.badge": "Доступен для найма",
       "pages.home.description": "Фронтенд-разработчик — {frontendYears} лет коммерческого опыта.",
       "pages.home.getStarted": "Начать",
       "pages.home.disableAnimation": "Без анимации",

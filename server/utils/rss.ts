@@ -39,7 +39,7 @@ export const serveRssFeed = async (
     console.error(`rss: failed to serve feed (${options.locale}):`, error)
     throw createError({
       statusCode: 500,
-      statusMessage: "RSS feed failed to generate"
+      statusMessage: "Feed failed to generate"
     })
   }
 }

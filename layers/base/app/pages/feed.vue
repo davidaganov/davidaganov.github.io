@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useSiteI18nHead } from "@app/composables/useSiteI18nHead"
-import { useResumeData } from "@base/composables/useResumeData"
-import ResumePage from "@base/components/pages/resume/ResumePage.vue"
+import FeedPage from "@base/components/pages/feed/FeedPage.vue"
 
 const { t, locale } = useI18n()
 const { siteUrl, canonicalUrl } = useSiteI18nHead()
-const { content } = useResumeData()
 
 definePageMeta({
   layout: "standalone",
@@ -13,8 +11,8 @@ definePageMeta({
   layoutTransition: false
 })
 
-const seoTitle = computed(() => t("pages.resume.seoTitle"))
-const seoDescription = computed(() => t("pages.resume.seoDescription"))
+const seoTitle = computed(() => t("pages.feed.seoTitle"))
+const seoDescription = computed(() => t("pages.feed.seoDescription"))
 
 useSeoMeta({
   title: () => seoTitle.value,
@@ -22,31 +20,30 @@ useSeoMeta({
   ogTitle: () => seoTitle.value,
   ogDescription: () => seoDescription.value,
   ogUrl: () => canonicalUrl.value,
-  ogType: "profile",
+  ogType: "website",
   twitterTitle: () => seoTitle.value,
   twitterDescription: () => seoDescription.value,
   twitterCard: "summary_large_image",
   robots: "index, follow"
 })
 
-defineOgImage("ResumePage", {
+defineOgImage("FeedPage", {
   title: seoTitle.value,
-  description: seoDescription.value,
-  role: content.value.role
+  description: seoDescription.value
 })
 
 useSchemaOrg([
   defineWebPage({
-    "@type": "ProfilePage",
+    "@type": "CollectionPage",
     name: () => seoTitle.value,
     description: () => seoDescription.value,
     url: () => canonicalUrl.value,
     inLanguage: locale.value === "ru" ? "ru-RU" : "en-US",
-    mainEntity: { "@id": `${siteUrl.value}/#person` }
+    isPartOf: { "@id": `${siteUrl.value}/#website` }
   })
 ])
 </script>
 
 <template>
-  <ResumePage />
+  <FeedPage />
 </template>

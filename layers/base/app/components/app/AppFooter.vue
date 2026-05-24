@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useProjectsTop } from "@docs/composables/useProjectsTop"
-import { getRssFeedPublicPath } from "@app/utils/rss"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { GITHUB_REPO, SOCIAL_LINKS } from "@base/constants"
 import { DOCS_SECTIONS } from "@docs/constants"
@@ -32,10 +31,9 @@ const links = computed(() => [
   },
   {
     label: t("layout.footer.rss"),
-    title: t("layout.rss.copyAction"),
-    to: getRssFeedPublicPath(locale.value),
-    icon: "i-lucide-rss",
-    external: true
+    title: t("layout.rss.footerLink"),
+    to: ROUTE_PATH.FEED,
+    icon: "i-lucide-rss"
   }
 ])
 
@@ -71,7 +69,6 @@ const repositoryLinkTitle = computed(() => {
               :key="item.label"
             >
               <NuxtLink
-                v-if="!item.external"
                 class="group inline-flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
                 :to="localePath(item.to)"
                 :title="item.title"
@@ -84,21 +81,6 @@ const repositoryLinkTitle = computed(() => {
                 />
                 {{ item.label }}
               </NuxtLink>
-              <a
-                v-else
-                class="group inline-flex items-center gap-2.5 text-sm font-medium text-gray-700 transition-colors hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
-                target="_blank"
-                rel="noopener noreferrer"
-                :title="item.title"
-                :href="item.to"
-              >
-                <UIcon
-                  aria-hidden="true"
-                  class="size-3.5 opacity-55 transition-opacity group-hover:opacity-100"
-                  :name="item.icon"
-                />
-                {{ item.label }}
-              </a>
             </li>
           </ul>
         </div>

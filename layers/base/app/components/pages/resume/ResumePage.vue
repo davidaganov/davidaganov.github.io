@@ -8,7 +8,7 @@ const { content, experience } = useResumeData()
 </script>
 
 <template>
-  <article class="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
+  <article class="mx-auto w-full max-w-3xl px-4 pb-10 sm:px-6 sm:pb-14 lg:pb-16">
     <ResumePageHeader />
 
     <section class="mt-10 space-y-3">

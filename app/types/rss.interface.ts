@@ -15,6 +15,8 @@ export interface RssPostItem {
   link: string
   pubDate: string
   guid: string
+  publishedAt?: string
+  docPath?: string
   imageUrl?: string
   categories?: string[]
   creator?: string
@@ -25,6 +27,20 @@ export interface RssPostItem {
 export interface RssSiteLinks {
   feedUrl: string
   articlesIndexUrl: string
+}
+
+export interface RssFeedUrls {
+  page: string
+  rss: string
+}
+
+export interface RssFeedPageData {
+  channel: RssAssetChannel
+  items: RssPostItem[]
+  categories: string[]
+  feedUrls: RssFeedUrls
+  channelImageUrl: string
+  docsIndexUrl: string
 }
 
 export interface RssAssetChannel {

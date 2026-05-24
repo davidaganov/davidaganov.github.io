@@ -14,6 +14,10 @@ import {
 import { resolveRssEntryCategories } from "./rss-labels"
 import { absoluteUrl, DEFAULT_LOCALE, localizedPath, normalizeSiteUrl } from "./seo"
 
+interface ContentEntriesToRssItemsOptions {
+  translate?: (key: string) => string
+}
+
 const sqlitePath = `${process.cwd()}/.data/content/contents.sqlite`
 
 const parseJsonColumn = <T>(value: unknown): T | null => {
@@ -73,12 +77,15 @@ export const contentEntriesToRssItems = (
   locale: string,
   siteUrl: string,
   creator: string,
-  translate?: (key: string) => string
+  options?: ContentEntriesToRssItemsOptions
 ): RssPostItem[] => {
+  const translate = options?.translate
+
   return entries
     .filter((entry) => {
       const path = String(entry.path || "")
-      return isRssEligibleContentPath(path) && Boolean(entry.meta?.publishedAt)
+      if (!Boolean(entry.meta?.publishedAt)) return false
+      return isRssEligibleContentPath(path)
     })
     .sort((a, b) => {
       const dateA = new Date(a.meta?.publishedAt || 0).getTime()
@@ -113,12 +120,16 @@ export const contentEntriesToRssItems = (
             collection
           })
 
+      const publishedAt = String(entry.meta?.publishedAt || "")
+
       const item: RssPostItem = {
         title,
         description,
         link,
-        pubDate: toRfc822Date(String(entry.meta?.publishedAt), contentPath),
+        pubDate: toRfc822Date(publishedAt, contentPath),
         guid: link,
+        publishedAt,
+        docPath: localizedPublicPath,
         imageUrl,
         categories,
         creator,
