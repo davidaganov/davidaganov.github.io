@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useProjectStats } from "@api/composables/useProjectStats"
-import { formatDate } from "@base/utils/date"
 import AppRightSidebarCard from "@docs/components/app/rightsidebar/AppRightSidebarCard.vue"
 import UiBadge from "@ui/components/UiBadge.vue"
 
@@ -8,7 +7,6 @@ const props = defineProps<{
   page: unknown
 }>()
 
-const { locale } = useI18n()
 const pageRef = toRef(() => props.page)
 
 const { stats, loading, formatDownloads } = useProjectStats(pageRef)
@@ -77,25 +75,10 @@ const githubStars = computed(() => {
       />
       <UiBadge
         v-if="stats.npm?.downloads"
-        class="col-span-8"
+        :class="stats.npm?.version || stats.github?.version ? 'col-span-8' : 'col-span-12'"
         icon="i-lucide-download"
         :label="$t('pages.projects.metrics.downloads') + `:`"
         :value="formatDownloads(stats.npm.downloads)"
-        :loading="loading"
-      />
-      <UiBadge
-        v-if="stats.github?.lastCommit"
-        icon="i-lucide-clock"
-        :class="[
-          'flex-col!',
-          stats.npm?.downloads
-            ? 'col-span-12'
-            : stats.npm?.version || stats.github?.version
-              ? 'col-span-8'
-              : 'col-span-12'
-        ]"
-        :label="$t('pages.projects.metrics.lastCommit') + `:`"
-        :value="formatDate(stats.github.lastCommit, locale, 'short') || ''"
         :loading="loading"
       />
     </div>

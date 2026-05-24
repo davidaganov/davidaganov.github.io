@@ -197,8 +197,7 @@
       "empty": "No projects yet.",
       "metrics": {
         "star": "Star",
-        "downloads": "Downloads",
-        "lastCommit": "Last commit"
+        "downloads": "Downloads"
       }
     },
     "articles": {

@@ -11,8 +11,6 @@ const githubColors: Record<string, string> = {
   Python: "#3572A5",
   Rust: "#dea584",
   Go: "#00ADD8",
-  "C++": "#f34b7d",
-  C: "#555555",
   Shell: "#89e051",
   Ruby: "#701516",
   PHP: "#4F5D95",
@@ -29,6 +27,12 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
       npmPackage: String(p.meta?.npmPackage || ""),
       githubRepo: String(p.meta?.githubRepo || "")
     }
+  })
+
+  const statsKey = computed(() => {
+    const { npmPackage, githubRepo } = meta.value
+    if (!npmPackage && !githubRepo) return "project-stats:idle"
+    return `project-stats:${npmPackage}:${githubRepo}`
   })
 
   const formatDownloads = (num: number): string => {
@@ -77,7 +81,6 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
 
       return {
         stars: repoData.stargazers_count || 0,
-        lastCommit: repoData.pushed_at || "",
         version: releaseData?.tag_name ? releaseData.tag_name.replace(/^v/, "") : undefined,
         languages
       }
@@ -88,19 +91,19 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
 
   const {
     data: stats,
-    pending: loading,
+    status,
     error
-  } = useAsyncData<ProjectStats>(
-    `project-stats-${meta.value.npmPackage}-${meta.value.githubRepo}`,
+  } = useAsyncData(
+    () => statsKey.value,
     async (): Promise<ProjectStats> => {
+      const { npmPackage, githubRepo } = meta.value
+      if (!npmPackage && !githubRepo) return {}
+
       const result: ProjectStats = {}
-      if (!meta.value.npmPackage && !meta.value.githubRepo) return result
 
       const [npm, github] = await Promise.all([
-        meta.value.npmPackage ? fetchNpmStats(meta.value.npmPackage) : null,
-        meta.value.githubRepo
-          ? fetchGithubStats(meta.value.githubRepo, Boolean(meta.value.npmPackage))
-          : null
+        npmPackage ? fetchNpmStats(npmPackage) : null,
+        githubRepo ? fetchGithubStats(githubRepo, Boolean(npmPackage)) : null
       ])
 
       if (npm) result.npm = npm
@@ -109,14 +112,16 @@ export const useProjectStats = (page: Ref<unknown | Collections[keyof Collection
       return result
     },
     {
-      watch: [meta],
+      server: false,
+      lazy: false,
+      watch: [statsKey],
       default: (): ProjectStats => ({})
     }
   )
 
   return {
     stats,
-    loading,
+    loading: computed(() => status.value === "pending"),
     error,
     formatDownloads
   }

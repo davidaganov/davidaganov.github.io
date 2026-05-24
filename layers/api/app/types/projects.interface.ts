@@ -5,7 +5,6 @@ export interface ProjectStats {
   }
   github?: {
     stars: number
-    lastCommit: string
     version?: string
     languages: Array<{ name: string; percentage: number; color: string }>
   }

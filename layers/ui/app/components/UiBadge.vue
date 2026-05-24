@@ -23,7 +23,7 @@ const isExternal = computed(() => props.external || (props.href?.startsWith("htt
   <component
     :is="props.href ? 'a' : 'div'"
     v-if="!props.loading"
-    class="items-center gap-1.5 rounded-md border border-black/5 bg-black/3 px-2 py-1 text-xs transition-colors dark:border-white/10 dark:bg-white/5"
+    class="items-center gap-1.5 rounded-md border border-black/5 bg-black/3 px-1.5 py-1 text-[11px] transition-colors dark:border-white/10 dark:bg-white/5"
     :class="[
       props.block ? 'flex w-full justify-between' : 'inline-flex',
       props.href
