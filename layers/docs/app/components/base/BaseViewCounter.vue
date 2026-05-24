@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useContentViews } from "@docs/composables/content/useContentViews"
+import { normalizePublicDocsPath } from "@docs/utils/path/publicPath"
 
 const route = useRoute()
 
-const viewSlug = computed(() => route.path)
+const viewSlug = computed(() => normalizePublicDocsPath(route.path))
 
 const { views, loading } = useContentViews(viewSlug)
 </script>

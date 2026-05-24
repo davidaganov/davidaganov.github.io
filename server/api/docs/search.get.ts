@@ -1,8 +1,7 @@
 import type { H3Event } from "h3"
 import { getLocaleCodes } from "@app/config/locales"
-import { mapSearchResults } from "@docs/utils/mapSearchResults"
+import { filterSearchIndexResults } from "@docs/utils/mapSearchResults"
 import type { SearchIndexFile } from "@docs/types"
-import { createServerTranslator } from "../../utils/locale-messages"
 
 export default defineEventHandler(async (event: H3Event) => {
   const query = getQuery(event)
@@ -26,6 +25,5 @@ export default defineEventHandler(async (event: H3Event) => {
   setResponseHeader(event, "Cache-Control", "public, max-age=300, s-maxage=300")
 
   const index = data as SearchIndexFile
-  const t = createServerTranslator(locale)
-  return mapSearchResults(index.pages, q, t)
+  return filterSearchIndexResults(index.pages, q)
 })

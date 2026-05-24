@@ -6,10 +6,12 @@ import {
   type ContentMapping,
   type DocsSearchResult,
   type SearchablePage,
+  type SearchIndexEntry,
+  type SearchIndexResultMeta,
   TYPE_PAGE
 } from "@docs/types"
 
-const matchesQuery = (page: SearchablePage, query: string): boolean => {
+export const matchesSearchQuery = (page: SearchablePage, query: string): boolean => {
   const q = query.toLowerCase()
   return (
     String(page.title || "")
@@ -68,52 +70,65 @@ const iconFromPage = (
   return "i-lucide-file-text"
 }
 
-export const mapSearchResults = (
-  pages: SearchablePage[],
-  query: string,
+export const resolveSearchResultMeta = (
+  page: SearchablePage,
   t: (key: string) => string
+): SearchIndexResultMeta | null => {
+  const mapping = findContentMapping(page.path)
+  const site = findSiteSearchPage(page.path)
+  if (!mapping && !site) return null
+
+  const title = String(page.title || "")
+
+  if (site) {
+    return {
+      title,
+      path: site.path,
+      category: TYPE_PAGE.SITE,
+      breadcrumb: [t("layout.navigation.sections.site"), title],
+      icon: iconFromPage(page, null, TYPE_PAGE.SITE)
+    }
+  }
+
+  if (!mapping) return null
+
+  const category = categoryFromMapping(mapping)
+  return {
+    title,
+    path: buildUrlFromMapping(mapping),
+    category,
+    breadcrumb: breadcrumbFromMapping(mapping, title, t),
+    icon: iconFromPage(page, mapping, category)
+  }
+}
+
+const snippetForPage = (page: SearchablePage, query: string): string | undefined => {
+  const fromBody = snippetAroundQuery(page.body, query)
+  if (fromBody) return fromBody
+
+  const q = query.toLowerCase()
+  if (page.description && page.description.toLowerCase().includes(q)) {
+    return page.description
+  }
+
+  return undefined
+}
+
+export const filterSearchIndexResults = (
+  entries: SearchIndexEntry[],
+  query: string
 ): DocsSearchResult[] => {
   const q = query.trim()
   if (!q) return []
 
-  const siteSectionLabel = t("layout.navigation.sections.site")
   const results: DocsSearchResult[] = []
 
-  for (const page of pages) {
-    if (!matchesQuery(page, q)) continue
+  for (const entry of entries) {
+    if (!matchesSearchQuery(entry, q)) continue
 
-    const mapping = findContentMapping(page.path)
-    const site = findSiteSearchPage(page.path)
-    if (!mapping && !site) continue
-
-    const title = String(page.title || "")
-
-    if (site) {
-      results.push({
-        title,
-        path: site.path,
-        category: TYPE_PAGE.SITE,
-        breadcrumb: [siteSectionLabel, title],
-        snippet:
-          snippetAroundQuery(page.body, q) ||
-          (page.description && page.description.toLowerCase().includes(q.toLowerCase())
-            ? page.description
-            : undefined),
-        icon: iconFromPage(page, null, TYPE_PAGE.SITE)
-      })
-      continue
-    }
-
-    if (!mapping) continue
-
-    const category = categoryFromMapping(mapping)
     results.push({
-      title,
-      path: buildUrlFromMapping(mapping),
-      category,
-      breadcrumb: breadcrumbFromMapping(mapping, title, t),
-      snippet: snippetAroundQuery(page.body, q),
-      icon: iconFromPage(page, mapping, category)
+      ...entry.result,
+      snippet: snippetForPage(entry, q)
     })
   }
 

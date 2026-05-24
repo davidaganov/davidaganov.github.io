@@ -9,7 +9,7 @@ import { createTranslator } from "../app/utils/i18n-messages"
 import { isRssEligibleContentPath } from "../app/utils/rss"
 import { resolveRssEntryCategories } from "../app/utils/rss-labels"
 import { loadRssContentEntriesFromSqlite } from "../app/utils/rss.server"
-import { buildSearchIndexPages } from "../app/utils/search-index.server"
+import { buildSearchIndexEntries } from "../app/utils/search-index.server"
 import { GRAPH_EXCLUDED_CATEGORIES } from "../layers/docs/app/constants/graph.constant"
 import type {
   DocsGraphFile,
@@ -404,7 +404,7 @@ const main = async (): Promise<void> => {
       console.info(`build-docs-assets: wrote ${rssPath} (${rssEntries.length} RSS entries)`)
     }
 
-    const searchPages = buildSearchIndexPages(locale)
+    const searchPages = buildSearchIndexEntries(locale)
     const searchStable = { locale, pages: searchPages }
     const searchFile = {
       ...searchStable,

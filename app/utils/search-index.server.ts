@@ -4,7 +4,8 @@ import { join } from "node:path"
 import { SITE_SEARCH_PAGES } from "@app/config/site-search-pages"
 import { createTranslator } from "@app/utils/i18n-messages"
 import { extractResumeSearchText } from "@app/utils/resume-search-text"
-import type { SearchablePage } from "@docs/types"
+import { resolveSearchResultMeta } from "@docs/utils/mapSearchResults"
+import type { SearchablePage, SearchIndexEntry } from "@docs/types"
 import rawResume from "@base/data/resume.json"
 
 const sqlitePath = join(process.cwd(), ".data/content/contents.sqlite")
@@ -75,10 +76,23 @@ export const buildSiteSearchPages = (locale: string): SearchablePage[] => {
   })
 }
 
-export const buildSearchIndexPages = (locale: string): SearchablePage[] => {
+const buildSearchIndexPages = (locale: string): SearchablePage[] => {
   const contentPages = loadContentSearchPagesFromSqlite(locale)
   const sitePages = buildSiteSearchPages(locale)
   const sitePaths = new Set(sitePages.map((page) => page.path))
 
   return [...sitePages, ...contentPages.filter((page) => !sitePaths.has(page.path))]
+}
+
+export const buildSearchIndexEntries = (locale: string): SearchIndexEntry[] => {
+  const t = createTranslator(locale)
+  const entries: SearchIndexEntry[] = []
+
+  for (const page of buildSearchIndexPages(locale)) {
+    const result = resolveSearchResultMeta(page, t)
+    if (!result) continue
+    entries.push({ ...page, result })
+  }
+
+  return entries
 }

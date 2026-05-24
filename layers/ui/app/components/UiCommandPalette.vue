@@ -17,6 +17,7 @@ const { flatResults, grouped, isLoading } = useDocsSearch(query)
 
 const LISTBOX_ID = "cmd-results-listbox"
 const RESULTS_REGION_ID = "cmd-results-panel"
+const RESULTS_MIN_HEIGHT = "min(26rem, calc(100dvh - 12rem))"
 
 const categoryLabels: Record<TYPE_PAGE, string> = {
   [TYPE_PAGE.SITE]: t("layout.navigation.sections.site"),
@@ -208,131 +209,137 @@ watch(query, () => {
             <BaseScrollbar
               ref="listRef"
               width="100%"
-              height="min(26rem, calc(100dvh - 12rem))"
+              class="cmd-palette-scroll"
+              :height="RESULTS_MIN_HEIGHT"
               :offset-x="4"
             >
               <div
-                v-if="!query.trim()"
-                class="flex h-full min-h-48 flex-col items-center justify-center gap-3 p-6 text-center text-gray-600 dark:text-gray-400"
+                class="cmd-palette-scroll-body"
+                :style="{ minHeight: RESULTS_MIN_HEIGHT }"
               >
-                <UIcon
-                  name="i-lucide-command"
-                  aria-hidden="true"
-                  class="size-8 text-gray-500"
-                />
-                <p class="text-sm">
-                  {{ $t("components.cmd.empty") }}
-                </p>
-                <UButton
-                  color="neutral"
-                  variant="subtle"
-                  size="sm"
-                  class="mt-1"
-                  icon="i-lucide-git-fork"
-                  :label="$t('docs.graph.openFromPalette')"
-                  @click="openDocsGraph"
-                />
-              </div>
-
-              <div
-                v-else-if="isLoading"
-                class="flex min-h-48 flex-col items-center justify-center gap-3 p-6 text-gray-600 dark:text-gray-400"
-                role="status"
-                aria-live="polite"
-              >
-                <UIcon
-                  name="i-lucide-loader-circle"
-                  aria-hidden="true"
-                  class="text-primary-500 size-8 animate-spin"
-                />
-                <p class="text-sm">{{ $t("global.status.loading") }}</p>
-              </div>
-
-              <div
-                v-else-if="flatResults.length === 0"
-                role="status"
-                aria-live="polite"
-                class="flex min-h-48 flex-col items-center justify-center gap-3 p-6 text-gray-600 dark:text-gray-400"
-              >
-                <UIcon
-                  name="i-lucide-search-x"
-                  aria-hidden="true"
-                  class="size-8"
-                />
-                <p class="text-sm">
-                  {{ $t("components.cmd.noResults") }}
-                </p>
-              </div>
-
-              <div
-                v-else
-                class="py-2"
-                role="listbox"
-                :aria-label="$t('components.cmd.resultsLabel')"
-                :aria-busy="false"
-                :id="LISTBOX_ID"
-              >
-                <template
-                  v-for="cat in visibleGroups"
-                  :key="cat"
+                <div
+                  v-if="!query.trim()"
+                  class="flex min-h-[min(26rem,calc(100dvh-12rem))] flex-col items-center justify-center gap-3 p-6 text-center text-gray-600 dark:text-gray-400"
                 >
-                  <h3
-                    class="px-4 pt-3 pb-2 text-xs font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400"
-                  >
-                    {{ categoryLabels[cat] }}
-                  </h3>
+                  <UIcon
+                    name="i-lucide-command"
+                    aria-hidden="true"
+                    class="size-8 text-gray-500"
+                  />
+                  <p class="text-sm">
+                    {{ $t("components.cmd.empty") }}
+                  </p>
+                  <UButton
+                    color="neutral"
+                    variant="subtle"
+                    size="sm"
+                    class="mt-1"
+                    icon="i-lucide-git-fork"
+                    :label="$t('docs.graph.openFromPalette')"
+                    @click="openDocsGraph"
+                  />
+                </div>
 
-                  <button
-                    v-for="result in grouped[cat]"
-                    type="button"
-                    role="option"
-                    class="flex min-h-14 w-full items-start gap-3 px-4 py-2.5 text-left transition-colors outline-none focus-visible:z-10 focus-visible:bg-black/6 dark:focus-visible:bg-white/10"
-                    :class="
-                      globalIndexOf(result) === selectedIndex
-                        ? 'bg-black/8 text-gray-950 dark:bg-white/8 dark:text-white'
-                        : 'text-gray-700 hover:bg-black/5 dark:text-gray-200 dark:hover:bg-white/8'
-                    "
-                    :aria-selected="globalIndexOf(result) === selectedIndex ? 'true' : 'false'"
-                    :data-active="globalIndexOf(result) === selectedIndex"
-                    :key="result.path"
-                    :id="`cmd-opt-${globalIndexOf(result)}`"
-                    @click="selectResult(result)"
-                    @mouseenter="selectedIndex = globalIndexOf(result)"
+                <div
+                  v-else-if="isLoading"
+                  class="flex min-h-[min(26rem,calc(100dvh-12rem))] flex-col items-center justify-center gap-3 p-6 text-gray-600 dark:text-gray-400"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <UIcon
+                    name="i-lucide-loader-circle"
+                    aria-hidden="true"
+                    class="text-primary-500 size-8 animate-spin"
+                  />
+                  <p class="text-sm">{{ $t("global.status.loading") }}</p>
+                </div>
+
+                <div
+                  v-else-if="flatResults.length === 0"
+                  role="status"
+                  aria-live="polite"
+                  class="flex min-h-[min(26rem,calc(100dvh-12rem))] flex-col items-center justify-center gap-3 p-6 text-gray-600 dark:text-gray-400"
+                >
+                  <UIcon
+                    name="i-lucide-search-x"
+                    aria-hidden="true"
+                    class="size-8"
+                  />
+                  <p class="text-sm">
+                    {{ $t("components.cmd.noResults") }}
+                  </p>
+                </div>
+
+                <div
+                  v-else
+                  class="py-2"
+                  role="listbox"
+                  :aria-label="$t('components.cmd.resultsLabel')"
+                  :aria-busy="false"
+                  :id="LISTBOX_ID"
+                >
+                  <template
+                    v-for="cat in visibleGroups"
+                    :key="cat"
                   >
-                    <UIcon
-                      aria-hidden="true"
-                      class="mt-0.5 size-4 shrink-0 text-gray-500 dark:text-gray-400"
-                      :name="result.icon"
-                    />
-                    <span class="min-w-0 flex-1 space-y-0.5">
-                      <span
-                        class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400"
-                      >
-                        <template
-                          v-for="(crumb, i) in result.breadcrumb.slice(0, -1)"
-                          :key="`${result.path}-${i}`"
+                    <h3
+                      class="px-4 pt-3 pb-2 text-xs font-semibold tracking-wider text-gray-600 uppercase dark:text-gray-400"
+                    >
+                      {{ categoryLabels[cat] }}
+                    </h3>
+
+                    <button
+                      v-for="result in grouped[cat]"
+                      type="button"
+                      role="option"
+                      class="flex min-h-14 w-full items-start gap-3 px-4 py-2.5 text-left transition-colors outline-none focus-visible:z-10 focus-visible:bg-black/6 dark:focus-visible:bg-white/10"
+                      :class="
+                        globalIndexOf(result) === selectedIndex
+                          ? 'bg-black/8 text-gray-950 dark:bg-white/8 dark:text-white'
+                          : 'text-gray-700 hover:bg-black/5 dark:text-gray-200 dark:hover:bg-white/8'
+                      "
+                      :aria-selected="globalIndexOf(result) === selectedIndex ? 'true' : 'false'"
+                      :data-active="globalIndexOf(result) === selectedIndex"
+                      :key="result.path"
+                      :id="`cmd-opt-${globalIndexOf(result)}`"
+                      @click="selectResult(result)"
+                      @mouseenter="selectedIndex = globalIndexOf(result)"
+                    >
+                      <UIcon
+                        aria-hidden="true"
+                        class="mt-0.5 size-4 shrink-0 text-gray-500 dark:text-gray-400"
+                        :name="result.icon"
+                      />
+                      <span class="min-w-0 flex-1 space-y-0.5">
+                        <span
+                          class="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400"
                         >
-                          <span>{{ crumb }}</span>
-                          <UIcon
-                            v-if="i < result.breadcrumb.slice(0, -1).length - 1"
-                            name="i-lucide-chevron-right"
-                            aria-hidden="true"
-                            class="size-3 shrink-0"
-                          />
-                        </template>
+                          <template
+                            v-for="(crumb, i) in result.breadcrumb.slice(0, -1)"
+                            :key="`${result.path}-${i}`"
+                          >
+                            <span>{{ crumb }}</span>
+                            <UIcon
+                              v-if="i < result.breadcrumb.slice(0, -1).length - 1"
+                              name="i-lucide-chevron-right"
+                              aria-hidden="true"
+                              class="size-3 shrink-0"
+                            />
+                          </template>
+                        </span>
+                        <span
+                          v-html="highlightQuery(result.title)"
+                          class="truncate text-sm leading-snug font-semibold text-gray-900 dark:text-gray-50"
+                        />
+                        <span
+                          v-if="result.snippet"
+                          v-html="highlightQuery(result.snippet)"
+                          class="line-clamp-2 text-xs leading-snug text-gray-600 dark:text-gray-400"
+                        />
                       </span>
-                      <span
-                        v-html="highlightQuery(result.title)"
-                        class="truncate text-sm leading-snug font-semibold text-gray-900 dark:text-gray-50"
-                      />
-                      <span
-                        v-if="result.snippet"
-                        v-html="highlightQuery(result.snippet)"
-                        class="line-clamp-2 text-xs leading-snug text-gray-600 dark:text-gray-400"
-                      />
-                    </span>
-                  </button>
-                </template>
+                    </button>
+                  </template>
+                </div>
               </div>
             </BaseScrollbar>
           </div>
@@ -370,3 +377,17 @@ watch(query, () => {
     </UModal>
   </ClientOnly>
 </template>
+
+<style scoped>
+.cmd-palette-scroll :deep(.simplebar-content) {
+  min-height: min(26rem, calc(100dvh - 12rem));
+  display: flex;
+  flex-direction: column;
+}
+
+.cmd-palette-scroll-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+</style>

@@ -64,6 +64,7 @@
       "layout.navigation.sections.stack": "Стек",
       "layout.navigation.sections.services": "Слой запросов",
       "layout.navigation.sections.docs": "Документация",
+      "layout.navigation.sections.site": "Сайт",
       "layout.navigation.social.github": "GitHub",
       "layout.navigation.social.npm": "NPM",
       "layout.navigation.social.habr": "Habr",

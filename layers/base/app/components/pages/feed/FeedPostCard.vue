@@ -9,9 +9,18 @@ const props = defineProps<{
 const localePath = useLocalePath()
 const { locale } = useI18n()
 
+const imageFailed = ref(false)
+
 const dateLocale = computed(() => (locale.value === "ru" ? "ru-RU" : "en-US"))
 const formattedDate = computed(() => formatDate(props.item.publishedAt, dateLocale.value, "short"))
 const to = computed(() => props.item.docPath || props.item.link)
+
+watch(
+  () => props.item.imageUrl,
+  () => {
+    imageFailed.value = false
+  }
+)
 </script>
 
 <template>
@@ -24,14 +33,23 @@ const to = computed(() => props.item.docPath || props.item.link)
     >
       <div
         v-if="props.item.imageUrl"
-        class="relative aspect-video w-full shrink-0 overflow-hidden rounded-lg border border-black/8 bg-black/5 sm:aspect-4/3 sm:w-36 dark:border-white/8 dark:bg-black/30"
+        class="relative flex aspect-video w-full shrink-0 items-center justify-center overflow-hidden rounded-lg border border-black/8 bg-black/5 sm:aspect-4/3 sm:w-36 dark:border-white/8 dark:bg-black/30"
+        :class="imageFailed ? 'text-gray-400 dark:text-gray-500' : ''"
       >
         <img
+          v-show="!imageFailed"
           loading="lazy"
           decoding="async"
-          class="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          class="absolute inset-0 size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           :src="props.item.imageUrl"
           :alt="props.item.title"
+          @error="imageFailed = true"
+        />
+        <UIcon
+          v-if="imageFailed"
+          name="i-lucide-image-off"
+          aria-hidden="true"
+          class="size-8 opacity-70"
         />
       </div>
 
