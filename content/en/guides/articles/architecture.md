@@ -3,7 +3,6 @@ title: Project architecture
 description: How I organize folder structure, components, stores, routing, validation — and why.
 icon: i-lucide-layers
 publishedAt: 2026-05-10
-readingTime: 10 min
 languageOriginal: "ru"
 tags:
   - Frontend

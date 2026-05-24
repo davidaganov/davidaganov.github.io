@@ -21,15 +21,12 @@ const meta = computed(() => {
   return {
     habrUrl: String(m.habrUrl || ""),
     publishedAt: String(m.publishedAt || ""),
-    readingTime: String(m.readingTime || ""),
     tags: Array.isArray(m.tags) ? (m.tags as string[]) : []
   }
 })
 
 const hasArticleMeta = computed(() =>
-  Boolean(
-    meta.value.habrUrl || meta.value.publishedAt || meta.value.readingTime || meta.value.tags.length
-  )
+  Boolean(meta.value.habrUrl || meta.value.publishedAt || meta.value.tags.length)
 )
 
 const indexPath = computed(() => {
@@ -72,14 +69,6 @@ const tagLink = (tag: string) => {
         :label="$t('pages.articles.meta.published')"
         :value="formatDate(meta.publishedAt, locale, 'numeric') || ''"
       />
-
-      <UiBadge
-        v-if="meta.readingTime"
-        icon="i-lucide-clock"
-        class="w-full"
-        :label="$t('pages.articles.meta.readingTime')"
-        :value="meta.readingTime"
-      />
     </div>
 
     <hr class="my-2 border-black/15 dark:border-white/10" />
@@ -98,7 +87,6 @@ const tagLink = (tag: string) => {
         </div>
       </div>
 
-      <!-- Replace to UButton -->
       <UButton
         v-if="meta.habrUrl"
         target="_blank"

@@ -122,7 +122,6 @@ export const contentEntriesToRssItems = (
         imageUrl,
         categories,
         creator,
-        readingTime: nonEmptyString(entry.meta?.readingTime),
         tags: tagLabels.length ? tagLabels : undefined
       }
 

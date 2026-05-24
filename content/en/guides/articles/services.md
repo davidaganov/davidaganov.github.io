@@ -3,7 +3,6 @@ title: Clean API Client
 description: Request-layer architecture that eliminates code duplication in components.
 icon: i-lucide-book-open
 publishedAt: 2026-02-20
-readingTime: 5 min
 languageOriginal: "ru"
 tags:
   - Frontend

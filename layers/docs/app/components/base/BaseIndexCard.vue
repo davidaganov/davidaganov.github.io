@@ -53,7 +53,6 @@ const tagClass = (tag: string) => {
       <div
         v-if="
           article.meta?.publishedAt ||
-          article.meta?.readingTime ||
           article.meta?.habrUrl ||
           article.meta?.hasArchive ||
           tags.length
@@ -69,17 +68,6 @@ const tagClass = (tag: string) => {
             name="i-lucide-calendar"
           />
           <span>{{ formatDate(article.meta?.publishedAt ?? "") }}</span>
-        </div>
-
-        <div
-          v-if="article.meta?.readingTime"
-          class="text-muted flex items-center gap-1.5 text-xs"
-        >
-          <UIcon
-            class="size-3.5"
-            name="i-lucide-clock"
-          />
-          <span>{{ article.meta.readingTime }}</span>
         </div>
 
         <div

@@ -4,7 +4,6 @@ description: An article about how I use AI in my work and why I don't consider i
 icon: i-lucide-file-text
 habrUrl: https://habr.com/ru/articles/982452/
 publishedAt: 2026-01-02
-readingTime: 6 min
 languageOriginal: "ru"
 tags:
   - Artificial Intelligence

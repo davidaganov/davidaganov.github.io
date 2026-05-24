@@ -134,16 +134,6 @@ const escapeHtml = (value: string): string => {
     .replace(/"/g, "&quot;")
 }
 
-export const buildRssItemPlainDescription = (item: RssPostItem): string => {
-  const parts = [item.description.trim()]
-
-  if (item.readingTime) {
-    parts.push(`(${item.readingTime})`)
-  }
-
-  return parts.filter(Boolean).join(" ")
-}
-
 export const buildRssItemContentHtml = (item: RssPostItem): string => {
   const parts: string[] = []
 
@@ -152,10 +142,6 @@ export const buildRssItemContentHtml = (item: RssPostItem): string => {
   }
 
   parts.push(`<p>${escapeHtml(item.description)}</p>`)
-
-  if (item.readingTime) {
-    parts.push(`<p><em>${escapeHtml(item.readingTime)}</em></p>`)
-  }
 
   parts.push(`<p><a href="${escapeHtml(item.link)}">${escapeHtml(item.title)}</a></p>`)
 
@@ -192,23 +178,22 @@ export const toRfc822Date = (value: string, stableSeed?: string): string => {
 }
 
 const buildRssItemXml = (item: RssPostItem): string => {
-  const plainDescription = buildRssItemPlainDescription(item)
+  const plainDescription = String(item.description || "").trim()
   const contentHtml = item.contentHtml || buildRssItemContentHtml(item)
   const mediaBlock = item.imageUrl
-    ? `      <media:content url="${escapeXml(item.imageUrl)}" medium="image" type="image/png" />
-      <media:thumbnail url="${escapeXml(item.imageUrl)}" />`
+    ? `      <media:content url="${escapeXml(item.imageUrl.trim())}" medium="image" type="image/png" />`
     : ""
   const categoryBlocks = (item.categories ?? [])
-    .map((category) => `      <category>${escapeXml(category)}</category>`)
+    .map((category) => `      <category>${escapeXml(category.trim())}</category>`)
     .join("\n")
   const creatorBlock = item.creator
-    ? `      <dc:creator><![CDATA[${item.creator}]]></dc:creator>`
+    ? `      <dc:creator>${escapeXml(item.creator.trim())}</dc:creator>`
     : ""
 
   return `    <item>
-      <title>${escapeXml(item.title)}</title>
-      <link>${escapeXml(item.link)}</link>
-      <guid isPermaLink="true">${escapeXml(item.guid)}</guid>
+      <title>${escapeXml(item.title.trim())}</title>
+      <link>${escapeXml(item.link.trim())}</link>
+      <guid isPermaLink="true">${escapeXml(item.guid.trim())}</guid>
       <pubDate>${item.pubDate}</pubDate>
       <description><![CDATA[${plainDescription}]]></description>
 ${mediaBlock}

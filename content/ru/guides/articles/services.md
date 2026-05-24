@@ -3,7 +3,6 @@ title: Чистый API-клиент
 description: Архитектура request-слоя, которая избавит компоненты от дублирования кода.
 icon: i-lucide-book-open
 publishedAt: 2026-02-20
-readingTime: 5 мин
 languageOriginal: "ru"
 tags:
   - Frontend

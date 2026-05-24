@@ -18,7 +18,6 @@ export interface RssPostItem {
   imageUrl?: string
   categories?: string[]
   creator?: string
-  readingTime?: string
   tags?: string[]
   contentHtml?: string
 }

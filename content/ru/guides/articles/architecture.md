@@ -3,7 +3,6 @@ title: Архитектура проекта
 description: Как я организую структуру папок, компоненты, стор, роутинг, валидацию — и почему именно так.
 icon: i-lucide-layers
 publishedAt: 2026-05-10
-readingTime: 10 мин
 languageOriginal: "ru"
 tags:
   - Frontend

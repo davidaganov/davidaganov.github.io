@@ -4,7 +4,6 @@ description: Using Layers in Nuxt 3 for project structuring and site separation
 icon: i-lucide-file-text
 habrUrl: https://habr.com/ru/articles/830968/
 publishedAt: 2025-07-24
-readingTime: 3 min
 languageOriginal: "ru"
 tags:
   - Nuxt
