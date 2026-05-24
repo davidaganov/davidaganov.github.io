@@ -176,7 +176,6 @@
       "updatesNote": "The feed updates when new documentation is published."
     },
     "home": {
-      "badge": "Available for hire",
       "description": "Frontend Developer — {frontendYears} years of commercial experience.",
       "getStarted": "Get started",
       "disableAnimation": "Disable animation",
