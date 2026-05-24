@@ -180,12 +180,6 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: "vercel",
-    serverAssets: [
-      {
-        baseName: "server",
-        dir: "./server/assets"
-      }
-    ],
     externals: {
       traceInclude: ["./i18n/locales/*.json", "./server/assets/*.json"]
     },
