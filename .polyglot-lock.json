@@ -142,7 +142,6 @@
       "pages.projects.empty": "Пока нет проектов.",
       "pages.projects.metrics.star": "Поставить звезду",
       "pages.projects.metrics.downloads": "Скачиваний",
-      "pages.projects.metrics.lastCommit": "Последний коммит",
       "pages.articles.empty": "Пока нет статей.",
       "pages.articles.indexNote": "Публикации на сайте дополнены практическими материалами: примерами, исходниками и архивами. Это расширенные версии по сравнению с исходными постами.",
       "pages.articles.myHabr": "Мои статьи на Habr",

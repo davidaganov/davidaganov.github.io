@@ -1,6 +1,8 @@
 export const DEFAULT_LOCALE = process.env.NUXT_DEFAULT_LOCALE || "ru"
 
 const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || "https://aganov.dev"
+const TRAILING_SLASH_SKIP_PREFIXES = ["/api", "/_og/", "/__og-image__/"] as const
+const PATH_WITH_FILE_EXTENSION_RE = /\.\w{1,16}$/
 
 export const normalizeSiteUrl = (value: unknown = SITE_URL): string => {
   const str = String(value || "").trim()
@@ -8,9 +10,25 @@ export const normalizeSiteUrl = (value: unknown = SITE_URL): string => {
   return str.endsWith("/") ? str.slice(0, -1) : str
 }
 
+export const stripTrailingSlashFromPath = (path: string): string => {
+  if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1)
+  return path
+}
+
+export const shouldRedirectTrailingSlash = (pathname: string): boolean => {
+  if (pathname === "/" || !pathname.endsWith("/")) return false
+  if (TRAILING_SLASH_SKIP_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+    return false
+  }
+
+  const withoutSlash = pathname.slice(0, -1)
+  return !PATH_WITH_FILE_EXTENSION_RE.test(withoutSlash)
+}
+
 export const normalizeUrlPath = (path: string): string => {
   const normalized = (path || "/").replace(/\/{2,}/g, "/")
-  return normalized.startsWith("/") ? normalized : `/${normalized}`
+  const withLeadingSlash = normalized.startsWith("/") ? normalized : `/${normalized}`
+  return stripTrailingSlashFromPath(withLeadingSlash)
 }
 
 export const localePathPrefix = (locale: string, defaultLocale = DEFAULT_LOCALE): string => {
