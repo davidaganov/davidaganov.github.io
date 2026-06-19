@@ -23,6 +23,7 @@ tags:
 - **Vue PWA** — [`vue-pwa-template`](https://github.com/davidaganov/vue-pwa-template)
 - **Vue Modern** — [`vue-modern-template`](https://github.com/davidaganov/vue-modern-template)
 - **Vue Lynx** — [`vue-lynx-template`](https://github.com/davidaganov/vue-lynx-template)
+- **Nuxt Modern** — [`nuxt-modern-template`](https://github.com/davidaganov/nuxt-modern-template)
 - **Astro Clean** — [`astro-clean-template`](https://github.com/davidaganov/astro-clean-template)
 
 More detail on each in [Templates](/docs/guides/templates).
