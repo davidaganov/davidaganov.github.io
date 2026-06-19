@@ -10,6 +10,8 @@ interface LocalizedLink {
   isCta: boolean
 }
 
+export type { LocalizedLink }
+
 const props = defineProps<{
   link: LocalizedLink
 }>()

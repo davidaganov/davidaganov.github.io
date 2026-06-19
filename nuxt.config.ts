@@ -98,12 +98,7 @@ export default defineNuxtConfig({
     defaultLocale: getNuxtDefaultLocale(),
     langDir: "locales",
     strategy: "prefix_and_default",
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: "i18n_redirected",
-      redirectOn: "root",
-      fallbackLocale: getNuxtDefaultLocale()
-    }
+    detectBrowserLanguage: false
   },
 
   devtools: {

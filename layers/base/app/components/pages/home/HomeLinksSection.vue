@@ -3,9 +3,13 @@ import { useMediaQuery } from "@vueuse/core"
 import { useLinksGistClient } from "@api/composables/useLinksGistClient"
 import { useDocsSectionEntry } from "@docs/composables/docs/useDocsSectionEntry"
 import HomeLinkCard from "@base/components/pages/home/HomeLinkCard.vue"
+import type { LocalizedLink } from "@base/components/pages/home/HomeLinkCard.vue"
+import HomeLinkCardSkeleton from "@base/components/pages/home/HomeLinkCardSkeleton.vue"
 import HomeLinksEmpty from "@base/components/pages/home/HomeLinksEmpty.vue"
 import type { Link } from "@api/types"
 import { VIEW_MODE } from "@base/types"
+
+const REMOTE_LINKS_COUNT = 5
 
 const { t, locale } = useI18n()
 const { localizedPath: aboutEntryPath } = useDocsSectionEntry("about")
@@ -13,7 +17,7 @@ const { localizedPath: aboutEntryPath } = useDocsSectionEntry("about")
 const mode = ref<VIEW_MODE>(VIEW_MODE.PROFESSIONAL)
 const isMobile = useMediaQuery("(max-width: 767px)", { ssrWidth: 768 })
 
-const { links, error } = useLinksGistClient()
+const { links, error, pending } = useLinksGistClient()
 
 const viewModeItems = computed(() => [
   {
@@ -32,31 +36,41 @@ const activeLinks = computed(() =>
   mode.value === VIEW_MODE.PROFESSIONAL ? links.value.professional : links.value.personal
 )
 
-const localizedLinks = computed(() => {
-  const transformedLinks = activeLinks.value.map((link: Link) => ({
-    ...link,
-    localizedName: getLocalizedText(link.name),
-    localizedDescription: getLocalizedText(link.description),
-    isCta: false
-  }))
-
-  return [
-    ...transformedLinks,
-    {
-      url: aboutEntryPath.value,
-      localizedName: t("layout.navigation.sections.docs"),
-      localizedDescription: t("pages.home.ctaDesc"),
-      icon: "i-lucide-book-open",
-      isCta: true,
-      customStyle: { color: "#b87eef" }
-    }
-  ]
-})
-
 const getLocalizedText = (value?: { ru: string; en: string }): string | undefined => {
   if (!value) return undefined
   return value[locale.value as keyof typeof value] || value.en
 }
+
+const toLocalizedLink = (link: Link): LocalizedLink => ({
+  url: link.url,
+  icon: link.icon,
+  customStyle: link.customStyle,
+  localizedName: getLocalizedText(link.name),
+  localizedDescription: getLocalizedText(link.description),
+  isCta: false
+})
+
+const remoteLinkCards = computed((): LocalizedLink[] => activeLinks.value.map(toLocalizedLink))
+
+const docsCtaLink = computed(
+  (): LocalizedLink => ({
+    url: aboutEntryPath.value,
+    localizedName: t("layout.navigation.sections.docs"),
+    localizedDescription: t("pages.home.ctaDesc"),
+    icon: "i-lucide-book-open",
+    isCta: true,
+    customStyle: { color: "#b87eef" }
+  })
+)
+
+const cardEnter = (idx: number) => ({
+  opacity: 1,
+  transition: {
+    delay: idx * (isMobile.value ? 40 : 60),
+    duration: 300,
+    ease: "easeOut"
+  }
+})
 </script>
 
 <template>
@@ -114,27 +128,32 @@ const getLocalizedText = (value?: { ru: string; en: string }): string | undefine
         <div
           v-else
           class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          :key="mode"
+          key="links-grid"
         >
+          <template v-if="pending">
+            <HomeLinkCardSkeleton
+              v-for="slotIdx in REMOTE_LINKS_COUNT"
+              :key="`skeleton-${slotIdx}`"
+            />
+          </template>
+
+          <template v-else>
+            <HomeLinkCard
+              v-for="(link, idx) in remoteLinkCards"
+              v-motion
+              :link="link"
+              :initial="{ opacity: 0 }"
+              :enter="cardEnter(idx)"
+              :key="`${mode}-remote-${idx}`"
+            />
+          </template>
+
           <HomeLinkCard
-            v-for="(linkItem, idx) in localizedLinks"
             v-motion
-            :link="linkItem"
-            :initial="{ opacity: 0, y: 30, filter: 'blur(4px)' }"
-            :visible="{
-              opacity: 1,
-              y: 0,
-              filter: 'blur(0px)',
-              transition: {
-                delay: idx * (isMobile ? 30 : 50),
-                duration: 300,
-                type: 'spring',
-                stiffness: 250,
-                damping: 25,
-                mass: 0.5
-              }
-            }"
-            :key="`${linkItem.url}-${idx}`"
+            key="docs-cta"
+            :link="docsCtaLink"
+            :initial="{ opacity: 0 }"
+            :enter="cardEnter(REMOTE_LINKS_COUNT)"
           />
         </div>
       </Transition>
