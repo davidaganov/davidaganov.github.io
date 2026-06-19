@@ -1,3 +1,5 @@
+import type { NavHighlightKind } from "@docs/types"
+
 export type SidebarItemType = "link" | "collection" | "divider"
 
 export interface SidebarBaseItem {
@@ -14,6 +16,7 @@ export interface SidebarLinkItem extends SidebarBaseItem {
   target?: string
   icon?: string
   translate?: boolean
+  highlight?: NavHighlightKind
 }
 
 export interface SidebarDividerItem extends SidebarBaseItem {
@@ -37,6 +40,7 @@ export interface SidebarCollectionItem extends SidebarBaseItem {
   pathPrefix?: string
   collapsible?: boolean
   defaultOpen?: boolean
+  highlight?: NavHighlightKind
 }
 
 export type SidebarItem = SidebarLinkItem | SidebarDividerItem | SidebarCollectionItem

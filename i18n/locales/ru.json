@@ -12,14 +12,6 @@
       "nextSection": "Перейти к разделу",
       "editOnGitHub": "Открыть MD на GitHub"
     },
-    "changelog": {
-      "seoTitle": "Изменения на сайте",
-      "seoDescription": "Заметки о том, что я меняю на сайте: новые материалы, правки и т.д.",
-      "title": "Изменения",
-      "empty": "Пока нет записей.",
-      "sidebarIndex": "Все изменения",
-      "backToIndex": "Ко всем изменениям"
-    },
     "graph": {
       "seoTitle": "Граф документации",
       "seoDescription": "Интерактивный граф ссылок между страницами документации.",
@@ -71,7 +63,6 @@
     "navigation": {
       "menu": {
         "about": "Обо мне",
-        "changelog": "Изменения",
         "guides": "Гайды",
         "tools": "Инструменты",
         "articles": "Статьи",
@@ -123,8 +114,11 @@
       "openSearchPalette": "Открыть поиск и навигацию (Ctrl K или Cmd K)",
       "languageSelect": "Язык интерфейса",
       "githubStars": "{count} звёзд на GitHub",
-      "changelogUnread": "Индикатор непрочитанных изменений",
       "toggleDocsSubgroup": "Раскрыть или скрыть вложенные страницы: {title}"
+    },
+    "navHighlight": {
+      "new": "Новое",
+      "updated": "Обновлено"
     }
   },
   "pages": {

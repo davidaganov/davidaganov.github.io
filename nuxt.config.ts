@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process"
 import { fileURLToPath } from "node:url"
 import {
+  getChangelogRedirectRules,
   getDocsIndexRedirectRules,
   getNuxtDefaultLocale,
   getNuxtI18nLocales,
@@ -122,14 +123,14 @@ export default defineNuxtConfig({
     ready(nuxt) {
       if (!nuxt.options.dev) return
 
-      execSync("npx tsx scripts/build-docs-assets.ts", {
+      execSync("npx tsx --tsconfig tsconfig.scripts.json scripts/build-docs-assets.ts", {
         cwd: rootDir,
         stdio: "inherit",
         env: process.env
       })
     },
     "nitro:build:before"() {
-      execSync("npx tsx scripts/build-docs-assets.ts", {
+      execSync("npx tsx --tsconfig tsconfig.scripts.json scripts/build-docs-assets.ts", {
         cwd: rootDir,
         stdio: "inherit",
         env: process.env
@@ -191,6 +192,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     ...getDocsIndexRedirectRules(),
+    ...getChangelogRedirectRules(),
     ...getPrerenderRouteRules(),
     "/_og/**": {
       headers: {

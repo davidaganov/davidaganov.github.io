@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDocsRoute } from "@docs/composables/docs/useDocsRoute"
 import { useDocsSeo } from "@docs/composables/docs/useDocsSeo"
+import { useContentPageHighlightAck } from "@docs/composables/nav/useContentPageHighlightAck"
 import AppArticleNavigation from "@docs/components/app/AppArticleNavigation.vue"
 import AppArticleTranslationWarning from "@docs/components/app/AppArticleTranslationWarning.vue"
 import AppIndexPage from "@docs/components/app/AppIndexPage.vue"
@@ -27,6 +28,16 @@ const { breadcrumbs, pageType } = useDocsSeo({
   parentCollectionItem,
   page
 })
+
+const pageMeta = computed(() => {
+  const meta = (page.value as { meta?: Record<string, unknown> } | null | undefined)?.meta
+  return {
+    publishedAt: typeof meta?.publishedAt === "string" ? meta.publishedAt : undefined,
+    updatedAt: typeof meta?.updatedAt === "string" ? meta.updatedAt : undefined
+  }
+})
+
+useContentPageHighlightAck(pageMeta)
 </script>
 
 <template>

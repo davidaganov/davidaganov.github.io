@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { DEFAULT_LOCALE, normalizeUrlPath } from "@app/utils/seo"
+import { stripLocalePathPrefix } from "@app/utils/layout"
 import {
   getFirstPathForFirstSection,
   getFirstPathForSection,
   getSectionById,
   getSectionIdByPath
 } from "@docs/utils/sections"
-import { isSiteLocaleCode } from "@app/constants/siteLocaleCodes"
 import ErrorPage from "@base/components/pages/error/ErrorPage.vue"
 
 const props = defineProps<{
@@ -33,18 +32,6 @@ const errorPath = computed(() => {
   }
 })
 
-const stripLocalePathPrefix = (path: string): string => {
-  const normalized = normalizeUrlPath(path.split("?")[0] ?? path)
-  const segments = normalized.split("/").filter(Boolean)
-  const first = segments[0]
-
-  if (first && isSiteLocaleCode(first) && first !== DEFAULT_LOCALE) {
-    return `/${segments.slice(1).join("/")}`
-  }
-
-  return normalized
-}
-
 const isDocsErrorPath = (path: string): boolean => {
   const stripped = stripLocalePathPrefix(path)
   return stripped === "/docs" || stripped.startsWith("/docs/")
@@ -59,11 +46,7 @@ const docsFallbackPath = computed(() => {
   return localePath(path)
 })
 
-setPageLayout(isDocsContext.value ? "default" : "clean")
-
-watch(isDocsContext, (docs) => {
-  setPageLayout(docs ? "default" : "clean")
-})
+setPageLayout("clean")
 
 const seoTitle = computed(() =>
   props.error.statusCode === 404 ? t("pages.error.notFoundTitle") : t("pages.error.genericTitle")

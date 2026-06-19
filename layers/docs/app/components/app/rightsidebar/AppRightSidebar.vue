@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBreakpoints } from "@vueuse/core"
-import { isChangelogDocsPath } from "@docs/utils/sections"
 import AppRightSidebarContent from "@docs/components/app/rightsidebar/AppRightSidebarContent.vue"
 import BaseScrollbar from "@docs/components/base/BaseScrollbar.vue"
 import { TYPE_PAGE } from "@docs/types"
@@ -35,7 +34,6 @@ const syncTarget = () => {
   hasTarget.value = Boolean(document.querySelector(RIGHT_SIDEBAR_TARGET))
 }
 
-const hideSidebar = computed(() => isChangelogDocsPath(route.path))
 const useTeleport = computed(() => isLg.value && hasTarget.value)
 
 const refreshTarget = async () => {
@@ -56,7 +54,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <ClientOnly v-if="!hideSidebar">
+  <ClientOnly>
     <Teleport
       v-if="useTeleport"
       defer

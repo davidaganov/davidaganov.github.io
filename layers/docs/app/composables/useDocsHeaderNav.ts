@@ -1,4 +1,4 @@
-import { useChangelogUnreadIndicator } from "@docs/composables/useChangelogUnreadIndicator"
+import { useContentHighlights } from "@docs/composables/nav/useContentHighlights"
 import {
   getFirstPathForSection,
   getSectionById,
@@ -18,7 +18,7 @@ export const useDocsHeaderNav = () => {
   const route = useRoute()
 
   const localePath = useLocalePath()
-  const { showUnreadDot } = useChangelogUnreadIndicator()
+  const { getSectionHighlight } = useContentHighlights()
 
   const isDocsRoute = computed(() => route.path.includes(ROUTE_PATH.DOCS))
   const isGraphRoute = computed(() => isGraphDocsPath(route.path))
@@ -29,20 +29,15 @@ export const useDocsHeaderNav = () => {
     return getSectionById(sectionId)?.id || DOCS_SECTIONS[0]?.id || ""
   })
 
-  const sectionAction = (section: DocsSection): DocsHeaderNavAction => {
-    const showBadge = section.unreadBadge === "changelog" && showUnreadDot.value
-
-    return {
-      id: section.id,
-      icon: section.icon,
-      label: t(section.labelKey),
-      to: localePath(getFirstPathForSection(section)),
-      active: activeSectionId.value === section.id,
-      showBadge,
-      badgeAriaLabel: showBadge ? t("layout.a11y.changelogUnread") : undefined,
-      mobileInline: isTrailingSection(section)
-    }
-  }
+  const sectionAction = (section: DocsSection): DocsHeaderNavAction => ({
+    id: section.id,
+    icon: section.icon,
+    label: t(section.labelKey),
+    to: localePath(getFirstPathForSection(section)),
+    active: activeSectionId.value === section.id,
+    highlight: getSectionHighlight(section.id),
+    mobileInline: isTrailingSection(section)
+  })
 
   const primaryTabs = computed(() =>
     DOCS_SECTIONS.filter(isPrimarySection).map((section) => sectionAction(section))
@@ -55,7 +50,7 @@ export const useDocsHeaderNav = () => {
       label: t(action.labelKey),
       to: localePath(action.path),
       active: action.isActive(route.path),
-      showBadge: false,
+      highlight: null,
       mobileInline: action.mobileInline ?? false
     }))
 
@@ -70,10 +65,12 @@ export const useDocsHeaderNav = () => {
     trailingActions.value.filter((action) => action.mobileInline)
   )
 
-  const actionAriaLabel = (action: DocsHeaderNavAction) =>
-    action.showBadge && action.badgeAriaLabel
-      ? `${action.label}. ${action.badgeAriaLabel}`
-      : action.label
+  const actionAriaLabel = (action: DocsHeaderNavAction) => {
+    if (!action.highlight) return action.label
+    const kindLabel =
+      action.highlight === "new" ? t("layout.navHighlight.new") : t("layout.navHighlight.updated")
+    return `${action.label}. ${kindLabel}`
+  }
 
   return {
     isDocsRoute,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NavHighlightBadge from "@docs/components/base/NavHighlightBadge.vue"
 import UiLink from "@ui/components/UiLink.vue"
 import type { DocsHeaderNavAction } from "@docs/types"
 
@@ -14,7 +15,16 @@ const props = withDefaults(
   }
 )
 
+const { t } = useI18n()
+
 const resolvedAriaLabel = computed(() => props.ariaLabel ?? props.action.label)
+
+const highlightAriaLabel = computed(() => {
+  if (!props.action.highlight) return ""
+  return props.action.highlight === "new"
+    ? t("layout.navHighlight.new")
+    : t("layout.navHighlight.updated")
+})
 
 const classes = computed(() => {
   return props.variant === "tab" ? "px-3 py-1! lg:py-1.5!" : undefined
@@ -36,20 +46,20 @@ const classes = computed(() => {
         aria-hidden="true"
         :name="action.icon"
       />
-      <span
-        v-if="action.showBadge"
-        class="bg-primary-500 absolute -top-1 -right-1 size-2 rounded-full ring-2 ring-(--ui-bg)"
-        aria-hidden="true"
+      <NavHighlightBadge
+        v-if="action.highlight"
+        variant="dot"
+        :kind="action.highlight"
       />
     </div>
     <template v-if="variant === 'tab'">
       {{ action.label }}
       <span
-        v-if="action.showBadge && action.badgeAriaLabel"
+        v-if="action.highlight"
         class="sr-only"
       >
         —
-        {{ action.badgeAriaLabel }}
+        {{ highlightAriaLabel }}
       </span>
     </template>
   </UiLink>

@@ -1,5 +1,7 @@
 import { useContentCollection } from "@docs/composables/content/useContentCollection"
+import { useContentHighlights } from "@docs/composables/nav/useContentHighlights"
 import { compareContentPages, isNavigationHidden } from "@docs/utils/content/comparePages"
+import { applyHighlightsToSidebarItems } from "@docs/utils/nav/applySidebarHighlights"
 import { buildSectionSidebarItems } from "@docs/utils/sidebar/buildSectionSidebarItems"
 import { flattenSiteNavSections } from "@docs/utils/sidebar/flattenSiteNavSections"
 import { DOCS_SECTIONS } from "@docs/constants"
@@ -12,6 +14,7 @@ interface SiteNavSection {
 
 export const useSiteNav = async () => {
   const { collection } = useContentCollection()
+  const { getPageHighlight, getCollectionHighlight } = useContentHighlights()
 
   const { data: pagesBySectionId } = await useAsyncData(
     () => `site-nav:all-sections:${collection.value}`,
@@ -50,7 +53,11 @@ export const useSiteNav = async () => {
   const navSections = computed<SiteNavSection[]>(() =>
     DOCS_SECTIONS.map((section) => ({
       section,
-      items: buildSectionSidebarItems(section, pagesBySectionId.value?.[section.id] ?? [])
+      items: applyHighlightsToSidebarItems(
+        buildSectionSidebarItems(section, pagesBySectionId.value?.[section.id] ?? []),
+        getPageHighlight,
+        getCollectionHighlight
+      )
     }))
   )
 

@@ -12,14 +12,6 @@
       "nextSection": "Go to section",
       "editOnGitHub": "View MD on GitHub"
     },
-    "changelog": {
-      "seoTitle": "Site changelog",
-      "seoDescription": "Notes on what I change on the site: new content, edits, etc.",
-      "title": "Changelog",
-      "empty": "No entries yet.",
-      "sidebarIndex": "All changes",
-      "backToIndex": "Back to all changes"
-    },
     "graph": {
       "seoTitle": "Documentation graph",
       "seoDescription": "Interactive graph of links between documentation pages.",
@@ -71,7 +63,6 @@
     "navigation": {
       "menu": {
         "about": "About",
-        "changelog": "Changelog",
         "guides": "Guides",
         "tools": "Tools",
         "articles": "Articles",
@@ -123,8 +114,11 @@
       "openSearchPalette": "Open search and navigation (Ctrl K or Cmd K)",
       "languageSelect": "Interface language",
       "githubStars": "{count} stars on GitHub",
-      "changelogUnread": "Unread changelog indicator",
       "toggleDocsSubgroup": "Expand or collapse nested pages under {title}"
+    },
+    "navHighlight": {
+      "new": "New",
+      "updated": "Updated"
     }
   },
   "pages": {

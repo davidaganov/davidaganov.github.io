@@ -1,1 +1,1 @@
-export const GRAPH_EXCLUDED_CATEGORIES = ["changelog/releases", "changelog"] as const
+export const GRAPH_EXCLUDED_CATEGORIES = [] as const

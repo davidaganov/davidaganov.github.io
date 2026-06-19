@@ -1,8 +1,6 @@
-import type { SidebarCollectionItem, SidebarItem } from "@docs/types"
+import type { NavHighlightKind, SidebarCollectionItem, SidebarItem } from "@docs/types"
 
 export type DocsSectionNavPlacement = "primary" | "trailing"
-
-export type DocsSectionUnreadBadge = "changelog"
 
 export interface DocsSection {
   id: string
@@ -11,7 +9,6 @@ export interface DocsSection {
   basePath: string
   sidebarItems: SidebarItem[]
   navPlacement?: DocsSectionNavPlacement
-  unreadBadge?: DocsSectionUnreadBadge
 }
 
 export interface DocsHeaderNavAction {
@@ -20,14 +17,14 @@ export interface DocsHeaderNavAction {
   label: string
   to: string
   active: boolean
-  showBadge: boolean
-  badgeAriaLabel?: string
+  highlight: NavHighlightKind | null
   mobileInline: boolean
 }
 
 export interface DocsPageMeta {
   githubUrl?: string
   publishedAt?: string
+  updatedAt?: string
 }
 
 export interface DocsPageData {

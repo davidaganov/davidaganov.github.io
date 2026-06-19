@@ -8,7 +8,7 @@ publishedAt: 2026-05-09
 tags:
   - Vue
   - PWA
-  - Frontend
+  - frontend
   - Tools
 ---
 

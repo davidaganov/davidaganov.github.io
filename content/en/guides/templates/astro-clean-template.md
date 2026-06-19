@@ -7,7 +7,7 @@ githubUrl: https://github.com/davidaganov/astro-clean-template
 publishedAt: 2026-03-24
 tags:
   - Astro
-  - Frontend
+  - frontend
   - Tools
 ---
 

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@docs/*": ["./layers/docs/app/*"],
+      "@base/*": ["./layers/base/app/*"],
+      "@ui/*": ["./layers/ui/app/*"],
+      "@api/*": ["./layers/api/app/*"]
+    }
+  },
+  "include": ["scripts/**/*", "app/**/*", "layers/**/*"]
+}

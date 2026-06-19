@@ -5,7 +5,7 @@ icon: i-lucide-layers
 publishedAt: 2026-05-10
 languageOriginal: "ru"
 tags:
-  - Frontend
+  - frontend
   - Vue 3
   - Архитектура
 ---

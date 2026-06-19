@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { resolveLayoutNameForPath } from "@app/utils/layout"
 import { ROUTE_PATH } from "@base/types"
+
+type PageLayoutKey = Exclude<Parameters<typeof setPageLayout>[0], false | undefined>
 
 const props = defineProps<{
   error: {
@@ -19,25 +22,25 @@ const error = ref(props.error)
 
 const isNotFound = computed(() => props.error.statusCode === 404)
 
-const title = computed(() =>
-  isNotFound.value ? t("pages.error.notFoundTitle") : t("pages.error.genericTitle")
-)
+const title = computed(() => {
+  return isNotFound.value ? t("pages.error.notFoundTitle") : t("pages.error.genericTitle")
+})
 
-const description = computed(() =>
-  isNotFound.value ? t("pages.error.notFoundDescription") : t("pages.error.genericDescription")
-)
+const description = computed(() => {
+  return isNotFound.value
+    ? t("pages.error.notFoundDescription")
+    : t("pages.error.genericDescription")
+})
 
 const homePath = computed(() => localePath(ROUTE_PATH.HOME))
 
 const useLeaveErrorPage = () => {
   const nuxtApp = useNuxtApp()
-  const error = useError()
 
   const leave = async (path: string) => {
-    error.value = undefined
+    setPageLayout(resolveLayoutNameForPath(path) as PageLayoutKey)
     nuxtApp.payload.error = undefined
-    await clearError()
-    await navigateTo(path, { replace: true })
+    await clearError({ redirect: path })
   }
 
   return { leave }

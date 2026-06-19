@@ -10,7 +10,7 @@ publishedAt: 2026-05-09
 tags:
   - CLI
   - Tools
-  - Frontend
+  - frontend
   - DX
 ---
 

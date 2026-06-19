@@ -1,5 +1,7 @@
 import { useContentCollection } from "@docs/composables/content/useContentCollection"
+import { useContentHighlights } from "@docs/composables/nav/useContentHighlights"
 import { compareContentPages, isNavigationHidden } from "@docs/utils/content/comparePages"
+import { applyHighlightsToSidebarItems } from "@docs/utils/nav/applySidebarHighlights"
 import { getSectionById, getSectionIdByPath } from "@docs/utils/sections"
 import { buildSectionSidebarItems } from "@docs/utils/sidebar/buildSectionSidebarItems"
 import { DOCS_SECTIONS } from "@docs/constants"
@@ -7,6 +9,7 @@ import { DOCS_SECTIONS } from "@docs/constants"
 export const useSidebarItems = async () => {
   const route = useRoute()
   const { collection } = useContentCollection()
+  const { getPageHighlight, getCollectionHighlight } = useContentHighlights()
 
   const sectionId = computed(() => getSectionIdByPath(route.path))
   const section = computed(() => getSectionById(sectionId.value))
@@ -53,9 +56,9 @@ export const useSidebarItems = async () => {
     const sid = getSectionIdByPath(route.path)
     const sec = getSectionById(sid)
 
-    if (!sec) return buildSectionSidebarItems(DOCS_SECTIONS[0]!, [])
+    const items = !sec ? buildSectionSidebarItems(DOCS_SECTIONS[0]!, []) : sidebarItems.value
 
-    return sidebarItems.value
+    return applyHighlightsToSidebarItems(items, getPageHighlight, getCollectionHighlight)
   })
 
   return {

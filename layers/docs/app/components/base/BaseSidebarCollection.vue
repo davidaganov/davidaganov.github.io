@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSidebarCollection } from "@docs/composables/useSidebarCollection"
 import BaseSidebarLink from "@docs/components/base/BaseSidebarLink.vue"
+import NavHighlightBadge from "@docs/components/base/NavHighlightBadge.vue"
 import UiLink from "@ui/components/UiLink.vue"
 import type { SidebarCollectionItem } from "@docs/types"
 
@@ -37,6 +38,10 @@ const {
               :name="item.icon"
             />
             <span class="line-clamp-1">{{ $t(item.label) }}</span>
+            <NavHighlightBadge
+              v-if="props.item.highlight"
+              :kind="props.item.highlight"
+            />
           </div>
         </UiLink>
 
@@ -76,6 +81,10 @@ const {
         :name="item.icon"
       />
       <span class="line-clamp-1 flex-1 text-left">{{ $t(item.label) }}</span>
+      <NavHighlightBadge
+        v-if="props.item.highlight"
+        :kind="props.item.highlight"
+      />
       <UIcon
         name="i-lucide-chevron-down"
         class="size-3.5 shrink-0 transition-transform duration-200"

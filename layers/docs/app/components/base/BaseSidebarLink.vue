@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NavHighlightBadge from "@docs/components/base/NavHighlightBadge.vue"
 import UiLink from "@ui/components/UiLink.vue"
 import type { SidebarLinkItem } from "@docs/types"
 
@@ -43,6 +44,10 @@ const label = computed(() => {
     <span class="truncate">
       {{ label }}
     </span>
+    <NavHighlightBadge
+      v-if="props.item.highlight"
+      :kind="props.item.highlight"
+    />
   </UiLink>
 
   <UiLink

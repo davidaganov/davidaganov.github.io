@@ -3,7 +3,7 @@ import { defineShortcuts } from "@nuxt/ui/composables"
 import { useCommandPalette } from "@base/composables/useCommandPalette"
 import { useDocsLayoutTransition } from "@docs/composables/docs/useDocsLayoutTransition"
 import { useSidebarItems } from "@docs/composables/useSidebarItems"
-import { isChangelogDocsPath, isGraphDocsPath } from "@docs/utils/sections"
+import { isGraphDocsPath } from "@docs/utils/sections"
 import AppFooter from "@base/components/app/AppFooter.vue"
 import AppHeader from "@base/components/app/AppHeader.vue"
 import AppContentPanel from "@docs/components/app/AppContentPanel.vue"
@@ -16,9 +16,7 @@ const { renderedSidebarItems } = await useSidebarItems()
 const { toggle, close } = useCommandPalette()
 const { light } = useDocsLayoutTransition()
 
-const hideDocsRightColumn = computed(() => {
-  return isChangelogDocsPath(route.path) || isGraphDocsPath(route.path)
-})
+const hideDocsRightColumn = computed(() => isGraphDocsPath(route.path))
 
 const isGraphPage = computed(() => isGraphDocsPath(route.path))
 

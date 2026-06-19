@@ -1,4 +1,5 @@
 import { useContentCollection } from "@docs/composables/content/useContentCollection"
+import { useContentHighlights } from "@docs/composables/nav/useContentHighlights"
 import { compareContentPages, isNavigationHidden } from "@docs/utils/content/comparePages"
 import { toContentPrefix, toRelativeContentPath } from "@docs/utils/content/paths"
 import { joinPublicDocsPath } from "@docs/utils/path/joinPublicPath"
@@ -9,7 +10,9 @@ export const useSidebarCollection = async (item: SidebarCollectionItem) => {
   const { t } = useI18n()
   const route = useRoute()
   const localePath = useLocalePath()
+
   const { collection } = useContentCollection()
+  const { getPageHighlight } = useContentHighlights()
 
   const isOpen = ref(item.defaultOpen ?? false)
 
@@ -53,6 +56,8 @@ export const useSidebarCollection = async (item: SidebarCollectionItem) => {
         const relativePath = toRelativeContentPath(String(p.path), queryPrefix)
         const fullPath = joinPublicDocsPath(pathPrefix, relativePath)
 
+        const highlight = getPageHighlight(fullPath)
+
         return {
           type: "link" as const,
           label: String(p.title || ""),
@@ -61,7 +66,8 @@ export const useSidebarCollection = async (item: SidebarCollectionItem) => {
           icon: String(
             (p.meta as { icon?: string } | undefined)?.icon || item.itemIcon || "i-lucide-file-text"
           ),
-          translate: false
+          translate: false,
+          ...(highlight ? { highlight } : {})
         }
       })
       .filter((p) => Boolean(p.label))

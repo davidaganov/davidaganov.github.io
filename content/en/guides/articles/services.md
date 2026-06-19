@@ -5,7 +5,7 @@ icon: i-lucide-book-open
 publishedAt: 2026-02-20
 languageOriginal: "ru"
 tags:
-  - Frontend
+  - frontend
   - Architecture
   - API
 ---

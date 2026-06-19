@@ -18,7 +18,7 @@
     "translate:md": "npx polyglot-keeper sync --md",
     "translate:init": "npx polyglot-keeper init",
     "generate:favicons": "tsx scripts/generate-favicons.ts",
-    "build:docs-assets": "tsx scripts/build-docs-assets.ts"
+    "build:docs-assets": "tsx --tsconfig tsconfig.scripts.json scripts/build-docs-assets.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
@@ -82,5 +82,8 @@
   "lint-staged": {
     "*.{vue,ts,js,mjs}": "eslint --fix",
     "*.{vue,ts,js,mjs,json,css,md,yml,yaml}": "prettier --write"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   }
 }

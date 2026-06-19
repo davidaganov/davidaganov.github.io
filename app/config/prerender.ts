@@ -90,6 +90,20 @@ export const getDocsIndexRedirectRules = (): Record<string, { redirect: string }
     })
   )
 
+export const getChangelogRedirectRules = (): Record<string, { redirect: string }> =>
+  Object.fromEntries(
+    getLocaleCodes().flatMap((locale) => {
+      const prefix = localePathPrefix(locale)
+      const changelogRoot = prefix ? `${prefix}/docs/changelog` : "/docs/changelog"
+      const target = localizedPath(locale, DOCS_INDEX_REDIRECT_TARGET)
+
+      return [
+        [changelogRoot, { redirect: target }],
+        [`${changelogRoot}/**`, { redirect: target }]
+      ]
+    })
+  )
+
 const seoRoutes = ["/sitemap_index.xml", "/robots.txt"]
 
 const feedRoutes = (): string[] => {

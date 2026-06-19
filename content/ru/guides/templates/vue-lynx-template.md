@@ -9,7 +9,7 @@ tags:
   - Vue
   - Mobile
   - Lynx
-  - Frontend
+  - frontend
   - Tools
 ---
 

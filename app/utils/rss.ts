@@ -5,7 +5,6 @@ import {
   RSS_CHANNEL_IMAGE_WIDTH,
   RSS_COLLECTION_LABEL_KEYS,
   RSS_CONTENT_PATH_PREFIXES,
-  RSS_EXCLUDED_PATH_SEGMENT,
   RSS_FEED_FILENAME
 } from "../constants/rss.contstant"
 import type {
@@ -266,7 +265,6 @@ export const getFeedPagePublicPath = (locale: string, defaultLocale = DEFAULT_LO
 export const isRssEligibleContentPath = (contentPath: string): boolean => {
   const path = contentPath.startsWith("/") ? contentPath : `/${contentPath}`
 
-  if (path.includes(RSS_EXCLUDED_PATH_SEGMENT)) return false
   if (!RSS_CONTENT_PATH_PREFIXES.some((prefix) => path.startsWith(prefix))) return false
 
   const segments = path.split("/").filter(Boolean)

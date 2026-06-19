@@ -2,6 +2,7 @@ export interface ArticleMeta {
   icon?: string
   habrUrl?: string
   publishedAt?: string
+  updatedAt?: string
   tags?: string[]
   hasArchive?: boolean
 }
