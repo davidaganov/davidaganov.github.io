@@ -6,8 +6,8 @@ publishedAt: 2026-02-20
 languageOriginal: "ru"
 tags:
   - frontend
-  - Architecture
-  - API
+  - architecture
+  - api
 ---
 
 # Clean API Client

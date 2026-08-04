@@ -8,10 +8,10 @@ githubRepo: davidaganov/stack
 githubUrl: https://github.com/davidaganov/stack
 publishedAt: 2026-05-09
 tags:
-  - CLI
-  - Tools
+  - cli
+  - tools
   - frontend
-  - DX
+  - dx
 ---
 
 # Stack

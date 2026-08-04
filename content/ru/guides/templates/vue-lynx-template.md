@@ -6,11 +6,11 @@ githubRepo: davidaganov/vue-lynx-template
 githubUrl: https://github.com/davidaganov/vue-lynx-template
 publishedAt: 2026-05-09
 tags:
-  - Vue
-  - Mobile
-  - Lynx
+  - vue
+  - mobile
+  - lynx
   - frontend
-  - Tools
+  - tools
 ---
 
 # Vue Lynx Template

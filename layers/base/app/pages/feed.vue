@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { resolveOgImageFields } from "@app/utils/rss"
 import { useSiteI18nHead } from "@app/composables/useSiteI18nHead"
 import FeedPage from "@base/components/pages/feed/FeedPage.vue"
 
@@ -14,6 +15,14 @@ definePageMeta({
 const seoTitle = computed(() => t("pages.feed.seoTitle"))
 const seoDescription = computed(() => t("pages.feed.seoDescription"))
 
+const feedOgFields = computed(() =>
+  resolveOgImageFields({
+    component: "FeedPage",
+    title: seoTitle.value,
+    description: seoDescription.value
+  })
+)
+
 useSeoMeta({
   title: () => seoTitle.value,
   description: () => seoDescription.value,
@@ -28,8 +37,8 @@ useSeoMeta({
 })
 
 defineOgImage("FeedPage", {
-  title: seoTitle.value,
-  description: seoDescription.value
+  title: feedOgFields.value.title,
+  description: feedOgFields.value.description
 })
 
 useSchemaOrg([

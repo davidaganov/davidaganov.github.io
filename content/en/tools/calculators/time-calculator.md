@@ -4,9 +4,9 @@ description: Perform arithmetic operations with time intervals in hours:minutes:
 icon: i-lucide-clock-3
 dependencies: ["@nuxt/ui"]
 tags:
-  - Calculators
-  - Time
-  - Nuxt UI
+  - calculators
+  - time
+  - nuxt ui
 ---
 
 # Time Calculator

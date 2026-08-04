@@ -5,6 +5,7 @@ import { getLocaleCodes } from "../app/config/locales"
 import type { RssAssetFile } from "../app/types/rss.interface"
 import { getFeedChannelOgImagePublicPath } from "../app/utils/rss"
 import { localizedPath } from "../app/utils/seo"
+import { ROUTE_PATH } from "../layers/base/app/types/enums/route.enum"
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url))
 const root = resolve(__dirname, "..")
@@ -126,12 +127,38 @@ const syncLocale = (locale: string): { updatedEntries: number; channelUpdated: b
   return { updatedEntries, channelUpdated }
 }
 
+const STANDALONE_OG_PAGES = [
+  { path: ROUTE_PATH.HOME, component: "HomePage" },
+  { path: ROUTE_PATH.RESUME, component: "ResumePage" },
+  { path: ROUTE_PATH.FEED, component: "FeedPage" }
+] as const
+
+const ogRouteForPage = (locale: string, pagePath: string, component: string): string | null => {
+  const html = readHtmlForRoute(localizedPath(locale, pagePath))
+  if (!html) return null
+
+  const ogImagePath = extractOgImagePath(html)
+  if (!ogImagePath?.includes(`c_${component}`)) return null
+
+  return ogImagePath
+}
+
+const standaloneOgRoutesForLocale = (locale: string): string[] => {
+  return STANDALONE_OG_PAGES.flatMap(({ path, component }) => {
+    const route = ogRouteForPage(locale, path, component)
+    return route ? [route] : []
+  })
+}
+
 const collectOgPrerenderRoutes = (): string[] => {
   const routes = new Set<string>()
 
   for (const locale of getLocaleCodes()) {
-    const asset = loadRssAsset(locale)
+    for (const route of standaloneOgRoutesForLocale(locale)) {
+      routes.add(route)
+    }
 
+    const asset = loadRssAsset(locale)
     if (!asset) continue
     if (asset.channel.ogImagePath) routes.add(asset.channel.ogImagePath)
 

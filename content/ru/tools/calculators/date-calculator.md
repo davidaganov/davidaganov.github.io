@@ -4,9 +4,9 @@ description: Быстро посчитать разницу между дата�
 icon: i-lucide-calendar-days
 dependencies: ["@nuxt/ui", "@internationalized/date"]
 tags:
-  - Калькуляторы
-  - Дата
-  - Nuxt UI
+  - калькуляторы
+  - дата
+  - nuxt ui
 ---
 
 # Калькулятор дат

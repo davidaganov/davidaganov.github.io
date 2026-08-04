@@ -8,10 +8,10 @@ githubRepo: davidaganov/polyglot-keeper
 githubUrl: https://github.com/davidaganov/polyglot-keeper
 publishedAt: 2025-12-15
 tags:
-  - CLI
+  - cli
   - i18n
-  - AI
-  - Node.js
+  - ai
+  - node.js
 ---
 
 # Polyglot Keeper

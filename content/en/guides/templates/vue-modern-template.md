@@ -6,7 +6,7 @@ githubRepo: davidaganov/vue-modern-template
 githubUrl: https://github.com/davidaganov/vue-modern-template
 publishedAt: 2026-05-09
 tags:
-  - Vue
+  - vue
   - frontend
 ---
 

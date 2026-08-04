@@ -6,8 +6,8 @@ publishedAt: 2026-05-10
 languageOriginal: "ru"
 tags:
   - frontend
-  - Vue 3
-  - Architecture
+  - vue 3
+  - architecture
 ---
 
 # Project architecture

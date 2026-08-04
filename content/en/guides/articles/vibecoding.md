@@ -6,8 +6,8 @@ habrUrl: https://habr.com/ru/articles/982452/
 publishedAt: 2026-01-02
 languageOriginal: "ru"
 tags:
-  - Artificial Intelligence
-  - Development
+  - artificial intelligence
+  - development
 ---
 
 # Mindful Vibe Coding

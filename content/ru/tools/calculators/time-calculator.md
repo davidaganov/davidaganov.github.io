@@ -4,9 +4,9 @@ description: Выполняйте арифметические операции 
 icon: i-lucide-clock-3
 dependencies: ["@nuxt/ui"]
 tags:
-  - Калькуляторы
-  - Время
-  - Nuxt UI
+  - калькуляторы
+  - время
+  - nuxt ui
 ---
 
 # Калькулятор времени

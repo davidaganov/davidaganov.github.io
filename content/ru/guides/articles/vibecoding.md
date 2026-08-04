@@ -6,8 +6,8 @@ habrUrl: https://habr.com/ru/articles/982452/
 publishedAt: 2026-01-02
 languageOriginal: "ru"
 tags:
-  - Искусственный интеллект
-  - Разработка
+  - искусственный интеллект
+  - разработка
 ---
 
 # Осознанный вайб-кодинг

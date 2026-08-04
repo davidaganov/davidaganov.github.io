@@ -6,10 +6,10 @@ githubRepo: davidaganov/vue-pwa-template
 githubUrl: https://github.com/davidaganov/vue-pwa-template
 publishedAt: 2026-05-09
 tags:
-  - Vue
-  - PWA
+  - vue
+  - pwa
   - frontend
-  - Tools
+  - tools
 ---
 
 # Vue PWA Template

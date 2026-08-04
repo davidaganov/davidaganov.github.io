@@ -6,9 +6,9 @@ githubRepo: davidaganov/nuxt-modern-template
 githubUrl: https://github.com/davidaganov/nuxt-modern-template
 publishedAt: 2026-06-09
 tags:
-  - Nuxt
+  - nuxt
   - frontend
-  - Tools
+  - tools
 ---
 
 # Nuxt Modern Template

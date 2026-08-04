@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { resolveOgImageFields } from "@app/utils/rss"
 import { useSiteI18nHead } from "@app/composables/useSiteI18nHead"
 import { useResumeData } from "@base/composables/useResumeData"
 import ResumePage from "@base/components/pages/resume/ResumePage.vue"
@@ -16,6 +17,14 @@ definePageMeta({
 const seoTitle = computed(() => t("pages.resume.seoTitle"))
 const seoDescription = computed(() => t("pages.resume.seoDescription"))
 
+const resumeOgFields = computed(() =>
+  resolveOgImageFields({
+    component: "ResumePage",
+    title: seoTitle.value,
+    description: seoDescription.value
+  })
+)
+
 useSeoMeta({
   title: () => seoTitle.value,
   description: () => seoDescription.value,
@@ -30,8 +39,8 @@ useSeoMeta({
 })
 
 defineOgImage("ResumePage", {
-  title: seoTitle.value,
-  description: seoDescription.value,
+  title: resumeOgFields.value.title,
+  description: resumeOgFields.value.description,
   role: content.value.role
 })
 
