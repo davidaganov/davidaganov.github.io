@@ -52,6 +52,8 @@ Run one command, then an interactive wizard:
 
 A few seconds later you have a working project in the target directory.
 
+> For day-to-day work across multiple repos, [Dock](/docs/about/projects/dock) fits well — scripts, git, and a terminal in one window, with the same `projects.json` list as Project Manager.
+
 ## Usage
 
 <code-group sync="pm">
