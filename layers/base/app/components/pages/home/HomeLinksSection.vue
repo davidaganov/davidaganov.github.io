@@ -52,16 +52,14 @@ const toLocalizedLink = (link: Link): LocalizedLink => ({
 
 const remoteLinkCards = computed((): LocalizedLink[] => activeLinks.value.map(toLocalizedLink))
 
-const docsCtaLink = computed(
-  (): LocalizedLink => ({
-    url: aboutEntryPath.value,
-    localizedName: t("layout.navigation.sections.docs"),
-    localizedDescription: t("pages.home.ctaDesc"),
-    icon: "i-lucide-book-open",
-    isCta: true,
-    customStyle: { color: "#b87eef" }
-  })
-)
+const docsCtaLink = computed((): LocalizedLink => ({
+  url: aboutEntryPath.value,
+  localizedName: t("layout.navigation.sections.docs"),
+  localizedDescription: t("pages.home.ctaDesc"),
+  icon: "i-lucide-book-open",
+  isCta: true,
+  customStyle: { color: "#b87eef" }
+}))
 
 const cardEnter = (idx: number) => ({
   opacity: 1,
