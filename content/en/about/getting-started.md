@@ -5,14 +5,14 @@ description: A brief overview of who I am and what I do.
 
 # Introduction
 
-Hello! I'm **David Aganov**, a frontend developer. I create fast, scalable, and user-friendly web applications for E-commerce and B2B. My focus is on clean layout, strict typing, and thoughtful architecture.
+Hello! I'm **David Aganov**, a senior frontend / fullstack developer. I create fast, scalable, and user-friendly web applications for E-commerce and B2B. My focus is on clean layout, strict typing, and thoughtful architecture.
 
 ---
 
 ## My Experience and Tech Stack
 
-I have :ExperienceText{type="frontend"} years in commercial frontend development and :ExperienceText{type="backend"} in backend.
-My core stack: **Vue, Nuxt, TypeScript, and Tailwind**.
+I have :ExperienceText{type="frontend"} years of commercial frontend experience and :ExperienceText{type="backend"} in backend.
+My core stack: **Vue, Nuxt, TypeScript, and Tailwind**; on the backend — **NestJS**.
 
 I am used to working with a high degree of independence: I can dive into unfamiliar code, design architecture from scratch, and take complex features all the way to production.
 
@@ -37,7 +37,7 @@ My [portfolio](/docs) is organized as a knowledge base, similar to documentation
 
 ## Contacts
 
-If you have any questions or would like to get in touch, I’d be happy to chat:
+If you have any questions or would like to get in touch, I'd be happy to chat:
 
 - **⚡ Telegram:** [@davidaganov](https://t.me/davidaganov)
 - **Email:** [davidaganov21@gmail.com](mailto:davidaganov21@gmail.com)
