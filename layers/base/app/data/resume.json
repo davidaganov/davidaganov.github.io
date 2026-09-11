@@ -14,7 +14,7 @@
   },
   "experience": [
     {
-      "company": { "ru": "NDA", "en": "NDA" },
+      "company": { "ru": "NDA — Car Rental", "en": "NDA — Car Rental" },
       "role": "Lead Frontend / Fullstack Developer",
       "dates": { "start": "2024-09", "end": null },
       "location": { "ru": "Турция (Удалённо)", "en": "Turkey (Remote)" },
@@ -78,7 +78,7 @@
     {
       "company": { "ru": "Softlex", "en": "Softlex" },
       "role": "Frontend Developer",
-      "dates": { "start": "2023-07", "end": "2023-11" },
+      "dates": { "start": "2023-06", "end": "2023-11" },
       "location": { "ru": "Россия (Удалённо)", "en": "Russia (Remote)" },
       "projects": [
         {
