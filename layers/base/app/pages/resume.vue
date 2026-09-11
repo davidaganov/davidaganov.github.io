@@ -32,9 +32,6 @@ useSeoMeta({
   ogDescription: () => seoDescription.value,
   ogUrl: () => canonicalUrl.value,
   ogType: "profile",
-  twitterTitle: () => seoTitle.value,
-  twitterDescription: () => seoDescription.value,
-  twitterCard: "summary_large_image",
   robots: "index, follow"
 })
 

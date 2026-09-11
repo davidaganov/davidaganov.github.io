@@ -198,7 +198,7 @@ const buildGraphForLocale = (locale: string): Omit<DocsGraphFile, "builtAt"> => 
   for (const row of rows) {
     if (typeof row.path !== "string" || row.body == null) continue
 
-    let parsedBody: unknown = row.body
+    let parsedBody: unknown
     try {
       parsedBody = JSON.parse(row.body) as unknown
     } catch {

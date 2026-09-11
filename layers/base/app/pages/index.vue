@@ -27,10 +27,7 @@ useSeoMeta({
   title: () => homeTitle.value,
   description: () => homeDescription.value,
   ogTitle: () => homeTitle.value,
-  ogDescription: () => homeDescription.value,
-  twitterTitle: () => homeTitle.value,
-  twitterDescription: () => homeDescription.value,
-  twitterCard: "summary_large_image"
+  ogDescription: () => homeDescription.value
 })
 
 defineOgImage("HomePage", {

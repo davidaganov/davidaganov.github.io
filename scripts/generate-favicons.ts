@@ -24,7 +24,7 @@ const configuration = {
     "Frontend developer building fast, scalable, and user-friendly web applications for e-commerce and B2B.",
   developerName: "David Aganov",
   developerURL: "https://aganov.dev/",
-  start_url: "https://aganov.dev/",
+  start_url: "/",
   background: "#3d294f",
   theme_color: "#3d294f",
   icons: {

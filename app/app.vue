@@ -49,10 +49,10 @@ useHead({
 useSeoMeta({
   ogSiteName: "Aganov.dev",
   ogType: "website",
-  twitterCard: "summary_large_image",
   ogUrl: () => canonicalUrl.value,
   ogImage: () => `${siteUrl.value}/favicons/android-chrome-512x512.png`,
-  twitterImage: () => `${siteUrl.value}/favicons/android-chrome-512x512.png`
+  ogImageWidth: 512,
+  ogImageHeight: 512
 })
 </script>
 

@@ -65,9 +65,6 @@ export default defineNuxtConfig({
     zeroRuntime: true,
     debug: false,
     buildCache: true,
-    defaults: {
-      timeout: 60000
-    },
     security: {
       strict: true,
       restrictRuntimeImagesToOrigin: true,
@@ -223,11 +220,36 @@ export default defineNuxtConfig({
   },
 
   icon: {
-    provider: "iconify",
+    provider: "server",
     clientBundle: {
-      scan: true
+      scan: {
+        globInclude: ["**/*.{vue,jsx,tsx,md,mdc,mdx,ts}"]
+      },
+      icons: [
+        "vscode-icons:file-type-vue",
+        "vscode-icons:file-type-typescript",
+        "vscode-icons:file-type-js",
+        "vscode-icons:file-type-json",
+        "vscode-icons:file-type-html",
+        "vscode-icons:file-type-css",
+        "vscode-icons:file-type-markdown",
+        "vscode-icons:file-type-yaml",
+        "vscode-icons:file-type-powershell",
+        "vscode-icons:file-type-git",
+        "vscode-icons:file-type-node",
+        "vscode-icons:file-type-npm",
+        "vscode-icons:file-type-pnpm",
+        "vscode-icons:file-type-nuxt",
+        "vscode-icons:file-type-tailwind",
+        "vscode-icons:file-type-tsconfig",
+        "vscode-icons:file-type-eslint",
+        "vscode-icons:file-type-dotenv",
+        "vscode-icons:file-type-yarn"
+      ]
     },
-    serverBundle: "local"
+    serverBundle: {
+      collections: ["lucide", "heroicons", "simple-icons", "vscode-icons"]
+    }
   },
 
   compatibilityDate: "2025-01-15"

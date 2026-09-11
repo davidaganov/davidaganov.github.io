@@ -1,5 +1,5 @@
 import { resolveOgImageFields } from "@app/utils/rss"
-import { absoluteUrl, localizedCanonicalPath } from "@app/utils/seo"
+import { absoluteUrl, localizedCanonicalPath, normalizeSiteUrl } from "@app/utils/seo"
 import { getFirstPathForSection } from "@docs/utils/sections"
 import { buildStructuredDataNodes } from "@docs/utils/structuredData"
 import { type DocsPageData, type DocsSeoOptions, TYPE_PAGE } from "@docs/types"
@@ -12,7 +12,6 @@ export const useDocsSeo = ({
 }: DocsSeoOptions) => {
   const { locale, locales, defaultLocale, t } = useI18n()
   const route = useRoute()
-  const requestUrl = useRequestURL()
   const localePath = useLocalePath()
   const runtimeConfig = useRuntimeConfig()
 
@@ -20,8 +19,6 @@ export const useDocsSeo = ({
     if (typeof value !== "string") return undefined
     return value.trim().length ? value : undefined
   }
-
-  const trimTrailingSlash = (url: string) => (url.endsWith("/") ? url.slice(0, -1) : url)
 
   const typedPage = computed<DocsPageData | undefined>(() => {
     return (page.value as DocsPageData) || undefined
@@ -46,14 +43,7 @@ export const useDocsSeo = ({
     )
   })
 
-  const siteUrl = computed(() => {
-    const configured = String(runtimeConfig.public.siteUrl || "").trim()
-    const origin = String(requestUrl.origin || "").trim()
-
-    if (import.meta.dev && origin) return trimTrailingSlash(origin)
-
-    return trimTrailingSlash(configured || origin || "https://aganov.dev")
-  })
+  const siteUrl = computed(() => normalizeSiteUrl(runtimeConfig.public.siteUrl))
 
   const localeCodes = computed(() =>
     locales.value.map((entry) => (typeof entry === "string" ? entry : entry.code))
@@ -166,10 +156,8 @@ export const useDocsSeo = ({
     ogDescription: () => resolvedOgDescription.value,
     ogUrl: () => canonicalUrl.value,
     ogImage: () => seoImage.value,
-    twitterTitle: () => resolvedPageTitle.value,
-    twitterDescription: () => resolvedOgDescription.value,
-    twitterImage: () => seoImage.value,
-    twitterCard: "summary_large_image"
+    ogImageWidth: 1200,
+    ogImageHeight: 630
   })
 
   const ogImageTitle = computed(() => seoTitle.value || slugTitleFallback.value)
